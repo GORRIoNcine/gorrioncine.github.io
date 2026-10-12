@@ -168,17 +168,17 @@
     },
     {
       "id": "proj-malecon",
-      "title": "Malecón, 6 a.m.",
-      "slug": "malecon-6-am",
-      "type": "documental",
+      "title": "Cieno",
+      "slug": "cieno",
+      "type": "ficcion",
       "format": {
-        "es": "Largometraje",
-        "en": "Feature",
+        "es": "Cortometraje",
+        "en": "Short Film",
         "otros": null
       },
-      "year": 2024,
-      "status": "estrenado",
-      "runtime": "62 min",
+      "year": 2026,
+      "status": "produccion",
+      "runtime": "15 min",
       "genre": {
         "es": "Documental de observación",
         "en": "Observational documentary",
