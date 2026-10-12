@@ -69,6 +69,11 @@ collections:
             name: reelUrl
             widget: string
             required: false
+          - label: "Boletín: URL de suscripción (MailerLite)"
+            name: newsletterUrl
+            widget: string
+            required: false
+            hint: "Ya viene configurada. Déjala vacía para desactivar el boletín."
           - label: "Servicio de formularios (Formspree, etc.)"
             name: formEndpoint
             widget: string

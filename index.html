@@ -623,6 +623,8 @@ const SITE = {
   // Si pones aquí la URL de un servicio de formularios (Formspree, Getform…),
   // los formularios se envían por POST. Vacío: se genera un mensaje para copiar.
   formEndpoint: "",
+  // Boletín con MailerLite (plan gratuito): URL de suscripción de tu formulario.
+  newsletterUrl: "https://assets.mailerlite.com/jsonp/2705137/forms/201109371772470645/subscribe",
   social: [
     { name: "Instagram", handle: "@gorrion.cine", url: "https://www.instagram.com/" },
     { name: "Vimeo", handle: "vimeo.com/gorrion", url: "https://vimeo.com/" },
@@ -2119,10 +2121,29 @@ async function handleSubmit(f) {
     <div class="notice__act"><button class="btn btn--red btn--sm" data-act="copy" data-text="${esc(m.subject + "\n\n" + m.body)}">${t("copy")}</button><a class="btn btn--sm" href="${esc(mail)}">${t("open_mail")}</a></div></div>`;
   out.scrollIntoView({ block: "center" });
 }
+function mlSubscribe(url, email) {
+  return new Promise((resolve) => {
+    const cb = "ml_cb_" + Date.now(), s = document.createElement("script");
+    let done = false;
+    const end = (v) => { if (done) return; done = true; clearTimeout(tm); try { delete window[cb]; } catch (e) { window[cb] = undefined; } s.remove(); resolve(v); };
+    const tm = setTimeout(() => end("fail"), 10000);
+    window[cb] = (r) => end(r && r.success === false ? ((JSON.stringify(r.errors || r).toLowerCase().includes("email")) ? "invalid" : "fail") : "ok");
+    s.onerror = () => end("fail");
+    s.src = url + "?" + new URLSearchParams({ "fields[email]": email, "ml-submit": "1", anticsrf: "true", callback: cb }).toString();
+    document.head.appendChild(s);
+  });
+}
 async function handleNewsletter(f, d) {
   const msg = $("#nl-msg");
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email || "")) { msg.textContent = t("e_email"); return; }
-  if (SITE.formEndpoint) {
+  if (SITE.newsletterUrl) {
+    /* MailerLite: suscripción por JSONP (sin cargar su script ni cambiar el diseño del formulario) */
+    const btn = $("button[type=submit]", f); if (btn) btn.disabled = true;
+    const res = await mlSubscribe(SITE.newsletterUrl, d.email);
+    if (btn) btn.disabled = false;
+    if (res === "ok") { msg.textContent = t("nl_ok"); f.reset(); return; }
+    if (res === "invalid") { msg.textContent = t("e_email"); return; }
+  } else if (SITE.formEndpoint) {
     try { const r = await fetch(SITE.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ subject: "Newsletter", email: d.email }) }); if (r.ok) { msg.textContent = t("nl_ok"); f.reset(); return; } } catch (e) { /* continúa */ }
   }
   msg.innerHTML = `${t("nl_fb")} <a href="mailto:${esc(SITE.email)}?subject=Bolet%C3%ADn" style="border-bottom:1px solid currentColor">${esc(SITE.email)}</a> ${t("nl_fb2")}`;
