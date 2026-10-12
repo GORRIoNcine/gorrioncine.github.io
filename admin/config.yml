@@ -4,8 +4,7 @@ backend:
   name: github
   repo: gorrioncine/gorrioncine.github.io
   branch: main
-  # Quita el '#' y pon la URL de tu worker para activar el botón «Entrar con GitHub» (ver la guía, paso 3):
-  # base_url: https://sveltia-cms-auth.TU-USUARIO.workers.dev
+  base_url: https://sveltia-cms-auth.niguelcruzz2.workers.dev
 
 site_url: https://gorrioncine.github.io
 display_url: https://gorrioncine.github.io
