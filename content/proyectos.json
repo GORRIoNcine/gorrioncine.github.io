@@ -162,8 +162,12 @@
           "route": ""
         }
       ],
-      "stills": [],
-      "style": "rays",
+      "stills": [
+        "https://picsum.photos/id/458/1920/1280.webp",
+        "https://picsum.photos/id/171/1920/1280.webp",
+        "https://picsum.photos/id/776/1280/1920.webp"
+      ],
+      "style": "circle",
       "seed": 11
     },
     {
