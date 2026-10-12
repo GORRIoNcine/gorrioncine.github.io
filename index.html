@@ -449,9 +449,9 @@ html.fx .rv.in .card__poster { clip-path: inset(0 0 0 0); transition-delay: calc
 /* Contador de página y progreso */
 .pager { position: fixed; right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 40; display: flex; align-items: center; gap: 10px; padding: 6px 10px; background: #000; color: var(--bone); border: 1px solid var(--bone); font-weight: 700; font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; pointer-events: none; }
 .pager i { display: block; width: 44px; height: 2px; background: color-mix(in srgb, var(--bone) 30%, #000); position: relative; }
-.pager b { position: absolute; inset: 0 auto 0 0; width: calc(var(--prog, 0) * 100%); background: var(--bone); }
+.pager b { position: absolute; inset: 0 auto 0 0; width: 100%; transform: scaleX(var(--prog, 0)); transform-origin: 0 50%; background: var(--bone); }
 .pager[hidden] { display: none; }
-.top::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 3px; width: calc(var(--prog, 0) * 100%); background: var(--bone); }
+.top::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 3px; width: 100%; transform: scaleX(var(--prog, 0)); transform-origin: 0 50%; background: var(--bone); }
 @media (max-width: 520px) { .pager i { width: 28px; } }
 @media (prefers-reduced-motion: reduce) { .pager { display: none; } }
 html.lite .pager, html.lite .top::after { display: none; }
@@ -586,6 +586,18 @@ html[data-theme="light"] .buddy__bubble::before { border-left-color: #efefef; }
 .theme .lang__list button[aria-current="true"]::after { margin-left: auto; }
 .theme .lang__list { min-width: 168px; }
 html[data-theme="light"] .pager { background: var(--ink); }
+
+/* ===== Rendimiento en móvil / pantallas táctiles =====
+   Sin desenfoque de fondo ni sombras proyectadas en SVG animados (muy costosos de repintar al hacer scroll). */
+.hero__art svg, .buddy__bird { will-change: transform; }
+.anim-off, .anim-off * { animation-play-state: paused !important; }
+@media (max-width: 900px), (pointer: coarse) {
+  .top::before, .sdlg { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--ink); }
+  .page-head__art, .hero__art svg, .buddy__svg { filter: none; }
+  .page-head__art { box-shadow: 0 10px 18px -8px rgba(0, 0, 0, .55); }
+  .hero__art svg { will-change: transform; }
+  main > section + section { box-shadow: none; }
+}
 </style>
 </head><body>
 <div id="app"></div><div id="overlay"></div>
@@ -1287,6 +1299,7 @@ const FX = (() => {
   const TEXT_SEL = "main h1, main h2, main .lede, main .hero__sub, main .tagline, main .prose p, main .quote, .scene .slug, .scene .cut";
   const RV_SEL = ".card, .nitem, .svc__i, .values > div, .step, .person, .laurel, .where, .tl, .still, .kit__i, .press a, .press .pr";
   let items = [], io = null, enabled = false, ticking = false, lastY = 0, cursorEl = null, pager = null, bound = false;
+  const COARSE = () => !!(window.matchMedia && (window.matchMedia("(pointer: coarse)").matches || window.matchMedia("(max-width: 900px)").matches));
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const html = document.documentElement;
 
@@ -1301,7 +1314,8 @@ const FX = (() => {
             if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
             const w = document.createElement("span");
             w.className = "w"; w.setAttribute("aria-hidden", "true");
-            Array.from(tok).forEach((c) => { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; w.appendChild(s); chars.push(s); });
+            if (COARSE()) { w.classList.add("ch"); w.textContent = tok; chars.push(w); } /* móvil: palabra a palabra (6× menos nodos) */
+            else Array.from(tok).forEach((c) => { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; w.appendChild(s); chars.push(s); });
             frag.appendChild(w);
           });
           n.replaceWith(frag);
@@ -1332,32 +1346,47 @@ const FX = (() => {
     }
   }
 
+  /* Posiciones en caché: en cada scroll NO se lee el layout (evita recalcular estilos y trabarse en móviles) */
+  let docH = 1, topEl = null, vhC = 0;
+  function measure() {
+    const sy = window.scrollY;
+    vhC = window.innerHeight; docH = html.scrollHeight;
+    for (const it of items) { const r = it.el.getBoundingClientRect(); it.top = r.top + sy; it.h = r.height; }
+  }
+  function onResize() { if (!enabled) return; measure(); onScroll(); }
+  let lastProg = -1, lastPage = "";
   function frame() {
     ticking = false;
-    const y = window.scrollY, vh = window.innerHeight;
+    const y = window.scrollY, vh = vhC || window.innerHeight;
     const dy = y - lastY;
-    if (Math.abs(dy) > 1) { html.dataset.dir = dy > 0 ? "down" : "up"; lastY = y; }
-    const max = Math.max(1, html.scrollHeight - vh);
-    html.style.setProperty("--prog", clamp(y / max, 0, 1).toFixed(4));
-    html.style.setProperty("--hy", Math.min(y * 0.12, 140).toFixed(1) + "px");
+    if (Math.abs(dy) > 1) { const d = dy > 0 ? "down" : "up"; if (html.dataset.dir !== d) html.dataset.dir = d; lastY = y; }
+    const max = Math.max(1, docH - vh);
+    const prog = clamp(y / max, 0, 1).toFixed(3);
+    if (prog !== lastProg) {
+      lastProg = prog;
+      if (!topEl || !topEl.isConnected) topEl = document.querySelector(".top");
+      if (topEl) topEl.style.setProperty("--prog", prog);
+      if (pager) pager.style.setProperty("--prog", prog);
+    }
     if (pager) {
-      const total = Math.max(1, Math.ceil(html.scrollHeight / vh)), page = clamp(Math.floor((y + vh * 0.5) / vh) + 1, 1, total);
-      pager.firstChild.textContent = `${PG[PG[lang] ? lang : "en"]} ${String(page).padStart(2, "0")}/${String(total).padStart(2, "0")}`;
+      const total = Math.max(1, Math.ceil(docH / vh)), page = clamp(Math.floor((y + vh * 0.5) / vh) + 1, 1, total);
+      const txt = `${PG[PG[lang] ? lang : "en"]} ${String(page).padStart(2, "0")}/${String(total).padStart(2, "0")}`;
+      if (txt !== lastPage) { lastPage = txt; pager.firstChild.textContent = txt; }
     }
     let cur = null;
     for (const it of items) {
-      const r = it.el.getBoundingClientRect();
+      const top = it.top - y, bottom = top + it.h;
       let p;
-      if (r.top > vh * 1.1) p = 0;
-      else if (r.bottom < -vh * 0.1) p = 1;
-      else p = clamp((vh * 0.9 - r.top) / (Math.min(r.height, vh * 0.45) + vh * 0.14), 0, 1);
+      if (top > vh * 1.1) p = 0;
+      else if (bottom < -vh * 0.1) p = 1;
+      else p = clamp((vh * 0.9 - top) / (Math.min(it.h, vh * 0.45) + vh * 0.14), 0, 1);
       const n = Math.round(p * it.chars.length);
       if (n !== it.n) {
         const a = Math.min(n, it.n), b = Math.max(n, it.n), on = n > it.n;
         for (let i = a; i < b; i++) it.chars[i].classList.toggle("on", on);
         it.n = n;
       }
-      if (n > 0 && r.top < vh * 0.95 && r.bottom > 0) cur = it;
+      if (n > 0 && top < vh * 0.95 && bottom > 0) cur = it;
     }
     const ce = cur ? cur.chars[cur.n - 1] : null;
     if (ce !== cursorEl) { if (cursorEl) cursorEl.classList.remove("cur"); if (ce) ce.classList.add("cur"); cursorEl = ce; }
@@ -1372,7 +1401,9 @@ const FX = (() => {
     if (!bound) {
       bound = true;
       window.addEventListener("scroll", onScroll, { passive: true });
-      window.addEventListener("resize", onScroll);
+      window.addEventListener("resize", onResize);
+      window.addEventListener("load", onResize);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(onResize);
     }
     if (!enabled) { if (pager) pager.hidden = true; return; }
     if (!pager) {
@@ -1401,9 +1432,19 @@ const FX = (() => {
       el.classList.add("rv");
       io.observe(el);
     });
+    measure();
+    setTimeout(onResize, 600);
     frame();
   }
-  return { init };
+  /* Pausa las animaciones infinitas de los SVG cuando no se ven */
+  let ioA = null;
+  function watchAnim(root) {
+    if (!("IntersectionObserver" in window)) return;
+    if (ioA) ioA.disconnect();
+    ioA = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("anim-off", !e.isIntersecting)), { rootMargin: "80px" });
+    root.querySelectorAll(".hero__art, .page-head__art, .fh__bg, .buddy").forEach((el) => ioA.observe(el));
+  }
+  return { init, watchAnim, measure: onResize };
 })();
 
 /* ==========================================================================
@@ -1994,7 +2035,7 @@ function render(opts = {}) {
   const key = location.hash;
   if (!opts.keepScroll && key !== lastKey) { window.scrollTo(0, 0); const h = $("#page-h"); if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); } }
   lastKey = key;
-  if (typeof FX !== "undefined") FX.init(app());
+  if (typeof FX !== "undefined") { FX.init(app()); FX.watchAnim(document); }
   if (typeof Buddy !== "undefined") Buddy.sync();
 }
 
