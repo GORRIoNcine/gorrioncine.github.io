@@ -5,7 +5,7 @@
       "cat": "estrenos",
       "date": "2026-02-14",
       "seed": 11,
-      "project": "la-hora-del-zunzun",
+      "project": "proj-zunzun",
       "title": {
         "es": "La Hora del Zunzún gana el Premio del Público",
         "en": "La Hora del Zunzún wins the Audience Award"
@@ -32,7 +32,7 @@
       "cat": "rodajes",
       "date": "2026-09-21",
       "seed": 37,
-      "project": "pan-de-bodega",
+      "project": "proj-pan-de-bodega",
       "title": {
         "es": "Diario de rodaje: primer día de Pan de Bodega",
         "en": "Shooting diary: day one of Pan de Bodega"
@@ -84,7 +84,7 @@
       "cat": "detras",
       "date": "2025-05-09",
       "seed": 23,
-      "project": "malecon-6-am",
+      "project": "proj-malecon",
       "title": {
         "es": "Detrás de cámaras: once meses frente al mismo muro",
         "en": "Behind the scenes: eleven months facing the same wall"

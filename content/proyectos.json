@@ -1,6 +1,7 @@
 {
   "items": [
     {
+      "id": "proj-zunzun",
       "title": "Venus en la Favela",
       "slug": "venus-en-la-favela",
       "type": "ficcion",
@@ -166,6 +167,7 @@
       "seed": 11
     },
     {
+      "id": "proj-malecon",
       "title": "Malecón, 6 a.m.",
       "slug": "malecon-6-am",
       "type": "documental",
@@ -311,6 +313,7 @@
       "seed": 23
     },
     {
+      "id": "proj-pan-de-bodega",
       "title": "Pan de Bodega",
       "slug": "pan-de-bodega",
       "type": "serie",
@@ -410,6 +413,7 @@
       "seed": 37
     },
     {
+      "id": "proj-apagon",
       "title": "Noche de Apagón",
       "slug": "noche-de-apagon",
       "type": "ficcion",
@@ -496,6 +500,7 @@
       "seed": 52
     },
     {
+      "id": "proj-sal-y-canaveral",
       "title": "Sal y Cañaveral",
       "slug": "sal-y-canaveral",
       "type": "documental",
@@ -604,6 +609,7 @@
       "seed": 64
     },
     {
+      "id": "proj-rumba",
       "title": "Rumba de Azotea",
       "slug": "rumba-de-azotea",
       "type": "videoclip",
@@ -694,6 +700,7 @@
       "seed": 71
     },
     {
+      "id": "proj-manos",
       "title": "Manos de Tierra",
       "slug": "manos-de-tierra",
       "type": "encargo",
@@ -774,6 +781,7 @@
       "seed": 88
     },
     {
+      "id": "proj-guayaba",
       "title": "Tiempo de Guayaba",
       "slug": "tiempo-de-guayaba",
       "type": "encargo",

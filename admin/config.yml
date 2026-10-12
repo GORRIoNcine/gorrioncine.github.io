@@ -117,13 +117,20 @@ collections:
             summary: "{{fields.title}} · {{fields.year}}"
             label_singular: "proyecto"
             fields:
+              - label: "Identificador interno (no editable)"
+                name: id
+                widget: uuid
+                hint: "Se genera solo al crear el proyecto y no cambia nunca. Las noticias y los premios se enlazan con él, así que el título se puede cambiar sin romper nada."
+                prefix: "proj-"
+                readonly: true
+                use_b32_encoding: true
               - label: "Título"
                 name: title
                 widget: string
-              - label: "Identificador del enlace"
+              - label: "Dirección web (enlace)"
                 name: slug
                 widget: string
-                hint: "Ejemplo: mi-nueva-pelicula. No lo cambies después de publicar (cambia el enlace)."
+                hint: "Ejemplo: mi-nueva-pelicula. Solo afecta a la dirección de la página del proyecto; si la cambias, los enlaces antiguos a esa página dejan de funcionar."
                 pattern: ["^[a-z0-9-]+$", "Solo minúsculas, números y guiones"]
               - label: "Tipo"
                 name: type
@@ -722,7 +729,7 @@ collections:
                 required: false
                 collection: "contenido"
                 file: "proyectos"
-                value_field: "items.*.slug"
+                value_field: "items.*.id"
                 search_fields: ["items.*.title"]
                 display_fields: ["items.*.title"]
               - label: "Imagen principal"
@@ -1537,6 +1544,6 @@ collections:
                 required: false
                 collection: "contenido"
                 file: "proyectos"
-                value_field: "items.*.slug"
+                value_field: "items.*.id"
                 search_fields: ["items.*.title"]
                 display_fields: ["items.*.title"]

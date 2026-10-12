@@ -573,6 +573,7 @@ const LOGO_V = { vb: "226 124 627 831", w: 627, h: 831, d: "M852.2 868.5L851.8 8
    Todo el contenido vive aquí. Los nombres, premios, festivales y medios son
    ejemplos inventados: sustitúyelos por los de la productora.
    Cada texto lleva versión {es, en}.
+   Cada proyecto tiene un `id` permanente (proj-…): noticias y premios se enlazan por ese id, no por el título ni por el slug.
    ========================================================================== */
 
 const SITE = {
@@ -628,7 +629,7 @@ const ROLES = {
 
 const PROJECTS = [
   {
-    slug: "la-hora-del-zunzun",
+    id: "proj-zunzun", slug: "la-hora-del-zunzun",
     title: "La Hora del Zunzún",
     type: "ficcion", format: { es: "Cortometraje", en: "Short film" },
     year: 2025, status: "estrenado", runtime: "18 min",
@@ -671,7 +672,7 @@ const PROJECTS = [
     ]
   },
   {
-    slug: "malecon-6-am",
+    id: "proj-malecon", slug: "malecon-6-am",
     title: "Malecón, 6 a.m.",
     type: "documental", format: { es: "Largometraje", en: "Feature" },
     year: 2024, status: "estrenado", runtime: "62 min",
@@ -709,7 +710,7 @@ const PROJECTS = [
     ]
   },
   {
-    slug: "pan-de-bodega",
+    id: "proj-pan-de-bodega", slug: "pan-de-bodega",
     title: "Pan de Bodega",
     type: "serie", format: { es: "Serie web · 8 × 12 min", en: "Web series · 8 × 12 min" },
     year: 2026, status: "produccion", runtime: "8 × 12 min",
@@ -736,7 +737,7 @@ const PROJECTS = [
     press: [], where: [{ l: { es: "Seguir el rodaje", en: "Follow the shoot" }, n: { es: "Diario de rodaje en Noticias", en: "Shooting diary in News" }, route: "noticias" }]
   },
   {
-    slug: "noche-de-apagon",
+    id: "proj-apagon", slug: "noche-de-apagon",
     title: "Noche de Apagón",
     type: "ficcion", format: { es: "Largometraje", en: "Feature" },
     year: 2027, status: "desarrollo", runtime: "94 min (previsto)",
@@ -759,7 +760,7 @@ const PROJECTS = [
     where: [{ l: { es: "Coproducción", en: "Co-production" }, n: { es: "Dosier y tratamiento disponibles", en: "Dossier and treatment available" }, screener: true, dossier: true }]
   },
   {
-    slug: "sal-y-canaveral",
+    id: "proj-sal-y-canaveral", slug: "sal-y-canaveral",
     title: "Sal y Cañaveral",
     type: "documental", format: { es: "Mediometraje", en: "Medium-length" },
     year: 2023, status: "estrenado", runtime: "24 min",
@@ -782,7 +783,7 @@ const PROJECTS = [
     where: [{ l: { es: "Ver completo", en: "Watch in full" }, n: { es: "Vimeo · acceso libre", en: "Vimeo · free access" }, url: "https://vimeo.com/" }]
   },
   {
-    slug: "rumba-de-azotea",
+    id: "proj-rumba", slug: "rumba-de-azotea",
     title: "Rumba de Azotea",
     type: "videoclip", format: { es: "Videoclip", en: "Music video" },
     year: 2025, status: "estrenado", runtime: "4 min",
@@ -804,7 +805,7 @@ const PROJECTS = [
     press: [], where: [{ l: { es: "Ver el videoclip", en: "Watch the video" }, n: { es: "YouTube", en: "YouTube" }, url: "https://www.youtube.com/" }]
   },
   {
-    slug: "manos-de-tierra",
+    id: "proj-manos", slug: "manos-de-tierra",
     title: "Manos de Tierra",
     type: "encargo", format: { es: "Película institucional", en: "Corporate film" },
     year: 2025, status: "estrenado", runtime: "3 min",
@@ -825,7 +826,7 @@ const PROJECTS = [
     where: [{ l: { es: "Ver la pieza", en: "Watch the piece" }, n: { es: "Vimeo", en: "Vimeo" }, url: "https://vimeo.com/" }]
   },
   {
-    slug: "tiempo-de-guayaba",
+    id: "proj-guayaba", slug: "tiempo-de-guayaba",
     title: "Tiempo de Guayaba",
     type: "encargo", format: { es: "Spot publicitario", en: "Commercial" },
     year: 2024, status: "estrenado", runtime: "45 s",
@@ -848,11 +849,11 @@ const PROJECTS = [
 ];
 
 const AWARDS = [
-  { y: 2026, a: { es: "Premio del Público", en: "Audience Award" }, f: "Muestra Joven del Sur", p: "la-hora-del-zunzun" },
-  { y: 2026, a: { es: "Selección oficial", en: "Official selection" }, f: "Semana de Cine Iberoamericano", p: "la-hora-del-zunzun" },
-  { y: 2025, a: { es: "Selección oficial", en: "Official selection" }, f: "Festival Imagen del Caribe", p: "la-hora-del-zunzun" },
-  { y: 2024, a: { es: "Mejor Fotografía Documental", en: "Best Documentary Cinematography" }, f: "Festival Imagen del Caribe", p: "malecon-6-am" },
-  { y: 2024, a: { es: "Mención especial del jurado", en: "Special jury mention" }, f: "Encuentro de Cine Documental Sur-Sur", p: "sal-y-canaveral" }
+  { y: 2026, a: { es: "Premio del Público", en: "Audience Award" }, f: "Muestra Joven del Sur", p: "proj-zunzun" },
+  { y: 2026, a: { es: "Selección oficial", en: "Official selection" }, f: "Semana de Cine Iberoamericano", p: "proj-zunzun" },
+  { y: 2025, a: { es: "Selección oficial", en: "Official selection" }, f: "Festival Imagen del Caribe", p: "proj-zunzun" },
+  { y: 2024, a: { es: "Mejor Fotografía Documental", en: "Best Documentary Cinematography" }, f: "Festival Imagen del Caribe", p: "proj-malecon" },
+  { y: 2024, a: { es: "Mención especial del jurado", en: "Special jury mention" }, f: "Encuentro de Cine Documental Sur-Sur", p: "proj-sal-y-canaveral" }
 ];
 
 const PRESS = [
@@ -863,7 +864,7 @@ const PRESS = [
 
 const NEWS = [
   {
-    slug: "zunzun-premio-del-publico", cat: "estrenos", date: "2026-02-14", seed: 11, project: "la-hora-del-zunzun",
+    slug: "zunzun-premio-del-publico", cat: "estrenos", date: "2026-02-14", seed: 11, project: "proj-zunzun",
     title: { es: "La Hora del Zunzún gana el Premio del Público", en: "La Hora del Zunzún wins the Audience Award" },
     sum: { es: "El corto de Ana Lía Cordero se llevó el voto del público en la Muestra Joven del Sur.", en: "Ana Lía Cordero's short took the audience vote at the Muestra Joven del Sur." },
     body: {
@@ -872,7 +873,7 @@ const NEWS = [
     }
   },
   {
-    slug: "pan-de-bodega-primer-dia", cat: "rodajes", date: "2026-09-21", seed: 37, project: "pan-de-bodega",
+    slug: "pan-de-bodega-primer-dia", cat: "rodajes", date: "2026-09-21", seed: 37, project: "proj-pan-de-bodega",
     title: { es: "Diario de rodaje: primer día de Pan de Bodega", en: "Shooting diary: day one of Pan de Bodega" },
     sum: { es: "Cinco de la mañana, una cola de cuarenta personas y una cámara que no se nota.", en: "Five in the morning, a queue of forty people and a camera nobody notices." },
     body: {
@@ -890,7 +891,7 @@ const NEWS = [
     }
   },
   {
-    slug: "detras-de-camaras-malecon", cat: "detras", date: "2025-05-09", seed: 23, project: "malecon-6-am",
+    slug: "detras-de-camaras-malecon", cat: "detras", date: "2025-05-09", seed: 23, project: "proj-malecon",
     title: { es: "Detrás de cámaras: once meses frente al mismo muro", en: "Behind the scenes: eleven months facing the same wall" },
     sum: { es: "Cómo se rodó Malecón, 6 a.m. con un equipo de cuatro personas y una sola cámara.", en: "How Malecón, 6 a.m. was shot with a crew of four and a single camera." },
     body: {
@@ -988,6 +989,11 @@ TR.fr["¿Tienes una historia que contar?"] = "Vous avez une histoire à raconter
 TR.pt["¿Tienes una historia que contar?"] = "Tem uma história para contar?"; TR.pt["Contáctanos"] = "Entre em contato"; TR.pt["Cerrar"] = "Fechar";
 TR.it["¿Tienes una historia que contar?"] = "Hai una storia da raccontare?"; TR.it["Contáctanos"] = "Contattaci"; TR.it["Cerrar"] = "Chiudi";
 TR.de["¿Tienes una historia que contar?"] = "Haben Sie eine Geschichte zu erzählen?"; TR.de["Contáctanos"] = "Kontakt aufnehmen"; TR.de["Cerrar"] = "Schließen";
+
+TR.fr["Aviso"] = "Avis"; TR.fr["Esta sección no se pudo mostrar"] = "Cette section n’a pas pu être affichée"; TR.fr["Hubo un problema con el contenido de esta página. Vuelve al inicio o inténtalo de nuevo en unos minutos."] = "Un problème est survenu avec le contenu de cette page. Retournez à l’accueil ou réessayez dans quelques minutes.";
+TR.pt["Aviso"] = "Aviso"; TR.pt["Esta sección no se pudo mostrar"] = "Não foi possível mostrar esta secção"; TR.pt["Hubo un problema con el contenido de esta página. Vuelve al inicio o inténtalo de nuevo en unos minutos."] = "Houve um problema com o conteúdo desta página. Volte ao início ou tente novamente dentro de alguns minutos.";
+TR.it["Aviso"] = "Avviso"; TR.it["Esta sección no se pudo mostrar"] = "Impossibile mostrare questa sezione"; TR.it["Hubo un problema con el contenido de esta página. Vuelve al inicio o inténtalo de nuevo en unos minutos."] = "Si è verificato un problema con il contenuto di questa pagina. Torna alla home o riprova tra qualche minuto.";
+TR.de["Aviso"] = "Hinweis"; TR.de["Esta sección no se pudo mostrar"] = "Dieser Bereich konnte nicht angezeigt werden"; TR.de["Hubo un problema con el contenido de esta página. Vuelve al inicio o inténtalo de nuevo en unos minutos."] = "Beim Inhalt dieser Seite ist ein Problem aufgetreten. Gehen Sie zur Startseite zurück oder versuchen Sie es in einigen Minuten erneut.";
 /* ==========================================================================
    ARTE: logotipos de GORRIóN, carteles, fotogramas y retratos generados en SVG.
    Paleta estricta: negro #000000, blanco #efefef, rojo #5f140f (y mezclas entre ellos para dar profundidad).
@@ -1009,7 +1015,7 @@ function rng(seed) {
   };
 }
 function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 /* ---------- Logotipos (símbolos reutilizables) ---------- */
 const LOGO_SPRITE = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -1462,6 +1468,9 @@ const S = {
   buddy_t: ["¿Tienes una historia que contar?", "Got a story to tell?"],
   buddy_b: ["Contáctanos", "Contact us"],
   buddy_x: ["Cerrar", "Close"],
+  problem_eyebrow: ["Aviso", "Notice"],
+  problem_h: ["Esta sección no se pudo mostrar", "This section could not be displayed"],
+  problem_p: ["Hubo un problema con el contenido de esta página. Vuelve al inicio o inténtalo de nuevo en unos minutos.", "There was a problem with this page's content. Go back to the home page or try again in a few minutes."],
   sw_black: ["Negro", "Black"], sw_white: ["Blanco", "White"], sw_red: ["Rojo", "Red"],
   hero_h1: ['Cine <i class="lc">independiente</i> hecho en <span class="hl">Cuba</span>.', '<i class="lc">Independent</i> cinema <b>made</b> in <span class="hl">Cuba</span>.'],
   search_ph: ["Título, nombre, tema…", "Title, name, topic…"], search_hint: ["Busca entre proyectos y noticias.", "Search across projects and news."],
@@ -1585,7 +1594,8 @@ const t = (k) => {
   return Array.isArray(a[0]) ? a[0].map((s, i) => trs(s, a[1][i])) : trs(a[0], a[1]);
 };
 const L = (o) => {
-  if (!o || typeof o !== "object" || Array.isArray(o)) return o;
+  if (o === null || o === undefined) return "";
+  if (typeof o !== "object" || Array.isArray(o)) return o;
   if (o[lang] !== undefined && o[lang] !== "" && !(Array.isArray(o[lang]) && !o[lang].length)) return o[lang];
   if (o.otros && o.otros[lang] !== undefined && o.otros[lang] !== "" && !(Array.isArray(o.otros[lang]) && !o.otros[lang].length)) return o.otros[lang];
   return Array.isArray(o.es) ? o.es.map((s, i) => trs(s, (o.en || [])[i])) : trs(o.es, o.en);
@@ -1593,7 +1603,10 @@ const L = (o) => {
 const norm = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-const projBy = (slug) => PROJECTS.find((p) => p.slug === slug);
+/* Los proyectos se enlazan por su id permanente (proj-…). Por compatibilidad, projBy también acepta un slug antiguo.
+   Devuelve undefined si no existe: quien lo use debe comprobarlo. */
+const projBy = (ref) => (ref ? PROJECTS.find((p) => p.id === ref) || PROJECTS.find((p) => p.slug === ref) : undefined);
+const projName = (ref) => { const p = projBy(ref); return p ? p.title : ""; };
 
 function fmtDate(d) {
   const p = d.split("-").map(Number);
@@ -1690,20 +1703,20 @@ function pageHome() {
     <a href="#servicios"><h3>${t("nav_servicios")}</h3>${ICONS.arrow}<p>${t("dock_s")}</p></a>
     <a href="#contacto"><h3>${t("nav_contacto")}</h3>${ICONS.arrow}<p>${t("dock_c")}</p></a></div></section>
 
-  <section class="sec sc-dark"><div class="wrap feat">
+  ${feat ? `<section class="sec sc-dark"><div class="wrap feat">
     <a class="feat__poster" href="#p-${feat.slug}" aria-label="${esc(feat.title)}"><div class="card__poster" data-title="${esc(feat.title)}">${posterSVG(feat, lang)}</div></a>
     <div><span class="eyebrow">${t("featured")}</span><h2>${esc(feat.title)}</h2><p class="tagline">${esc(L(feat.tagline))}</p>
       <p class="lede">${esc(L(feat.short))}</p>
       <div class="feat__meta">${statusChip(feat)}<span class="chip">${esc(typeLabel(feat))}</span><span class="chip">${feat.year}</span><span class="chip">${esc(feat.runtime)}</span></div>
       <div class="feat__cta"><a class="btn btn--red" href="#p-${feat.slug}">${t("see_page")} ${ICONS.arrow}</a>${ext(((feat.where || [])[0] || {}).url || SITE.reelUrl, `${ICONS.play} ${t("trailer")}`, "btn")}</div></div>
-  </div></section>
+  </div></section>` : ""}
 
   <section class="sec sc-bone"><div class="wrap">
     <div class="sec__head"><div><span class="eyebrow">${t("nav_proyectos")}</span><h2>${t("selection")}</h2></div><a class="link-arrow" href="#proyectos">${t("see_all")} ${ICONS.arrow}</a></div>
     <div class="grid grid--posters grid--home">${sel6.map(card).join("")}</div></div></section>
 
   <section class="sec--tight sc-red"><div class="wrap"><div class="sec__head" style="margin-bottom:20px"><div><span class="eyebrow">${t("press_eyebrow")}</span></div><a class="link-arrow" href="#prensa">${t("nav_prensa")} ${ICONS.arrow}</a></div></div>
-    <div class="laurels">${AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projBy(a.p).title)}</span></div>`).join("")}</div></section>
+    <div class="laurels">${AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projName(a.p))}</span></div>`).join("")}</div></section>
 
   <section class="sec sc-dark"><div class="wrap split"><div><span class="eyebrow">${t("about_eyebrow")}</span><h2 style="font-size:clamp(2.6rem,6vw,5rem);margin-top:14px;position:static">${t("about_h")}</h2></div>
     <div><p class="lede">${t("about_p")}</p><p style="margin-top:24px"><a class="link-arrow" href="#nosotros">${t("about_btn")} ${ICONS.arrow}</a></p></div></div></section>
@@ -1816,7 +1829,7 @@ function pagePress() {
   const years = Array.from(new Set(AWARDS.map((a) => a.y))).sort((a, b) => b - a);
   const sw = [["#000000", t("sw_black")], ["#efefef", t("sw_white")], ["#5f140f", t("sw_red")]];
   return pageHead(t("press_eyebrow"), t("press_page_h"), t("press_lede"), 1) + `
-  <section class="sec sc-bone"><div class="wrap split"><h2>${t("awards_h")}</h2><div class="tline">${years.map((y) => AWARDS.filter((a) => a.y === y).map((a, i) => `<div class="tl"><span class="tl__d">${i === 0 ? y : ""}</span><div><b>${esc(L(a.a))}</b><span>${esc(a.f)} · <a href="#p-${a.p}" style="color:var(--fg);border-bottom:2px solid var(--acc)">${esc(projBy(a.p).title)}</a></span></div></div>`).join("")).join("")}</div></div></section>
+  <section class="sec sc-bone"><div class="wrap split"><h2>${t("awards_h")}</h2><div class="tline">${years.map((y) => AWARDS.filter((a) => a.y === y).map((a, i) => `<div class="tl"><span class="tl__d">${i === 0 ? y : ""}</span><div><b>${esc(L(a.a))}</b><span>${esc(a.f)}${projBy(a.p) ? " · " : ""}${projBy(a.p) ? `<a href="#p-${esc(projBy(a.p).slug)}" style="color:var(--fg);border-bottom:2px solid var(--acc)">${esc(projBy(a.p).title)}</a>` : ""}</span></div></div>`).join("")).join("")}</div></div></section>
   <section class="sec sc-dark"><div class="wrap split"><h2>${t("inpress")}</h2><div class="press">${PRESS.map((x) => {
     const inner = `<span class="mono">${esc(fmtDate(x.d))} · ${esc(x.s)}</span><b>${esc(L(x.t))}<small>${esc(L(x.x))}</small></b>${x.url ? ICONS.arrow.replace("<svg", '<svg width="20" height="20"') : "<span></span>"}`;
     return x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${inner}</a>` : `<div class="pr">${inner}</div>`;
@@ -1875,6 +1888,9 @@ function pageLegal() {
     <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[4]}</h3><p>${b[5]}</p>
     <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[6]}</h3><p>${b[7]}</p></div></div></section>`;
 }
+function pageProblem() {
+  return `<section class="sec sc-dark"><div class="wrap"><span class="eyebrow">${t("problem_eyebrow")}</span><h1 id="page-h" style="margin-top:14px">${t("problem_h")}</h1><p class="lede" style="margin-top:18px">${t("problem_p")}</p><p style="margin-top:28px"><a class="btn btn--red" href="#inicio">${t("home")} ${ICONS.arrow}</a> <a class="btn" href="#proyectos">${t("nav_proyectos")}</a></p></div></section>`;
+}
 function pageNotFound() {
   return `<section class="sec"><div class="wrap" style="max-width:640px"><div style="width:180px;margin-bottom:24px">${logoV("", 220)}</div><h1 class="h-page" id="page-h" style="font-size:clamp(2.6rem,7vw,5rem)">${t("notfound_h")}</h1><p class="lede" style="margin:16px 0 28px">${t("notfound_p")}</p><a class="btn btn--red" href="#inicio">${t("home")}</a></div></section>`;
 }
@@ -1904,18 +1920,24 @@ function render(opts = {}) {
   document.documentElement.lang = lang;
   document.documentElement.classList.toggle("lite", lite);
   let main;
-  switch (r.name) {
-    case "inicio": main = pageHome(); break;
-    case "proyectos": main = pageProjects(); break;
-    case "project": main = pageProject(r.p); break;
-    case "servicios": main = pageServices(); break;
-    case "nosotros": main = pageAbout(); break;
-    case "prensa": main = pagePress(); break;
-    case "noticias": main = pageNews(); break;
-    case "article": main = pageArticle(r.n); break;
-    case "contacto": main = pageContact(); break;
-    case "legal": main = pageLegal(); break;
-    default: main = pageNotFound();
+  try {
+    switch (r.name) {
+      case "inicio": main = pageHome(); break;
+      case "proyectos": main = pageProjects(); break;
+      case "project": main = pageProject(r.p); break;
+      case "servicios": main = pageServices(); break;
+      case "nosotros": main = pageAbout(); break;
+      case "prensa": main = pagePress(); break;
+      case "noticias": main = pageNews(); break;
+      case "article": main = pageArticle(r.n); break;
+      case "contacto": main = pageContact(); break;
+      case "legal": main = pageLegal(); break;
+      default: main = pageNotFound();
+    }
+  } catch (e) {
+    /* Un dato roto nunca debe dejar la web en blanco: se muestra un aviso y se conservan cabecera y pie. */
+    try { console.error("[GORRIóN] No se pudo generar la página «" + r.name + "»", e); } catch (x) { /* nada */ }
+    main = pageProblem();
   }
   app().innerHTML = header(r) + `<main id="main" tabindex="-1">${main}</main>` + footer();
   brandifyDOM(app());
@@ -2077,41 +2099,79 @@ function fetchJSON(name) {
   ]).catch(() => null);
 }
 function swap(arr, next) { if (Array.isArray(next)) arr.splice(0, arr.length, ...next); }
+const asArr = (v) => (Array.isArray(v) ? v.filter((x) => x !== null && x !== undefined) : []);
+const CONTENT_WARNINGS = [];
+function warn(msg) { CONTENT_WARNINGS.push(msg); try { console.warn("[GORRIóN contenido] " + msg); } catch (e) { /* nada */ } }
+
+/* Comprueba las relaciones entre secciones (noticias → proyecto, premios → proyecto, ids y slugs únicos).
+   Nunca interrumpe la página: solo registra avisos (consola, y banner si se abre /?check). */
+function auditContent() {
+  CONTENT_WARNINGS.length = 0;
+  const ids = new Map(), slugs = new Map();
+  PROJECTS.forEach((p) => {
+    if (ids.has(p.id)) warn(`Dos proyectos comparten el id «${p.id}»: «${ids.get(p.id)}» y «${p.title}».`); else ids.set(p.id, p.title);
+    if (slugs.has(p.slug)) warn(`Dos proyectos comparten el enlace «${p.slug}»: «${slugs.get(p.slug)}» y «${p.title}».`); else slugs.set(p.slug, p.title);
+  });
+  if (PROJECTS.length && PROJECTS.filter((p) => p.featured).length > 1) warn("Hay más de un proyecto marcado como destacado; se usa el primero.");
+  NEWS.forEach((n) => { if (n.project && !projBy(n.project)) warn(`La noticia «${L(n.title)}» apunta a un proyecto que ya no existe (${n.project}).`); });
+  AWARDS.forEach((a) => { if (a.p && !projBy(a.p)) warn(`El premio «${L(a.a)}» (${a.f}, ${a.y}) apunta a un proyecto que ya no existe (${a.p}).`); });
+  return CONTENT_WARNINGS;
+}
+function showWarnings() {
+  if (!/[?&]check\b/.test(location.search) || !CONTENT_WARNINGS.length) return;
+  const d = document.createElement("div");
+  d.setAttribute("role", "alert");
+  d.style.cssText = "position:fixed;left:12px;right:12px;bottom:12px;z-index:200;background:#efefef;color:#000;border:2px solid #000;box-shadow:6px 6px 0 #5f140f;padding:14px 16px;font:14px/1.5 'Courier New',monospace;max-height:40vh;overflow:auto";
+  d.innerHTML = "<b>Avisos del contenido</b><ul style='margin:8px 0 0 18px'>" + CONTENT_WARNINGS.map((w) => "<li>" + esc(w) + "</li>").join("") + "</ul>";
+  document.body.appendChild(d);
+}
+
 function loadContent() {
   if (typeof fetch !== "function" || location.protocol === "file:") return Promise.resolve();
   return Promise.all(["site", "proyectos", "noticias", "equipo", "servicios", "nosotros", "prensa"].map(fetchJSON)).then(([site, proy, noti, equ, serv, nos, pre]) => {
-    if (site) Object.assign(SITE, site);
+    if (site && typeof site === "object") Object.assign(SITE, site);
+    SITE.social = asArr(SITE.social); SITE.channels = asArr(SITE.channels);
     if (proy && Array.isArray(proy.items)) {
-      swap(PROJECTS, proy.items.filter((x) => x && x.title).map((x) => {
+      const used = new Set();
+      swap(PROJECTS, asArr(proy.items).filter((x) => x && x.title).map((x) => {
         x.slug = x.slug || slugify(x.title);
-        x.seed = Number(x.seed) || (hashStr(x.slug) % 90) + 5;
-        x.style = x.style || "rays"; x.type = x.type || "ficcion"; x.status = x.status || "desarrollo";
-        ["crew", "journey", "press", "where", "stills"].forEach((k) => { if (!Array.isArray(x[k])) x[k] = []; });
+        /* id permanente: si falta (contenido antiguo) se deriva una sola vez del slug actual; el panel genera uno para los nuevos */
+        x.id = x.id || "proj-" + x.slug;
+        if (used.has(x.id)) x.id = x.id + "-" + (used.size + 1);
+        used.add(x.id);
+        x.seed = Number(x.seed) || (hashStr(x.id) % 90) + 5;
+        x.style = x.style || "rays"; x.type = TYPES[x.type] ? x.type : "ficcion"; x.status = STATUS[x.status] ? x.status : "desarrollo";
+        ["crew", "journey", "press", "where", "stills"].forEach((k) => { x[k] = asArr(x[k]); });
         x.crew = x.crew.filter((c) => c && ROLES[c.r]);
-        ["format", "genre", "tagline", "short", "long", "note"].forEach((k) => { if (!x[k]) x[k] = { es: "", en: "" }; });
+        x.press = x.press.filter((c) => c && c.q); x.journey = x.journey.filter((c) => c && c.t); x.where = x.where.filter((c) => c && c.l);
+        ["format", "genre", "tagline", "short", "long", "note"].forEach((k) => { if (!x[k] || typeof x[k] !== "object") x[k] = { es: x[k] || "", en: x[k] || "" }; });
         x.year = x.year || ""; x.runtime = x.runtime || ""; x.lang = x.lang || ""; x.subs = x.subs || ""; x.noteBy = x.noteBy || "";
         return x;
       }));
     }
     if (noti && Array.isArray(noti.items)) {
-      swap(NEWS, noti.items.filter((x) => x && x.title).map((x) => {
+      swap(NEWS, asArr(noti.items).filter((x) => x && x.title).map((x) => {
         x.slug = x.slug || slugify(L(x.title) || "noticia");
         x.seed = Number(x.seed) || (hashStr(x.slug) % 90) + 5;
         x.cat = NEWS_CATS[x.cat] ? x.cat : "estrenos";
-        x.project = x.project || null; x.date = x.date || "2026-01-01";
+        x.project = x.project || null; x.date = String(x.date || "2026-01-01").slice(0, 10);
+        if (!x.sum) x.sum = { es: "", en: "" };
         if (!x.body) x.body = { es: [], en: [] };
+        if (x.body.es && !Array.isArray(x.body.es)) x.body.es = [String(x.body.es)];
+        if (x.body.en && !Array.isArray(x.body.en)) x.body.en = [String(x.body.en)];
+        x.body.es = asArr(x.body.es); x.body.en = asArr(x.body.en);
         return x;
       }).sort((a, b) => String(b.date).localeCompare(String(a.date))));
     }
-    if (equ) swap(TEAM, equ.items);
-    if (serv) { swap(SERVICES, serv.services); swap(STEPS, serv.steps); }
-    if (nos) { swap(VALUES, nos.values); swap(HISTORY, nos.history); if (Array.isArray(nos.allies)) swap(ALLIES, nos.allies.map((a) => (typeof a === "string" ? a : a && a.name)).filter(Boolean)); if (nos.press_bio) Object.assign(PRESS_BIO, nos.press_bio); }
-    if (pre) { swap(PRESS, pre.press); swap(AWARDS, pre.awards); }
-  }).catch(() => {});
+    if (equ) swap(TEAM, asArr(equ.items).filter((m) => m && m.n));
+    if (serv) { swap(SERVICES, asArr(serv.services).filter((s) => s && s.t).map((s) => { s.l = s.l || { es: [], en: [] }; s.l.es = asArr(s.l.es); s.l.en = asArr(s.l.en); s.icon = ICONS[s.icon] ? s.icon : "spark"; return s; })); swap(STEPS, asArr(serv.steps).filter((s) => s && s.t)); }
+    if (nos) { swap(VALUES, asArr(nos.values).filter((v) => v && v.t)); swap(HISTORY, asArr(nos.history).filter((h) => h && h.t)); if (Array.isArray(nos.allies)) swap(ALLIES, nos.allies.map((a) => (typeof a === "string" ? a : a && a.name)).filter(Boolean)); if (nos.press_bio && typeof nos.press_bio === "object") Object.assign(PRESS_BIO, nos.press_bio); }
+    if (pre) { swap(PRESS, asArr(pre.press).filter((x) => x && x.t)); swap(AWARDS, asArr(pre.awards).filter((a) => a && a.a)); }
+  }).catch((e) => { try { console.error(e); } catch (x) { /* nada */ } });
 }
 
 /* ---------- Arranque ---------- */
 document.body.insertAdjacentHTML("afterbegin", LOGO_SPRITE);
-loadContent().then(() => render());
+loadContent().then(() => { auditContent(); render(); showWarnings(); });
 </script>
 </body></html>
