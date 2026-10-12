@@ -1,36 +1,40 @@
 {
   "items": [
     {
-      "slug": "la-hora-del-zunzun",
-      "title": "La Hora del Zunzún",
+      "title": "Venus en la Favela",
+      "slug": "venus-en-la-favela",
       "type": "ficcion",
       "format": {
         "es": "Cortometraje",
-        "en": "Short film"
+        "en": "Short film",
+        "otros": null
       },
       "year": 2025,
       "status": "estrenado",
-      "runtime": "18 min",
+      "runtime": "5 min",
       "genre": {
         "es": "Drama íntimo",
-        "en": "Intimate drama"
+        "en": "Intimate drama",
+        "otros": null
       },
       "lang": "Español",
       "subs": "EN · FR",
-      "seed": 11,
-      "style": "rays",
       "featured": true,
+      "poster": "",
       "tagline": {
-        "es": "Hay noches que duran lo que un aleteo.",
-        "en": "Some nights last no longer than a wingbeat."
+        "es": "Que es un grano de arroz",
+        "en": "Some nights last no longer than a wingbeat.",
+        "otros": null
       },
       "short": {
         "es": "Una niña de once años sube cada madrugada a la azotea para seguir a un zunzún que, cree ella, trae noticias de su madre.",
-        "en": "Every dawn an eleven-year-old climbs to the rooftop to follow a bee hummingbird she believes carries news of her mother."
+        "en": "Every dawn an eleven-year-old climbs to the rooftop to follow a bee hummingbird she believes carries news of her mother.",
+        "otros": null
       },
       "long": {
         "es": "Lena vive con su abuelo en un edificio de Centro Habana. Desde que su madre emigró, la azotea se ha convertido en su observatorio: allí espera, antes de que salga el sol, a un zunzún que visita siempre el mismo tendedero. Cuando el ave deja de aparecer, Lena decide seguirla por los techos del barrio y descubre una ciudad que nadie le había enseñado a mirar. Rodada en 16 mm de luz natural y con vecinos del barrio como parte del reparto, la película cuenta una ausencia sin pronunciar nunca la palabra.",
-        "en": "Lena lives with her grandfather in a Centro Habana building. Since her mother left the country, the rooftop has become her observatory: before sunrise she waits there for a bee hummingbird that always visits the same clothesline. When the bird stops coming, Lena decides to follow it across the neighbourhood's roofs and finds a city nobody taught her to look at. Shot on 16 mm in natural light with neighbours in the cast, the film describes an absence without ever naming it."
+        "en": "Lena lives with her grandfather in a Centro Habana building. Since her mother left the country, the rooftop has become her observatory: before sunrise she waits there for a bee hummingbird that always visits the same clothesline. When the bird stops coming, Lena decides to follow it across the neighbourhood's roofs and finds a city nobody taught her to look at. Shot on 16 mm in natural light with neighbours in the cast, the film describes an absence without ever naming it.",
+        "otros": null
       },
       "crew": [
         {
@@ -72,7 +76,8 @@
       ],
       "note": {
         "es": "Quería hacer una película sobre alguien que espera sin que la espera sea un lamento. Los techos de La Habana son el único lugar donde una niña puede estar sola y a la vez rodeada de toda la ciudad.",
-        "en": "I wanted to make a film about someone who waits without the waiting turning into a lament. Havana's rooftops are the only place where a girl can be alone and surrounded by the whole city at once."
+        "en": "I wanted to make a film about someone who waits without the waiting turning into a lament. Havana's rooftops are the only place where a girl can be alone and surrounded by the whole city at once.",
+        "otros": null
       },
       "noteBy": "Ana Lía Cordero",
       "journey": [
@@ -80,7 +85,8 @@
           "d": "2025-11",
           "t": {
             "es": "Estreno mundial",
-            "en": "World premiere"
+            "en": "World premiere",
+            "otros": null
           },
           "p": "Festival Imagen del Caribe"
         },
@@ -88,7 +94,8 @@
           "d": "2026-02",
           "t": {
             "es": "Premio del Público · Cortometraje",
-            "en": "Audience Award · Short film"
+            "en": "Audience Award · Short film",
+            "otros": null
           },
           "p": "Muestra Joven del Sur"
         },
@@ -96,7 +103,8 @@
           "d": "2026-05",
           "t": {
             "es": "Selección oficial",
-            "en": "Official selection"
+            "en": "Official selection",
+            "otros": null
           },
           "p": "Semana de Cine Iberoamericano"
         }
@@ -105,14 +113,16 @@
         {
           "q": {
             "es": "Un corto que mira hacia arriba y lo ve todo.",
-            "en": "A short that looks up and sees everything."
+            "en": "A short that looks up and sees everything.",
+            "otros": null
           },
           "s": "Revista Cuadro a Cuadro"
         },
         {
           "q": {
             "es": "Delicadeza rara en el cine de hoy.",
-            "en": "A rare delicacy in today's cinema."
+            "en": "A rare delicacy in today's cinema.",
+            "otros": null
           },
           "s": "Diario del Cine Latino"
         }
@@ -121,57 +131,75 @@
         {
           "l": {
             "es": "Tráiler",
-            "en": "Trailer"
+            "en": "Trailer",
+            "otros": null
           },
           "n": {
             "es": "Vimeo · 1 min 40 s",
-            "en": "Vimeo · 1 min 40 s"
+            "en": "Vimeo · 1 min 40 s",
+            "otros": null
           },
-          "url": "https://vimeo.com/"
+          "url": "https://vimeo.com/",
+          "screener": false,
+          "dossier": false,
+          "route": ""
         },
         {
           "l": {
             "es": "Ver la película",
-            "en": "Watch the film"
+            "en": "Watch the film",
+            "otros": null
           },
           "n": {
             "es": "Disponible bajo petición (screener)",
-            "en": "Available on request (screener)"
+            "en": "Available on request (screener)",
+            "otros": null
           },
-          "screener": true
+          "url": "",
+          "screener": true,
+          "dossier": false,
+          "route": ""
         }
-      ]
+      ],
+      "stills": [],
+      "style": "rays",
+      "seed": 11
     },
     {
-      "slug": "malecon-6-am",
       "title": "Malecón, 6 a.m.",
+      "slug": "malecon-6-am",
       "type": "documental",
       "format": {
         "es": "Largometraje",
-        "en": "Feature"
+        "en": "Feature",
+        "otros": null
       },
       "year": 2024,
       "status": "estrenado",
       "runtime": "62 min",
       "genre": {
         "es": "Documental de observación",
-        "en": "Observational documentary"
+        "en": "Observational documentary",
+        "otros": null
       },
       "lang": "Español",
       "subs": "EN · PT",
-      "seed": 23,
-      "style": "diamond",
+      "featured": false,
+      "poster": "",
       "tagline": {
         "es": "La ciudad despierta de cara al mar.",
-        "en": "The city wakes up facing the sea."
+        "en": "The city wakes up facing the sea.",
+        "otros": null
       },
       "short": {
         "es": "Pescadores, barrenderos, corredores y enamorados al borde del muro durante los noventa minutos en que el Malecón cambia de turno.",
-        "en": "Fishermen, street sweepers, runners and lovers on the seawall during the ninety minutes in which the Malecón changes shift."
+        "en": "Fishermen, street sweepers, runners and lovers on the seawall during the ninety minutes in which the Malecón changes shift.",
+        "otros": null
       },
       "long": {
         "es": "Durante once meses, un equipo de cuatro personas filmó cada amanecer en el mismo tramo del Malecón habanero. Sin entrevistas ni voz en off, la película se arma con lo que el muro ve cuando casi nadie lo mira: el pescador que lleva treinta años en el mismo escalón, la brigada que lava la acera antes del primer sol, la pareja que se despide sin saber si será por mucho tiempo. Un retrato coral de la ciudad a esa hora en que todavía no ha decidido quién va a ser hoy.",
-        "en": "For eleven months, a crew of four filmed every sunrise on the same stretch of Havana's Malecón. With no interviews or voice-over, the film is built from what the wall sees when almost nobody is watching: the fisherman who has sat on the same step for thirty years, the crew that washes the pavement before first light, the couple saying goodbye without knowing for how long. A choral portrait of the city at the hour when it has not yet decided who it will be today."
+        "en": "For eleven months, a crew of four filmed every sunrise on the same stretch of Havana's Malecón. With no interviews or voice-over, the film is built from what the wall sees when almost nobody is watching: the fisherman who has sat on the same step for thirty years, the crew that washes the pavement before first light, the couple saying goodbye without knowing for how long. A choral portrait of the city at the hour when it has not yet decided who it will be today.",
+        "otros": null
       },
       "crew": [
         {
@@ -201,7 +229,8 @@
       ],
       "note": {
         "es": "No buscábamos explicar el Malecón. Queríamos quedarnos el tiempo suficiente para que dejara de ser un lugar y se volviera una costumbre.",
-        "en": "We were not trying to explain the Malecón. We wanted to stay long enough for it to stop being a place and become a habit."
+        "en": "We were not trying to explain the Malecón. We wanted to stay long enough for it to stop being a place and become a habit.",
+        "otros": null
       },
       "noteBy": "Rolando Béquer",
       "journey": [
@@ -209,7 +238,8 @@
           "d": "2024-09",
           "t": {
             "es": "Estreno internacional",
-            "en": "International premiere"
+            "en": "International premiere",
+            "otros": null
           },
           "p": "Encuentro de Cine Documental Sur-Sur"
         },
@@ -217,7 +247,8 @@
           "d": "2024-12",
           "t": {
             "es": "Mejor Fotografía Documental",
-            "en": "Best Documentary Cinematography"
+            "en": "Best Documentary Cinematography",
+            "otros": null
           },
           "p": "Festival Imagen del Caribe"
         },
@@ -225,7 +256,8 @@
           "d": "2025-04",
           "t": {
             "es": "Proyección especial",
-            "en": "Special screening"
+            "en": "Special screening",
+            "otros": null
           },
           "p": "Cineteca Mar del Plata"
         }
@@ -234,7 +266,8 @@
         {
           "q": {
             "es": "Observa sin invadir y por eso lo dice todo.",
-            "en": "It observes without intruding, and so says everything."
+            "en": "It observes without intruding, and so says everything.",
+            "otros": null
           },
           "s": "Radio Cinefilia"
         }
@@ -243,57 +276,75 @@
         {
           "l": {
             "es": "Tráiler",
-            "en": "Trailer"
+            "en": "Trailer",
+            "otros": null
           },
           "n": {
             "es": "Vimeo · 2 min",
-            "en": "Vimeo · 2 min"
+            "en": "Vimeo · 2 min",
+            "otros": null
           },
-          "url": "https://vimeo.com/"
+          "url": "https://vimeo.com/",
+          "screener": false,
+          "dossier": false,
+          "route": ""
         },
         {
           "l": {
             "es": "Solicitar proyección",
-            "en": "Request a screening"
+            "en": "Request a screening",
+            "otros": null
           },
           "n": {
             "es": "Cineclubes, universidades y festivales",
-            "en": "Film clubs, universities and festivals"
+            "en": "Film clubs, universities and festivals",
+            "otros": null
           },
-          "screener": true
+          "url": "",
+          "screener": true,
+          "dossier": false,
+          "route": ""
         }
-      ]
+      ],
+      "stills": [],
+      "style": "diamond",
+      "seed": 23
     },
     {
-      "slug": "pan-de-bodega",
       "title": "Pan de Bodega",
+      "slug": "pan-de-bodega",
       "type": "serie",
       "format": {
         "es": "Serie web · 8 × 12 min",
-        "en": "Web series · 8 × 12 min"
+        "en": "Web series · 8 × 12 min",
+        "otros": null
       },
       "year": 2026,
       "status": "produccion",
       "runtime": "8 × 12 min",
       "genre": {
         "es": "Comedia costumbrista",
-        "en": "Slice-of-life comedy"
+        "en": "Slice-of-life comedy",
+        "otros": null
       },
       "lang": "Español",
       "subs": "EN",
-      "seed": 37,
-      "style": "stripes",
+      "featured": false,
+      "poster": "",
       "tagline": {
         "es": "En la cola se cuenta todo, menos lo que de verdad importa.",
-        "en": "In the queue they tell you everything except what really matters."
+        "en": "In the queue they tell you everything except what really matters.",
+        "otros": null
       },
       "short": {
         "es": "Ocho episodios en una misma cuadra, una misma bodega y una cola que lo sabe todo de todos.",
-        "en": "Eight episodes on one block, in one corner shop, with a queue that knows everything about everyone."
+        "en": "Eight episodes on one block, in one corner shop, with a queue that knows everything about everyone.",
+        "otros": null
       },
       "long": {
         "es": "Cada episodio ocurre durante la espera del pan de la mañana. En doce minutos y en tiempo casi real, los vecinos de una cuadra de Santos Suárez se enteran de bodas, se pelean por turnos, negocian favores y descubren que el dependiente guarda un secreto. La serie combina actores profesionales con vecinos y está pensada para verse en el móvil, incluso con conexión limitada.",
-        "en": "Each episode takes place during the wait for the morning bread. In twelve minutes and almost in real time, the residents of one block in Santos Suárez find out about weddings, quarrel over turns, trade favours and discover that the shopkeeper is hiding a secret. The series mixes professional actors with neighbours and is designed to be watched on a phone, even on a limited connection."
+        "en": "Each episode takes place during the wait for the morning bread. In twelve minutes and almost in real time, the residents of one block in Santos Suárez find out about weddings, quarrel over turns, trade favours and discover that the shopkeeper is hiding a secret. The series mixes professional actors with neighbours and is designed to be watched on a phone, even on a limited connection.",
+        "otros": null
       },
       "crew": [
         {
@@ -314,12 +365,14 @@
         }
       ],
       "note": null,
+      "noteBy": "",
       "journey": [
         {
           "d": "2026-03",
           "t": {
             "es": "Fin de la escritura",
-            "en": "Writing complete"
+            "en": "Writing complete",
+            "otros": null
           },
           "p": "GORRIóN"
         },
@@ -327,7 +380,8 @@
           "d": "2026-09",
           "t": {
             "es": "Inicio del rodaje",
-            "en": "Principal photography begins"
+            "en": "Principal photography begins",
+            "otros": null
           },
           "p": "Santos Suárez, La Habana"
         }
@@ -337,46 +391,59 @@
         {
           "l": {
             "es": "Seguir el rodaje",
-            "en": "Follow the shoot"
+            "en": "Follow the shoot",
+            "otros": null
           },
           "n": {
             "es": "Diario de rodaje en Noticias",
-            "en": "Shooting diary in News"
+            "en": "Shooting diary in News",
+            "otros": null
           },
+          "url": "",
+          "screener": false,
+          "dossier": false,
           "route": "noticias"
         }
-      ]
+      ],
+      "stills": [],
+      "style": "stripes",
+      "seed": 37
     },
     {
-      "slug": "noche-de-apagon",
       "title": "Noche de Apagón",
+      "slug": "noche-de-apagon",
       "type": "ficcion",
       "format": {
         "es": "Largometraje",
-        "en": "Feature"
+        "en": "Feature",
+        "otros": null
       },
       "year": 2027,
       "status": "desarrollo",
       "runtime": "94 min (previsto)",
       "genre": {
         "es": "Comedia coral",
-        "en": "Ensemble comedy"
+        "en": "Ensemble comedy",
+        "otros": null
       },
       "lang": "Español",
       "subs": "EN",
-      "seed": 52,
-      "style": "circle",
+      "featured": false,
+      "poster": "",
       "tagline": {
         "es": "Cuando se apaga la luz, se encienden los vecinos.",
-        "en": "When the lights go out, the neighbours light up."
+        "en": "When the lights go out, the neighbours light up.",
+        "otros": null
       },
       "short": {
         "es": "Una noche, un edificio y once familias obligadas a salir al portal a conversar.",
-        "en": "One night, one building and eleven families forced out to the doorway to talk."
+        "en": "One night, one building and eleven families forced out to the doorway to talk.",
+        "otros": null
       },
       "long": {
         "es": "Un edificio de cuatro plantas se queda a oscuras la noche de una boda, un cumpleaños y una discusión pendiente. A la luz de las velas, los vecinos sacan al portal sillas, rencores y la mitad de una receta. Una comedia coral sobre cómo se habita junto a los demás. El proyecto se encuentra en desarrollo y busca coproductores.",
-        "en": "A four-storey building goes dark on the night of a wedding, a birthday and an unfinished argument. By candlelight the neighbours bring out chairs, grudges and half a recipe. An ensemble comedy about living alongside others. The project is in development and looking for co-producers."
+        "en": "A four-storey building goes dark on the night of a wedding, a birthday and an unfinished argument. By candlelight the neighbours bring out chairs, grudges and half a recipe. An ensemble comedy about living alongside others. The project is in development and looking for co-producers.",
+        "otros": null
       },
       "crew": [
         {
@@ -393,12 +460,14 @@
         }
       ],
       "note": null,
+      "noteBy": "",
       "journey": [
         {
           "d": "2026-06",
           "t": {
             "es": "Seleccionado para pitch",
-            "en": "Selected for pitching"
+            "en": "Selected for pitching",
+            "otros": null
           },
           "p": "Mercado Audiovisual Andino"
         }
@@ -408,47 +477,59 @@
         {
           "l": {
             "es": "Coproducción",
-            "en": "Co-production"
+            "en": "Co-production",
+            "otros": null
           },
           "n": {
             "es": "Dosier y tratamiento disponibles",
-            "en": "Dossier and treatment available"
+            "en": "Dossier and treatment available",
+            "otros": null
           },
+          "url": "",
           "screener": true,
-          "dossier": true
+          "dossier": true,
+          "route": ""
         }
-      ]
+      ],
+      "stills": [],
+      "style": "circle",
+      "seed": 52
     },
     {
-      "slug": "sal-y-canaveral",
       "title": "Sal y Cañaveral",
+      "slug": "sal-y-canaveral",
       "type": "documental",
       "format": {
         "es": "Mediometraje",
-        "en": "Medium-length"
+        "en": "Medium-length",
+        "otros": null
       },
       "year": 2023,
       "status": "estrenado",
       "runtime": "24 min",
       "genre": {
         "es": "Documental poético",
-        "en": "Poetic documentary"
+        "en": "Poetic documentary",
+        "otros": null
       },
       "lang": "Español",
       "subs": "EN",
-      "seed": 64,
-      "style": "tri",
+      "featured": false,
+      "poster": "",
       "tagline": {
         "es": "Un pueblo que aprendió a oír el silencio de su fábrica.",
-        "en": "A town that learned to hear the silence of its factory."
+        "en": "A town that learned to hear the silence of its factory.",
+        "otros": null
       },
       "short": {
         "es": "Un pueblo y su antiguo central azucarero, entre la memoria de la zafra y lo que se hace hoy con sus ruinas.",
-        "en": "A town and its former sugar mill, between the memory of the harvest and what is done today with its ruins."
+        "en": "A town and its former sugar mill, between the memory of the harvest and what is done today with its ruins.",
+        "otros": null
       },
       "long": {
         "es": "Los obreros que quedan recorren las naves del central como quien visita a un familiar. Los hijos usan el batey para jugar béisbol, y los camiones que pasan por la carretera ya no se detienen. Con archivo familiar y sonido directo, el documental escucha cómo cambia la relación de un pueblo con el lugar que le dio nombre.",
-        "en": "The remaining workers walk through the mill's halls like someone visiting a relative. Their children use the yard to play baseball, and trucks on the road no longer stop. With family archive and direct sound, the documentary listens to how a town's relationship with the place that gave it its name is changing."
+        "en": "The remaining workers walk through the mill's halls like someone visiting a relative. Their children use the yard to play baseball, and trucks on the road no longer stop. With family archive and direct sound, the documentary listens to how a town's relationship with the place that gave it its name is changing.",
+        "otros": null
       },
       "crew": [
         {
@@ -469,12 +550,14 @@
         }
       ],
       "note": null,
+      "noteBy": "",
       "journey": [
         {
           "d": "2023-10",
           "t": {
             "es": "Estreno",
-            "en": "Premiere"
+            "en": "Premiere",
+            "otros": null
           },
           "p": "Muestra Joven del Sur"
         },
@@ -482,7 +565,8 @@
           "d": "2024-03",
           "t": {
             "es": "Mención especial del jurado",
-            "en": "Special jury mention"
+            "en": "Special jury mention",
+            "otros": null
           },
           "p": "Encuentro de Cine Documental Sur-Sur"
         }
@@ -491,7 +575,8 @@
         {
           "q": {
             "es": "El sonido hace lo que las imágenes no se atreven.",
-            "en": "The sound does what the images dare not."
+            "en": "The sound does what the images dare not.",
+            "otros": null
           },
           "s": "Revista Cuadro a Cuadro"
         }
@@ -500,46 +585,59 @@
         {
           "l": {
             "es": "Ver completo",
-            "en": "Watch in full"
+            "en": "Watch in full",
+            "otros": null
           },
           "n": {
             "es": "Vimeo · acceso libre",
-            "en": "Vimeo · free access"
+            "en": "Vimeo · free access",
+            "otros": null
           },
-          "url": "https://vimeo.com/"
+          "url": "https://vimeo.com/",
+          "screener": false,
+          "dossier": false,
+          "route": ""
         }
-      ]
+      ],
+      "stills": [],
+      "style": "tri",
+      "seed": 64
     },
     {
-      "slug": "rumba-de-azotea",
       "title": "Rumba de Azotea",
+      "slug": "rumba-de-azotea",
       "type": "videoclip",
       "format": {
         "es": "Videoclip",
-        "en": "Music video"
+        "en": "Music video",
+        "otros": null
       },
       "year": 2025,
       "status": "estrenado",
       "runtime": "4 min",
       "genre": {
         "es": "Musical",
-        "en": "Musical"
+        "en": "Musical",
+        "otros": null
       },
       "lang": "Español",
       "subs": "EN",
-      "seed": 71,
-      "style": "rays",
+      "featured": false,
+      "poster": "",
       "tagline": {
         "es": "Una banda, una azotea y tres cámaras.",
-        "en": "One band, one rooftop and three cameras."
+        "en": "One band, one rooftop and three cameras.",
+        "otros": null
       },
       "short": {
         "es": "Plano secuencia sobre los techos para el tema de Los Hijos del Aguacero.",
-        "en": "A one-take sequence across the rooftops for a track by Los Hijos del Aguacero."
+        "en": "A one-take sequence across the rooftops for a track by Los Hijos del Aguacero.",
+        "otros": null
       },
       "long": {
         "es": "Tres cámaras y un solo plano secuencia sobre una azotea de El Cerro, con la banda tocando en directo mientras el vecindario aparece en cada balcón. Grabado en una tarde, con luz de atardecer y un ensayo previo de cuatro días.",
-        "en": "Three cameras and a single take over a rooftop in El Cerro, with the band playing live while the neighbourhood appears on every balcony. Shot in one afternoon, in dusk light, after four days of rehearsal."
+        "en": "Three cameras and a single take over a rooftop in El Cerro, with the band playing live while the neighbourhood appears on every balcony. Shot in one afternoon, in dusk light, after four days of rehearsal.",
+        "otros": null
       },
       "crew": [
         {
@@ -560,12 +658,14 @@
         }
       ],
       "note": null,
+      "noteBy": "",
       "journey": [
         {
           "d": "2025-07",
           "t": {
             "es": "Estreno en línea",
-            "en": "Online premiere"
+            "en": "Online premiere",
+            "otros": null
           },
           "p": "Vimeo / YouTube"
         }
@@ -575,46 +675,59 @@
         {
           "l": {
             "es": "Ver el videoclip",
-            "en": "Watch the video"
+            "en": "Watch the video",
+            "otros": null
           },
           "n": {
             "es": "YouTube",
-            "en": "YouTube"
+            "en": "YouTube",
+            "otros": null
           },
-          "url": "https://www.youtube.com/"
+          "url": "https://www.youtube.com/",
+          "screener": false,
+          "dossier": false,
+          "route": ""
         }
-      ]
+      ],
+      "stills": [],
+      "style": "rays",
+      "seed": 71
     },
     {
-      "slug": "manos-de-tierra",
       "title": "Manos de Tierra",
+      "slug": "manos-de-tierra",
       "type": "encargo",
       "format": {
         "es": "Película institucional",
-        "en": "Corporate film"
+        "en": "Corporate film",
+        "otros": null
       },
       "year": 2025,
       "status": "estrenado",
       "runtime": "3 min",
       "genre": {
         "es": "Institucional",
-        "en": "Corporate"
+        "en": "Corporate",
+        "otros": null
       },
       "lang": "Español",
       "subs": "EN",
-      "seed": 88,
-      "style": "diamond",
+      "featured": false,
+      "poster": "",
       "tagline": {
         "es": "El café también tiene a quién agradecerle.",
-        "en": "Coffee has someone to thank, too."
+        "en": "Coffee has someone to thank, too.",
+        "otros": null
       },
       "short": {
         "es": "Película para la Cooperativa Cafetalera Loma Alta sobre el camino del grano, de la mata a la taza.",
-        "en": "A film for the Loma Alta Coffee Cooperative following the bean from plant to cup."
+        "en": "A film for the Loma Alta Coffee Cooperative following the bean from plant to cup.",
+        "otros": null
       },
       "long": {
         "es": "Rodaje de tres días en la montaña con las familias de la cooperativa. Entregamos una versión de tres minutos para exhibición en ferias y cuatro piezas verticales para redes sociales, con subtítulos en español e inglés.",
-        "en": "A three-day shoot in the mountains with the cooperative's families. We delivered a three-minute version for trade fairs and four vertical pieces for social media, subtitled in Spanish and English."
+        "en": "A three-day shoot in the mountains with the cooperative's families. We delivered a three-minute version for trade fairs and four vertical pieces for social media, subtitled in Spanish and English.",
+        "otros": null
       },
       "crew": [
         {
@@ -635,52 +748,66 @@
         }
       ],
       "note": null,
+      "noteBy": "",
       "journey": [],
       "press": [],
       "where": [
         {
           "l": {
             "es": "Ver la pieza",
-            "en": "Watch the piece"
+            "en": "Watch the piece",
+            "otros": null
           },
           "n": {
             "es": "Vimeo",
-            "en": "Vimeo"
+            "en": "Vimeo",
+            "otros": null
           },
-          "url": "https://vimeo.com/"
+          "url": "https://vimeo.com/",
+          "screener": false,
+          "dossier": false,
+          "route": ""
         }
-      ]
+      ],
+      "stills": [],
+      "style": "diamond",
+      "seed": 88
     },
     {
-      "slug": "tiempo-de-guayaba",
       "title": "Tiempo de Guayaba",
+      "slug": "tiempo-de-guayaba",
       "type": "encargo",
       "format": {
         "es": "Spot publicitario",
-        "en": "Commercial"
+        "en": "Commercial",
+        "otros": null
       },
       "year": 2024,
       "status": "estrenado",
       "runtime": "45 s",
       "genre": {
         "es": "Publicidad",
-        "en": "Advertising"
+        "en": "Advertising",
+        "otros": null
       },
       "lang": "Español",
       "subs": "—",
-      "seed": 95,
-      "style": "circle",
+      "featured": false,
+      "poster": "",
       "tagline": {
         "es": "Cuarenta y cinco segundos de dulce.",
-        "en": "Forty-five seconds of sweetness."
+        "en": "Forty-five seconds of sweetness.",
+        "otros": null
       },
       "short": {
         "es": "Spot de 45 segundos para una marca artesanal de dulces de guayaba.",
-        "en": "A 45-second spot for a craft guava sweets brand."
+        "en": "A 45-second spot for a craft guava sweets brand.",
+        "otros": null
       },
       "long": {
         "es": "Concepto, guion, rodaje y posproducción de un spot para una marca artesanal de dulces. Una sola localización, luz natural y un presupuesto contenido, resuelto con cámara en mano y un montaje de ritmo ágil.",
-        "en": "Concept, script, shoot and post-production for a craft sweets brand. A single location, natural light and a tight budget, solved with handheld camera and brisk editing."
+        "en": "Concept, script, shoot and post-production for a craft sweets brand. A single location, natural light and a tight budget, solved with handheld camera and brisk editing.",
+        "otros": null
       },
       "crew": [
         {
@@ -697,21 +824,30 @@
         }
       ],
       "note": null,
+      "noteBy": "",
       "journey": [],
       "press": [],
       "where": [
         {
           "l": {
             "es": "Ver el spot",
-            "en": "Watch the spot"
+            "en": "Watch the spot",
+            "otros": null
           },
           "n": {
             "es": "Vimeo",
-            "en": "Vimeo"
+            "en": "Vimeo",
+            "otros": null
           },
-          "url": "https://vimeo.com/"
+          "url": "https://vimeo.com/",
+          "screener": false,
+          "dossier": false,
+          "route": ""
         }
-      ]
+      ],
+      "stills": [],
+      "style": "circle",
+      "seed": 95
     }
   ]
 }
