@@ -1,0 +1,1543 @@
+# Panel de administración GORRIóN (Sveltia CMS, compatible con Decap CMS).
+# Guía: GUIA-PUBLICACION.md. Cambia 'repo' si el repositorio tiene otro nombre.
+backend:
+  name: github
+  repo: gorrioncine/gorrioncine.github.io
+  branch: main
+  # Quita el '#' y pon la URL de tu worker para activar el botón «Entrar con GitHub» (ver la guía, paso 3):
+  # base_url: https://sveltia-cms-auth.TU-USUARIO.workers.dev
+
+site_url: https://gorrioncine.github.io
+display_url: https://gorrioncine.github.io
+locale: es
+media_folder: uploads
+public_folder: /uploads
+
+collections:
+  - name: contenido
+    label: Contenido del sitio
+    label_singular: Sección
+    description: Textos, fotos y datos de la web. Cada cambio se guarda y se publica solo en 1–2 minutos.
+    files:
+      - name: site
+        label: "Datos generales y contacto"
+        file: content/site.json
+        fields:
+          - label: "Correo de contacto"
+            name: email
+            widget: string
+          - label: "Correo de prensa"
+            name: pressEmail
+            widget: string
+          - label: "Ciudad"
+            name: city
+            widget: object
+            required: true
+            collapsed: true
+            summary: "{{fields.es}}"
+            fields:
+              - label: "Español"
+                name: es
+                widget: string
+                required: true
+              - label: "English"
+                name: en
+                widget: string
+                required: true
+              - label: "Otros idiomas (opcional)"
+                name: otros
+                widget: object
+                required: false
+                collapsed: true
+                fields:
+                  - label: "Français"
+                    name: fr
+                    widget: string
+                    required: false
+                  - label: "Português"
+                    name: pt
+                    widget: string
+                    required: false
+                  - label: "Italiano"
+                    name: it
+                    widget: string
+                    required: false
+                  - label: "Deutsch"
+                    name: de
+                    widget: string
+                    required: false
+          - label: "Enlace del reel (Vimeo / YouTube)"
+            name: reelUrl
+            widget: string
+            required: false
+          - label: "Servicio de formularios (Formspree, etc.)"
+            name: formEndpoint
+            widget: string
+            required: false
+            hint: "Opcional. Pega aquí la URL del servicio para que los formularios se envíen solos."
+          - label: "Redes sociales"
+            name: social
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.name}}"
+            label_singular: "red"
+            fields:
+              - label: "Nombre (Instagram, Vimeo…)"
+                name: name
+                widget: string
+              - label: "Usuario visible"
+                name: handle
+                widget: string
+              - label: "Enlace"
+                name: url
+                widget: string
+          - label: "Canales de mensajería"
+            name: channels
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.name}}"
+            label_singular: "canal"
+            fields:
+              - label: "Nombre (Telegram, WhatsApp…)"
+                name: name
+                widget: string
+              - label: "Usuario o número"
+                name: handle
+                widget: string
+      - name: proyectos
+        label: "Proyectos"
+        file: content/proyectos.json
+        fields:
+          - label: "Proyectos"
+            name: items
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.title}} · {{fields.year}}"
+            label_singular: "proyecto"
+            fields:
+              - label: "Título"
+                name: title
+                widget: string
+              - label: "Identificador del enlace"
+                name: slug
+                widget: string
+                hint: "Ejemplo: mi-nueva-pelicula. No lo cambies después de publicar (cambia el enlace)."
+                pattern: ["^[a-z0-9-]+$", "Solo minúsculas, números y guiones"]
+              - label: "Tipo"
+                name: type
+                widget: select
+                options:
+                  - { label: "Ficción", value: "ficcion" }
+                  - { label: "Documental", value: "documental" }
+                  - { label: "Serie web", value: "serie" }
+                  - { label: "Videoclip", value: "videoclip" }
+                  - { label: "Encargo y publicidad", value: "encargo" }
+              - label: "Formato (Cortometraje, Largometraje…)"
+                name: format
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Año"
+                name: year
+                widget: number
+                value_type: "int"
+              - label: "Estado"
+                name: status
+                widget: select
+                options:
+                  - { label: "Estrenado", value: "estrenado" }
+                  - { label: "En producción", value: "produccion" }
+                  - { label: "En desarrollo", value: "desarrollo" }
+              - label: "Duración"
+                name: runtime
+                widget: string
+                required: false
+                hint: "Ejemplo: 18 min"
+              - label: "Género"
+                name: genre
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Idioma hablado"
+                name: lang
+                widget: string
+                required: false
+              - label: "Subtítulos"
+                name: subs
+                widget: string
+                required: false
+              - label: "Destacar en el inicio"
+                name: featured
+                widget: boolean
+                required: false
+                hint: "Solo un proyecto debe estar destacado."
+                default: false
+              - label: "Cartel (imagen vertical)"
+                name: poster
+                widget: image
+                required: false
+                hint: "Si no subes cartel, la web genera uno con el título."
+              - label: "Frase corta"
+                name: tagline
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Sinopsis corta"
+                name: short
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+              - label: "Sinopsis larga"
+                name: long
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+              - label: "Ficha técnica"
+                name: crew
+                widget: list
+                required: false
+                collapsed: true
+                summary: "{{fields.r}}: {{fields.n}}"
+                label_singular: "persona"
+                fields:
+                  - label: "Cargo"
+                    name: r
+                    widget: select
+                    options:
+                      - { label: "Dirección", value: "direccion" }
+                      - { label: "Guion", value: "guion" }
+                      - { label: "Producción", value: "produccion" }
+                      - { label: "Producción ejecutiva", value: "produccionEj" }
+                      - { label: "Fotografía", value: "fotografia" }
+                      - { label: "Montaje", value: "montaje" }
+                      - { label: "Sonido", value: "sonido" }
+                      - { label: "Música", value: "musica" }
+                      - { label: "Dirección de arte", value: "arte" }
+                      - { label: "Reparto", value: "reparto" }
+                      - { label: "Cliente", value: "cliente" }
+                  - label: "Nombre(s)"
+                    name: n
+                    widget: string
+              - label: "Nota del director"
+                name: note
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+              - label: "Firma de la nota"
+                name: noteBy
+                widget: string
+                required: false
+              - label: "Recorrido (festivales y premios)"
+                name: journey
+                widget: list
+                required: false
+                collapsed: true
+                summary: "{{fields.d}} · {{fields.p}}"
+                label_singular: "hito"
+                fields:
+                  - label: "Fecha"
+                    name: d
+                    widget: string
+                    pattern: ["^\\d{4}-\\d{2}$", "Formato AAAA-MM, por ejemplo 2026-05"]
+                  - label: "Título del hito"
+                    name: t
+                    widget: object
+                    required: true
+                    collapsed: true
+                    summary: "{{fields.es}}"
+                    fields:
+                      - label: "Español"
+                        name: es
+                        widget: string
+                        required: true
+                      - label: "English"
+                        name: en
+                        widget: string
+                        required: true
+                      - label: "Otros idiomas (opcional)"
+                        name: otros
+                        widget: object
+                        required: false
+                        collapsed: true
+                        fields:
+                          - label: "Français"
+                            name: fr
+                            widget: string
+                            required: false
+                          - label: "Português"
+                            name: pt
+                            widget: string
+                            required: false
+                          - label: "Italiano"
+                            name: it
+                            widget: string
+                            required: false
+                          - label: "Deutsch"
+                            name: de
+                            widget: string
+                            required: false
+                  - label: "Festival o lugar"
+                    name: p
+                    widget: string
+                    required: false
+              - label: "Citas de prensa"
+                name: press
+                widget: list
+                required: false
+                collapsed: true
+                summary: "{{fields.s}}"
+                label_singular: "cita"
+                fields:
+                  - label: "Cita"
+                    name: q
+                    widget: object
+                    required: true
+                    collapsed: true
+                    summary: "{{fields.es}}"
+                    fields:
+                      - label: "Español"
+                        name: es
+                        widget: text
+                        required: true
+                      - label: "English"
+                        name: en
+                        widget: text
+                        required: true
+                      - label: "Otros idiomas (opcional)"
+                        name: otros
+                        widget: object
+                        required: false
+                        collapsed: true
+                        fields:
+                          - label: "Français"
+                            name: fr
+                            widget: text
+                            required: false
+                          - label: "Português"
+                            name: pt
+                            widget: text
+                            required: false
+                          - label: "Italiano"
+                            name: it
+                            widget: text
+                            required: false
+                          - label: "Deutsch"
+                            name: de
+                            widget: text
+                            required: false
+                  - label: "Medio"
+                    name: s
+                    widget: string
+              - label: "Dónde verla"
+                name: where
+                widget: list
+                required: false
+                collapsed: false
+                label_singular: "enlace"
+                fields:
+                  - label: "Título (Tráiler, Ver la película…)"
+                    name: l
+                    widget: object
+                    required: true
+                    collapsed: true
+                    summary: "{{fields.es}}"
+                    fields:
+                      - label: "Español"
+                        name: es
+                        widget: string
+                        required: true
+                      - label: "English"
+                        name: en
+                        widget: string
+                        required: true
+                      - label: "Otros idiomas (opcional)"
+                        name: otros
+                        widget: object
+                        required: false
+                        collapsed: true
+                        fields:
+                          - label: "Français"
+                            name: fr
+                            widget: string
+                            required: false
+                          - label: "Português"
+                            name: pt
+                            widget: string
+                            required: false
+                          - label: "Italiano"
+                            name: it
+                            widget: string
+                            required: false
+                          - label: "Deutsch"
+                            name: de
+                            widget: string
+                            required: false
+                  - label: "Detalle"
+                    name: n
+                    widget: object
+                    required: false
+                    collapsed: true
+                    summary: "{{fields.es}}"
+                    fields:
+                      - label: "Español"
+                        name: es
+                        widget: string
+                        required: false
+                      - label: "English"
+                        name: en
+                        widget: string
+                        required: false
+                      - label: "Otros idiomas (opcional)"
+                        name: otros
+                        widget: object
+                        required: false
+                        collapsed: true
+                        fields:
+                          - label: "Français"
+                            name: fr
+                            widget: string
+                            required: false
+                          - label: "Português"
+                            name: pt
+                            widget: string
+                            required: false
+                          - label: "Italiano"
+                            name: it
+                            widget: string
+                            required: false
+                          - label: "Deutsch"
+                            name: de
+                            widget: string
+                            required: false
+                  - label: "Enlace"
+                    name: url
+                    widget: string
+                    required: false
+                    hint: "Déjalo vacío para que pidan un screener por formulario."
+                  - label: "Se pide por screener"
+                    name: screener
+                    widget: boolean
+                    required: false
+                    default: false
+                  - label: "Se pide el dosier"
+                    name: dossier
+                    widget: boolean
+                    required: false
+                    default: false
+                  - label: "Enlace interno (avanzado)"
+                    name: route
+                    widget: string
+                    required: false
+              - label: "Fotogramas (fotos del rodaje o de la película)"
+                name: stills
+                widget: list
+                required: false
+                collapsed: true
+                label_singular: "foto"
+                field:
+                    label: "Foto"
+                    name: image
+                    widget: image
+              - label: "Diseño del cartel generado (si no hay cartel)"
+                name: style
+                widget: select
+                required: false
+                default: "rays"
+                options:
+                  - { label: "Rayos", value: "rays" }
+                  - { label: "Rombo", value: "diamond" }
+                  - { label: "Círculo", value: "circle" }
+                  - { label: "Franjas", value: "stripes" }
+                  - { label: "Triángulo", value: "tri" }
+              - label: "Variante del diseño (número, avanzado)"
+                name: seed
+                widget: number
+                required: false
+                value_type: "int"
+      - name: noticias
+        label: "Noticias"
+        file: content/noticias.json
+        fields:
+          - label: "Noticias"
+            name: items
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.slug}} · {{fields.date}}"
+            label_singular: "noticia"
+            fields:
+              - label: "Título"
+                name: title
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Identificador del enlace"
+                name: slug
+                widget: string
+                hint: "Ejemplo: premio-en-festival-2026"
+                pattern: ["^[a-z0-9-]+$", "Solo minúsculas, números y guiones"]
+              - label: "Categoría"
+                name: cat
+                widget: select
+                options:
+                  - { label: "Estrenos", value: "estrenos" }
+                  - { label: "Rodajes", value: "rodajes" }
+                  - { label: "Convocatorias", value: "convocatorias" }
+                  - { label: "Detrás de cámaras", value: "detras" }
+              - label: "Fecha"
+                name: date
+                widget: datetime
+                date_format: "YYYY-MM-DD"
+                time_format: false
+                format: "YYYY-MM-DD"
+              - label: "Proyecto relacionado"
+                name: project
+                widget: relation
+                required: false
+                collection: "contenido"
+                file: "proyectos"
+                value_field: "items.*.slug"
+                search_fields: ["items.*.title"]
+                display_fields: ["items.*.title"]
+              - label: "Imagen principal"
+                name: image
+                widget: image
+                required: false
+              - label: "Resumen (una frase)"
+                name: sum
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+              - label: "Texto de la noticia"
+                name: body
+                widget: object
+                required: true
+                hint: "Un párrafo por casilla."
+                collapsed: true
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: list
+                    required: true
+                    field:
+                        label: "Párrafo"
+                        name: p
+                        widget: text
+                  - label: "English"
+                    name: en
+                    widget: list
+                    required: true
+                    field:
+                        label: "Párrafo"
+                        name: p
+                        widget: text
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: list
+                        required: false
+                        field:
+                            label: "Párrafo"
+                            name: p
+                            widget: text
+                      - label: "Português"
+                        name: pt
+                        widget: list
+                        required: false
+                        field:
+                            label: "Párrafo"
+                            name: p
+                            widget: text
+                      - label: "Italiano"
+                        name: it
+                        widget: list
+                        required: false
+                        field:
+                            label: "Párrafo"
+                            name: p
+                            widget: text
+                      - label: "Deutsch"
+                        name: de
+                        widget: list
+                        required: false
+                        field:
+                            label: "Párrafo"
+                            name: p
+                            widget: text
+              - label: "Variante del diseño (número, avanzado)"
+                name: seed
+                widget: number
+                required: false
+                value_type: "int"
+      - name: equipo
+        label: "Equipo"
+        file: content/equipo.json
+        fields:
+          - label: "Personas del equipo"
+            name: items
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.n}}"
+            label_singular: "persona"
+            fields:
+              - label: "Nombre"
+                name: n
+                widget: string
+              - label: "Cargo"
+                name: r
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Biografía breve"
+                name: b
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+              - label: "Foto"
+                name: photo
+                widget: image
+                required: false
+      - name: servicios
+        label: "Servicios"
+        file: content/servicios.json
+        fields:
+          - label: "Servicios"
+            name: services
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.id}}"
+            label_singular: "servicio"
+            fields:
+              - label: "Identificador (sin espacios)"
+                name: id
+                widget: string
+              - label: "Icono"
+                name: icon
+                widget: select
+                options:
+                  - { label: "Claqueta", value: "clap" }
+                  - { label: "Mundo", value: "globe" }
+                  - { label: "Lente", value: "lens" }
+                  - { label: "Onda de sonido", value: "wave" }
+                  - { label: "Nota musical", value: "note" }
+                  - { label: "Destello", value: "spark" }
+              - label: "Título"
+                name: t
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Descripción"
+                name: d
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+              - label: "Qué incluye"
+                name: l
+                widget: object
+                required: true
+                collapsed: true
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: list
+                    required: true
+                    field:
+                        label: "Elemento"
+                        name: p
+                        widget: string
+                  - label: "English"
+                    name: en
+                    widget: list
+                    required: true
+                    field:
+                        label: "Elemento"
+                        name: p
+                        widget: string
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: list
+                        required: false
+                        field:
+                            label: "Elemento"
+                            name: p
+                            widget: string
+                      - label: "Português"
+                        name: pt
+                        widget: list
+                        required: false
+                        field:
+                            label: "Elemento"
+                            name: p
+                            widget: string
+                      - label: "Italiano"
+                        name: it
+                        widget: list
+                        required: false
+                        field:
+                            label: "Elemento"
+                            name: p
+                            widget: string
+                      - label: "Deutsch"
+                        name: de
+                        widget: list
+                        required: false
+                        field:
+                            label: "Elemento"
+                            name: p
+                            widget: string
+          - label: "Cómo trabajamos (pasos)"
+            name: steps
+            widget: list
+            required: false
+            collapsed: false
+            label_singular: "paso"
+            fields:
+              - label: "Título"
+                name: t
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Descripción"
+                name: d
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+      - name: nosotros
+        label: "Nosotros"
+        file: content/nosotros.json
+        fields:
+          - label: "Biografía de la productora (para prensa)"
+            name: press_bio
+            widget: object
+            required: true
+            collapsed: true
+            summary: "{{fields.es}}"
+            fields:
+              - label: "Español"
+                name: es
+                widget: text
+                required: true
+              - label: "English"
+                name: en
+                widget: text
+                required: true
+              - label: "Otros idiomas (opcional)"
+                name: otros
+                widget: object
+                required: false
+                collapsed: true
+                fields:
+                  - label: "Français"
+                    name: fr
+                    widget: text
+                    required: false
+                  - label: "Português"
+                    name: pt
+                    widget: text
+                    required: false
+                  - label: "Italiano"
+                    name: it
+                    widget: text
+                    required: false
+                  - label: "Deutsch"
+                    name: de
+                    widget: text
+                    required: false
+          - label: "Valores"
+            name: values
+            widget: list
+            required: false
+            collapsed: false
+            label_singular: "valor"
+            fields:
+              - label: "Título"
+                name: t
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Descripción"
+                name: d
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+          - label: "Historia"
+            name: history
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.y}}"
+            label_singular: "hito"
+            fields:
+              - label: "Año"
+                name: y
+                widget: string
+              - label: "Título"
+                name: t
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Descripción"
+                name: d
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+          - label: "Aliados y festivales"
+            name: allies
+            widget: list
+            required: false
+            collapsed: true
+            label_singular: "aliado"
+            field:
+                label: "Nombre"
+                name: name
+                widget: string
+      - name: prensa
+        label: "Prensa y premios"
+        file: content/prensa.json
+        fields:
+          - label: "Menciones en prensa"
+            name: press
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.s}} · {{fields.d}}"
+            label_singular: "mención"
+            fields:
+              - label: "Fecha"
+                name: d
+                widget: string
+                pattern: ["^\\d{4}-\\d{2}$", "Formato AAAA-MM, por ejemplo 2026-05"]
+              - label: "Medio"
+                name: s
+                widget: string
+              - label: "Titular"
+                name: t
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Descripción"
+                name: x
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+              - label: "Enlace"
+                name: url
+                widget: string
+                required: false
+          - label: "Premios y selecciones"
+            name: awards
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.y}} · {{fields.f}}"
+            label_singular: "premio"
+            fields:
+              - label: "Año"
+                name: y
+                widget: number
+                value_type: "int"
+              - label: "Premio o selección"
+                name: a
+                widget: object
+                required: true
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: true
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: true
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Festival"
+                name: f
+                widget: string
+              - label: "Proyecto"
+                name: p
+                widget: relation
+                required: false
+                collection: "contenido"
+                file: "proyectos"
+                value_field: "items.*.slug"
+                search_fields: ["items.*.title"]
+                display_fields: ["items.*.title"]

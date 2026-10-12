@@ -1,0 +1,212 @@
+{
+  "services": [
+    {
+      "id": "produccion",
+      "icon": "clap",
+      "t": {
+        "es": "Producción ejecutiva",
+        "en": "Executive production"
+      },
+      "d": {
+        "es": "Diseñamos y financiamos el proyecto contigo, de la idea a la entrega.",
+        "en": "We design and finance the project with you, from idea to delivery."
+      },
+      "l": {
+        "es": [
+          "Plan de producción y presupuesto",
+          "Búsqueda de fondos y coproducción",
+          "Gestión de permisos y locaciones",
+          "Contratos y derechos"
+        ],
+        "en": [
+          "Production plan and budget",
+          "Funding and co-production search",
+          "Permits and location management",
+          "Contracts and rights"
+        ]
+      }
+    },
+    {
+      "id": "campo",
+      "icon": "globe",
+      "t": {
+        "es": "Producción de campo para rodajes internacionales",
+        "en": "Fixing for international shoots"
+      },
+      "d": {
+        "es": "Somos tu equipo local si vienes a filmar a Cuba.",
+        "en": "We are your local team if you come to film in Cuba."
+      },
+      "l": {
+        "es": [
+          "Fixers y traducción",
+          "Búsqueda de locaciones",
+          "Casting local",
+          "Logística y seguridad en rodaje"
+        ],
+        "en": [
+          "Fixers and translation",
+          "Location scouting",
+          "Local casting",
+          "Logistics and on-set safety"
+        ]
+      }
+    },
+    {
+      "id": "direccion",
+      "icon": "lens",
+      "t": {
+        "es": "Dirección y fotografía",
+        "en": "Direction and cinematography"
+      },
+      "d": {
+        "es": "Ficción, documental y piezas de marca con mirada de autor.",
+        "en": "Fiction, documentary and branded pieces with an auteur's eye."
+      },
+      "l": {
+        "es": [
+          "Desarrollo de guion y tratamiento",
+          "Dirección de fotografía",
+          "Equipos ligeros para rodar en cualquier lugar",
+          "Dron y estabilizadores"
+        ],
+        "en": [
+          "Script and treatment development",
+          "Cinematography",
+          "Light kits for shooting anywhere",
+          "Drone and stabilisers"
+        ]
+      }
+    },
+    {
+      "id": "post",
+      "icon": "wave",
+      "t": {
+        "es": "Posproducción",
+        "en": "Post-production"
+      },
+      "d": {
+        "es": "Montaje, color y sonido hechos por la misma gente que filmó.",
+        "en": "Editing, colour and sound by the people who shot it."
+      },
+      "l": {
+        "es": [
+          "Montaje y edición de sonido",
+          "Corrección de color",
+          "Subtitulado ES / EN",
+          "Entrega en DCP, ProRes y versiones ligeras"
+        ],
+        "en": [
+          "Picture and sound editing",
+          "Colour grading",
+          "ES / EN subtitling",
+          "DCP, ProRes and lightweight deliverables"
+        ]
+      }
+    },
+    {
+      "id": "clips",
+      "icon": "note",
+      "t": {
+        "es": "Videoclips",
+        "en": "Music videos"
+      },
+      "d": {
+        "es": "Para músicos que quieren ver su canción con otro cuerpo.",
+        "en": "For musicians who want to see their song in another body."
+      },
+      "l": {
+        "es": [
+          "Idea y storyboard",
+          "Rodaje en locaciones o estudio",
+          "Planos secuencia",
+          "Versiones verticales para redes"
+        ],
+        "en": [
+          "Concept and storyboard",
+          "Location or studio shoot",
+          "One-take sequences",
+          "Vertical cuts for social media"
+        ]
+      }
+    },
+    {
+      "id": "marcas",
+      "icon": "spark",
+      "t": {
+        "es": "Publicidad y contenido para marcas",
+        "en": "Advertising and brand content"
+      },
+      "d": {
+        "es": "Spots, películas institucionales y series de contenido.",
+        "en": "Spots, corporate films and content series."
+      },
+      "l": {
+        "es": [
+          "Spots de 15 a 60 s",
+          "Películas institucionales",
+          "Piezas para redes",
+          "Cobertura de eventos"
+        ],
+        "en": [
+          "15 to 60 s spots",
+          "Corporate films",
+          "Social media pieces",
+          "Event coverage"
+        ]
+      }
+    }
+  ],
+  "steps": [
+    {
+      "t": {
+        "es": "Consulta",
+        "en": "Consultation"
+      },
+      "d": {
+        "es": "Nos cuentas la idea y los plazos. Respondemos en uno o dos días.",
+        "en": "You tell us the idea and deadlines. We reply within a day or two."
+      }
+    },
+    {
+      "t": {
+        "es": "Propuesta",
+        "en": "Proposal"
+      },
+      "d": {
+        "es": "Enviamos enfoque, calendario y presupuesto detallado.",
+        "en": "We send an approach, schedule and detailed budget."
+      }
+    },
+    {
+      "t": {
+        "es": "Preproducción",
+        "en": "Pre-production"
+      },
+      "d": {
+        "es": "Guion, locaciones, casting, permisos y plan de rodaje.",
+        "en": "Script, locations, casting, permits and shooting plan."
+      }
+    },
+    {
+      "t": {
+        "es": "Rodaje",
+        "en": "Shoot"
+      },
+      "d": {
+        "es": "Equipo ligero y comunicación diaria contigo.",
+        "en": "A light crew and daily communication with you."
+      }
+    },
+    {
+      "t": {
+        "es": "Entrega",
+        "en": "Delivery"
+      },
+      "d": {
+        "es": "Posproducción, revisiones y entrega en los formatos acordados.",
+        "en": "Post-production, revisions and delivery in the agreed formats."
+      }
+    }
+  ]
+}

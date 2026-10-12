@@ -1,0 +1,46 @@
+{
+  "email": "hola@gorrion.example",
+  "pressEmail": "prensa@gorrion.example",
+  "city": {
+    "es": "La Habana, Cuba",
+    "en": "Havana, Cuba"
+  },
+  "reelUrl": "https://vimeo.com/",
+  "formEndpoint": "",
+  "social": [
+    {
+      "name": "Instagram",
+      "handle": "@gorrion.cine",
+      "url": "https://www.instagram.com/"
+    },
+    {
+      "name": "Vimeo",
+      "handle": "vimeo.com/gorrion",
+      "url": "https://vimeo.com/"
+    },
+    {
+      "name": "YouTube",
+      "handle": "youtube.com/@gorrion",
+      "url": "https://www.youtube.com/"
+    },
+    {
+      "name": "Facebook",
+      "handle": "/gorrion",
+      "url": "https://www.facebook.com/"
+    }
+  ],
+  "channels": [
+    {
+      "name": "Telegram",
+      "handle": "@gorrion.cine"
+    },
+    {
+      "name": "WhatsApp",
+      "handle": "+53 5 000 0000"
+    },
+    {
+      "name": "Signal",
+      "handle": "+53 5 000 0000"
+    }
+  ]
+}

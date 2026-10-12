@@ -1,0 +1,114 @@
+{
+  "values": [
+    {
+      "t": {
+        "es": "Mirar de cerca",
+        "en": "Looking closely"
+      },
+      "d": {
+        "es": "Historias del barrio, la cuadra y la familia, filmadas con paciencia y sin postal.",
+        "en": "Stories from the neighbourhood, the block and the family, filmed with patience and no postcard gloss."
+      }
+    },
+    {
+      "t": {
+        "es": "Equipos pequeños",
+        "en": "Small crews"
+      },
+      "d": {
+        "es": "Pocas personas, mucho oficio. Así llegamos a lugares donde un gran equipo no cabe.",
+        "en": "Few people, lots of craft. That is how we reach places a large crew cannot fit."
+      }
+    },
+    {
+      "t": {
+        "es": "Hecho con la gente",
+        "en": "Made with people"
+      },
+      "d": {
+        "es": "Vecinos en el reparto, locaciones prestadas, premios compartidos.",
+        "en": "Neighbours in the cast, borrowed locations, shared awards."
+      }
+    },
+    {
+      "t": {
+        "es": "Cine independiente",
+        "en": "Independent cinema"
+      },
+      "d": {
+        "es": "Elegimos qué contar y con quién. Financiamos con fondos, coproducciones y encargos.",
+        "en": "We choose what to tell and with whom. We finance through grants, co-productions and commissions."
+      }
+    }
+  ],
+  "history": [
+    {
+      "y": "2018",
+      "t": {
+        "es": "Nace GORRIóN",
+        "en": "GORRIóN is founded"
+      },
+      "d": {
+        "es": "Cuatro amigos, una cámara prestada y una azotea del Vedado.",
+        "en": "Four friends, a borrowed camera and a rooftop in Vedado."
+      }
+    },
+    {
+      "y": "2020",
+      "t": {
+        "es": "Primeros encargos",
+        "en": "First commissions"
+      },
+      "d": {
+        "es": "Videoclips y películas institucionales que financian los proyectos propios.",
+        "en": "Music videos and corporate films that fund our own projects."
+      }
+    },
+    {
+      "y": "2023",
+      "t": {
+        "es": "Sal y Cañaveral",
+        "en": "Sal y Cañaveral"
+      },
+      "d": {
+        "es": "Primer documental con selección internacional.",
+        "en": "First documentary with an international selection."
+      }
+    },
+    {
+      "y": "2024",
+      "t": {
+        "es": "Malecón, 6 a.m.",
+        "en": "Malecón, 6 a.m."
+      },
+      "d": {
+        "es": "Nuestro primer largometraje.",
+        "en": "Our first feature film."
+      }
+    },
+    {
+      "y": "2026",
+      "t": {
+        "es": "Pan de Bodega",
+        "en": "Pan de Bodega"
+      },
+      "d": {
+        "es": "Empieza el rodaje de nuestra primera serie.",
+        "en": "Shooting begins on our first series."
+      }
+    }
+  ],
+  "allies": [
+    "Festival Imagen del Caribe",
+    "Muestra Joven del Sur",
+    "Mercado Audiovisual Andino",
+    "Cineclub La Azotea",
+    "Escuela de Cine del Barrio",
+    "Cooperativa Loma Alta",
+    "Los Hijos del Aguacero"
+  ],
+  "press_bio": {
+    "es": "GORRIóN es una productora audiovisual independiente con sede en La Habana. Desde 2018 produce ficción, documental, series y videoclips con equipos pequeños y una mirada cercana a la vida cotidiana. Sus películas se han presentado en festivales de América Latina.",
+    "en": "GORRIóN is an independent audiovisual production company based in Havana. Since 2018 it has produced fiction, documentary, series and music videos with small crews and a close-up look at everyday life. Its films have been shown at festivals across Latin America."
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "press": [
+    {
+      "d": "2026-02",
+      "s": "Revista Cuadro a Cuadro",
+      "t": {
+        "es": "GORRIóN y el cine que mira desde la azotea",
+        "en": "GORRIóN and the cinema that looks from the rooftop"
+      },
+      "x": {
+        "es": "Perfil de la productora tras el estreno de La Hora del Zunzún.",
+        "en": "Profile of the company after the premiere of La Hora del Zunzún."
+      },
+      "url": ""
+    },
+    {
+      "d": "2025-11",
+      "s": "Diario del Cine Latino",
+      "t": {
+        "es": "Cinco cortos latinoamericanos para seguir de cerca",
+        "en": "Five Latin American shorts to watch"
+      },
+      "x": {
+        "es": "La Hora del Zunzún entre las recomendaciones del festival.",
+        "en": "La Hora del Zunzún among the festival's recommendations."
+      },
+      "url": ""
+    },
+    {
+      "d": "2025-01",
+      "s": "Radio Cinefilia",
+      "t": {
+        "es": "Entrevista a Rolando Béquer sobre Malecón, 6 a.m.",
+        "en": "Interview with Rolando Béquer about Malecón, 6 a.m."
+      },
+      "x": {
+        "es": "Cómo se filma el mismo amanecer durante once meses.",
+        "en": "How to film the same sunrise for eleven months."
+      },
+      "url": ""
+    }
+  ],
+  "awards": [
+    {
+      "y": 2026,
+      "a": {
+        "es": "Premio del Público",
+        "en": "Audience Award"
+      },
+      "f": "Muestra Joven del Sur",
+      "p": "la-hora-del-zunzun"
+    },
+    {
+      "y": 2026,
+      "a": {
+        "es": "Selección oficial",
+        "en": "Official selection"
+      },
+      "f": "Semana de Cine Iberoamericano",
+      "p": "la-hora-del-zunzun"
+    },
+    {
+      "y": 2025,
+      "a": {
+        "es": "Selección oficial",
+        "en": "Official selection"
+      },
+      "f": "Festival Imagen del Caribe",
+      "p": "la-hora-del-zunzun"
+    },
+    {
+      "y": 2024,
+      "a": {
+        "es": "Mejor Fotografía Documental",
+        "en": "Best Documentary Cinematography"
+      },
+      "f": "Festival Imagen del Caribe",
+      "p": "malecon-6-am"
+    },
+    {
+      "y": 2024,
+      "a": {
+        "es": "Mención especial del jurado",
+        "en": "Special jury mention"
+      },
+      "f": "Encuentro de Cine Documental Sur-Sur",
+      "p": "sal-y-canaveral"
+    }
+  ]
+}

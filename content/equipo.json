@@ -1,0 +1,70 @@
+{
+  "items": [
+    {
+      "n": "Ana Lía Cordero",
+      "r": {
+        "es": "Dirección y guion",
+        "en": "Director & writer"
+      },
+      "b": {
+        "es": "Directora de La Hora del Zunzún. Estudió cine en La Habana y escribe sobre la gente que espera.",
+        "en": "Director of La Hora del Zunzún. Studied film in Havana and writes about people who wait."
+      }
+    },
+    {
+      "n": "Rolando Béquer",
+      "r": {
+        "es": "Dirección y guion",
+        "en": "Director & writer"
+      },
+      "b": {
+        "es": "Documentalista. Cree que una película se encuentra tras volver muchas veces al mismo sitio.",
+        "en": "Documentary filmmaker. Believes a film is found by going back to the same place many times."
+      }
+    },
+    {
+      "n": "Yamilet Soto",
+      "r": {
+        "es": "Producción ejecutiva",
+        "en": "Executive producer"
+      },
+      "b": {
+        "es": "Pone el dinero, los permisos y las fechas en el mismo plano. Lleva la relación con coproductores.",
+        "en": "Puts the money, permits and dates in the same shot. Leads co-production relations."
+      }
+    },
+    {
+      "n": "Dayron Almeida",
+      "r": {
+        "es": "Dirección de fotografía",
+        "en": "Director of photography"
+      },
+      "b": {
+        "es": "Trabaja con luz natural y equipos ligeros. Rodó casi todo lo que ves en este sitio.",
+        "en": "Works with natural light and light kits. Shot almost everything you see on this site."
+      }
+    },
+    {
+      "n": "Lisandra Fuentes",
+      "r": {
+        "es": "Montaje y dirección",
+        "en": "Editor & director"
+      },
+      "b": {
+        "es": "Monta documental y ficción. Dirige videoclips y da talleres de montaje.",
+        "en": "Edits documentary and fiction. Directs music videos and teaches editing workshops."
+      }
+    },
+    {
+      "n": "Osmany Rivero",
+      "r": {
+        "es": "Sonido",
+        "en": "Sound"
+      },
+      "b": {
+        "es": "Graba el sonido directo y diseña el sonido de cada película. Sabe cómo suena una azotea.",
+        "en": "Records location sound and designs each film's soundscape. Knows what a rooftop sounds like."
+      }
+    }
+  ]
+}
