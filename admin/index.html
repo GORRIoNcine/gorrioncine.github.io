@@ -98,9 +98,22 @@ h1{font:400 26px/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;ma
  .burger{display:inline-flex!important}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* Pantalla de acceso */
+.gate{min-height:100vh;display:grid;place-items:center;padding:24px;background:#000;color:#efefef;text-align:center}
+.gate[hidden],.app[hidden]{display:none}
+.gate .box{width:min(380px,100%);border:1px solid #2a2a2a;padding:34px 28px;background:#0c0c0c}
+.gate .logo{width:64px;height:64px;margin:0 auto 18px;background:var(--red);display:grid;place-items:center;font:700 34px/1 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif}
+.gate h1{font-size:28px;margin:0 0 6px;color:#fff}
+.gate p{color:#a8a8a8;margin:0 0 22px}
+.gate .btn{width:100%;justify-content:center;padding:12px 14px;font-size:15px}
+.gate .msg{margin-top:14px;font-size:13px;color:#e6a39c;min-height:18px}
+.gate small{display:block;margin-top:18px;color:#777;font-size:12px}
 </style></head>
 <body>
-<div class="app">
+<div class="gate" id="gate"><div class="box"><div class="logo">G</div><h1>GORRIóN</h1><p>Panel de administración.<br>Inicia sesión para continuar.</p>
+<button class="btn" id="login" type="button"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Iniciar sesión con GitHub</button>
+<div class="msg" id="gmsg" role="status"></div><small>Solo para el equipo con permiso de edición.</small></div></div>
+<div class="app" id="app" hidden>
 <aside class="side" id="side">
   <a class="brand" href="./"><i>G</i>GORRIóN</a>
   <ul class="menu" id="menu"></ul>
@@ -112,6 +125,7 @@ h1{font:400 26px/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;ma
     <a href="../" target="_blank" rel="noopener" id="sitename"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>GORRIóN</a>
     <details class="pop"><summary><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuevo</summary><ul id="newmenu"></ul></details>
     <span class="sp"></span>
+    <a href="#" id="logout">Cerrar sesión</a>
     <a href="../" target="_blank" rel="noopener">Ver sitio<svg class="i" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
   </div>
   <main class="wrap">
@@ -170,7 +184,7 @@ document.addEventListener("click",e=>{
   if(document.body.classList.contains("open")&&!e.target.closest(".side"))document.body.classList.remove("open");
   const d=e.target.closest("[data-edit]"); if(d){location.href=EDIT(d.dataset.edit)}
 });
-(async()=>{
+async function startDash(){
   const [site,pr,nw,eq,sv,no,pe]=await Promise.all(["site","proyectos","noticias","equipo","servicios","nosotros","prensa"].map(n=>get("../content/"+n+".json")));
   const P=(pr&&pr.items)||[],N=(nw&&nw.items)||[],E=(eq&&eq.items)||[],S=(sv&&sv.services)||[],M=(pe&&pe.press)||[],A=(pe&&pe.awards)||[];
   const cnt={p:P.length,n:N.length,e:E.length,s:S.length,a:A.length};
@@ -201,6 +215,48 @@ document.addEventListener("click",e=>{
   try{const r=await fetch(`https://api.github.com/repos/${REPO}/commits?per_page=8`);if(!r.ok)throw 0;const c=await r.json();
     $("#activity").innerHTML=c.map(x=>`<li><span class="dot"></span><div class="t"><b style="white-space:normal">${esc((x.commit.message||"").split("\n")[0])}</b><span>${esc(x.commit.author.name)} · ${ago(x.commit.author.date)}</span></div></li>`).join("")||'<li class="empty">Sin actividad.</li>';
   }catch(e){$("#activity").innerHTML='<li class="empty">No se pudo cargar la actividad (límite de GitHub o sin conexión).</li>'}
-})();
+}
+/* ---- Acceso: solo se muestra el escritorio con una sesión de GitHub con permiso de escritura ---- */
+const AUTH="https://sveltia-cms-auth.niguelcruzz2.workers.dev",KEY="gorrion-admin.token";
+const rd=()=>{try{return localStorage.getItem(KEY)||(JSON.parse(localStorage.getItem("sveltia-cms.user")||"null")||{}).token||""}catch(e){return ""}};
+const gmsg=t=>{$("#gmsg").textContent=t||""};
+async function check(token){
+  try{
+    const h={Authorization:"Bearer "+token,Accept:"application/vnd.github+json"};
+    const r=await fetch("https://api.github.com/repos/"+REPO,{headers:h});
+    if(r.status===401||r.status===403||r.status===404)return "no";
+    if(!r.ok)return "err";
+    const j=await r.json();return j.permissions&&(j.permissions.push||j.permissions.admin)?"ok":"perm";
+  }catch(e){return "err"}
+}
+async function enter(token,quiet){
+  const s=await check(token);
+  if(s==="ok"){try{localStorage.setItem(KEY,token);if(!localStorage.getItem("sveltia-cms.user"))localStorage.setItem("sveltia-cms.user",JSON.stringify({backendName:"github",token}))}catch(e){}
+    $("#gate").hidden=true;$("#app").hidden=false;startDash();return}
+  if(s==="perm"){gmsg("Tu cuenta de GitHub no tiene permiso para editar este sitio.");}
+  else if(s==="err"){gmsg("No se pudo comprobar la sesión. Revisa tu conexión e inténtalo de nuevo.");return}
+  else if(!quiet)gmsg("La sesión no es válida. Inicia sesión de nuevo.");
+  try{localStorage.removeItem(KEY)}catch(e){}
+  $("#gate").hidden=false;$("#app").hidden=true;
+}
+function login(){
+  gmsg("");
+  const w=window.open(AUTH+"/auth?provider=github&site_id="+encodeURIComponent(location.hostname)+"&scope=repo,user","gorrion-login","width=620,height=720");
+  if(!w){gmsg("El navegador bloqueó la ventana de acceso. Permite las ventanas emergentes.");return}
+  const on=e=>{
+    if(e.origin!==new URL(AUTH).origin)return;
+    if(e.data==="authorizing:github"){e.source.postMessage("authorizing:github",e.origin);return}
+    if(typeof e.data==="string"&&e.data.indexOf("authorization:github:")===0){
+      window.removeEventListener("message",on);
+      if(e.data.indexOf("authorization:github:success:")===0){try{enter(JSON.parse(e.data.slice(29)).token)}catch(x){gmsg("No se pudo completar el acceso.")}}
+      else gmsg("No se pudo iniciar sesión con GitHub.");
+      try{w.close()}catch(x){}
+    }
+  };
+  window.addEventListener("message",on);
+}
+$("#login").addEventListener("click",login);
+$("#logout").addEventListener("click",e=>{e.preventDefault();try{localStorage.removeItem(KEY);localStorage.removeItem("sveltia-cms.user")}catch(x){}location.reload()});
+const t0=rd(); if(t0)enter(t0,true);
 </script>
 </body></html>
