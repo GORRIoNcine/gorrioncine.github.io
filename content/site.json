@@ -1,8 +1,8 @@
 {
-  "email": "hola@gorrion.example",
+  "email": "contacto@gorrion.example",
   "pressEmail": "prensa@gorrion.example",
   "city": {
-    "es": "Donde la madre nació, Cuba",
+    "es": "La Habana, Cuba",
     "en": "Havana, Cuba",
     "otros": null
   },
