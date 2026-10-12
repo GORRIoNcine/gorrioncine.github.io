@@ -2139,7 +2139,11 @@ async function handleNewsletter(f, d) {
   if (SITE.newsletterUrl) {
     /* MailerLite: suscripción por JSONP (sin cargar su script ni cambiar el diseño del formulario) */
     const btn = $("button[type=submit]", f); if (btn) btn.disabled = true;
-    const res = await mlSubscribe(SITE.newsletterUrl, d.email);
+    let res = await mlSubscribe(SITE.newsletterUrl, d.email);
+    if (res === "fail") {
+      /* Respaldo: el mismo envío que hace el formulario HTML de MailerLite (POST sin leer respuesta) */
+      try { await fetch(SITE.newsletterUrl, { method: "POST", mode: "no-cors", body: new URLSearchParams({ "fields[email]": d.email, "ml-submit": "1", anticsrf: "true" }) }); res = "ok"; } catch (e) { /* sin conexión */ }
+    }
     if (btn) btn.disabled = false;
     if (res === "ok") { msg.textContent = t("nl_ok"); f.reset(); return; }
     if (res === "invalid") { msg.textContent = t("e_email"); return; }
