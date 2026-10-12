@@ -1,7 +1,206 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>Panel · GORRIóN</title>
-<link href="config.yml" type="text/yaml" rel="cms-config-url">
-</head><body>
-<script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+<title>Escritorio · GORRIóN</title>
+<link rel="icon" href="../favicon.ico">
+<style>
+:root{--red:#5f140f;--red2:#8a1f17;--side:#0c0c0c;--side2:#171717;--sidefg:#cfcfcf;--bg:#f0f0f1;--card:#fff;--fg:#1d2327;--mute:#646970;--line:#dcdcde;--ok:#1a7f37;--warn:#b26200;--chip:#f0f0f1;--r:6px}
+@media (prefers-color-scheme:dark){:root{--bg:#101010;--card:#1b1b1b;--fg:#ececec;--mute:#a0a0a0;--line:#2c2c2c;--chip:#262626;--side:#000;--ok:#4ac26b;--warn:#f0a53a}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);min-height:100vh}
+a{color:inherit;text-decoration:none}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}
+/* Menú lateral */
+.side{background:var(--side);color:var(--sidefg);position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;padding:16px 16px 14px;border-bottom:1px solid #222;color:#fff;font:700 18px/1 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;letter-spacing:.02em}
+.brand i{width:30px;height:30px;background:var(--red);display:grid;place-items:center;font-style:normal;font-size:16px}
+.menu{list-style:none;margin:8px 0;padding:0}
+.menu a{display:flex;align-items:center;gap:11px;padding:10px 16px;color:var(--sidefg);border-left:4px solid transparent}
+.menu a:hover{background:var(--side2);color:#fff}
+.menu a.on{background:var(--side2);color:#fff;border-left-color:var(--red2)}
+.menu .sep{height:1px;background:#222;margin:8px 16px}
+.menu small{margin-left:auto;background:#2a2a2a;color:#ddd;border-radius:10px;padding:0 8px;font-size:11px;line-height:18px}
+.side .foot{margin-top:auto;padding:14px 16px;font-size:12px;color:#8a8a8a;border-top:1px solid #222}
+/* Barra superior */
+.main{min-width:0}
+.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:6px;height:46px;padding:0 16px;background:#111;color:#e5e5e5}
+.bar a,.bar summary{white-space:nowrap;display:inline-flex;align-items:center;gap:7px;height:46px;padding:0 12px;cursor:pointer;list-style:none}
+.bar a:hover,.bar summary:hover,.bar details[open] summary{background:#2a2a2a;color:#fff}
+.bar summary::-webkit-details-marker{display:none}
+.bar .sp{flex:1}
+.burger{display:none!important}
+.pop{position:relative}
+.pop ul{position:absolute;left:0;top:46px;min-width:210px;background:#1b1b1b;margin:0;padding:6px 0;list-style:none;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.pop li a{height:auto;padding:9px 14px;display:flex}
+.wrap{padding:22px clamp(14px,2.4vw,32px) 40px;max-width:1400px}
+h1{font:400 26px/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;margin:4px 0 4px;letter-spacing:.01em}
+.lead{color:var(--mute);margin:0 0 18px}
+.hello{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;justify-content:space-between}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--red);background:var(--red);color:#fff;border-radius:var(--r);font-weight:600;cursor:pointer}
+.btn:hover{background:var(--red2);border-color:var(--red2)}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--fg)}
+/* Rejilla de widgets */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);min-width:0}
+.card>h2{margin:0;padding:12px 16px;font-size:14px;font-weight:600;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px}
+.card>h2 .more{margin-left:auto;font-weight:400;font-size:12.5px;color:var(--red2)}
+@media (prefers-color-scheme:dark){.card>h2 .more{color:#e07a70}}
+.card .in{padding:14px 16px}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}
+/* De un vistazo */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0}
+.stat{display:flex;align-items:center;gap:12px;padding:16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat .ic{width:42px;height:42px;border-radius:50%;background:var(--chip);display:grid;place-items:center;color:var(--red2)}
+@media (prefers-color-scheme:dark){.stat .ic{color:#e07a70}}
+.stat b{display:block;font-size:24px;line-height:1.1}
+.stat span{color:var(--mute);font-size:12.5px}
+.stat:hover{background:var(--chip)}
+/* Acciones rápidas */
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.quick a{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.quick a:hover{border-color:var(--red2);box-shadow:0 0 0 1px var(--red2) inset}
+.quick .ic{width:36px;height:36px;border-radius:8px;background:var(--red);color:#fff;display:grid;place-items:center}
+.quick b{font-weight:600}.quick span{font-size:12.5px;color:var(--mute);line-height:1.35}
+/* Listas */
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line)}
+.list li:last-child{border:0}
+.th{width:36px;height:50px;border-radius:3px;background:var(--red);color:#fff;display:grid;place-items:center;font:700 14px/1 "Arial Narrow",Arial,sans-serif;flex:none;overflow:hidden}
+.th.w{width:60px;height:40px}
+.th img{width:100%;height:100%;object-fit:cover}
+.list .t{min-width:0;flex:1}.list .t b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list .t span{color:var(--mute);font-size:12.5px}
+.chip{display:inline-block;padding:1px 9px;border-radius:10px;background:var(--chip);font-size:12px;color:var(--mute);white-space:nowrap}
+.chip.ok{color:var(--ok)}.chip.warn{color:var(--warn)}
+.more{cursor:pointer}
+.edit{font-size:12.5px;color:var(--red2);white-space:nowrap}
+@media (prefers-color-scheme:dark){.edit{color:#e07a70}}
+.edit:hover{text-decoration:underline}
+/* Salud del sitio */
+.check{display:flex;gap:10px;padding:9px 16px;border-bottom:1px solid var(--line);align-items:flex-start}
+.check:last-child{border:0}
+.check svg{margin-top:2px}
+.check.ok svg{color:var(--ok)}.check.warn svg{color:var(--warn)}
+.check a{margin-left:auto;font-size:12.5px;color:var(--red2);white-space:nowrap}
+.score{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);font-weight:600}
+.act li{align-items:flex-start}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red2);margin-top:7px;flex:none}
+.empty{padding:18px 16px;color:var(--mute)}
+.help{margin:0;padding-left:18px;color:var(--mute)}.help li{margin:6px 0}.help b{color:var(--fg)}
+@media (max-width:1100px){.s8,.s7,.s5,.s4,.s6{grid-column:span 12}}
+@media (max-width:860px){
+ .app{grid-template-columns:1fr}
+ .side{position:fixed;left:0;top:0;bottom:0;width:240px;z-index:50;transform:translateX(-100%);transition:transform .2s}
+ body.open .side{transform:none}
+ body.open:after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40}
+ .burger{display:inline-flex!important}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head>
+<body>
+<div class="app">
+<aside class="side" id="side">
+  <a class="brand" href="./"><i>G</i>GORRIóN</a>
+  <ul class="menu" id="menu"></ul>
+  <div class="foot">Panel de administración</div>
+</aside>
+<div class="main">
+  <div class="bar">
+    <a class="burger" href="#" id="burger" aria-label="Menú"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></a>
+    <a href="../" target="_blank" rel="noopener" id="sitename"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>GORRIóN</a>
+    <details class="pop"><summary><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuevo</summary><ul id="newmenu"></ul></details>
+    <span class="sp"></span>
+    <a href="../" target="_blank" rel="noopener">Ver sitio<svg class="i" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+  </div>
+  <main class="wrap">
+    <div class="hello">
+      <div><h1>Escritorio</h1><p class="lead" id="lead">Cargando el contenido del sitio…</p></div>
+      <a class="btn" id="open-editor" href="editor.html"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Abrir el editor</a>
+    </div>
+    <div class="grid" style="margin-top:6px">
+      <section class="card s12"><h2><svg class="i" viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg>De un vistazo</h2><div class="stats" id="stats"></div></section>
+      <section class="card s7"><h2><svg class="i" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Acciones rápidas</h2><div class="in quick" id="quick"></div></section>
+      <section class="card s5"><h2><svg class="i" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>Salud del sitio</h2><div id="health"></div></section>
+      <section class="card s7"><h2><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 4v5M16 4v5"/></svg>Proyectos<a class="more" data-edit="proyectos">Ver todos y editar →</a></h2><ul class="list" id="projects"></ul></section>
+      <section class="card s5"><h2><svg class="i" viewBox="0 0 24 24"><path d="M4 4h13v16H6a2 2 0 01-2-2zM17 8h3v10a2 2 0 01-2 2M8 8h5M8 12h5M8 16h3"/></svg>Noticias<a class="more" data-edit="noticias">Editar →</a></h2><ul class="list" id="news"></ul></section>
+      <section class="card s7"><h2><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Actividad reciente</h2><ul class="list act" id="activity"><li class="empty">Cargando…</li></ul></section>
+      <section class="card s5"><h2><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2.5 2-2.5 3.5M12 17h.01"/></svg>Ayuda rápida</h2><div class="in"><ul class="help">
+        <li><b>Añadir un proyecto:</b> abre <i>Proyectos</i> en el editor y pulsa «Añadir proyecto».</li>
+        <li><b>Publicar:</b> pulsa «Guardar»; la web se actualiza en 1–2 minutos.</li>
+        <li><b>Imágenes:</b> se suben desde cada campo de imagen o desde <i>Medios</i>.</li>
+        <li><b>Si algo falla:</b> abre <a class="edit" href="../?check" target="_blank">la comprobación del sitio</a>.</li></ul></div></section>
+    </div>
+  </main>
+</div></div>
+<script>
+const REPO="GORRIoNcine/gorrioncine.github.io";
+const IC={
+ home:'<path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/>',
+ film:'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 4v5M16 4v5"/>',
+ news:'<path d="M4 4h13v16H6a2 2 0 01-2-2zM17 8h3v10a2 2 0 01-2 2M8 8h5M8 12h5M8 16h3"/>',
+ team:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 4.5a3.5 3.5 0 010 7M18 14c2 .6 3.3 2.5 3.5 6"/>',
+ tool:'<path d="M14.7 6.3a4 4 0 005 5L21 13l-8 8-4-4 8-8zM3 21l4-1-3-3z"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/>',
+ award:'<circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>',
+ img:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>',
+ dash:'<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ mail:'<rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/>',
+ ok:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>',
+ warn:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/>',
+ ext:'<path d="M7 17L17 7M8 7h9v9"/>'
+};
+const ico=n=>`<svg class="i" viewBox="0 0 24 24">${IC[n]}</svg>`;
+const EDIT=n=>n==="media"?"editor.html#/assets":`editor.html#/collections/contenido/entries/${n}`;
+const MENU=[["dash","Escritorio","./",null],["film","Proyectos",EDIT("proyectos"),"p"],["news","Noticias",EDIT("noticias"),"n"],["team","Equipo",EDIT("equipo"),"e"],["tool","Servicios",EDIT("servicios"),"s"],["info","Nosotros",EDIT("nosotros"),null],["award","Prensa y premios",EDIT("prensa"),"a"],["img","Medios (imágenes)",EDIT("media"),null],["gear","Ajustes del sitio",EDIT("site"),null]];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const L=o=>o==null?"":typeof o==="string"?o:(o.es||o.en||"");
+const get=u=>fetch(u,{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+const TYPE={ficcion:"Ficción",documental:"Documental",serie:"Serie web",videoclip:"Videoclip",encargo:"Encargo"};
+const STAT={estrenado:["Estrenado","ok"],produccion:["En producción","warn"],desarrollo:["En desarrollo",""]};
+const CAT={estrenos:"Estrenos",rodajes:"Rodajes",convocatorias:"Convocatorias",detras:"Detrás de cámaras"};
+const img=p=>p?(String(p).startsWith("http")?p:"../"+String(p).replace(/^\//,"")):"";
+const ini=s=>String(s||"?").trim().slice(0,2).toUpperCase();
+document.addEventListener("click",e=>{
+  if(e.target.closest("#burger")){e.preventDefault();document.body.classList.toggle("open");return}
+  if(document.body.classList.contains("open")&&!e.target.closest(".side"))document.body.classList.remove("open");
+  const d=e.target.closest("[data-edit]"); if(d){location.href=EDIT(d.dataset.edit)}
+});
+(async()=>{
+  const [site,pr,nw,eq,sv,no,pe]=await Promise.all(["site","proyectos","noticias","equipo","servicios","nosotros","prensa"].map(n=>get("../content/"+n+".json")));
+  const P=(pr&&pr.items)||[],N=(nw&&nw.items)||[],E=(eq&&eq.items)||[],S=(sv&&sv.services)||[],M=(pe&&pe.press)||[],A=(pe&&pe.awards)||[];
+  const cnt={p:P.length,n:N.length,e:E.length,s:S.length,a:A.length};
+  $("#menu").innerHTML=MENU.map(([i,l,h,k],ix)=>`${ix===7?'<li class="sep"></li>':""}<li><a href="${h}" class="${ix===0?"on":""}">${ico(i)}${l}${k&&cnt[k]!=null?`<small>${cnt[k]}</small>`:""}</a></li>`).join("");
+  $("#newmenu").innerHTML=[["film","Proyecto","proyectos"],["news","Noticia","noticias"],["team","Persona del equipo","equipo"],["award","Premio o mención","prensa"]].map(([i,l,n])=>`<li><a href="${EDIT(n)}">${ico(i)}${l}</a></li>`).join("");
+  if(site&&site.name)$("#sitename").lastChild.textContent=" "+site.name;
+  $("#lead").textContent=P.length||N.length?`Resumen del sitio: ${P.length} proyectos, ${N.length} noticias y ${E.length} personas en el equipo.`:"No se pudo leer el contenido (¿estás abriendo el archivo sin servidor?).";
+  $("#stats").innerHTML=[["film",P.length,"Proyectos","proyectos"],["news",N.length,"Noticias","noticias"],["team",E.length,"Personas","equipo"],["tool",S.length,"Servicios","servicios"],["mail",M.length,"Menciones de prensa","prensa"],["award",A.length,"Premios y selecciones","prensa"]].map(([i,n,l,e])=>`<a class="stat" href="${EDIT(e)}"><div class="ic">${ico(i)}</div><div><b>${n}</b><span>${l}</span></div></a>`).join("");
+  $("#quick").innerHTML=[["film","Añadir proyecto","Película, serie, videoclip…","proyectos"],["news","Escribir noticia","Estrenos, rodajes, convocatorias","noticias"],["img","Subir imágenes","Carteles y fotogramas","media"],["team","Equipo","Nombres, cargos y fotos","equipo"],["mail","Contacto y redes","Correo, ciudad, boletín","site"],["award","Premios","Selecciones y festivales","prensa"]].map(([i,t,d,e])=>`<a href="${EDIT(e)}"><div class="ic">${ico(i)}</div><b>${t}</b><span>${d}</span></a>`).join("");
+  const byYear=[...P].sort((a,b)=>(b.year||0)-(a.year||0)).slice(0,6);
+  $("#projects").innerHTML=byYear.length?byYear.map(p=>{const s=STAT[p.status]||[p.status||"",""];return `<li><div class="th">${p.poster?`<img src="${esc(img(p.poster))}" alt="" loading="lazy" onerror="this.remove()">`:esc(ini(p.title))}</div><div class="t"><b>${esc(p.title)}</b><span>${esc(TYPE[p.type]||p.type||"")} · ${esc(p.year||"")}${p.featured?" · ★ destacado":""}</span></div><span class="chip ${s[1]}">${esc(s[0])}</span><a class="edit" href="${EDIT("proyectos")}">Editar</a></li>`}).join(""):'<li class="empty">Aún no hay proyectos.</li>';
+  const nn=[...N].sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,5);
+  $("#news").innerHTML=nn.length?nn.map(n=>`<li><div class="th w">${n.image?`<img src="${esc(img(n.image))}" alt="" loading="lazy" onerror="this.remove()">`:esc(ini(L(n.title)))}</div><div class="t"><b>${esc(L(n.title))}</b><span>${esc(CAT[n.cat]||n.cat||"")} · ${esc(n.date||"")}</span></div></li>`).join(""):'<li class="empty">Aún no hay noticias.</li>';
+  /* Salud del sitio */
+  const ids=new Set(P.map(p=>p.id)),checks=[];
+  const add=(ok,txt,to)=>checks.push([ok,txt,to]);
+  add(!/example/.test((site&&site.email)||"x.example"),"Correo de contacto real configurado","site");
+  add(!(site&&site.newsletterUrl===""),"Boletín conectado (MailerLite)","site");
+  const nop=P.filter(p=>!p.poster).length; add(nop===0,nop?`${nop} proyecto(s) sin cartel (se genera uno automático)`:"Todos los proyectos tienen cartel","proyectos");
+  const nos=P.filter(p=>!(p.short&&(p.short.es||p.short.en))).length; add(nos===0,nos?`${nos} proyecto(s) sin sinopsis corta`:"Todos los proyectos tienen sinopsis","proyectos");
+  const bad=[...N.filter(n=>n.project&&!ids.has(n.project)),...A.filter(a=>a.p&&!ids.has(a.p))].length; add(bad===0,bad?`${bad} enlace(s) a proyectos que ya no existen`:"Noticias y premios enlazados correctamente","noticias");
+  const sl={},dup=P.filter(p=>sl[p.slug]?true:(sl[p.slug]=1,false)).length; add(dup===0,dup?"Hay proyectos con la misma dirección web":"Direcciones web de proyectos únicas","proyectos");
+  const nok=checks.filter(c=>c[0]).length;
+  $("#health").innerHTML=`<div class="score">${ico(nok===checks.length?"ok":"warn")}${nok===checks.length?"Todo en orden":`${checks.length-nok} cosa(s) por revisar`}<span class="chip" style="margin-left:auto">${nok}/${checks.length}</span></div>`+checks.map(([ok,t,to])=>`<div class="check ${ok?"ok":"warn"}">${ico(ok?"ok":"warn")}<span>${esc(t)}</span>${ok?"":`<a href="${EDIT(to)}">Revisar</a>`}</div>`).join("");
+  /* Actividad (GitHub, sin iniciar sesión) */
+  const rt=new Intl.RelativeTimeFormat("es",{numeric:"auto"});
+  const ago=d=>{const s=(new Date(d)-Date.now())/1000,u=[["day",86400],["hour",3600],["minute",60]];for(const[k,v]of u)if(Math.abs(s)>=v)return rt.format(Math.round(s/v),k);return "ahora"};
+  try{const r=await fetch(`https://api.github.com/repos/${REPO}/commits?per_page=8`);if(!r.ok)throw 0;const c=await r.json();
+    $("#activity").innerHTML=c.map(x=>`<li><span class="dot"></span><div class="t"><b style="white-space:normal">${esc((x.commit.message||"").split("\n")[0])}</b><span>${esc(x.commit.author.name)} · ${ago(x.commit.author.date)}</span></div></li>`).join("")||'<li class="empty">Sin actividad.</li>';
+  }catch(e){$("#activity").innerHTML='<li class="empty">No se pudo cargar la actividad (límite de GitHub o sin conexión).</li>'}
+})();
+</script>
 </body></html>
