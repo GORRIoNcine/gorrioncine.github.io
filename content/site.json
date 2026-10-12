@@ -2,8 +2,9 @@
   "email": "hola@gorrion.example",
   "pressEmail": "prensa@gorrion.example",
   "city": {
-    "es": "La Habana, Cuba",
-    "en": "Havana, Cuba"
+    "es": "Donde la madre nació, Cuba",
+    "en": "Havana, Cuba",
+    "otros": null
   },
   "reelUrl": "https://vimeo.com/",
   "formEndpoint": "",
