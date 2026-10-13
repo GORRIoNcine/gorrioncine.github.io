@@ -108,7 +108,9 @@ h1{font:400 26px/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;ma
 .gate .btn{width:100%;justify-content:center;padding:12px 14px;font-size:15px}
 .gate .msg{margin-top:14px;font-size:13px;color:#e6a39c;min-height:18px}
 .gate small{display:block;margin-top:18px;color:#777;font-size:12px}
-</style></head>
+</style>
+<link rel="stylesheet" href="panel.css">
+</head>
 <body>
 <div class="gate" id="gate"><div class="box"><div class="logo">G</div><h1>GORRIóN</h1><p>Panel de administración.<br>Inicia sesión para continuar.</p>
 <button class="btn" id="login" type="button"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Iniciar sesión con GitHub</button>
@@ -117,7 +119,7 @@ h1{font:400 26px/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;ma
 <aside class="side" id="side">
   <a class="brand" href="./"><i>G</i>GORRIóN</a>
   <ul class="menu" id="menu"></ul>
-  <div class="foot">Panel de administración</div>
+  <div class="foot">Panel de administración<br><a href="editor.html" style="color:#8a8a8a;text-decoration:underline">Editor avanzado</a></div>
 </aside>
 <div class="main">
   <div class="bar">
@@ -129,9 +131,9 @@ h1{font:400 26px/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;ma
     <a href="../" target="_blank" rel="noopener">Ver sitio<svg class="i" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
   </div>
   <main class="wrap">
-    <div class="hello">
+    <div id="dash"><div class="hello">
       <div><h1>Escritorio</h1><p class="lead" id="lead">Cargando el contenido del sitio…</p></div>
-      <a class="btn" id="open-editor" href="editor.html"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Abrir el editor</a>
+      <a class="btn" id="open-editor" href="#/proyectos"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Editar proyectos</a>
     </div>
     <div class="grid" style="margin-top:6px">
       <section class="card s12"><h2><svg class="i" viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg>De un vistazo</h2><div class="stats" id="stats"></div></section>
@@ -146,10 +148,14 @@ h1{font:400 26px/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;ma
         <li><b>Imágenes:</b> se suben desde cada campo de imagen o desde <i>Medios</i>.</li>
         <li><b>Si algo falla:</b> abre <a class="edit" href="../?check" target="_blank">la comprobación del sitio</a>.</li></ul></div></section>
     </div>
+  </div>
+    <div id="ed" hidden></div>
   </main>
 </div></div>
 <script>
 const REPO="GORRIoNcine/gorrioncine.github.io";
+let TOKEN="";
+function toast(m,k){const t=document.createElement("div");t.className="g-toast "+(k||"");t.setAttribute("role","status");t.textContent=m;document.body.append(t);setTimeout(()=>t.remove(),k==="err"?6000:3800)}
 const IC={
  home:'<path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/>',
  film:'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 4v5M16 4v5"/>',
@@ -168,8 +174,10 @@ const IC={
  ext:'<path d="M7 17L17 7M8 7h9v9"/>'
 };
 const ico=n=>`<svg class="i" viewBox="0 0 24 24">${IC[n]}</svg>`;
-const EDIT=n=>n==="media"?"editor.html#/assets":`editor.html#/collections/contenido/entries/${n}`;
-const MENU=[["dash","Escritorio","./",null],["film","Proyectos",EDIT("proyectos"),"p"],["news","Noticias",EDIT("noticias"),"n"],["team","Equipo",EDIT("equipo"),"e"],["tool","Servicios",EDIT("servicios"),"s"],["info","Nosotros",EDIT("nosotros"),null],["award","Prensa y premios",EDIT("prensa"),"a"],["img","Medios (imágenes)",EDIT("media"),null],["gear","Ajustes del sitio",EDIT("site"),null]];
+const icoEl=n=>{const d=document.createElement("span");d.innerHTML=ico(n);return d.firstChild};
+window.GADMIN={repo:REPO,token:()=>TOKEN,toast,ico:icoEl};
+const EDIT=n=>n==="media"?"#/medios":`#/${n}`;
+const MENU=[["dash","Escritorio","#/",null],["film","Proyectos",EDIT("proyectos"),"p"],["news","Noticias",EDIT("noticias"),"n"],["team","Equipo",EDIT("equipo"),"e"],["tool","Servicios",EDIT("servicios"),"s"],["info","Nosotros",EDIT("nosotros"),null],["award","Prensa y premios",EDIT("prensa"),"a"],["img","Medios (imágenes)",EDIT("media"),null],["gear","Ajustes del sitio",EDIT("site"),null]];
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const L=o=>o==null?"":typeof o==="string"?o:(o.es||o.en||"");
@@ -188,8 +196,8 @@ async function startDash(){
   const [site,pr,nw,eq,sv,no,pe]=await Promise.all(["site","proyectos","noticias","equipo","servicios","nosotros","prensa"].map(n=>get("../content/"+n+".json")));
   const P=(pr&&pr.items)||[],N=(nw&&nw.items)||[],E=(eq&&eq.items)||[],S=(sv&&sv.services)||[],M=(pe&&pe.press)||[],A=(pe&&pe.awards)||[];
   const cnt={p:P.length,n:N.length,e:E.length,s:S.length,a:A.length};
-  $("#menu").innerHTML=MENU.map(([i,l,h,k],ix)=>`${ix===7?'<li class="sep"></li>':""}<li><a href="${h}" class="${ix===0?"on":""}">${ico(i)}${l}${k&&cnt[k]!=null?`<small>${cnt[k]}</small>`:""}</a></li>`).join("");
-  $("#newmenu").innerHTML=[["film","Proyecto","proyectos"],["news","Noticia","noticias"],["team","Persona del equipo","equipo"],["award","Premio o mención","prensa"]].map(([i,l,n])=>`<li><a href="${EDIT(n)}">${ico(i)}${l}</a></li>`).join("");
+  $("#menu").innerHTML=MENU.map(([i,l,h,k],ix)=>`${ix===7?'<li class="sep"></li>':""}<li><a href="${h}" class="">${ico(i)}${l}${k&&cnt[k]!=null?`<small>${cnt[k]}</small>`:""}</a></li>`).join("");
+  markMenu();$("#newmenu").innerHTML=[["film","Proyecto","proyectos"],["news","Noticia","noticias"],["team","Persona del equipo","equipo"],["award","Premio o mención","prensa"]].map(([i,l,n])=>`<li><a href="${EDIT(n)}">${ico(i)}${l}</a></li>`).join("");
   if(site&&site.name)$("#sitename").lastChild.textContent=" "+site.name;
   $("#lead").textContent=P.length||N.length?`Resumen del sitio: ${P.length} proyectos, ${N.length} noticias y ${E.length} personas en el equipo.`:"No se pudo leer el contenido (¿estás abriendo el archivo sin servidor?).";
   $("#stats").innerHTML=[["film",P.length,"Proyectos","proyectos"],["news",N.length,"Noticias","noticias"],["team",E.length,"Personas","equipo"],["tool",S.length,"Servicios","servicios"],["mail",M.length,"Menciones de prensa","prensa"],["award",A.length,"Premios y selecciones","prensa"]].map(([i,n,l,e])=>`<a class="stat" href="${EDIT(e)}"><div class="ic">${ico(i)}</div><div><b>${n}</b><span>${l}</span></div></a>`).join("");
@@ -220,6 +228,27 @@ async function startDash(){
 const AUTH="https://sveltia-cms-auth.niguelcruzz2.workers.dev",KEY="gorrion-admin.token";
 const rd=()=>{try{return localStorage.getItem(KEY)||(JSON.parse(localStorage.getItem("sveltia-cms.user")||"null")||{}).token||""}catch(e){return ""}};
 const gmsg=t=>{$("#gmsg").textContent=t||""};
+let booted=false,curHash="";
+function bootEditor(){
+  if(booted)return;booted=true;
+  const s=document.createElement("script");s.src="panel.js";s.onload=route;document.head.append(s);
+  window.addEventListener("hashchange",()=>{
+    if(window.GEditor&&window.GEditor.isDirty()&&location.hash!==curHash){
+      if(!confirm("Tienes cambios sin guardar. ¿Salir sin guardar?")){history.replaceState(null,"",curHash||"#/");return}
+      window.GEditor.discard();
+    }
+    route();
+  });
+}
+function markMenu(){const r=(location.hash.replace(/^#\/?/,"")||"").split("/")[0];document.querySelectorAll("#menu a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")===(r?"#/"+r:"#/")))}
+function route(){
+  curHash=location.hash;
+  const r=(location.hash.replace(/^#\/?/,"")||"").split("/")[0];
+  $("#dash").hidden=!!r;$("#ed").hidden=!r;
+  markMenu();
+  document.body.classList.remove("open");window.scrollTo({top:0});
+  if(r&&window.GEditor)window.GEditor.open(r);
+}
 async function check(token){
   try{
     const h={Authorization:"Bearer "+token,Accept:"application/vnd.github+json"};
@@ -232,7 +261,7 @@ async function check(token){
 async function enter(token,quiet){
   const s=await check(token);
   if(s==="ok"){try{localStorage.setItem(KEY,token);if(!localStorage.getItem("sveltia-cms.user"))localStorage.setItem("sveltia-cms.user",JSON.stringify({backendName:"github",token}))}catch(e){}
-    $("#gate").hidden=true;$("#app").hidden=false;startDash();return}
+    TOKEN=token;$("#gate").hidden=true;$("#app").hidden=false;startDash();bootEditor();return}
   if(s==="perm"){gmsg("Tu cuenta de GitHub no tiene permiso para editar este sitio.");}
   else if(s==="err"){gmsg("No se pudo comprobar la sesión. Revisa tu conexión e inténtalo de nuevo.");return}
   else if(!quiet)gmsg("La sesión no es válida. Inicia sesión de nuevo.");
