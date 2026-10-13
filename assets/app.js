@@ -1165,8 +1165,8 @@ function footer() {
           <input class="field" id="nl-email" name="email" type="email" autocomplete="email" placeholder="${esc(t("email"))}" aria-label="${esc(t("email"))}">${hpField()}
           <button class="btn btn--red btn--sm" type="submit">${t("nl_btn")}</button></form>
         <p class="nl-msg" id="nl-msg" role="status"></p></div>
-      <div><h4>${t("foot_nav")}</h4><ul>${links}</ul></div>
-      <div><h4>${t("foot_social")}</h4><ul>${soc}</ul></div>
+      <div><h4 aria-level="2">${t("foot_nav")}</h4><ul>${links}</ul></div>
+      <div><h4 aria-level="2">${t("foot_social")}</h4><ul>${soc}</ul></div>
     </div>
     <div class="foot__bot"><span>© ${new Date().getFullYear()} ${esc(SITE.name)} ${esc(SITE.suffix)}. ${t("rights")}</span><span>${t("sample")}</span><a href="${routeHref("legal")}">${t("legal")}</a></div>
   </div></footer>`;
@@ -1185,9 +1185,9 @@ function pageHome() {
     <div class="hero__art">${heroArt()}</div>
   </div><div class="sprockets" style="color:var(--red)"></div></section>
   <section class="dock sc-bone"><div class="wrap dock__in">
-    <a href="${routeHref("proyectos")}"><h3>${t("nav_proyectos")}</h3>${ICONS.arrow}<p>${t("dock_p")}</p></a>
-    <a href="${routeHref("servicios")}"><h3>${t("nav_servicios")}</h3>${ICONS.arrow}<p>${t("dock_s")}</p></a>
-    <a href="${routeHref("contacto")}"><h3>${t("nav_contacto")}</h3>${ICONS.arrow}<p>${t("dock_c")}</p></a></div></section>
+    <a href="${routeHref("proyectos")}"><h3 aria-level="2">${t("nav_proyectos")}</h3>${ICONS.arrow}<p>${t("dock_p")}</p></a>
+    <a href="${routeHref("servicios")}"><h3 aria-level="2">${t("nav_servicios")}</h3>${ICONS.arrow}<p>${t("dock_s")}</p></a>
+    <a href="${routeHref("contacto")}"><h3 aria-level="2">${t("nav_contacto")}</h3>${ICONS.arrow}<p>${t("dock_c")}</p></a></div></section>
 
   ${feat ? `<section class="sec sc-dark"><div class="wrap feat">
     <a class="feat__poster" href="${routeHref("project", feat.slug)}" aria-label="${esc(feat.title)}"><div class="card__poster" data-title="${esc(feat.title)}">${posterSVG(feat, lang)}</div></a>
