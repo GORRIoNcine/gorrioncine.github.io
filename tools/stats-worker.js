@@ -75,11 +75,16 @@ async function gql(env, query, variables) {
   return acc;
 }
 
+/* El «site tag» son 32 letras/números (no el nombre del sitio). Si no lo parece, se ignora. */
+const tagOf = (env) => (/^[a-f0-9]{32}$/i.test(String(env.SITE_TAG || "").trim()) ? String(env.SITE_TAG).trim() : "");
+
+/* SITE_TAG solo vale si es el identificador de 32 letras/números de Web Analytics; un nombre de dominio se ignora. */
+const useTag = (env) => /^[a-f0-9]{32}$/i.test(String(env.SITE_TAG || "").trim());
 function filterFor(env) {
-  return env.SITE_TAG ? "{ datetime_geq: $since, datetime_leq: $until, siteTag: $tag }" : "{ datetime_geq: $since, datetime_leq: $until }";
+  return tagOf(env) ? "{ datetime_geq: $since, datetime_leq: $until, siteTag: $tag }" : "{ datetime_geq: $since, datetime_leq: $until }";
 }
-const vars = (env, since, until) => ({ acc: env.CF_ACCOUNT_ID, since, until, ...(env.SITE_TAG ? { tag: env.SITE_TAG } : {}) });
-const decl = (env) => "$acc: String!, $since: Time!, $until: Time!" + (env.SITE_TAG ? ", $tag: String!" : "");
+const vars = (env, since, until) => ({ acc: env.CF_ACCOUNT_ID, since, until, ...(tagOf(env) ? { tag: tagOf(env) } : {}) });
+const decl = (env) => "$acc: String!, $since: Time!, $until: Time!" + (tagOf(env) ? ", $tag: String!" : "");
 
 async function series(env, since, until) {
   const q = `query(${decl(env)}) { viewer { accounts(filter: { accountTag: $acc }) {
@@ -101,8 +106,10 @@ export default {
   async fetch(req, env) {
     const origin = req.headers.get("Origin") || "";
     const h = cors(origin, env);
+    if (!origin && !req.headers.get("Authorization")) return json({ ok: true, mensaje: "El Worker de estadísticas de GORRIóN está funcionando. Los datos solo se ven desde el panel (/admin → Estadísticas)." }, 200, h);
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: h });
     if (req.method !== "GET") return json({ error: "Método no permitido" }, 405, h);
+    if (!origin) return json({ ok: true, mensaje: "El Worker de estadísticas de GORRIóN está activo. Se consulta desde el panel (/admin → Estadísticas), no desde aquí." }, 200, {});
     if (!h["Access-Control-Allow-Origin"] || h["Access-Control-Allow-Origin"] === "null") return json({ error: "Origen no permitido" }, 403, h);
 
     const m = (req.headers.get("Authorization") || "").match(/^Bearer\s+(.+)$/i);

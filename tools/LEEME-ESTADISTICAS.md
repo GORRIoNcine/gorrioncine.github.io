@@ -16,7 +16,7 @@ pequeño servicio gratuito en Cloudflare que guarde la clave de forma segura. Se
 3. En la pantalla del Worker: **Settings** → **Variables and Secrets** → **Add**:
    - `CF_API_TOKEN` → tipo **Secret** → pega el token del paso 1.
    - `CF_ACCOUNT_ID` → tipo **Text** → tu ID de cuenta (aparece en la barra lateral derecha de Workers & Pages, o en la dirección del panel de Cloudflare después de `dash.cloudflare.com/`).
-   - (Opcional) `SITE_TAG` → solo si tienes varios sitios en Web Analytics.
+   - (Opcional) `SITE_TAG` → solo si tienes varios sitios en Web Analytics, y debe ser el «Site tag» de 32 letras y números, no el nombre de la web. Con un solo sitio, no la crees. Es un código de 32 letras y números, **no** el nombre del sitio. Si tienes un solo sitio, no la crees.
    - (Con dominio propio) `ALLOWED_ORIGINS` → `https://gorrioncine.github.io,https://gorrioncine.eu.org`.
 4. **Deploy**. Copia la dirección del Worker (algo como `https://gorrion-stats.TU-USUARIO.workers.dev`).
 
@@ -33,6 +33,7 @@ países, páginas más vistas, de dónde llegan, dispositivos, navegadores y sis
 - El token de Cloudflare vive solo en el Worker. Nunca está en la web ni en el repositorio.
 
 ## Si algo falla
+- Si abres la dirección del Worker directamente en el navegador solo verás un mensaje de que funciona: es normal. Los datos solo se ven desde el panel.
 - «Falta conectar las estadísticas»: falta la dirección del Worker en Ajustes del sitio.
 - «Tu cuenta no tiene permiso…»: inicia sesión en el panel con la cuenta de GitHub que edita el sitio.
 - «No se encontró la cuenta…»: revisa `CF_ACCOUNT_ID` y que el token tenga el permiso de Account Analytics.
