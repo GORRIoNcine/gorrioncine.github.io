@@ -285,6 +285,11 @@ collections:
             widget: string
             required: false
             hint: "Pega aquí el «token» de Cloudflare Web Analytics. Déjalo vacío para no medir visitas."
+          - label: "Estadísticas: dirección del Worker de Cloudflare"
+            name: statsUrl
+            widget: string
+            required: false
+            hint: "La que te da Cloudflare al crear el Worker (termina en .workers.dev)."
           - label: "Redes sociales"
             name: social
             widget: list

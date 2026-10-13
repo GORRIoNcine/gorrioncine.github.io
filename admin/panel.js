@@ -510,12 +510,24 @@
     paint();
   }
 
+  /* ---------- Estadísticas (Cloudflare) ---------- */
+  async function viewStats() {
+    const el = root();
+    el.replaceChildren(h("p", { class: "ed-empty" }, "Cargando…"));
+    if (!window.GStats) {
+      try { await new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = "stats.js?v=1"; sc.onload = ok; sc.onerror = no; document.head.append(sc); }); }
+      catch (e) { el.replaceChildren(h("p", { class: "ed-empty" }, "No se pudo cargar la sección de estadísticas.")); return; }
+    }
+    window.GStats.render(el, { h, pageHead, ico, token: () => G.token() });
+  }
+
   /* ---------- Entrada ---------- */
   async function open(name, force) {
     const el = root();
     if (!S.schema) S.schema = await fetch("schema.json", { cache: "no-store" }).then((r) => r.json());
     S.item = null; S.itemDirty = false; S.dirty = false; S.filter = "";
     if (name === "medios") { S.name = "medios"; return viewMedia(); }
+    if (name === "estadisticas") { S.name = "estadisticas"; return viewStats(); }
     const sec = S.schema.find((s) => s.name === name);
     if (!sec) { el.replaceChildren(h("p", { class: "ed-empty" }, "Sección desconocida.")); return; }
     el.replaceChildren(h("p", { class: "ed-empty" }, "Cargando " + sec.label.toLowerCase() + "…"));
