@@ -1028,6 +1028,7 @@ const S = {
     ["Titular", "GORRIóN, productora audiovisual independiente con sede en La Habana, Cuba. Contacto: ", "Propiedad intelectual", "Las películas, textos, imágenes y marcas de este sitio pertenecen a GORRIóN o a sus autores. No pueden reproducirse sin permiso por escrito.", "Datos personales", "Los datos que escribas en los formularios se usan solo para responder a tu mensaje. No los cedemos a terceros ni los usamos para otros fines. Puedes pedir que los borremos escribiendo al correo de contacto.", "Almacenamiento en tu navegador", "El sitio guarda en tu navegador únicamente tus preferencias de idioma y de modo ligero. No usa cookies de seguimiento."],
     ["Owner", "GORRIóN, an independent audiovisual production company based in Havana, Cuba. Contact: ", "Intellectual property", "The films, texts, images and marks on this site belong to GORRIóN or its authors. They may not be reproduced without written permission.", "Personal data", "The data you enter in the forms is used only to answer your message. We do not share it with third parties or use it for other purposes. You can ask us to delete it by writing to the contact email.", "Browser storage", "The site stores only your language and lite-mode preferences in your browser. It uses no tracking cookies."]
   ],
+  legal_stats: ["Medimos las visitas de forma agregada y anónima con Cloudflare Web Analytics: sin cookies y sin identificarte (páginas vistas, país, tipo de dispositivo).", "We measure visits in aggregate and anonymously with Cloudflare Web Analytics: no cookies and no way to identify you (page views, country, device type)."],
   notfound_h: ["Esta página no existe", "This page does not exist"], notfound_p: ["Puede que el enlace esté roto o que el contenido se haya movido.", "The link may be broken or the content may have moved."],
   home: ["Ir al inicio", "Go home"], prev: ["Anterior", "Previous"], next: ["Siguiente", "Next"],
   reel_tag: ["Reel 2026", "Reel 2026"]
@@ -1372,7 +1373,7 @@ function pageLegal() {
     <h3 style="font-size:1.8rem;margin-bottom:8px">${b[0]}</h3><p>${b[1]}<a href="${routeHref("contacto")}" style="border-bottom:2px solid var(--fg)">${esc(SITE.email)}</a>.</p>
     <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[2]}</h3><p>${b[3]}</p>
     <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[4]}</h3><p>${b[5]}</p>
-    <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[6]}</h3><p>${b[7]}</p></div></div></section>`;
+    <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[6]}</h3><p>${b[7]}${SITE.analyticsToken ? " " + t("legal_stats") : ""}</p></div></div></section>`;
 }
 function pageProblem() {
   return `<section class="sec sc-dark"><div class="wrap"><span class="eyebrow">${t("problem_eyebrow")}</span><h1 id="page-h" style="margin-top:14px">${t("problem_h")}</h1><p class="lede" style="margin-top:18px">${t("problem_p")}</p><p style="margin-top:28px"><a class="btn btn--red" href="${routeHref("inicio")}">${t("home")} ${ICONS.arrow}</a> <a class="btn" href="${routeHref("proyectos")}">${t("nav_proyectos")}</a></p></div></section>`;
