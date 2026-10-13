@@ -1,0 +1,34 @@
+# Publica la web. Cada vez que cambia algo en main (también cuando se guarda desde el panel):
+#   1) valida el contenido, 2) regenera las páginas para Google y redes (tools/build-pages.mjs), 3) publica.
+# Requiere, una sola vez:  Settings → Pages → Build and deployment → Source: "GitHub Actions".
+name: Publicar web
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tools/validate-content.mjs .
+      - run: node tools/build-pages.mjs .
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

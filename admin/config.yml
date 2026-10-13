@@ -66,6 +66,11 @@ collections:
                     name: de
                     widget: string
                     required: false
+          - label: "Dirección de la web (sin barra final)"
+            name: siteUrl
+            widget: string
+            required: false
+            hint: "Ahora: https://gorrioncine.github.io · Cuando tengas dominio propio, cámbiala aquí (por ejemplo https://gorrioncine.eu.org)."
           - label: "Enlace del reel (Vimeo / YouTube)"
             name: reelUrl
             widget: string
