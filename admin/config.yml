@@ -7,6 +7,7 @@ backend:
   base_url: https://sveltia-cms-auth.niguelcruzz2.workers.dev
 
 site_url: https://gorrioncine.github.io
+logo_url: https://gorrioncine.github.io/admin/logo.svg
 display_url: https://gorrioncine.github.io
 locale: es
 media_folder: uploads

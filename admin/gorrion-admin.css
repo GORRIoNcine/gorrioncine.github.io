@@ -1,0 +1,96 @@
+/* GORRIóN · identidad visual para el editor (Sveltia CMS)
+   Solo redefine las variables de diseño --sui-* del propio editor y añade unos pocos retoques.
+   Negro #000000 principal · hueso #efefef secundario · rojo #5f140f de acento. */
+
+html:root {
+  --gorrion-red: #5f140f;
+  --gorrion-display: "Franklin Gothic Medium", "Libre Franklin", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --sui-base-hue: 3;
+  --sui-heading-font-family: var(--gorrion-display);
+  --sui-heading-font-weight: 400;
+  --sui-control-small-border-radius: 2px;
+  --sui-control-medium-border-radius: 2px;
+  --sui-control-large-border-radius: 2px;
+  --sui-modal-border-width: 1px;
+  --sui-focus-ring-width: 2px;
+}
+
+/* ---- Tema oscuro (negro de marca) ---- */
+html:root[data-theme="dark"] {
+  --sui-foreground-color-1-hsl: 0 0% 94%;
+  --sui-foreground-color-2-hsl: 0 0% 80%;
+  --sui-foreground-color-3-hsl: 0 0% 68%;
+  --sui-foreground-color-4-hsl: 0 0% 58%;
+  --sui-foreground-color-5-hsl: 0 0% 38%;
+  --sui-background-color-1-hsl: 0 0% 2%;
+  --sui-background-color-2-hsl: 0 0% 5%;
+  --sui-background-color-3-hsl: 0 0% 8%;
+  --sui-background-color-4-hsl: 0 0% 12%;
+  --sui-background-color-5-hsl: 3 30% 20%;
+  --sui-border-color-1-hsl: 0 0% 40%;
+  --sui-border-color-2-hsl: 0 0% 22%;
+  --sui-border-color-3-hsl: 0 0% 16%;
+  --sui-primary-accent-color-text: hsl(4 78% 66%);
+  --sui-primary-accent-color-light: hsl(3 68% 36%);
+  --sui-primary-accent-color: hsl(3 72% 30%);
+  --sui-primary-accent-color-dark: hsl(3 74% 22%);
+  --sui-primary-accent-color-inverted: #efefef;
+  --sui-primary-accent-color-translucent: hsl(3 72% 36% / 60%);
+  --sui-primary-accent-color-translucent-light: hsl(3 72% 36% / 40%);
+}
+
+/* ---- Tema claro (hueso de marca) ---- */
+html:root[data-theme="light"] {
+  --sui-foreground-color-1-hsl: 0 0% 4%;
+  --sui-foreground-color-2-hsl: 0 0% 18%;
+  --sui-foreground-color-3-hsl: 0 0% 30%;
+  --sui-foreground-color-4-hsl: 0 0% 42%;
+  --sui-foreground-color-5-hsl: 0 0% 62%;
+  --sui-background-color-1-hsl: 0 0% 100%;
+  --sui-background-color-2-hsl: 0 0% 93.7%;   /* #efefef */
+  --sui-background-color-3-hsl: 0 0% 90%;
+  --sui-background-color-4-hsl: 0 0% 87%;
+  --sui-background-color-5-hsl: 3 25% 82%;
+  --sui-border-color-1-hsl: 0 0% 52%;
+  --sui-border-color-2-hsl: 0 0% 68%;
+  --sui-border-color-3-hsl: 0 0% 78%;
+  --sui-primary-accent-color-text: hsl(3 74% 22%);
+  --sui-primary-accent-color-light: hsl(3 70% 30%);
+  --sui-primary-accent-color: hsl(3 74% 22%);       /* #5f140f */
+  --sui-primary-accent-color-dark: hsl(3 76% 17%);
+  --sui-primary-accent-color-inverted: #efefef;
+  --sui-primary-accent-color-translucent: hsl(3 74% 30% / 55%);
+  --sui-primary-accent-color-translucent-light: hsl(3 74% 30% / 35%);
+}
+
+/* ---- Retoques de forma ---- */
+::selection { background: var(--gorrion-red); color: #efefef; }
+
+/* Barra superior global: filo rojo de marca */
+html body .toolbar-wrapper .sui.toolbar.primary { box-shadow: inset 0 -3px 0 var(--gorrion-red); }
+
+/* Títulos con la tipografía de la marca */
+html body .sui.toolbar h2,
+html body h1, html body h2 { font-family: var(--gorrion-display); font-weight: 400; letter-spacing: .03em; text-transform: uppercase; }
+html body .sui.toolbar h2 { font-size: 18px; }
+
+/* Menú lateral de colecciones */
+html body nav.primary-sidebar .sui.option-group > .label { text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
+html body nav.primary-sidebar .sui.treeitem[aria-selected="true"] > .row { box-shadow: inset 4px 0 0 var(--sui-primary-accent-color-text); font-weight: 700; }
+html body .sui.treeitem .count { font-variant-numeric: tabular-nums; border-radius: 999px; padding: 0 8px; background: var(--sui-secondary-background-color); }
+
+/* Lista de archivos / entradas: filas más cómodas y legibles */
+html body .sui.grid-row { min-height: 52px; }
+html body .sui.grid-cell.title .label { font-size: 16px; font-weight: 600; }
+html body .sui.grid-row[aria-selected="true"] { box-shadow: inset 4px 0 0 var(--sui-primary-accent-color-text); }
+
+/* Botones principales (Guardar, Crear…) */
+html body .sui.button.primary { text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+
+/* Pestañas y campos */
+html body .sui.tab[aria-selected="true"], html body .sui.tab.selected { box-shadow: inset 0 -3px 0 var(--sui-primary-accent-color-text); }
+html body .sui.text-input input, html body .sui.text-area textarea { border-radius: 2px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html body .sui.button, html body .sui.grid-row, html body .sui.treeitem .row { transition: background-color .12s, box-shadow .12s, color .12s; }
+}
