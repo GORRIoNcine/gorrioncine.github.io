@@ -1420,17 +1420,25 @@ function parseRoute() {
 const app = () => $("#app");
 let lastKey = null;
 
+/* Ajustes de buscadores (content/seo.json, panel → «Buscadores (SEO)») */
+const SEOC = {};
+const seoPage = (name) => asArr(SEOC.pages).find((x) => x && x.page === name) || {};
 function routeTitle(r) {
   const base = SITE.name;
-  if (r.name === "inicio") return base;
-  if (r.name === "project") return `${r.p.title} · ${base}`;
-  if (r.name === "article") return `${L(r.n.title)} · ${base}`;
+  if (r.name === "inicio") return L(SEOC.homeTitle) || base;
+  if (r.name === "project") return L(r.p.seoTitle) || `${r.p.title} · ${base}`;
+  if (r.name === "article") return L(r.n.seoTitle) || `${L(r.n.title)} · ${base}`;
+  if (L(seoPage(r.name).title)) return L(seoPage(r.name).title);
   if (r.name === "404") return `404 · ${base}`;
   return `${t("nav_" + r.name) !== "nav_" + r.name ? t("nav_" + r.name) : t("legal")} · ${base}`;
 }
 /* ---------- Metadatos de la página (título, descripción, enlace canónico, redes) ---------- */
 function routeDesc(r) {
   const cut = (x) => { x = String(x || "").replace(/\s+/g, " ").trim(); return x.length > 200 ? x.slice(0, 197).replace(/\s+\S*$/, "") + "…" : x; };
+  if (r.name === "project" && L(r.p.seoDesc)) return cut(L(r.p.seoDesc));
+  if (r.name === "article" && L(r.n.seoDesc)) return cut(L(r.n.seoDesc));
+  if (r.name === "inicio" && L(SEOC.homeDesc)) return cut(L(SEOC.homeDesc));
+  if (L(seoPage(r.name).description)) return cut(L(seoPage(r.name).description));
   if (r.name === "project") return cut(L(r.p.short) || L(r.p.tagline) || `${r.p.title} · ${SITE.name}`);
   if (r.name === "article") return cut(L(r.n.sum) || L(r.n.body)[0] || L(r.n.title));
   const k = { inicio: "hero_sub", proyectos: "projects_lede", servicios: "svc_lede", nosotros: "about_lede", prensa: "press_lede", noticias: "news_lede", contacto: "contact_lede" }[r.name];
@@ -1448,14 +1456,15 @@ function syncMeta(r) {
     const here = r.name === "404" ? location.pathname : r.name === "project" ? routeHref("project", r.p.slug) : r.name === "article" ? routeHref("article", r.n.slug) : routeHref(r.name);
     const url = PATHMODE ? origin + here : origin + BASE;
     const abs = (u) => (/^https?:/.test(u) ? u : origin + (u[0] === "/" ? u : BASE + u));
-    const img = r.name === "project" && r.p.poster ? abs(r.p.poster) : r.name === "article" && r.n.image ? abs(r.n.image) : origin + BASE + "assets/og-default.png";
+    const img = r.name === "project" && r.p.poster ? abs(r.p.poster) : r.name === "article" && r.n.image ? abs(r.n.image) : (SEOC.ogImage ? abs(SEOC.ogImage) : origin + BASE + "assets/og-default.png");
     const title = routeTitle(r), desc = routeDesc(r);
     setHead('meta[name="description"]', ["meta", ["name", "description"]], "content", desc);
     if (PATHMODE) setHead('link[rel="canonical"]', ["link", ["rel", "canonical"]], "href", url);
     [["og:title", title], ["og:description", desc], ["og:url", url], ["og:image", img]].forEach(([k, v]) => setHead(`meta[property="${k}"]`, ["meta", ["property", k]], "content", v));
     [["twitter:title", title], ["twitter:description", desc], ["twitter:image", img]].forEach(([k, v]) => setHead(`meta[name="${k}"]`, ["meta", ["name", k]], "content", v));
     const rb = document.head.querySelector('meta[name="robots"]');
-    if (r.name === "404") { if (!rb) setHead('meta[name="robots"]', ["meta", ["name", "robots"], ["data-client", "1"]], "content", "noindex"); }
+    const noidx = r.name === "404" || SEOC.indexar === false || (r.name === "project" && r.p.noindex) || (r.name === "article" && r.n.noindex);
+    if (noidx) { if (!rb) setHead('meta[name="robots"]', ["meta", ["name", "robots"], ["data-client", "1"]], "content", "noindex"); }
     else if (rb && rb.dataset.client) rb.remove();
   } catch (e) { /* los metadatos nunca deben romper la página */ }
 }
@@ -1727,7 +1736,8 @@ function showWarnings() {
 
 function loadContent() {
   if (typeof fetch !== "function" || location.protocol === "file:") return Promise.resolve();
-  return Promise.all(["site", "proyectos", "noticias", "equipo", "servicios", "nosotros", "prensa"].map(fetchJSON)).then(([site, proy, noti, equ, serv, nos, pre]) => {
+  return Promise.all(["site", "proyectos", "noticias", "equipo", "servicios", "nosotros", "prensa", "seo"].map(fetchJSON)).then(([site, proy, noti, equ, serv, nos, pre, seo]) => {
+    if (seo && typeof seo === "object") Object.assign(SEOC, seo);
     if (site && typeof site === "object") Object.assign(SITE, site);
     SITE.social = asArr(SITE.social); SITE.channels = asArr(SITE.channels);
     if (proy && Array.isArray(proy.items)) {

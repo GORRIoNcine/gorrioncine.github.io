@@ -344,14 +344,14 @@
       title: (i) => i.title, sub: (i, d) => [optLabel(d, "type", i.type), i.year].filter(Boolean).join(" · "), img: (i) => i.poster,
       chip: (i) => STATUS[i.status], star: (i) => i.featured, sideExtra: ["status", "featured"],
       newItem: () => ({ id: "proj-" + rid(), type: "ficcion", status: "desarrollo", year: new Date().getFullYear(), featured: false, style: "rays" }),
-      groups: [["Datos básicos", ["title", "slug", "type", "format", "year", "status", "runtime", "genre", "lang", "subs", "featured"]], ["Cartel y textos", ["poster", "tagline", "short", "long", "note", "noteBy"]], ["Ficha técnica", ["crew"]], ["Recorrido y prensa", ["journey", "press"]], ["Dónde verla", ["where"]], ["Fotogramas", ["stills", "style"]]],
+      groups: [["Datos básicos", ["title", "slug", "type", "format", "year", "status", "runtime", "genre", "lang", "subs", "featured"]], ["Cartel y textos", ["poster", "tagline", "short", "long", "note", "noteBy"]], ["Ficha técnica", ["crew"]], ["Recorrido y prensa", ["journey", "press"]], ["Dónde verla", ["where"]], ["Fotogramas", ["stills", "style"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
     },
     noticias: {
       noun: "noticia", plural: "Noticias", add: "Escribir noticia", ratio: "wide",
       lead: "Estrenos, rodajes, convocatorias y detrás de cámaras.",
       title: (i) => L(i.title), sub: (i, d) => [optLabel(d, "cat", i.cat), i.date].filter(Boolean).join(" · "), img: (i) => i.image,
       newItem: () => ({ cat: "estrenos", date: today(), seed: Math.floor(Math.random() * 90) + 1 }),
-      groups: [["Datos", ["title", "slug", "cat", "date", "project"]], ["Imagen", ["image"]], ["Texto", ["sum", "body"]]],
+      groups: [["Datos", ["title", "slug", "cat", "date", "project"]], ["Imagen", ["image"]], ["Texto", ["sum", "body"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
     },
     equipo: {
       noun: "persona", plural: "Equipo", add: "Añadir persona", ratio: "square",
@@ -465,6 +465,7 @@
 
   /* ---------- Secciones de formulario (ajustes, servicios…) ---------- */
   const SEC_LEAD = {
+    seo: "Cómo aparece la web en Google y al compartir enlaces. Los cambios se publican solos en 1–2 minutos.",
     site: "Correo, ciudad, redes y boletín. Se usan en el pie de página y en la página de contacto.",
     servicios: "Lo que ofrece la productora y cómo trabaja.",
     nosotros: "Biografía, valores, historia y aliados de la productora.",

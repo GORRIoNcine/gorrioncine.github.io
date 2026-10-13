@@ -31,6 +31,8 @@ const team = json("content/equipo.json", { items: [] }).items || [];
 const serv = json("content/servicios.json", {});
 const about = json("content/nosotros.json", {});
 const press = json("content/prensa.json", {});
+const seo = json("content/seo.json", {});
+const INDEXAR = seo.indexar !== false; // false = «no aparecer en Google» (pausa global)
 
 let SITE_URL = String(site.siteUrl || "https://gorrioncine.github.io").trim().replace(/\/+$/, "");
 if (!/^https?:\/\/[^/\s]+$/.test(SITE_URL)) { console.warn(`⚠ siteUrl «${site.siteUrl}» no es válido; se usa https://gorrioncine.github.io`); SITE_URL = "https://gorrioncine.github.io"; }
@@ -65,7 +67,7 @@ const typeLabel = (t) => (TYPES[t] ? TYPES[t].es : t || "");
 const fmtDate = (d) => { const m = String(d || "").match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/); if (!m) return String(d || ""); const mes = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"][+m[2] - 1] || ""; return m[3] ? `${+m[3]} de ${mes} de ${m[1]}` : `${mes} de ${m[1]}`; };
 
 const assetHash = createHash("sha1").update(appSrc).update(read("assets/app.css")).digest("hex").slice(0, 10);
-const OG_DEFAULT = `${SITE_URL}/assets/og-default.png`;
+const OG_DEFAULT = seo.ogImage ? abs(seo.ogImage) : `${SITE_URL}/assets/og-default.png`;
 
 const NAV = [["proyectos", "Proyectos"], ["servicios", "Servicios"], ["nosotros", "Nosotros"], ["prensa", "Prensa"], ["noticias", "Noticias"], ["contacto", "Contacto"]];
 const SECTION_DESC = {
@@ -83,11 +85,14 @@ const HOME_H1 = stripTags(ui("hero_h1", "Cine independiente hecho en Cuba."));
 /* ---------- Estructura de una página ---------- */
 const template = read("tools/template.html");
 function page({ path, title, desc, type = "website", image, imageAlt, noindex, ld = [], body }) {
+  noindex = noindex || !INDEXAR;
   const url = SITE_URL + path;
   const img = image || OG_DEFAULT;
   const head = [
     `<title>${esc(title)}</title>`,
     `<meta name="description" content="${esc(desc)}">`,
+    seo.googleVerification ? `<meta name="google-site-verification" content="${esc(seo.googleVerification)}">` : "",
+    seo.bingVerification ? `<meta name="msvalidate.01" content="${esc(seo.bingVerification)}">` : "",
     noindex ? `<meta name="robots" content="noindex">` : `<meta name="robots" content="index,follow,max-image-preview:large">`,
     noindex ? "" : `<link rel="canonical" href="${esc(url)}">`,
     `<meta property="og:site_name" content="${NAME}">`,
@@ -145,14 +150,15 @@ news.filter((n) => n && txt(n.title) && !slugOk(n.slug)).forEach((n) => console.
 {
   const feat = validProjects.find((p) => p.featured) || validProjects[0];
   const main = `<h1>${esc(HOME_H1)}</h1><p class="seo__lede">${esc(HOME_DESC)}</p>${feat ? `<h2>Proyecto destacado</h2>${projectList([feat])}` : ""}<h2>Proyectos</h2>${projectList(validProjects.slice(0, 8))}${validNews.length ? `<h2>Últimas noticias</h2>${newsList(validNews.slice(0, 4))}` : ""}`;
-  pages["index.html"] = page({ path: "/", title: `${NAME} · Productora audiovisual independiente de La Habana`, desc: cut(HOME_DESC), ld: [ORG(), { "@context": "https://schema.org", "@type": "WebSite", name: NAME, url: SITE_URL + "/", inLanguage: ["es", "en", "fr", "pt", "it", "de"] }], body: shell(main, "") });
+  pages["index.html"] = page({ path: "/", title: txt(seo.homeTitle) || `${NAME} · Productora audiovisual independiente de La Habana`, desc: cut(txt(seo.homeDesc) || HOME_DESC), ld: [ORG(), { "@context": "https://schema.org", "@type": "WebSite", name: NAME, url: SITE_URL + "/", inLanguage: ["es", "en", "fr", "pt", "it", "de"] }], body: shell(main, "") });
   out.push({ path: "/", priority: "1.0" });
 }
 
 /* Secciones */
 const SECTION_TITLE = { proyectos: "Proyectos", servicios: "Servicios", nosotros: "Nosotros", prensa: "Prensa", noticias: "Noticias", contacto: "Contacto", legal: "Aviso legal y privacidad" };
 function section(name, main, ld = []) {
-  pages[`${name}/index.html`] = page({ path: `/${name}/`, title: `${SECTION_TITLE[name]} · ${NAME}`, desc: cut(SECTION_DESC[name]), ld: [...ld, breadcrumb([["Inicio", "/"], [SECTION_TITLE[name], `/${name}/`]])], body: shell(`<h1>${esc(SECTION_TITLE[name])}</h1><p class="seo__lede">${esc(SECTION_DESC[name])}</p>${main}`, name) });
+  const o = (Array.isArray(seo.pages) ? seo.pages : []).find((x) => x && x.page === name) || {};
+  pages[`${name}/index.html`] = page({ path: `/${name}/`, title: txt(o.title) || `${SECTION_TITLE[name]} · ${NAME}`, desc: cut(txt(o.description) || SECTION_DESC[name]), ld: [...ld, breadcrumb([["Inicio", "/"], [SECTION_TITLE[name], `/${name}/`]])], body: shell(`<h1>${esc(SECTION_TITLE[name])}</h1><p class="seo__lede">${esc(SECTION_DESC[name])}</p>${main}`, name) });
   out.push({ path: `/${name}/`, priority: name === "legal" ? "0.2" : "0.8" });
 }
 section("proyectos", projectList(validProjects));
@@ -166,7 +172,7 @@ section("legal", `<p>Titular: ${NAME}, productora audiovisual independiente con 
 /* Proyectos */
 for (const p of validProjects) {
   const path = `/proyectos/${p.slug}/`;
-  const desc = cut(txt(p.short) || txt(p.tagline) || `${p.title} · ${NAME}`);
+  const desc = cut(txt(p.seoDesc) || txt(p.short) || txt(p.tagline) || `${p.title} · ${NAME}`);
   const dir = (p.crew || []).filter((c) => c && c.r === "direccion").flatMap((c) => String(c.n || "").split(/,| y /).map((x) => x.trim()).filter(Boolean));
   const mins = String(p.runtime || "").match(/(\d+)\s*min/i);
   const status = STATUS[p.status] ? STATUS[p.status].es : "";
@@ -179,21 +185,21 @@ for (const p of validProjects) {
   if (mins && ldType === "Movie") ld.duration = `PT${+mins[1]}M`;
   const rel = validNews.filter((n) => n.project && projBy(n.project) === p);
   const main = `<p class="seo__crumb"><a href="/proyectos/">Proyectos</a> / ${esc(p.title)}</p><h1>${esc(p.title)}</h1><p class="seo__meta">${esc([typeLabel(p.type), txt(p.format), p.year, p.runtime, status].filter(Boolean).join(" · "))}</p>${txt(p.tagline) ? `<p class="seo__lede">${esc(txt(p.tagline))}</p>` : ""}${p.poster ? `<img class="seo__img" src="${esc(p.poster)}" alt="${esc(p.title)}" loading="lazy">` : ""}${paras(txt(p.short))}${paras(txt(p.long))}${(p.crew || []).length ? `<h2>Ficha técnica</h2><dl>${p.crew.filter((c) => c && ROLES[c.r]).map((c) => `<dt>${esc(ROLES[c.r].es)}</dt><dd>${esc(c.n)}</dd>`).join("")}</dl>` : ""}${txt(p.note) ? `<h2>Nota del director</h2><blockquote>${esc(txt(p.note))}${p.noteBy ? `<cite> — ${esc(p.noteBy)}</cite>` : ""}</blockquote>` : ""}${(p.journey || []).length ? `<h2>Recorrido</h2><ul class="seo__list">${p.journey.filter((j) => j && j.t).map((j) => `<li><b>${esc(j.d)}</b> ${esc(txt(j.t))} <span>${esc(j.p)}</span></li>`).join("")}</ul>` : ""}${(p.press || []).length ? `<h2>Prensa</h2>${p.press.filter((x) => x && x.q).map((x) => `<blockquote>${esc(txt(x.q))}<cite> — ${esc(x.s)}</cite></blockquote>`).join("")}` : ""}${(p.where || []).length ? `<h2>Dónde verla</h2><ul class="seo__list">${p.where.filter((w) => w && w.l).map((w) => `<li>${w.url ? `<a href="${esc(w.url)}" rel="noopener">${esc(txt(w.l))}</a>` : `<b>${esc(txt(w.l))}</b>`} <span>${esc(txt(w.n))}</span></li>`).join("")}</ul>` : ""}${rel.length ? `<h2>Noticias relacionadas</h2>${newsList(rel)}` : ""}`;
-  pages[`proyectos/${p.slug}/index.html`] = page({ path, title: `${p.title} · ${NAME}`, desc, type: "video.movie", image: p.poster ? abs(p.poster) : "", imageAlt: p.poster ? `Cartel de ${p.title}` : "", ld: [ld, breadcrumb([["Inicio", "/"], ["Proyectos", "/proyectos/"], [p.title, path]])], body: shell(main, "proyectos") });
-  out.push({ path, priority: "0.7" });
+  pages[`proyectos/${p.slug}/index.html`] = page({ path, title: txt(p.seoTitle) || `${p.title} · ${NAME}`, desc, noindex: !!p.noindex, type: "video.movie", image: p.poster ? abs(p.poster) : "", imageAlt: p.poster ? `Cartel de ${p.title}` : "", ld: [ld, breadcrumb([["Inicio", "/"], ["Proyectos", "/proyectos/"], [p.title, path]])], body: shell(main, "proyectos") });
+  if (!p.noindex) out.push({ path, priority: "0.7" });
 }
 
 /* Noticias */
 for (const n of validNews) {
   const path = `/noticias/${n.slug}/`, title = txt(n.title);
   const body = Array.isArray(L(n.body)) ? L(n.body) : [];
-  const desc = cut(txt(n.sum) || body[0] || title);
+  const desc = cut(txt(n.seoDesc) || txt(n.sum) || body[0] || title);
   const pr = n.project ? projBy(n.project) : null;
   const ld = { "@context": "https://schema.org", "@type": "NewsArticle", headline: cut(title, 110), description: desc, datePublished: String(n.date).slice(0, 10), inLanguage: "es", mainEntityOfPage: SITE_URL + path, author: { "@type": "Organization", name: NAME }, publisher: { "@type": "Organization", name: NAME, logo: { "@type": "ImageObject", url: `${SITE_URL}/assets/icon-512.png` } } };
   if (n.image) ld.image = abs(n.image);
   const main = `<p class="seo__crumb"><a href="/noticias/">Noticias</a> / ${esc(title)}</p><h1>${esc(title)}</h1><p class="seo__meta">${esc(fmtDate(n.date))}${NEWS_CATS[n.cat] ? " · " + esc(NEWS_CATS[n.cat].es) : ""}</p>${n.image ? `<img class="seo__img" src="${esc(n.image)}" alt="${esc(title)}" loading="lazy">` : ""}${txt(n.sum) ? `<p class="seo__lede">${esc(txt(n.sum))}</p>` : ""}${body.map((x) => `<p>${esc(x)}</p>`).join("")}${pr ? `<h2>Proyecto relacionado</h2>${projectList([pr])}` : ""}`;
-  pages[`noticias/${n.slug}/index.html`] = page({ path, title: `${title} · ${NAME}`, desc, type: "article", image: n.image ? abs(n.image) : "", imageAlt: n.image ? title : "", ld: [ld, breadcrumb([["Inicio", "/"], ["Noticias", "/noticias/"], [title, path]])], body: shell(main, "noticias") });
-  out.push({ path, lastmod: String(n.date).slice(0, 10), priority: "0.6" });
+  pages[`noticias/${n.slug}/index.html`] = page({ path, title: txt(n.seoTitle) || `${title} · ${NAME}`, desc, noindex: !!n.noindex, type: "article", image: n.image ? abs(n.image) : "", imageAlt: n.image ? title : "", ld: [ld, breadcrumb([["Inicio", "/"], ["Noticias", "/noticias/"], [title, path]])], body: shell(main, "noticias") });
+  if (!n.noindex) out.push({ path, lastmod: String(n.date).slice(0, 10), priority: "0.6" });
 }
 
 /* 404: también sirve la web completa para direcciones nuevas que aún no tienen página generada */
@@ -215,7 +221,8 @@ for (const [f, html] of Object.entries(pages)) write(f, html);
 /* ---------- sitemap.xml, robots.txt, manifiesto ---------- */
 const xml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${out.map((u) => `  <url><loc>${xml(SITE_URL + u.path)}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ""}<priority>${u.priority}</priority></url>`).join("\n")}\n</urlset>\n`);
-write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+write("robots.txt", INDEXAR ? `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n` : `User-agent: *\nDisallow: /\n`);
+if (!INDEXAR) console.log("⚠ Indexación desactivada en Buscadores (SEO): la web NO aparecerá en Google.");
 write("site.webmanifest", JSON.stringify({ name: NAME, short_name: NAME, description: HOME_DESC, start_url: "/", scope: "/", display: "standalone", background_color: "#000000", theme_color: "#000000", lang: "es", icons: [{ src: "/assets/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "/assets/icon-512.png", sizes: "512x512", type: "image/png" }, { src: "/assets/icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }] }, null, 2) + "\n");
 
 console.log(`✔ ${Object.keys(pages).length} páginas · ${out.length} direcciones en sitemap.xml · sitio ${SITE_URL}`);

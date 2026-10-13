@@ -19,6 +19,201 @@ collections:
     label_singular: Sección
     description: Textos, fotos y datos de la web. Cada cambio se guarda y se publica solo en 1–2 minutos.
     files:
+      - name: seo
+        label: "Buscadores (SEO)"
+        file: content/seo.json
+        fields:
+          - label: "Permitir que Google y otros buscadores muestren la web"
+            name: indexar
+            widget: boolean
+            required: false
+            default: true
+            hint: "Déjalo activado. Si lo apagas, la web desaparece poco a poco de los buscadores (útil solo mientras trabajas en ella)."
+          - label: "Título de la portada en Google"
+            name: homeTitle
+            widget: object
+            required: false
+            collapsed: true
+            summary: "{{fields.es}}"
+            hint: "Si lo dejas vacío: «GORRIóN · Productora audiovisual independiente de La Habana». Ideal: menos de 60 letras."
+            fields:
+              - label: "Español"
+                name: es
+                widget: string
+                required: false
+              - label: "English"
+                name: en
+                widget: string
+                required: false
+              - label: "Otros idiomas (opcional)"
+                name: otros
+                widget: object
+                required: false
+                collapsed: true
+                fields:
+                  - label: "Français"
+                    name: fr
+                    widget: string
+                    required: false
+                  - label: "Português"
+                    name: pt
+                    widget: string
+                    required: false
+                  - label: "Italiano"
+                    name: it
+                    widget: string
+                    required: false
+                  - label: "Deutsch"
+                    name: de
+                    widget: string
+                    required: false
+          - label: "Descripción de la portada en Google"
+            name: homeDesc
+            widget: object
+            required: false
+            collapsed: true
+            summary: "{{fields.es}}"
+            hint: "Una o dos frases que explican qué es GORRIóN. Ideal: entre 80 y 160 letras."
+            fields:
+              - label: "Español"
+                name: es
+                widget: string
+                required: false
+              - label: "English"
+                name: en
+                widget: string
+                required: false
+              - label: "Otros idiomas (opcional)"
+                name: otros
+                widget: object
+                required: false
+                collapsed: true
+                fields:
+                  - label: "Français"
+                    name: fr
+                    widget: string
+                    required: false
+                  - label: "Português"
+                    name: pt
+                    widget: string
+                    required: false
+                  - label: "Italiano"
+                    name: it
+                    widget: string
+                    required: false
+                  - label: "Deutsch"
+                    name: de
+                    widget: string
+                    required: false
+          - label: "Otras páginas (Proyectos, Servicios, Contacto…)"
+            name: pages
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.page}}"
+            label_singular: "página"
+            hint: "Opcional. Si no añades una página, se usa el texto por defecto."
+            fields:
+              - label: "Página"
+                name: page
+                widget: select
+                options:
+                  - { label: "Proyectos", value: "proyectos" }
+                  - { label: "Servicios", value: "servicios" }
+                  - { label: "Nosotros", value: "nosotros" }
+                  - { label: "Prensa y premios", value: "prensa" }
+                  - { label: "Noticias", value: "noticias" }
+                  - { label: "Contacto", value: "contacto" }
+                  - { label: "Aviso legal", value: "legal" }
+              - label: "Título en Google"
+                name: title
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Descripción en Google"
+                name: description
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+          - label: "Imagen al compartir en redes (por defecto)"
+            name: ogImage
+            widget: image
+            required: false
+            hint: "Se ve al compartir el enlace en WhatsApp, Facebook, X… Tamaño ideal 1200×630. Si no subes ninguna, se usa el logo."
+          - label: "Código de verificación de Google Search Console"
+            name: googleVerification
+            widget: string
+            required: false
+            hint: "Pega solo el código (lo que va dentro de content=\"…\") que te da Google al elegir «Etiqueta HTML»."
+          - label: "Código de verificación de Bing Webmaster"
+            name: bingVerification
+            widget: string
+            required: false
+            hint: "Opcional. Solo el código de la etiqueta msvalidate.01."
       - name: site
         label: "Datos generales y contacto"
         file: content/site.json
@@ -666,6 +861,88 @@ collections:
                 widget: number
                 required: false
                 value_type: "int"
+              - label: "Título en Google (opcional)"
+                name: seoTitle
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                hint: "Si lo dejas vacío se usa «Nombre · GORRIóN». Ideal: menos de 60 letras."
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Descripción en Google (opcional)"
+                name: seoDesc
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                hint: "Si la dejas vacía se usa el resumen. Ideal: entre 80 y 160 letras."
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Ocultar esta página de Google"
+                name: noindex
+                widget: boolean
+                required: false
+                default: false
+                hint: "La página sigue existiendo, pero Google no la mostrará."
       - name: noticias
         label: "Noticias"
         file: content/noticias.json
@@ -850,6 +1127,88 @@ collections:
                 widget: number
                 required: false
                 value_type: "int"
+              - label: "Título en Google (opcional)"
+                name: seoTitle
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                hint: "Si lo dejas vacío se usa «Nombre · GORRIóN». Ideal: menos de 60 letras."
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Descripción en Google (opcional)"
+                name: seoDesc
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                hint: "Si la dejas vacía se usa el resumen. Ideal: entre 80 y 160 letras."
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: string
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: string
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: string
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: string
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: string
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: string
+                        required: false
+              - label: "Ocultar esta página de Google"
+                name: noindex
+                widget: boolean
+                required: false
+                default: false
+                hint: "La página sigue existiendo, pero Google no la mostrará."
       - name: equipo
         label: "Equipo"
         file: content/equipo.json

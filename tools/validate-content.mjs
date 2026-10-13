@@ -24,6 +24,18 @@ const img = (where, v) => { if (typeof v === "string" && v.startsWith("/uploads/
 
 const proy = load("proyectos"), noti = load("noticias"), pre = load("prensa"), equ = load("equipo");
 load("site"); load("servicios"); load("nosotros");
+{
+  const f = join(root, "content", "seo.json");
+  if (existsSync(f)) {
+    const seo = load("seo") || {};
+    if (seo.indexar === false) warn("Buscadores (SEO): la indexación está DESACTIVADA; la web no aparecerá en Google.");
+    ["googleVerification", "bingVerification"].forEach((k) => { if (seo[k] && !/^[A-Za-z0-9_-]{10,}$/.test(String(seo[k]).trim())) warn(`Buscadores (SEO): «${k}» debe ser solo el código, sin comillas ni etiquetas.`); });
+    if (seo.ogImage) img("Buscadores (SEO) · imagen para compartir", seo.ogImage);
+    const len = (where, v, max) => { const t = txt(v); if (t && t.length > max) warn(`${where}: ${t.length} letras; Google suele cortarlo a ~${max}.`); };
+    len("SEO · título de la portada", seo.homeTitle, 70); len("SEO · descripción de la portada", seo.homeDesc, 170);
+    list(seo.pages).forEach((x) => { if (x) { len(`SEO · título de «${x.page}»`, x.title, 70); len(`SEO · descripción de «${x.page}»`, x.description, 170); } });
+  }
+}
 
 const ids = new Map(), slugs = new Map();
 list(proy && proy.items).forEach((p, i) => {
