@@ -280,6 +280,11 @@ collections:
             widget: string
             required: false
             hint: "Opcional. Pega aquí la URL del servicio para que los formularios se envíen solos."
+          - label: "Estadísticas de visitas: código de Cloudflare"
+            name: analyticsToken
+            widget: string
+            required: false
+            hint: "Pega aquí el «token» de Cloudflare Web Analytics. Déjalo vacío para no medir visitas."
           - label: "Redes sociales"
             name: social
             widget: list

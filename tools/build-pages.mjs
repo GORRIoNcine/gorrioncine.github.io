@@ -35,6 +35,8 @@ const seo = json("content/seo.json", {});
 // Acepta el código solo, «google-site-verification=…» o la etiqueta <meta …content="…"> completa: se queda con el código.
 const cleanCode = (v) => { let t = String(v || "").trim(); const m = t.match(/content\s*=\s*["']([^"']+)["']/i); if (m) t = m[1]; return t.replace(/^google-site-verification\s*=\s*/i, "").replace(/^["']|["']$/g, "").trim(); };
 seo.googleVerification = cleanCode(seo.googleVerification); seo.bingVerification = cleanCode(seo.bingVerification);
+// Estadísticas de visitas (Cloudflare Web Analytics): acepta el código solo o el fragmento completo que da Cloudflare.
+const ANALYTICS = (() => { const raw = String(site.analyticsToken || "").trim(); const m = raw.match(/["']?token["']?\s*:\s*["']([A-Za-z0-9]+)["']/); const t = (m ? m[1] : raw).trim(); return /^[A-Za-z0-9]{16,}$/.test(t) ? t : ""; })();
 const INDEXAR = seo.indexar !== false; // false = «no aparecer en Google» (pausa global)
 
 let SITE_URL = String(site.siteUrl || "https://gorrioncine.github.io").trim().replace(/\/+$/, "");
@@ -114,7 +116,7 @@ function page({ path, title, desc, type = "website", image, imageAlt, noindex, l
     `<meta name="twitter:image" content="${esc(img)}">`,
     ...ld.map(jsonld),
   ].filter(Boolean).join("\n");
-  return template.replace("{{SEO}}", head).replace(/\{\{V\}\}/g, assetHash).replace("{{LITE}}", body).replace("<!doctype html>", "<!doctype html>\n" + MARK);
+  return template.replace("{{SEO}}", head).replace(/\{\{V\}\}/g, assetHash).replace("{{LITE}}", body).replace("{{ANALYTICS}}", ANALYTICS ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${ANALYTICS}", "spa": true}'></script>` : "").replace("<!doctype html>", "<!doctype html>\n" + MARK);
 }
 
 const link = (href, label, cls) => `<a href="${esc(href)}"${cls ? ` class="${cls}"` : ""}>${esc(label)}</a>`;

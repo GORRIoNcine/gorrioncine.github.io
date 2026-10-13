@@ -25,6 +25,7 @@ const img = (where, v) => { if (typeof v === "string" && v.startsWith("/uploads/
 const proy = load("proyectos"), noti = load("noticias"), pre = load("prensa"), equ = load("equipo");
 load("site"); load("servicios"); load("nosotros");
 {
+  { const st = load("site") || {}; const raw = String(st.analyticsToken || "").trim(); const m = raw.match(/["']?token["']?\s*:\s*["']([A-Za-z0-9]+)["']/); if (raw && !/^[A-Za-z0-9]{16,}$/.test((m ? m[1] : raw).trim())) warn("Ajustes del sitio: el código de estadísticas de Cloudflare no parece válido (son letras y números, sin espacios)."); }
   const f = join(root, "content", "seo.json");
   if (existsSync(f)) {
     const seo = load("seo") || {};
