@@ -29,7 +29,7 @@ load("site"); load("servicios"); load("nosotros");
   if (existsSync(f)) {
     const seo = load("seo") || {};
     if (seo.indexar === false) warn("Buscadores (SEO): la indexación está DESACTIVADA; la web no aparecerá en Google.");
-    ["googleVerification", "bingVerification"].forEach((k) => { if (seo[k] && !/^[A-Za-z0-9_-]{10,}$/.test(String(seo[k]).trim())) warn(`Buscadores (SEO): «${k}» debe ser solo el código, sin comillas ni etiquetas.`); });
+    ["googleVerification", "bingVerification"].forEach((k) => { const raw = String(seo[k] || "").trim(); const m = raw.match(/content\s*=\s*["']([^"']+)["']/i); const code = (m ? m[1] : raw).replace(/^google-site-verification\s*=\s*/i, "").trim(); if (raw && !/^[A-Za-z0-9_-]{10,}$/.test(code)) warn(`Buscadores (SEO): «${k}» debe ser solo el código, sin comillas ni etiquetas.`); });
     if (seo.ogImage) img("Buscadores (SEO) · imagen para compartir", seo.ogImage);
     const len = (where, v, max) => { const t = txt(v); if (t && t.length > max) warn(`${where}: ${t.length} letras; Google suele cortarlo a ~${max}.`); };
     len("SEO · título de la portada", seo.homeTitle, 70); len("SEO · descripción de la portada", seo.homeDesc, 170);

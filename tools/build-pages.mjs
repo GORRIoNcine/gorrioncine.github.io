@@ -32,6 +32,9 @@ const serv = json("content/servicios.json", {});
 const about = json("content/nosotros.json", {});
 const press = json("content/prensa.json", {});
 const seo = json("content/seo.json", {});
+// Acepta el código solo, «google-site-verification=…» o la etiqueta <meta …content="…"> completa: se queda con el código.
+const cleanCode = (v) => { let t = String(v || "").trim(); const m = t.match(/content\s*=\s*["']([^"']+)["']/i); if (m) t = m[1]; return t.replace(/^google-site-verification\s*=\s*/i, "").replace(/^["']|["']$/g, "").trim(); };
+seo.googleVerification = cleanCode(seo.googleVerification); seo.bingVerification = cleanCode(seo.bingVerification);
 const INDEXAR = seo.indexar !== false; // false = «no aparecer en Google» (pausa global)
 
 let SITE_URL = String(site.siteUrl || "https://gorrioncine.github.io").trim().replace(/\/+$/, "");
