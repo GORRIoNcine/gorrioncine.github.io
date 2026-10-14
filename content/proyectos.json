@@ -23,18 +23,18 @@
       "featured": true,
       "poster": "https://picsum.photos/id/657/1280/1920.webp",
       "tagline": {
-        "es": "Que es un grano de arroz",
-        "en": "Some nights last no longer than a wingbeat.",
+        "es": "¿Qué es un grano de arroz?",
+        "en": "What is a grain of rice?",
         "otros": null
       },
       "short": {
-        "es": "Una niña de once años sube cada madrugada a la azotea para seguir a un zunzún que, cree ella, trae noticias de su madre.",
-        "en": "Every dawn an eleven-year-old climbs to the rooftop to follow a bee hummingbird she believes carries news of her mother.",
+        "es": "Lucía, una estudiante de arquitectura en un barrio dominado por edificios grises de Micro Brigada, enfrenta la monotonía de un sistema que prioriza lo funcional sobre lo estético. Tras escuchar en las noticias otro proyecto idéntico en el municipio Habana del Este, cuestiona la ausencia de belleza en su entorno, reflexionando frente a un edificio de su barrio donde florecen flores silvestres. En la universidad, sus compañeras hablan de emigrar, mientras un profesor estricto exige copiar planos racionalistas sin alteraciones. Al atardecer, en la costa, un pregón de flores la lleva a comprar una rosa roja. Este gesto mínimo —sostener la flor frente al mar— se convierte en su resistencia silenciosa: un recordatorio de que la belleza persiste, incluso en los detalles efímeros, dentro de un mundo rígido y desencantado.",
+        "en": "Lucía, an architecture student in a neighborhood dominated by gray Micro Brigada buildings, faces the monotony of a system that prioritizes function over aesthetics. After hearing on the news about yet another identical project in the municipality of Habana del Este, she questions the absence of beauty in her surroundings, reflecting on a building in her neighborhood where wildflowers bloom. At the university, her classmates talk about emigrating, while a strict professor demands that they copy rationalist blueprints without any alterations. At dusk, on the coast, the scent of flowers draws her to buy a red rose. This small gesture—holding the flower up to the sea—becomes her silent act of resistance: a reminder that beauty endures, even in fleeting details, within a rigid and disenchanted world.",
         "otros": null
       },
       "long": {
-        "es": "Lena vive con su abuelo en un edificio de Centro Habana. Desde que su madre emigró, la azotea se ha convertido en su observatorio: allí espera, antes de que salga el sol, a un zunzún que visita siempre el mismo tendedero. Cuando el ave deja de aparecer, Lena decide seguirla por los techos del barrio y descubre una ciudad que nadie le había enseñado a mirar. Rodada en 16 mm de luz natural y con vecinos del barrio como parte del reparto, la película cuenta una ausencia sin pronunciar nunca la palabra.",
-        "en": "Lena lives with her grandfather in a Centro Habana building. Since her mother left the country, the rooftop has become her observatory: before sunrise she waits there for a bee hummingbird that always visits the same clothesline. When the bird stops coming, Lena decides to follow it across the neighbourhood's roofs and finds a city nobody taught her to look at. Shot on 16 mm in natural light with neighbours in the cast, the film describes an absence without ever naming it.",
+        "es": "Lucía, una joven estudiante de arquitectura en Cuba, despierta cada día en un barrio donde los edificios de Micro Brigada dominan el paisaje. Una mañana, mientras se prepara para la universidad, escucha en las noticias que en el municipio Habana del Este comenzará otro proyecto idéntico. Con resignación, apaga el televisor y sale a la calle.  \n\nAl caminar hacia la universidad, observa con nostalgia los edificios de su barrio, preguntándose: \"¿Dónde está la belleza?\". Sus pensamientos se interrumpen al ver flores silvestres creciendo al pie de uno de esos bloques, un contraste fugaz entre lo rígido y lo orgánico. En la universidad, la conversación de sus compañeras —que sueñan con emigrar— y las estrictas reglas de su profesor de\narquitectura (que exige copiar planos racionalistas \"sin cambiar ni un cimiento\") profundizan su conflicto interno. Al atardecer, Lucía busca refugio en la costa. Mientras moja sus pies en el agua, escucha el pregón de un vendedor de flores. Compra una rosa roja, un gesto simple pero significativo que le devuelve una sonrisa.",
+        "en": "Lucía, a young architecture student in Cuba, wakes up every day in a neighborhood where Micro Brigada buildings dominate the landscape. One morning, as she gets ready for college, she hears on the news that another identical project is set to begin in the municipality of Habana del Este. With resignation, she turns off the TV and steps out onto the street.\n\nAs she walks toward the university, she looks at the buildings in her neighborhood with nostalgia, wondering, “Where is the beauty?” Her thoughts are interrupted when she sees wildflowers growing at the base of one of those apartment blocks—a fleeting contrast between the rigid and the organic. At the university, the conversations of her classmates—who dream of emigrating—and the strict rules of her architecture professor\n(who demands that they copy rationalist blueprints “without changing a single foundation”) deepen her inner conflict. At sunset, Lucía seeks refuge on the coast. As she dips her feet in the water, she hears the call of a flower vendor. She buys a red rose, a simple yet meaningful gesture that brings a smile back to her face.",
         "otros": null
       },
       "crew": [
@@ -72,11 +72,11 @@
         }
       ],
       "note": {
-        "es": "Quería hacer una película sobre alguien que espera sin que la espera sea un lamento. Los techos de La Habana son el único lugar donde una niña puede estar sola y a la vez rodeada de toda la ciudad.",
-        "en": "I wanted to make a film about someone who waits without the waiting turning into a lament. Havana's rooftops are the only place where a girl can be alone and surrounded by the whole city at once.",
+        "es": "La película es una mirada íntima a la Cuba de hoy, a sus contradicciones y a esa necesidad profundamente humana de encontrar algo hermoso en medio del desencanto. Porque, incluso en los lugares más grises, la vida insiste en florecer.",
+        "en": "The film offers an intimate look at today's Cuba, its contradictions, and that deeply human need to find beauty amid disillusionment. Because even in the bleakest of places, life insists on blossoming.",
         "otros": null
       },
-      "noteBy": "Karely Mesa Díaz",
+      "noteBy": "Karely Mesa",
       "journey": [],
       "press": [],
       "where": [
@@ -95,25 +95,16 @@
           "screener": false,
           "dossier": false,
           "route": ""
-        },
-        {
-          "l": {
-            "es": "Ver la película",
-            "en": "Watch the film",
-            "otros": null
-          },
-          "n": {
-            "es": "Disponible bajo petición (screener)",
-            "en": "Available on request (screener)",
-            "otros": null
-          },
-          "url": "",
-          "screener": true,
-          "dossier": false,
-          "route": ""
         }
       ],
-      "stills": [],
+      "stills": [
+        "/uploads/mv8i3q3z-corte-5min-00-04-00-03-imagen-fija006.webp",
+        "/uploads/mv8i3sgg-corte-5min-00-03-33-09-imagen-fija005.webp",
+        "/uploads/mv8i3u01-corte-5min-00-02-49-03-imagen-fija004.webp",
+        "/uploads/mv8i3v6d-corte-5min-00-01-59-06-imagen-fija003.webp",
+        "/uploads/mv8i3wgw-corte-5min-00-01-19-13-imagen-fija002.webp",
+        "/uploads/mv8i3xmn-corte-5min-00-00-41-23-imagen-fija001.webp"
+      ],
       "style": "circle",
       "seed": 11
     },
