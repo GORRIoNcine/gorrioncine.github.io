@@ -44,35 +44,31 @@
         },
         {
           "r": "guion",
-          "n": "Karely Mesa Díaz"
+          "n": "Karely Mesa"
         },
         {
           "r": "produccion",
-          "n": "Yamilet Soto"
+          "n": "Amanda Peñalver Lora"
         },
         {
           "r": "fotografia",
-          "n": "Dayron Almeida"
+          "n": "Karely Mesa"
         },
         {
           "r": "montaje",
-          "n": "Lisandra Fuentes"
+          "n": "Niguel Cruz"
         },
         {
           "r": "sonido",
-          "n": "Osmany Rivero"
-        },
-        {
-          "r": "musica",
-          "n": "Marisol Quintana"
+          "n": "Manuel Hernández"
         },
         {
           "r": "arte",
-          "n": "Raúl Echevarría"
+          "n": "Fernando Almenteros"
         },
         {
           "r": "reparto",
-          "n": "Camila Torres, Eusebio Montes, Nelva Rojas"
+          "n": "Daniela Ariosa, Orlando Blanco, Francis"
         }
       ],
       "note": {
@@ -80,54 +76,9 @@
         "en": "I wanted to make a film about someone who waits without the waiting turning into a lament. Havana's rooftops are the only place where a girl can be alone and surrounded by the whole city at once.",
         "otros": null
       },
-      "noteBy": "Ana Lía Cordero",
-      "journey": [
-        {
-          "d": "2025-11",
-          "t": {
-            "es": "Estreno mundial",
-            "en": "World premiere",
-            "otros": null
-          },
-          "p": "Festival Imagen del Caribe"
-        },
-        {
-          "d": "2026-02",
-          "t": {
-            "es": "Premio del Público · Cortometraje",
-            "en": "Audience Award · Short film",
-            "otros": null
-          },
-          "p": "Muestra Joven del Sur"
-        },
-        {
-          "d": "2026-05",
-          "t": {
-            "es": "Selección oficial",
-            "en": "Official selection",
-            "otros": null
-          },
-          "p": "Semana de Cine Iberoamericano"
-        }
-      ],
-      "press": [
-        {
-          "q": {
-            "es": "Un corto que mira hacia arriba y lo ve todo.",
-            "en": "A short that looks up and sees everything.",
-            "otros": null
-          },
-          "s": "Revista Cuadro a Cuadro"
-        },
-        {
-          "q": {
-            "es": "Delicadeza rara en el cine de hoy.",
-            "en": "A rare delicacy in today's cinema.",
-            "otros": null
-          },
-          "s": "Diario del Cine Latino"
-        }
-      ],
+      "noteBy": "Karely Mesa Díaz",
+      "journey": [],
+      "press": [],
       "where": [
         {
           "l": {
@@ -162,11 +113,7 @@
           "route": ""
         }
       ],
-      "stills": [
-        "https://picsum.photos/id/458/1920/1280.webp",
-        "https://picsum.photos/id/171/1920/1280.webp",
-        "https://picsum.photos/id/776/1280/1920.webp"
-      ],
+      "stills": [],
       "style": "circle",
       "seed": 11
     },
