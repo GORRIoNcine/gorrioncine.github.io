@@ -59,11 +59,11 @@
     if (!/^image\/(png|jpe?g|webp|gif)$/.test(file.type)) throw new Error("Usa una imagen PNG, JPG, WebP o GIF.");
     if (file.type === "image/gif") return { blob: file, ext: "gif" };
     const bmp = await createImageBitmap(file);
-    const k = Math.min(1, 1800 / Math.max(bmp.width, bmp.height));
+    const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
     const c = document.createElement("canvas");
     c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
     c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
-    let blob = await new Promise((r) => c.toBlob(r, "image/webp", 0.86));
+    let blob = await new Promise((r) => c.toBlob(r, "image/webp", 0.82));
     if (blob && blob.type === "image/webp") return { blob, ext: "webp" };
     blob = await new Promise((r) => c.toBlob(r, "image/jpeg", 0.88));
     return { blob, ext: "jpg" };

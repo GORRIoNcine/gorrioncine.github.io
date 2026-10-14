@@ -7,7 +7,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 concurrency:
@@ -24,6 +24,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Optimizar imágenes
+        run: |
+          pip install --quiet pillow
+          python tools/optimize-images.py .
+      - name: Guardar las imágenes optimizadas en el repositorio
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add uploads content
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Optimiza imágenes automáticamente"
+            git pull --rebase -q && git push -q || { git rebase --abort 2>/dev/null; echo "No se pudo guardar en el repositorio; la web se publica igualmente optimizada."; }
+          fi
       - run: node tools/validate-content.mjs .
       - run: node tools/build-pages.mjs .
       - uses: actions/configure-pages@v5

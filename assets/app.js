@@ -580,8 +580,18 @@ function posterLines(title, maxChars) {
   });
   return lines.slice(0, 4);
 }
+/* Imágenes subidas desde el panel (/uploads/xxx.webp): en cada publicación se generan versiones pequeñas
+   (uploads/w480, w800, w1200) y aquí se ofrecen con srcset para que el móvil descargue solo lo que necesita.
+   Si una versión no existe todavía, la imagen vuelve sola a la original. */
+const IMG_W = [480, 800, 1200];
+function imgAttrs(src, sizes) {
+  const m = /^\/?uploads\/([^/?#]+\.webp)$/i.exec(String(src || ""));
+  if (!m || !PATHMODE) return `src="${esc(src)}"`;
+  const set = IMG_W.map((w) => `${BASE}uploads/w${w}/${m[1]} ${w}w`).join(", ") + `, ${BASE}uploads/${m[1]} 1800w`;
+  return `src="${esc(src)}" srcset="${esc(set)}" sizes="${esc(sizes)}" onerror="this.onerror=null;this.removeAttribute('srcset');this.removeAttribute('sizes')"`;
+}
 function posterSVG(p, lang) {
-  if (p.poster) return `<img src="${esc(p.poster)}" alt="${esc(p.title)}" loading="lazy" style="width:100%;height:100%;object-fit:cover">`;
+  if (p.poster) return `<img ${imgAttrs(p.poster, "(max-width: 700px) 90vw, 520px")} alt="${esc(p.title)}" loading="lazy" style="width:100%;height:100%;object-fit:cover">`;
   const R = rng(p.seed * 97 + hashStr(p.slug) % 1000), g = uid("pg");
   const lines = posterLines(p.title, 10);
   const longest = Math.max(...lines.map((l) => l.reduce((a, x) => a + x.t.length + 1, -1)));
@@ -1305,7 +1315,7 @@ function pageAbout() {
   <section class="sec sc-bone"><div class="wrap split"><h2>${t("about_eyebrow")}</h2><div class="prose lede">${t("about_long").map((x) => `<p>${esc(x)}</p>`).join("")}</div></div></section>
   <section class="sec--tight sc-dark"><div class="wrap"><div class="values">${VALUES.map((v) => `<div><h3>${esc(L(v.t))}</h3><p>${esc(L(v.d))}</p></div>`).join("")}</div></div></section>
   <section class="sec sc-bone"><div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_nosotros")}</span><h2>${t("team")}</h2></div></div>
-    <div class="team">${TEAM.map((m, i) => `<article class="person"><div class="person__img">${m.photo ? `<img src="${esc(m.photo)}" alt="${esc(m.n)}" loading="lazy">` : avatarSVG(m.n, i + 1)}</div><span class="role">${esc(L(m.r))}</span><h3>${esc(m.n)}</h3><p>${esc(L(m.b))}</p></article>`).join("")}</div></div></section>
+    <div class="team">${TEAM.map((m, i) => `<article class="person"><div class="person__img">${m.photo ? `<img ${imgAttrs(m.photo, "(max-width: 700px) 50vw, 320px")} alt="${esc(m.n)}" loading="lazy">` : avatarSVG(m.n, i + 1)}</div><span class="role">${esc(L(m.r))}</span><h3>${esc(m.n)}</h3><p>${esc(L(m.b))}</p></article>`).join("")}</div></div></section>
   <section class="sec sec--alt sc-dark"><div class="wrap split"><h2>${t("history")}</h2><div class="tline">${HISTORY.map((h) => `<div class="tl"><span class="tl__d">${h.y}</span><div><b>${esc(L(h.t))}</b><span>${esc(L(h.d))}</span></div></div>`).join("")}</div></div></section>
   <section class="sec sc-bone"><div class="wrap split"><h2>${t("allies")}</h2><div class="allies">${ALLIES.map((a) => `<span class="ally">${esc(a)}</span>`).join("")}</div></div></section>
   <section class="sec sc-red"><div class="wrap cta"><div><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div><a class="btn" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></section>`;
@@ -1347,7 +1357,7 @@ function pageArticle(n) {
   const pr = n.project ? projBy(n.project) : null;
   return `<article class="wrap article"><div class="crumb"><a href="${routeHref("noticias")}">← ${t("back_news")}</a></div><div class="mono mute" style="margin-top:20px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase">${esc(fmtDate(n.date))} · ${esc(L(NEWS_CATS[n.cat]))}</div>
     <h1 id="page-h">${esc(L(n.title))}</h1><p class="lede">${esc(L(n.sum))}</p>
-    <div class="article__art">${n.image ? `<img src="${esc(n.image)}" alt="${esc(L(n.title))}">` : stillSVG(n.seed, 1)}</div><div class="prose">${L(n.body).map((x) => `<p>${esc(x)}</p>`).join("")}</div>
+    <div class="article__art">${n.image ? `<img ${imgAttrs(n.image, "(max-width: 1000px) 100vw, 900px")} alt="${esc(L(n.title))}">` : stillSVG(n.seed, 1)}</div><div class="prose">${L(n.body).map((x) => `<p>${esc(x)}</p>`).join("")}</div>
     ${pr ? `<div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--line)"><span class="eyebrow">${t("related_project")}</span><p style="margin-top:8px"><a class="link-arrow" href="${routeHref("project", pr.slug)}">${esc(pr.title)} ${ICONS.arrow}</a></p></div>` : ""}</article>`;
 }
 
@@ -1695,7 +1705,7 @@ function hrefToken(href) {
 /* ---------- Fotogramas: fotos subidas desde el panel (p.stills) o, si no hay, 6 fotogramas generados ---------- */
 function stillImgs(p) { return (p.stills || []).map((s) => (typeof s === "string" ? s : s && s.image)).filter(Boolean); }
 function stillCount(p) { return stillImgs(p).length || 6; }
-function stillMedia(p, i) { const im = stillImgs(p); return im.length ? `<img src="${esc(im[i])}" alt="${esc(p.title)} · ${esc(t("still_n"))} ${i + 1}" loading="lazy">` : stillSVG(p.seed, i); }
+function stillMedia(p, i) { const im = stillImgs(p); return im.length ? `<img ${imgAttrs(im[i], "(max-width: 700px) 100vw, 50vw")} alt="${esc(p.title)} · ${esc(t("still_n"))} ${i + 1}" loading="lazy">` : stillSVG(p.seed, i); }
 
 /* ---------- Contenido editable ----------
    El texto vive en content/*.json (lo edita el panel /admin). data.js solo trae el contenido de ejemplo:
