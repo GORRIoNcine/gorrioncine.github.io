@@ -517,8 +517,8 @@
     },
     {
       "id": "proj-sal-y-canaveral",
-      "title": "Kink",
-      "slug": "kink",
+      "title": "Kinky",
+      "slug": "kinky",
       "type": "documental",
       "format": {
         "es": "Mediometraje",
@@ -555,19 +555,23 @@
       "crew": [
         {
           "r": "direccion",
-          "n": "Rose"
+          "n": "Rose",
+          "c": []
         },
         {
           "r": "produccion",
-          "n": "Karely Mesa"
+          "n": "Karely Mesa",
+          "c": []
         },
         {
           "r": "fotografia",
-          "n": "Luna Reinoso"
+          "n": "Luna Reinoso",
+          "c": []
         },
         {
           "r": "sonido",
-          "n": "Manuel Hernández"
+          "n": "Manuel Hernández",
+          "c": []
         }
       ],
       "note": null,
@@ -592,7 +596,12 @@
           "route": ""
         }
       ],
-      "stills": [],
+      "stills": [
+        "/uploads/mv94v6j1-trailer-00-00-07-16.webp",
+        "/uploads/mv94v87q-trailer-00-00-04-02.webp",
+        "/uploads/mv94v9j4-trailer-00-00-46-19.webp",
+        "/uploads/mv94vare-trailer-00-01-02-00.webp"
+      ],
       "style": "tri",
       "seed": 64
     }
