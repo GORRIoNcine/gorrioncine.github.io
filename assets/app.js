@@ -1252,8 +1252,8 @@ function pageHome() {
     <div class="sec__head"><div><span class="eyebrow">${t("nav_proyectos")}</span><h2>${t("selection")}</h2></div><a class="link-arrow" href="${routeHref("proyectos")}">${t("see_all")} ${ICONS.arrow}</a></div>
     <div class="grid grid--posters grid--home">${sel6.map(card).join("")}</div></div></section>
 
-  <section class="sec--tight sc-red"><div class="wrap"><div class="sec__head" style="margin-bottom:20px"><div><span class="eyebrow">${t("press_eyebrow")}</span></div><a class="link-arrow" href="${routeHref("prensa")}">${t("nav_prensa")} ${ICONS.arrow}</a></div></div>
-    <div class="laurels">${AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projName(a.p))}</span></div>`).join("")}</div></section>
+  ${AWARDS.length ? `<section class="sec--tight sc-red"><div class="wrap"><div class="sec__head" style="margin-bottom:20px"><div><span class="eyebrow">${t("press_eyebrow")}</span></div><a class="link-arrow" href="${routeHref("prensa")}">${t("nav_prensa")} ${ICONS.arrow}</a></div></div>
+    <div class="laurels">${AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projName(a.p))}</span></div>`).join("")}</div></section>` : ""}
 
   <section class="sec sc-dark"><div class="wrap split"><div><span class="eyebrow">${t("about_eyebrow")}</span><h2 style="font-size:clamp(2.6rem,6vw,5rem);margin-top:14px;position:static">${t("about_h")}</h2></div>
     <div><p class="lede">${t("about_p")}</p><p style="margin-top:24px"><a class="link-arrow" href="${routeHref("nosotros")}">${t("about_btn")} ${ICONS.arrow}</a></p></div></div></section>
@@ -1413,11 +1413,11 @@ function pagePress() {
   const years = Array.from(new Set(AWARDS.map((a) => a.y))).sort((a, b) => b - a);
   const sw = [["#000000", t("sw_black")], ["#efefef", t("sw_white")], ["#5f140f", t("sw_red")]];
   return pageHead(t("press_eyebrow"), t("press_page_h"), t("press_lede"), 1) + `
-  <section class="sec sc-bone"><div class="wrap split"><h2>${t("awards_h")}</h2><div class="tline">${years.map((y) => AWARDS.filter((a) => a.y === y).map((a, i) => `<div class="tl"><span class="tl__d">${i === 0 ? y : ""}</span><div><b>${esc(L(a.a))}</b><span>${esc(a.f)}${projBy(a.p) ? " · " : ""}${projBy(a.p) ? `<a href="${routeHref("project", esc(projBy(a.p).slug))}" style="color:var(--fg);border-bottom:2px solid var(--acc)">${esc(projBy(a.p).title)}</a>` : ""}</span></div></div>`).join("")).join("")}</div></div></section>
-  <section class="sec sc-dark"><div class="wrap split"><h2>${t("inpress")}</h2><div class="press">${PRESS.map((x) => {
+  ${AWARDS.length ? `<section class="sec sc-bone"><div class="wrap split"><h2>${t("awards_h")}</h2><div class="tline">${years.map((y) => AWARDS.filter((a) => a.y === y).map((a, i) => `<div class="tl"><span class="tl__d">${i === 0 ? y : ""}</span><div><b>${esc(L(a.a))}</b><span>${esc(a.f)}${projBy(a.p) ? " · " : ""}${projBy(a.p) ? `<a href="${routeHref("project", esc(projBy(a.p).slug))}" style="color:var(--fg);border-bottom:2px solid var(--acc)">${esc(projBy(a.p).title)}</a>` : ""}</span></div></div>`).join("")).join("")}</div></div></section>` : ""}
+  ${PRESS.length ? `<section class="sec sc-dark"><div class="wrap split"><h2>${t("inpress")}</h2><div class="press">${PRESS.map((x) => {
     const inner = `<span class="mono">${esc(fmtDate(x.d))} · ${esc(x.s)}</span><b>${esc(L(x.t))}<small>${esc(L(x.x))}</small></b>${x.url ? ICONS.arrow.replace("<svg", '<svg width="20" height="20"') : "<span></span>"}`;
     return x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${inner}</a>` : `<div class="pr">${inner}</div>`;
-  }).join("")}</div></div></section>
+  }).join("")}</div></div></section>` : ""}
   <section class="sec sec--alt sc-dark"><div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("press_eyebrow")}</span><h2>${t("kit")}</h2></div></div>
     <div class="kit">
       <div class="kit__i"><h3>${t("bio")}</h3><p class="bio" id="bio-text">${esc(L(PRESS_BIO))}</p><div><button class="btn btn--sm" data-act="copy" data-text="${esc(L(PRESS_BIO))}">${t("copy")}</button></div></div>
