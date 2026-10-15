@@ -402,9 +402,10 @@ collections:
                 name: status
                 widget: select
                 options:
-                  - { label: "Estrenado", value: "estrenado" }
-                  - { label: "En producción", value: "produccion" }
                   - { label: "En desarrollo", value: "desarrollo" }
+                  - { label: "En producción", value: "produccion" }
+                  - { label: "En postproducción", value: "postproduccion" }
+                  - { label: "Estrenada", value: "estrenado" }
               - label: "Duración"
                 name: runtime
                 widget: string

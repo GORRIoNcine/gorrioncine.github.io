@@ -6,7 +6,7 @@
 :root {
   --ink: #000000;
   --bone: #efefef;
-  --red: #5f140f;
+  --red: #5f140f; --rec: #d4271c;
   --f-display: "Franklin Gothic Medium", "Libre Franklin", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --f-body: "Courier New", "Courier Prime", Courier, monospace;
   --f-mono: "Courier New", "Courier Prime", Courier, monospace;
@@ -179,8 +179,29 @@ h1 u, h2 u, h3 u, h4 u { text-decoration: underline; text-decoration-thickness: 
 
 .chip { display: inline-flex; align-items: center; min-height: 28px; padding: 2px 10px; font-weight: 700; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--fg); color: var(--fg); }
 .chip--ok { background: var(--fg); color: var(--bg); }
-.chip--wip { background: color-mix(in srgb, var(--fg) 16%, transparent); }
+.chip::before { content: ""; width: 8px; height: 8px; margin-right: 8px; flex: none; border-radius: 50%; border: 1.5px solid currentColor; }
 .chip--dev { border-style: dashed; }
+.chip--dev::before { border-style: dashed; }
+.chip--prod { background: color-mix(in srgb, var(--rec) 18%, transparent); border-color: var(--rec); }
+.chip--prod::before { background: var(--rec); border-color: var(--rec); animation: rec 1.4s steps(2, jump-none) infinite; }
+.chip--post { background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--fg) 20%, transparent) 0 6px, transparent 6px 12px); }
+.chip--post::before { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.chip--ok::before { background: currentColor; }
+@keyframes rec { 50% { opacity: .2; } }
+@media (prefers-reduced-motion: reduce) { .chip--prod::before { animation: none; } }
+.card--desarrollo .card__poster svg { filter: grayscale(.7) contrast(.95); }
+.card--desarrollo .card__poster::after { border: 1px dashed rgba(239, 239, 239, .5); inset: 8px; }
+.card--produccion .card__poster::after { border: 2px solid var(--rec); }
+.card--postproduccion .card__poster svg { filter: grayscale(.25); }
+.card--postproduccion .card__poster::after { background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .12) 0 1px, transparent 1px 4px); }
+.card--desarrollo:hover .card__poster svg, .card--postproduccion:hover .card__poster svg { filter: none; }
+.fh__state { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 18px 0 0; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+.fh__state .chip { --fg: var(--bone, #efefef); color: var(--bone, #efefef); border-color: var(--bone, #efefef); }
+.fh__state .chip--prod { border-color: var(--rec); }
+.fh--desarrollo .fh__bg { opacity: .3; filter: grayscale(.8); }
+.fh--produccion { border-bottom: 3px solid var(--rec); }
+.fh--postproduccion .fh__bg { filter: grayscale(.3); }
+.fh--postproduccion .fh__bg::before { content: ""; position: absolute; inset: 0; z-index: 1; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .18) 0 1px, transparent 1px 4px); }
 
 /* ---------- Tarjetas ---------- */
 .grid { display: grid; gap: clamp(16px, 2.4vw, 28px); }

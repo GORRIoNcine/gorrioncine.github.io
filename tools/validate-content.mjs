@@ -8,7 +8,7 @@ const errors = [], warnings = [];
 const err = (m) => errors.push(m), warn = (m) => warnings.push(m);
 
 const TYPES = ["ficcion", "documental", "serie", "videoclip", "encargo"];
-const STATUS = ["estrenado", "produccion", "desarrollo"];
+const STATUS = ["desarrollo", "produccion", "postproduccion", "estrenado"];
 const ROLES = ["direccion", "guion", "produccion", "produccionEj", "fotografia", "montaje", "sonido", "musica", "arte", "reparto", "cliente"];
 const CATS = ["estrenos", "rodajes", "convocatorias", "detras"];
 

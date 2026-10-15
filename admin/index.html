@@ -185,7 +185,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 const L=o=>o==null?"":typeof o==="string"?o:(o.es||o.en||"");
 const get=u=>fetch(u,{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
 const TYPE={ficcion:"Ficción",documental:"Documental",serie:"Serie web",videoclip:"Videoclip",encargo:"Encargo"};
-const STAT={estrenado:["Estrenado","ok"],produccion:["En producción","warn"],desarrollo:["En desarrollo",""]};
+const STAT={desarrollo:["En desarrollo",""],produccion:["En producción","warn"],postproduccion:["En postproducción","warn"],estrenado:["Estrenada","ok"]};
 const CAT={estrenos:"Estrenos",rodajes:"Rodajes",convocatorias:"Convocatorias",detras:"Detrás de cámaras"};
 const img=p=>p?(String(p).startsWith("http")?p:"../"+String(p).replace(/^\//,"")):"";
 const ini=s=>String(s||"?").trim().slice(0,2).toUpperCase();
