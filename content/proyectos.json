@@ -322,7 +322,7 @@
       "runtime": "13 min",
       "genre": {
         "es": "Drama - Horror Corporal - Queer",
-        "en": "Slice-of-life comedy",
+        "en": "Drama - Body Horror - Queer",
         "otros": null
       },
       "lang": "Español",
@@ -331,34 +331,74 @@
       "poster": "",
       "tagline": {
         "es": "Nadie puede escapar de aquello que lleva dentro.",
-        "en": "In the queue they tell you everything except what really matters.",
+        "en": "No one can escape what's inside them.",
         "otros": null
       },
       "short": {
         "es": "Un joven campesino enfrenta en soledad sus deseos reprimidos y la culpa que estos le provocan. Entre fantasías, sueños y una realidad cada vez más perturbadora, su lucha por aceptar aquello que siente lo conduce hacia un enfrentamiento brutal con su propia identidad.",
-        "en": "Eight episodes on one block, in one corner shop, with a queue that knows everything about everyone.",
+        "en": "A young farmer struggles alone with his repressed desires and the guilt they cause him. Amid fantasies, dreams, and an increasingly disturbing reality, his struggle to accept his feelings leads him into a brutal confrontation with his own identity.",
         "otros": null
       },
       "long": {
         "es": "Adrián, un joven campesino, mantiene en secreto un deseo que ni siquiera se permite reconocer.\n\nAtrapado entre la culpa, la fantasía y una profunda represión, busca refugio en la intimidad de su habitación.\n\nUna noche, un sueño lo enfrenta con aquello que intenta ocultar de sí mismo.\n\nAl despertar, regresa al corral y lleva su conflicto interno hasta un límite perturbador.\n\nEntonces, una revelación transforma la escena en el reflejo de un miedo mucho más profundo: el rechazo hacia su propia identidad.",
-        "en": "Each episode takes place during the wait for the morning bread. In twelve minutes and almost in real time, the residents of one block in Santos Suárez find out about weddings, quarrel over turns, trade favours and discover that the shopkeeper is hiding a secret. The series mixes professional actors with neighbours and is designed to be watched on a phone, even on a limited connection.",
+        "en": "Adrián, a young farmer, keeps secret a desire he doesn’t even allow himself to acknowledge.\n\nCaught between guilt, fantasy, and deep repression, he seeks refuge in the privacy of his room.\n\nOne night, a dream confronts him with what he is trying to hide from himself.\n\nUpon waking, he returns to the corral and pushes his inner conflict to a disturbing limit.\n\nThen, a revelation transforms the scene into a reflection of a much deeper fear: the rejection of his own identity.",
         "otros": null
       },
       "crew": [
         {
           "r": "direccion",
           "n": "Niguel Cruz",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/vampicerdito_oficial/"
+            }
+          ]
         },
         {
           "r": "fotografia",
           "n": "Kerely Mesa",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/karelyna_md/"
+            }
+          ]
         },
         {
           "r": "montaje",
           "n": "Niguel Cruz",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/vampicerdito_oficial/"
+            }
+          ]
+        },
+        {
+          "c": [],
+          "r": "director-a-de-actores",
+          "n": "Liliet González"
+        },
+        {
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/tcastle.cu/"
+            }
+          ],
+          "r": "actor-actriz-protagonista",
+          "n": "Santiago Castle"
+        },
+        {
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/kevindanydany/"
+            }
+          ],
+          "r": "actor-actriz-de-reparto",
+          "n": "Kevin Dany"
         }
       ],
       "note": null,
