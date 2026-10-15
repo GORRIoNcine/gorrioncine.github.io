@@ -330,32 +330,35 @@
       "featured": false,
       "poster": "",
       "tagline": {
-        "es": "En la cola se cuenta todo, menos lo que de verdad importa.",
+        "es": "Nadie puede escapar de aquello que lleva dentro.",
         "en": "In the queue they tell you everything except what really matters.",
         "otros": null
       },
       "short": {
-        "es": "Ocho episodios en una misma cuadra, una misma bodega y una cola que lo sabe todo de todos.",
+        "es": "Un joven campesino enfrenta en soledad sus deseos reprimidos y la culpa que estos le provocan. Entre fantasías, sueños y una realidad cada vez más perturbadora, su lucha por aceptar aquello que siente lo conduce hacia un enfrentamiento brutal con su propia identidad.",
         "en": "Eight episodes on one block, in one corner shop, with a queue that knows everything about everyone.",
         "otros": null
       },
       "long": {
-        "es": "Cada episodio ocurre durante la espera del pan de la mañana. En doce minutos y en tiempo casi real, los vecinos de una cuadra de Santos Suárez se enteran de bodas, se pelean por turnos, negocian favores y descubren que el dependiente guarda un secreto. La serie combina actores profesionales con vecinos y está pensada para verse en el móvil, incluso con conexión limitada.",
+        "es": "Adrián, un joven campesino, mantiene en secreto un deseo que ni siquiera se permite reconocer.\n\nAtrapado entre la culpa, la fantasía y una profunda represión, busca refugio en la intimidad de su habitación.\n\nUna noche, un sueño lo enfrenta con aquello que intenta ocultar de sí mismo.\n\nAl despertar, regresa al corral y lleva su conflicto interno hasta un límite perturbador.\n\nEntonces, una revelación transforma la escena en el reflejo de un miedo mucho más profundo: el rechazo hacia su propia identidad.",
         "en": "Each episode takes place during the wait for the morning bread. In twelve minutes and almost in real time, the residents of one block in Santos Suárez find out about weddings, quarrel over turns, trade favours and discover that the shopkeeper is hiding a secret. The series mixes professional actors with neighbours and is designed to be watched on a phone, even on a limited connection.",
         "otros": null
       },
       "crew": [
         {
           "r": "direccion",
-          "n": "Niguel Cruz"
+          "n": "Niguel Cruz",
+          "c": []
         },
         {
           "r": "fotografia",
-          "n": "Kerely Mesa"
+          "n": "Kerely Mesa",
+          "c": []
         },
         {
           "r": "montaje",
-          "n": "Niguel Cruz"
+          "n": "Niguel Cruz",
+          "c": []
         }
       ],
       "note": null,
