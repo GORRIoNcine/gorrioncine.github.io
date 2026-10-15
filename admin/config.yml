@@ -648,7 +648,7 @@ collections:
                       - { label: "Reparto y casting · Director/a de casting (principal)", value: "director-a-de-casting" }
                       - { label: "Reparto y casting · Actor/actriz protagonista (principal)", value: "actor-actriz-protagonista" }
                       - { label: "Reparto y casting · Actor/actriz de reparto (principal)", value: "actor-actriz-de-reparto" }
-                      - { label: "Reparto y casting · Figurantes o extras (principal)", value: "figurantes-o-extras" }
+                      - { label: "Reparto y casting · Figurantes o extras", value: "figurantes-o-extras" }
                       - { label: "Reparto y casting · Reparto (principal)", value: "reparto-general" }
                       - { label: "Reparto y casting · Asociado/a de casting", value: "asociado-a-de-casting" }
                       - { label: "Reparto y casting · Asistente y auxiliar de casting", value: "asistente-y-auxiliar-de-casting" }
