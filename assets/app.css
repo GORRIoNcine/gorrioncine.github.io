@@ -396,7 +396,7 @@ textarea.field { padding: 12px 14px; min-height: 150px; resize: vertical; }
 .info { display: grid; align-content: start; margin: 0; }
 .info > div { padding: 18px 0; border-bottom: 1px solid var(--line); }
 .info dt { font-weight: 700; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
-.info dd { margin: 4px 0 0; font-size: 1.05rem; overflow-wrap: anywhere; }
+.info dd { margin: 4px 0 0; font-size: 1.05rem; overflow-wrap: break-word; }
 .copyline { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .copy { font-weight: 700; font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--fg); padding: 3px 8px; }
 .copy:hover { background: var(--fg); color: var(--bg); }
@@ -499,7 +499,9 @@ html.lite .pager, html.lite .top::after { display: none; }
 .lang__list button[aria-current="true"]::after { content: "●"; font-size: .7em; align-self: center; }
 
 /* ---------- Idiomas con palabras largas (alemán, francés…): nunca desbordar ---------- */
-h1, h2, h3, h4, .lede, .prose, .nitem p, .where b, .tl b, .press b, .fact dd, .credits dd, .card h3, .person h3, .quote, .cta p, .info dd { overflow-wrap: anywhere; hyphens: auto; }
+/* Las palabras no se parten: solo se cortan si una sola palabra no cabe en toda la línea (break-word, a diferencia de anywhere, no encoge las columnas). Los títulos nunca se guionizan. */
+.lede, .prose, .nitem p, .where b, .tl b, .press b, .fact dd, .credits dd, .quote, .cta p, .info dd { overflow-wrap: break-word; word-break: normal; hyphens: manual; }
+h1, h2, h3, h4, .card h3, .person h3 { overflow-wrap: break-word; word-break: normal; hyphens: manual; -webkit-hyphens: manual; text-wrap: balance; }
 .btn { text-align: center; }
 .split > *, .contact > *, .feat > *, .fh__in > *, .hero__grid > *, .foot__top > * { min-width: 0; }
 @media (max-width: 520px) {

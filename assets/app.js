@@ -1566,6 +1566,38 @@ function syncMeta(r) {
     else if (rb && rb.dataset.client) rb.remove();
   } catch (e) { /* los metadatos nunca deben romper la página */ }
 }
+/* Títulos: una palabra nunca se parte. Si alguna no cabe en su columna, se reduce el tamaño del título hasta que quepa. */
+let fitT = 0, fitW = 0;
+/* Ancho de la palabra más larga del título (con overflow-wrap normal una palabra que no cabe se mide entera). */
+function widestWord(h) {
+  let m = 0; const tw = document.createTreeWalker(h, NodeFilter.SHOW_TEXT); let n;
+  while ((n = tw.nextNode())) {
+    const re = /\S+/g; let x;
+    while ((x = re.exec(n.nodeValue))) { const r = document.createRange(); r.setStart(n, x.index); r.setEnd(n, x.index + x[0].length); [...r.getClientRects()].forEach((q) => { if (q.width > m) m = q.width; }); }
+  }
+  return m;
+}
+function fitHeads() {
+  const run = () => {
+    const hs = $$("main h1, main h2, main h3, main h4, .foot h3, .foot h4");
+    hs.forEach((h) => {
+      /* Una palabra con guion («Post-production») tampoco se parte en el guion: se une con un carácter invisible. */
+      const tw = document.createTreeWalker(h, NodeFilter.SHOW_TEXT); let n;
+      while ((n = tw.nextNode())) { const v = n.nodeValue.replace(/([A-Za-zÀ-ÿ])-(?=[A-Za-zÀ-ÿ])/g, "$1-\u2060"); if (v !== n.nodeValue) n.nodeValue = v; }
+      h.style.fontSize = ""; h.style.overflowWrap = "normal";
+    });
+    hs.forEach((h) => {
+      const room = () => h.getBoundingClientRect().width - parseFloat(getComputedStyle(h).paddingLeft) - parseFloat(getComputedStyle(h).paddingRight);
+      if (widestWord(h) <= room() - 1) return;
+      const base = parseFloat(getComputedStyle(h).fontSize); let s = base;
+      for (let i = 0; i < 24 && widestWord(h) > room() - 1 && s > base * 0.45; i++) { s *= 0.95; h.style.fontSize = s.toFixed(1) + "px"; }
+    });
+    hs.forEach((h) => { h.style.overflowWrap = ""; });
+  };
+  cancelAnimationFrame(fitT); fitT = requestAnimationFrame(run);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { cancelAnimationFrame(fitT); fitT = requestAnimationFrame(run); });
+  if (!fitW) { fitW = 1; let rt = 0; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(run, 150); }, { passive: true }); }
+}
 function render(opts = {}) {
   const r = parseRoute();
   document.documentElement.lang = lang;
@@ -1602,6 +1634,7 @@ function render(opts = {}) {
   lastKey = key;
   if (typeof FX !== "undefined") { FX.init(app()); FX.watchAnim(document); }
   if (typeof Buddy !== "undefined") Buddy.sync();
+  fitHeads();
 }
 
 /* ---------- Overlays: búsqueda y lightbox ---------- */
