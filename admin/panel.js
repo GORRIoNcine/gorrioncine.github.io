@@ -156,7 +156,7 @@
   const roleInfo = (k) => (S.rl ? S.rl.by[S.rl.legacy[k] || k] : null);
   function rolePicker(get, set, ctx) {
     const R = S.rl;
-    const inp = h("input", { type: "text", class: "ed-combo__in", placeholder: "Escribe para buscar: director, sonido, maquillaje, drone…", autocomplete: "off", role: "combobox", "aria-expanded": "false", "aria-autocomplete": "list" });
+    const inp = h("input", { type: "text", class: "ed-combo__in", placeholder: "Busca o elige un cargo (director, sonido, maquillaje, dron…)", autocomplete: "off", role: "combobox", "aria-expanded": "false", "aria-autocomplete": "list" });
     const list = h("div", { class: "ed-combo__list", role: "listbox", hidden: true });
     const note = h("small", { class: "ed-hint ed-combo__note" });
     const wrap = h("div", { class: "ed-combo" }, inp, list, note);
@@ -169,19 +169,19 @@
     const show = () => {
       const q = pristine ? "" : fold(inp.value.trim());
       let items = R.list;
-      if (q) { const ws = q.split(/\s+/); items = items.filter((r) => ws.every((w) => r.q.includes(w))); items = items.slice().sort((a, b) => (b.main - a.main) || a.di - b.di || a.o - b.o); }
-      else items = items.filter((r) => r.main);
-      const total = items.length; shown = items.slice(0, 80);
+      if (q) { const ws = q.split(/\s+/); items = items.filter((r) => ws.every((w) => r.q.includes(w))); }
+      shown = items.slice().sort((a, b) => (b.main - a.main) || a.di - b.di || a.o - b.o);
       list.replaceChildren();
       if (!shown.length) list.append(h("div", { class: "ed-combo__empty" }, "Ningún puesto coincide. Prueba con otra palabra."));
-      let lastG = null;
+      let lastT = null, lastD = null;
       shown.forEach((r, i) => {
-        const g = (r.main ? "P" : "S") + r.d;
-        if (g !== lastG) { lastG = g; list.append(h("div", { class: "ed-combo__g" }, r.dn, h("em", {}, r.main ? "Principales" : "Secundarios"))); }
+        if (r.main !== lastT) { lastT = r.main; lastD = null; list.append(h("div", { class: "ed-combo__t" }, r.main ? "Principales" : "Secundarios", h("em", {}, r.main ? "aparecen siempre en la ficha" : "aparecen en «Ver todo el equipo»"))); }
+        if (r.d !== lastD) { lastD = r.d; list.append(h("div", { class: "ed-combo__g" }, r.dn)); }
         list.append(h("div", { class: "ed-combo__o" + (i === act ? " on" : "") + (cur() && cur().k === r.k ? " sel" : ""), role: "option", "data-i": i, onmousedown: (e) => { e.preventDefault(); pick(r); } }, r.es));
       });
-      if (total > shown.length) list.append(h("div", { class: "ed-combo__empty" }, `Hay ${total - shown.length} más: sigue escribiendo para afinar.`));
+      if (q && shown.length) list.append(h("div", { class: "ed-combo__empty" }, shown.length + " puesto(s) encontrados."));
       list.hidden = false; inp.setAttribute("aria-expanded", "true");
+      const sel = list.querySelector(".ed-combo__o.sel"); if (sel && pristine) list.scrollTop = Math.max(0, sel.offsetTop - 80);
     };
     const hide = () => { list.hidden = true; inp.setAttribute("aria-expanded", "false"); act = -1; };
     const pick = (r) => { set(r.k); ctx.touch(); inp.value = r.es; pristine = true; hide(); paintNote(); wrap.dispatchEvent(new CustomEvent("rolechange", { bubbles: true })); };
@@ -592,7 +592,7 @@
   async function open(name, force) {
     const el = root();
     if (!S.schema) S.schema = await fetch("schema.json", { cache: "no-store" }).then((r) => r.json());
-    if (!S.rl) { try { S.rl = buildRoles(await fetch("../content/roles.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null))); } catch (e) { S.rl = null; } }
+    if (!S.rl) { for (const u of ["../content/roles.json", location.pathname.replace(/admin\/.*$/, "") + "content/roles.json"]) { try { S.rl = buildRoles(await fetch(u, { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null))); } catch (e) { S.rl = null; } if (S.rl) break; } }
     S.item = null; S.itemDirty = false; S.dirty = false; S.filter = "";
     if (name === "medios") { S.name = "medios"; return viewMedia(); }
     if (name === "estadisticas") { S.name = "estadisticas"; return viewStats(); }

@@ -109,7 +109,7 @@ h1{font:400 26px/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;ma
 .gate .msg{margin-top:14px;font-size:13px;color:#e6a39c;min-height:18px}
 .gate small{display:block;margin-top:18px;color:#777;font-size:12px}
 </style>
-<link rel="stylesheet" href="panel.css">
+<link rel="stylesheet" href="panel.css?v=20261015b">
 </head>
 <body>
 <div class="gate" id="gate"><div class="box"><div class="logo">G</div><h1>GORRIóN</h1><p>Panel de administración.<br>Inicia sesión para continuar.</p>
@@ -233,7 +233,7 @@ const gmsg=t=>{$("#gmsg").textContent=t||""};
 let booted=false,curHash="";
 function bootEditor(){
   if(booted)return;booted=true;
-  const s=document.createElement("script");s.src="panel.js";s.onload=route;document.head.append(s);
+  const s=document.createElement("script");s.src="panel.js?v=20261015b";s.onload=route;document.head.append(s);
   window.addEventListener("hashchange",()=>{
     if(window.GEditor&&window.GEditor.isDirty()&&location.hash!==curHash){
       if(!confirm("Tienes cambios sin guardar. ¿Salir sin guardar?")){history.replaceState(null,"",curHash||"#/");return}

@@ -146,3 +146,6 @@
 .ed-combo__o.sel{font-weight:700}
 .ed-combo__empty{padding:10px 12px;color:var(--mute);font-size:13px}
 .ed-combo__note{order:3}
+.ed-combo__t{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--red2);color:#fff;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.ed-combo__t em{font-style:normal;font-weight:500;letter-spacing:0;text-transform:none;opacity:.9}
+.ed-combo__g{position:static!important;padding:7px 12px 7px 16px;border-left:4px solid var(--red2)}
