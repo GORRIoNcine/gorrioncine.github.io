@@ -344,7 +344,7 @@
       title: (i) => i.title, sub: (i, d) => [optLabel(d, "type", i.type), i.year].filter(Boolean).join(" · "), img: (i) => i.poster,
       chip: (i) => STATUS[i.status], star: (i) => i.featured, sideExtra: ["status", "featured"],
       newItem: () => ({ id: "proj-" + rid(), type: "ficcion", status: "desarrollo", year: new Date().getFullYear(), featured: false, style: "rays" }),
-      groups: [["Datos básicos", ["title", "slug", "type", "format", "year", "status", "runtime", "genre", "lang", "subs", "featured"]], ["Cartel y textos", ["poster", "tagline", "short", "long", "note", "noteBy"]], ["Ficha técnica", ["crew"]], ["Recorrido y prensa", ["journey", "press"]], ["Dónde verla", ["where"]], ["Fotogramas", ["stills", "style"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
+      groups: [["Datos básicos", ["title", "slug", "type", "format", "year", "status", "runtime", "genre", "lang", "subs", "featured"]], ["Cartel y textos", ["poster", "tagline", "short", "long", "note", "noteBy"]], ["Ficha técnica", ["crew"]], ["Recorrido y prensa", ["journey", "press"]], ["Tráiler o teaser", ["trailer", "trailerKind"]], ["Dónde verla", ["whereHidden", "where"]], ["Apoyar el proyecto (solo en desarrollo)", ["supportOn", "supportUrl", "supportText", "supportGoal"]], ["Fotogramas", ["stills", "style"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
     },
     noticias: {
       noun: "noticia", plural: "Noticias", add: "Escribir noticia", ratio: "wide",
@@ -441,13 +441,18 @@
     groups.forEach(([n, names]) => {
       const body = h("div", { class: "ed-card2__b" });
       names.forEach((k) => { const f = byName[k]; if (!f || adv(f) || sideNames.includes(k)) return; used.add(k); add(body, f); });
-      if (body.children.length) main.append(h("section", { class: "ed-card2" }, h("h2", {}, n), body));
+      if (body.children.length) main.append(h("section", { class: "ed-card2", "data-grp": n.startsWith("Apoyar") ? "support" : null }, h("h2", {}, n), body));
     });
     const rest = def.fields.filter((f) => !used.has(f.name) && f.widget !== "uuid");
     if (rest.length) {
       const body = h("div", { class: "ed-card2__b" });
       rest.forEach((f) => add(body, f));
       main.append(h("details", { class: "ed-card2 ed-card2--adv" }, h("summary", {}, "Opciones avanzadas"), body));
+    }
+    const supCard = main.querySelector('[data-grp="support"]');
+    if (supCard) {
+      const sync = () => { supCard.hidden = item.status !== "desarrollo"; };
+      const t0 = ctx.touch; ctx.touch = () => { t0(); sync(); }; sync();
     }
     el.append(h("div", { class: "ed-two" }, main, side));
     window.scrollTo({ top: 0 });

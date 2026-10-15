@@ -845,6 +845,79 @@ collections:
                     name: route
                     widget: string
                     required: false
+              - label: "Tráiler o teaser (enlace del vídeo)"
+                name: trailer
+                widget: string
+                required: false
+                hint: "Pega el enlace de YouTube o Vimeo y el vídeo se verá dentro de la ficha. Con otro enlace aparece un botón para verlo. Déjalo vacío para no mostrar la sección."
+              - label: "¿Es tráiler o teaser?"
+                name: trailerKind
+                widget: select
+                options:
+                  - { label: "Tráiler", value: "trailer" }
+                  - { label: "Teaser", value: "teaser" }
+                required: false
+              - label: "Ocultar la sección «Dónde verla»"
+                name: whereHidden
+                widget: boolean
+                required: false
+                default: false
+                hint: "Actívalo si todavía no hay dónde ver el proyecto: la sección desaparece de la ficha."
+              - label: "Mostrar el bloque «Apoya este proyecto»"
+                name: supportOn
+                widget: boolean
+                required: false
+                default: false
+                hint: "Solo se muestra si el proyecto está «En desarrollo»."
+              - label: "Enlace de la campaña (crowdfunding, donaciones…)"
+                name: supportUrl
+                widget: string
+                required: false
+                hint: "Verkami, Kickstarter, Indiegogo, GoFundMe, PayPal… Si lo dejas vacío, el botón lleva al formulario de contacto."
+              - label: "Texto para quien quiera apoyar"
+                name: supportText
+                widget: object
+                required: false
+                collapsed: true
+                summary: "{{fields.es}}"
+                hint: "Explica en pocas líneas qué se necesita y para qué (financiación, coproducción, equipo…)."
+                fields:
+                  - label: "Español"
+                    name: es
+                    widget: text
+                    required: false
+                  - label: "English"
+                    name: en
+                    widget: text
+                    required: false
+                  - label: "Otros idiomas (opcional)"
+                    name: otros
+                    widget: object
+                    required: false
+                    collapsed: true
+                    summary: "{{fields.es}}"
+                    fields:
+                      - label: "Français"
+                        name: fr
+                        widget: text
+                        required: false
+                      - label: "Português"
+                        name: pt
+                        widget: text
+                        required: false
+                      - label: "Italiano"
+                        name: it
+                        widget: text
+                        required: false
+                      - label: "Deutsch"
+                        name: de
+                        widget: text
+                        required: false
+              - label: "Meta o estado de la campaña (opcional)"
+                name: supportGoal
+                widget: string
+                required: false
+                hint: "Texto libre, por ejemplo: «Objetivo: 20.000 €» o «Campaña abierta hasta el 30 de noviembre»."
               - label: "Fotogramas (fotos del rodaje o de la película)"
                 name: stills
                 widget: list

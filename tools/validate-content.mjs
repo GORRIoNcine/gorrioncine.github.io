@@ -50,6 +50,10 @@ list(proy && proy.items).forEach((p, i) => {
   else if (slugs.has(p.slug)) err(`${n}: el slug «${p.slug}» ya lo usa «${slugs.get(p.slug)}».`); else slugs.set(p.slug, p.title);
   if (p.type && !TYPES.includes(p.type)) err(`${n}: tipo desconocido «${p.type}».`);
   if (p.status && !STATUS.includes(p.status)) err(`${n}: estado desconocido «${p.status}».`);
+  const okUrl = (u) => { try { return /^https?:$/.test(new URL(u).protocol); } catch (e) { return false; } };
+  if (p.trailer && !okUrl(String(p.trailer).trim())) err(`${n}: el enlace del tráiler no es válido (debe empezar por https://).`);
+  if (p.supportUrl && !okUrl(String(p.supportUrl).trim())) err(`${n}: el enlace de la campaña de apoyo no es válido (debe empezar por https://).`);
+  if (p.supportOn && p.status !== "desarrollo") warn(`${n}: el bloque «Apoya este proyecto» solo se muestra si el estado es «En desarrollo».`);
   list(p.crew).forEach((c) => { if (c && !ROLES.includes(c.r)) warn(`${n}: cargo desconocido «${c.r}» en la ficha técnica (se omitirá).`); });
   list(p.journey).forEach((j) => { if (j && j.d && !/^\d{4}-\d{2}$/.test(j.d)) warn(`${n}: la fecha «${j.d}» del recorrido debería tener formato AAAA-MM.`); });
   img(n, p.poster); list(p.stills).forEach((s) => img(n, typeof s === "string" ? s : s && s.image));
