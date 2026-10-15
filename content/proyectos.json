@@ -302,42 +302,62 @@
         {
           "r": "direccion",
           "n": "Isis del Rosario",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/isi_matirial/"
+            }
+          ]
         },
         {
           "r": "guion",
           "n": "Isis del Rosario",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/isi_matirial/"
+            }
+          ]
         },
         {
           "r": "produccion",
           "n": "Karely Mesa",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/karelyna_md/"
+            }
+          ]
         },
         {
           "r": "director-a-de-fotografia",
           "n": "Luna Reinoso",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/luz.d3.lu4/"
+            }
+          ]
         },
         {
           "r": "jefe-a-de-sonido-directo-o-mezclador-a-de-sonido",
           "n": "Manuel Hérnandez",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/manu.hacherre/"
+            }
+          ]
         },
         {
           "n": "Niguel Cruz",
           "r": "montador-a-o-editor-a",
-          "c": []
-        },
-        {
-          "r": "arte",
-          "n": "Fernando Lauzurique",
-          "c": []
-        },
-        {
-          "r": "actor-actriz-protagonista",
-          "n": "Laura Mayedo",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/vampicerdito_oficial/"
+            }
+          ]
         }
       ],
       "note": {
