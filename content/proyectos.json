@@ -301,35 +301,43 @@
       "crew": [
         {
           "r": "direccion",
-          "n": "Isis del Rosario"
+          "n": "Isis del Rosario",
+          "c": []
         },
         {
           "r": "guion",
-          "n": "Isis del Rosario"
+          "n": "Isis del Rosario",
+          "c": []
         },
         {
           "r": "produccion",
-          "n": "Karely Mesa"
+          "n": "Karely Mesa",
+          "c": []
         },
         {
-          "r": "fotografia",
-          "n": "Luna Reinoso"
+          "r": "director-a-de-fotografia",
+          "n": "Luna Reinoso",
+          "c": []
         },
         {
-          "r": "sonido",
-          "n": "Manuel Hérnandez"
+          "r": "jefe-a-de-sonido-directo-o-mezclador-a-de-sonido",
+          "n": "Manuel Hérnandez",
+          "c": []
         },
         {
           "n": "Niguel Cruz",
-          "r": "montaje"
+          "r": "montador-a-o-editor-a",
+          "c": []
         },
         {
           "r": "arte",
-          "n": "Fernando Lauzurique"
+          "n": "Fernando Lauzurique",
+          "c": []
         },
         {
-          "r": "reparto",
-          "n": "Laura Mayedo"
+          "r": "actor-actriz-protagonista",
+          "n": "Laura Mayedo",
+          "c": []
         }
       ],
       "note": {
@@ -358,9 +366,9 @@
       ],
       "style": "circle",
       "seed": 52,
-      "trailer": "https://youtu.be/-G3cwPHo1Qw?is=mE8fAaaKqm73bqHs",
+      "trailer": "",
       "trailerKind": "trailer",
-      "supportOn": true,
+      "supportOn": false,
       "supportUrl": "https://gorrioncine.github.io/proyectos/fangal/",
       "supportGoal": "Abierto hasta 2027"
     },
