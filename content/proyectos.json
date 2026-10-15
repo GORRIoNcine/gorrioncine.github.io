@@ -40,35 +40,158 @@
       "crew": [
         {
           "r": "direccion",
-          "n": "Karely Mesa Díaz"
+          "n": "Karely Mesa Díaz",
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/karelyna_md/"
+            }
+          ]
         },
         {
           "r": "guion",
-          "n": "Karely Mesa"
+          "n": "Karely Mesa",
+          "c": [
+            {
+              "u": "https://www.instagram.com/karelyna_md/",
+              "k": "instagram"
+            }
+          ]
         },
         {
           "r": "produccion",
-          "n": "Amanda Peñalver Lora"
+          "n": "Amanda Peñalver Lora",
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/amanda.pl_/"
+            }
+          ]
         },
         {
           "r": "fotografia",
-          "n": "Karely Mesa"
+          "n": "Karely Mesa",
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/karelyna_md/"
+            }
+          ]
+        },
+        {
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/___going_around/"
+            }
+          ],
+          "r": "jefe-a-de-sonido-directo-o-mezclador-a-de-sonido",
+          "n": "Elisa Almenteros"
         },
         {
           "r": "montaje",
-          "n": "Niguel Cruz"
-        },
-        {
-          "r": "sonido",
-          "n": "Manuel Hernández"
+          "n": "Niguel Cruz",
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/vampicerdito_oficial/"
+            }
+          ]
         },
         {
           "r": "arte",
-          "n": "Fernando Almenteros"
+          "n": "Fernando Lazurique",
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/fer_lauzurique/"
+            }
+          ]
         },
         {
-          "r": "reparto",
-          "n": "Daniela Ariosa, Orlando Blanco, Francis"
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/luz.d3.lu4/"
+            }
+          ],
+          "r": "primer-a-ayudante-de-direccion",
+          "n": "Luna Reinoso"
+        },
+        {
+          "r": "operador-a-de-camara",
+          "n": "Manuel Hernández",
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/manu.hacherre/"
+            }
+          ]
+        },
+        {
+          "c": [
+            {
+              "k": "instagram",
+              "u": "https://www.instagram.com/susel_maria/"
+            }
+          ],
+          "r": "primer-a-asistente-de-camara-foquista",
+          "n": "Susel de Zayas"
+        },
+        {
+          "c": [],
+          "r": "jefe-a-de-maquillaje",
+          "n": "Isabela Asin"
+        },
+        {
+          "r": "actor-actriz-protagonista",
+          "n": "Daniela Ariosa",
+          "c": [
+            {
+              "u": "https://www.instagram.com/_azucar_prieta_/",
+              "k": "instagram"
+            }
+          ]
+        },
+        {
+          "c": [],
+          "r": "supervisor-a-de-continuidad-narrativa",
+          "n": "Frank Suárez"
+        },
+        {
+          "c": [],
+          "r": "actor-actriz-de-reparto",
+          "n": "Orlando Blanco"
+        },
+        {
+          "c": [],
+          "r": "actor-actriz-de-reparto",
+          "n": "Francis"
+        },
+        {
+          "c": [],
+          "r": "figurantes-o-extras",
+          "n": "Daniela Miranda"
+        },
+        {
+          "c": [],
+          "r": "figurantes-o-extras",
+          "n": "Dashira López"
+        },
+        {
+          "c": [],
+          "r": "figurantes-o-extras",
+          "n": "Ernesto Ysa"
+        },
+        {
+          "c": [],
+          "r": "figurantes-o-extras",
+          "n": "Nathalie Recio"
+        },
+        {
+          "c": [],
+          "r": "figurantes-o-extras",
+          "n": "Viviana Barroso"
         }
       ],
       "note": {
