@@ -119,15 +119,15 @@
         "otros": null
       },
       "year": 2026,
-      "status": "produccion",
+      "status": "postproduccion",
       "runtime": "15 min",
       "genre": {
-        "es": "Documental de observación",
+        "es": "Drama Social - Musical",
         "en": "Observational documentary",
         "otros": null
       },
       "lang": "Español",
-      "subs": "EN · PT",
+      "subs": "EN",
       "featured": false,
       "poster": "",
       "tagline": {
@@ -160,7 +160,7 @@
         },
         {
           "r": "montaje",
-          "n": "Lisandra Fuentes"
+          "n": "Niguel Cruz"
         },
         {
           "r": "sonido",
@@ -177,79 +177,9 @@
         "otros": null
       },
       "noteBy": "Rolando Béquer",
-      "journey": [
-        {
-          "d": "2024-09",
-          "t": {
-            "es": "Estreno internacional",
-            "en": "International premiere",
-            "otros": null
-          },
-          "p": "Encuentro de Cine Documental Sur-Sur"
-        },
-        {
-          "d": "2024-12",
-          "t": {
-            "es": "Mejor Fotografía Documental",
-            "en": "Best Documentary Cinematography",
-            "otros": null
-          },
-          "p": "Festival Imagen del Caribe"
-        },
-        {
-          "d": "2025-04",
-          "t": {
-            "es": "Proyección especial",
-            "en": "Special screening",
-            "otros": null
-          },
-          "p": "Cineteca Mar del Plata"
-        }
-      ],
-      "press": [
-        {
-          "q": {
-            "es": "Observa sin invadir y por eso lo dice todo.",
-            "en": "It observes without intruding, and so says everything.",
-            "otros": null
-          },
-          "s": "Radio Cinefilia"
-        }
-      ],
-      "where": [
-        {
-          "l": {
-            "es": "Tráiler",
-            "en": "Trailer",
-            "otros": null
-          },
-          "n": {
-            "es": "Vimeo · 2 min",
-            "en": "Vimeo · 2 min",
-            "otros": null
-          },
-          "url": "https://vimeo.com/",
-          "screener": false,
-          "dossier": false,
-          "route": ""
-        },
-        {
-          "l": {
-            "es": "Solicitar proyección",
-            "en": "Request a screening",
-            "otros": null
-          },
-          "n": {
-            "es": "Cineclubes, universidades y festivales",
-            "en": "Film clubs, universities and festivals",
-            "otros": null
-          },
-          "url": "",
-          "screener": true,
-          "dossier": false,
-          "route": ""
-        }
-      ],
+      "journey": [],
+      "press": [],
+      "where": [],
       "stills": [],
       "style": "diamond",
       "seed": 23
