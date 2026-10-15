@@ -386,20 +386,20 @@
     },
     {
       "id": "proj-sal-y-canaveral",
-      "title": "Sal y Cañaveral",
-      "slug": "sal-y-canaveral",
+      "title": "Kink",
+      "slug": "kink",
       "type": "documental",
       "format": {
         "es": "Mediometraje",
         "en": "Medium-length",
         "otros": null
       },
-      "year": 2023,
-      "status": "estrenado",
-      "runtime": "24 min",
+      "year": 2026,
+      "status": "produccion",
+      "runtime": "27 min",
       "genre": {
-        "es": "Documental poético",
-        "en": "Poetic documentary",
+        "es": "Documental",
+        "en": "Documentary",
         "otros": null
       },
       "lang": "Español",
@@ -424,53 +424,25 @@
       "crew": [
         {
           "r": "direccion",
-          "n": "Rolando Béquer"
+          "n": "Rose"
         },
         {
           "r": "produccion",
-          "n": "Yamilet Soto"
+          "n": "Karely Mesa"
         },
         {
           "r": "fotografia",
-          "n": "Dayron Almeida"
+          "n": "Luna Reinoso"
         },
         {
           "r": "sonido",
-          "n": "Osmany Rivero"
+          "n": "Manuel Hernández"
         }
       ],
       "note": null,
       "noteBy": "",
-      "journey": [
-        {
-          "d": "2023-10",
-          "t": {
-            "es": "Estreno",
-            "en": "Premiere",
-            "otros": null
-          },
-          "p": "Muestra Joven del Sur"
-        },
-        {
-          "d": "2024-03",
-          "t": {
-            "es": "Mención especial del jurado",
-            "en": "Special jury mention",
-            "otros": null
-          },
-          "p": "Encuentro de Cine Documental Sur-Sur"
-        }
-      ],
-      "press": [
-        {
-          "q": {
-            "es": "El sonido hace lo que las imágenes no se atreven.",
-            "en": "The sound does what the images dare not.",
-            "otros": null
-          },
-          "s": "Revista Cuadro a Cuadro"
-        }
-      ],
+      "journey": [],
+      "press": [],
       "where": [
         {
           "l": {
