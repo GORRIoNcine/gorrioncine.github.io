@@ -186,19 +186,19 @@
     },
     {
       "id": "proj-pan-de-bodega",
-      "title": "Pan de Bodega",
-      "slug": "pan-de-bodega",
-      "type": "serie",
+      "title": "Feótica",
+      "slug": "feotica",
+      "type": "ficcion",
       "format": {
-        "es": "Serie web · 8 × 12 min",
-        "en": "Web series · 8 × 12 min",
+        "es": "Cortometraje",
+        "en": "Short Film",
         "otros": null
       },
       "year": 2026,
-      "status": "produccion",
-      "runtime": "8 × 12 min",
+      "status": "postproduccion",
+      "runtime": "13 min",
       "genre": {
-        "es": "Comedia costumbrista",
+        "es": "Drama - Horror Corporal - Queer",
         "en": "Slice-of-life comedy",
         "otros": null
       },
@@ -224,43 +224,20 @@
       "crew": [
         {
           "r": "direccion",
-          "n": "Lisandra Fuentes, Raúl Echevarría"
-        },
-        {
-          "r": "guion",
-          "n": "Rolando Béquer, Yamilet Soto"
-        },
-        {
-          "r": "produccionEj",
-          "n": "Yamilet Soto"
+          "n": "Niguel Cruz"
         },
         {
           "r": "fotografia",
-          "n": "Dayron Almeida"
+          "n": "Kerely Mesa"
+        },
+        {
+          "r": "montaje",
+          "n": "Niguel Cruz"
         }
       ],
       "note": null,
       "noteBy": "",
-      "journey": [
-        {
-          "d": "2026-03",
-          "t": {
-            "es": "Fin de la escritura",
-            "en": "Writing complete",
-            "otros": null
-          },
-          "p": "GORRIóN"
-        },
-        {
-          "d": "2026-09",
-          "t": {
-            "es": "Inicio del rodaje",
-            "en": "Principal photography begins",
-            "otros": null
-          },
-          "p": "Santos Suárez, La Habana"
-        }
-      ],
+      "journey": [],
       "press": [],
       "where": [
         {
