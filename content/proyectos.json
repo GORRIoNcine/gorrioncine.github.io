@@ -359,7 +359,10 @@
       "style": "circle",
       "seed": 52,
       "trailer": "https://youtu.be/-G3cwPHo1Qw?is=mE8fAaaKqm73bqHs",
-      "trailerKind": "trailer"
+      "trailerKind": "trailer",
+      "supportOn": true,
+      "supportUrl": "https://gorrioncine.github.io/proyectos/fangal/",
+      "supportGoal": "Abierto hasta 2027"
     },
     {
       "id": "proj-sal-y-canaveral",
