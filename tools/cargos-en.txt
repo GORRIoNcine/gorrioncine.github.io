@@ -1,0 +1,509 @@
+Director/a|Director
+Primer/a ayudante de dirección|First assistant director
+Segundo/a ayudante de dirección|Second assistant director
+Guionista|Screenwriter
+Creador/a de la serie|Series creator
+Productor/a ejecutivo/a|Executive producer
+Productor/a|Producer
+Productor/a de línea|Line producer
+Director/a de producción|Production manager
+Jefe/a de producción|Head of production
+Coordinador/a de producción|Production coordinator
+Ayudante de producción|Production assistant
+Director/a de casting|Casting director
+Actor/actriz protagonista|Lead actor
+Actor/actriz de reparto|Supporting cast
+Figurantes o extras|Background actors or extras
+Director/a de fotografía|Director of photography
+Operador/a de cámara|Camera operator
+Primer/a asistente de cámara (foquista)|First assistant camera (focus puller)
+Segundo/a asistente de cámara|Second assistant camera
+Jefe/a de eléctricos (gaffer)|Gaffer
+Jefe/a de maquinaria (key grip)|Key grip
+Eléctricos/as|Electricians
+Maquinistas|Grips
+Jefe/a de sonido directo o mezclador/a de sonido|Production sound mixer
+Microfonista|Boom operator
+Diseñador/a de producción|Production designer
+Director/a de arte|Art director
+Escenógrafo/a o ambientador/a|Set decorator
+Responsable de utilería|Props master
+Diseñador/a o jefe/a de vestuario|Costume designer
+Jefe/a de maquillaje|Head of makeup
+Jefe/a de peluquería|Head of hair
+Responsable de localizaciones|Location manager
+Responsable de transporte|Transport coordinator
+Montador/a o editor/a|Editor
+Colorista|Colorist
+Coordinador/a de postproducción|Post-production coordinator
+Supervisor/a o diseñador/a de sonido|Sound supervisor or designer
+Editor/a de sonido|Sound editor
+Mezclador/a de sonido|Re-recording mixer
+Compositor/a musical|Composer
+Supervisor/a de efectos visuales|VFX supervisor
+Supervisor/a de efectos especiales físicos|Special effects supervisor
+Responsable de distribución|Head of distribution
+Responsable de marketing o comunicación|Head of marketing or communications
+Codirector/a|Co-director
+Director/a de segunda unidad|Second unit director
+Director/a de actores|Actors' director
+Asistente de dirección de actores|Actors' director assistant
+Auxiliar de dirección|Directing assistant
+Consultor/a creativo/a|Creative consultant
+Supervisor/a de continuidad narrativa|Story continuity supervisor
+Coordinador/a de guionistas|Writers' coordinator
+Editor/a de guion|Script editor
+Coguionista|Co-writer
+Adaptador/a|Adapter
+Asesor/a de dramaturgia|Dramaturgy advisor
+Lector/a o analista de guion|Script reader or analyst
+Investigador/a documental|Documentary researcher
+Asesor/a histórico, científico o técnico|Historical, scientific or technical advisor
+Coproductor/a|Co-producer
+Productor/a delegado/a|Delegate producer
+Productor/a asociado/a|Associate producer
+Productor/a de campo|Field producer
+Productor/a de unidad|Unit producer
+Productor/a de postproducción|Post-production producer
+Secretario/a de producción|Production secretary
+Auxiliar de producción|Production assistant (junior)
+Asistente personal de producción|Production personal assistant
+Administrador/a de producción|Production administrator
+Contable de producción|Production accountant
+Cajero/a de producción|Production cashier
+Responsable de nóminas|Payroll manager
+Responsable de compras y contratación|Purchasing and contracting manager
+Responsable de seguros y permisos|Insurance and permits manager
+Responsable de sostenibilidad|Sustainability manager
+Coordinador/a de viajes y alojamiento|Travel and accommodation coordinator
+Coordinador/a de proveedores|Supplier coordinator
+Coordinador/a de coproducción internacional|International co-production coordinator
+Jefe/a de oficina de producción|Production office manager
+Coordinador/a de oficina|Office coordinator
+Asistente administrativo/a|Administrative assistant
+Responsable de documentación y contratos|Documentation and contracts manager
+Responsable de acreditaciones|Accreditation manager
+Coordinador/a de catering|Catering coordinator
+Coordinador/a de extras|Extras coordinator
+Mensajero/a de producción|Production runner
+Asociado/a de casting|Casting associate
+Asistente y auxiliar de casting|Casting assistant
+Coordinador/a de casting|Casting coordinator
+Responsable de convocatorias|Casting call manager
+Lector/a de pruebas|Audition reader
+Operador/a de cámara para audiciones|Audition camera operator
+Actor/actriz coprotagonista|Co-lead actor
+Actor/actriz secundario/a|Supporting actor
+Actor/actriz episódico/a|Guest actor
+Actor/actriz de pequeñas partes|Bit-part actor
+Extra especial|Special extra
+Doble de cuerpo|Body double
+Doble de luces|Stand-in
+Doble de acción o de riesgo|Stunt double
+Doble de manos, pies u otras partes|Insert double (hands, feet)
+Intérprete de voz|Voice performer
+Narrador/a|Narrator
+Presentador/a o participante|Host or participant
+Asesor/a de interpretación|Acting coach
+Entrenador/a de dialectos y acentos|Dialect and accent coach
+Coordinador/a de intimidad|Intimacy coordinator
+Tutor/a legal de menores|Child guardian
+Auxiliar de cámara|Camera assistant (junior)
+Técnico/a de cámara|Camera technician
+Ayudante de cámara adicional|Additional camera assistant
+Técnico/a de imagen digital (DIT)|Digital imaging technician (DIT)
+Data wrangler o responsable de descarga de tarjetas|Data wrangler
+Técnico/a de gestión de datos|Data management technician
+Operador/a de cámara B o C|B or C camera operator
+Operador/a de cámara en mano|Handheld camera operator
+Operador/a de Steadicam o gimbal|Steadicam or gimbal operator
+Operador/a de cámara remota|Remote camera operator
+Operador/a de cámara submarina|Underwater camera operator
+Operador/a de cámara aérea o dron|Aerial or drone camera operator
+Operador/a de cámara de alta velocidad|High-speed camera operator
+Operador/a de cámara de acción|Action camera operator
+Fotógrafo/a de plató|Set photographer
+Auxiliar de fotografía|Photography assistant
+Técnico/a de vídeo asistencial|Video assist technician
+Operador/a de monitores|Monitor operator
+Técnico/a de teleprompter|Teleprompter technician
+Operador/a de vídeo de referencia|Reference video operator
+Segundo/a jefe/a de eléctricos (best boy electric)|Best boy electric
+Ayudante y auxiliar de eléctricos|Electrician assistant
+Técnico/a de iluminación LED|LED lighting technician
+Operador/a de consola de iluminación|Lighting console operator
+Programador/a de iluminación|Lighting programmer
+Técnico/a de dimmers y distribución eléctrica|Dimmer and power distribution technician
+Responsable y operador/a de generadores|Generator operator
+Segundo/a jefe/a de maquinaria (best boy grip)|Best boy grip
+Ayudante y auxiliar de maquinaria|Grip assistant
+Operador/a de dolly|Dolly grip
+Operador/a de grúa o technocrane|Crane or Technocrane operator
+Operador/a de cabeza caliente|Remote head operator
+Técnico/a de rigging|Rigging technician
+Especialista en soportes de cámara|Camera support specialist
+Técnico/a de estructuras y plataformas|Structures and platforms technician
+Técnico/a de vehículos cámara|Camera car technician
+Segundo/a microfonista|Second boom operator
+Ayudante y auxiliar de sonido|Sound assistant
+Técnico/a de radiofrecuencia|RF technician
+Especialista en sistemas inalámbricos|Wireless systems specialist
+Técnico/a de grabación multipista|Multitrack recording technician
+Operador/a de playback|Playback operator
+Técnico/a de reproducción de música en rodaje|On-set music playback technician
+Técnico/a de sonido para vehículos o rodajes submarinos|Vehicle or underwater sound technician
+Asistente de dirección artística|Assistant art director
+Coordinador/a, ayudante y auxiliar de arte|Art department coordinator and assistants
+Dibujante técnico/a|Draftsperson
+Diseñador/a de planos|Plan designer
+Ilustrador/a conceptual|Concept illustrator
+Artista de concepto|Concept artist
+Modelista y maquetista|Model maker
+Constructor/a de decorados|Set builder
+Carpintero/a y ebanista|Carpenter and cabinetmaker
+Herrero/a|Blacksmith
+Escultor/a|Sculptor
+Pintor/a escenográfico/a|Scenic painter
+Artista de acabados y envejecimiento|Finishing and ageing artist
+Atrecista|Prop master (set dressing)
+Regidor/a de escena|Stage manager
+Ayudante de decoración|Set decoration assistant
+Auxiliar de utilería|Props assistant
+Responsable de compras y almacén de arte|Art purchasing and storage manager
+Técnico/a de montaje y desmontaje|Set assembly and strike technician
+Supervisor/a y ayudante de vestuario|Costume supervisor and assistant
+Auxiliar de vestuario|Wardrobe assistant
+Figurinista|Costume illustrator
+Sastre, modista y patronista|Tailor, dressmaker and pattern maker
+Costurero/a|Seamstress
+Bordador/a o tintorero/a especializado/a|Embroiderer or specialist dyer
+Responsable de continuidad de vestuario|Wardrobe continuity
+Vestidor/a de actores|Dresser
+Comprador/a de vestuario|Costume buyer
+Responsable de alquileres y almacén|Rentals and storage manager
+Especialista en envejecimiento de prendas|Garment ageing specialist
+Ayudante y auxiliar de maquillaje|Makeup assistant
+Maquillador/a de efectos especiales|Special effects makeup artist
+Artista y escultor/a de prótesis|Prosthetics artist and sculptor
+Fabricante de moldes|Mould maker
+Especialista en envejecimiento, heridas y cicatrices|Ageing, wounds and scars specialist
+Artista de criaturas|Creature artist
+Ayudante de peluquería|Hair assistant
+Posticero/a y especialista en pelucas|Wig maker
+Barbero/a|Barber
+Técnico/a de continuidad de maquillaje y peluquería|Makeup and hair continuity
+Localizador/a|Location scout
+Coordinador/a y asistente de localizaciones|Locations coordinator and assistant
+Auxiliar de localizaciones|Locations assistant
+Gestor/a de contratos y permisos|Contracts and permits manager
+Responsable de relaciones con propietarios|Property owner liaison
+Coordinador/a de estacionamiento y cierres de vías|Parking and road closures coordinator
+Responsable de accesos y control del espacio|Access and site control manager
+Auxiliar de logística exterior|Outdoor logistics assistant
+Responsable de protección, limpieza y restitución de localizaciones|Location protection, cleaning and restoration manager
+Coordinador/a y técnico/a de efectos especiales|Special effects coordinator and technician
+Ayudante y auxiliar de efectos especiales|Special effects assistant
+Especialista en pirotecnia|Pyrotechnics specialist
+Técnico/a de humo, niebla, lluvia, viento o nieve artificial|Smoke, fog, rain, wind or snow technician
+Especialista en mecanismos y automatismos|Mechanisms and automation specialist
+Técnico/a de plataformas hidráulicas|Hydraulic platforms technician
+Especialista en roturas controladas|Breakaway specialist
+Técnico/a de efectos de agua, impactos y proyectiles escénicos|Water, impact and stage projectile effects technician
+Coordinador/a de seguridad de efectos|Effects safety coordinator
+Técnico/a de sangre y fluidos|Blood and fluids technician
+Coordinador/a de especialistas|Stunt coordinator
+Director/a de acción|Action director
+Especialista de acción y dobles de riesgo|Stunt performer
+Coreógrafo/a de peleas|Fight choreographer
+Instructor/a de artes marciales|Martial arts instructor
+Especialista en caídas, fuego, alturas o escalada|Falls, fire, heights and climbing specialist
+Coordinador/a de escenas acuáticas|Water scenes coordinator
+Técnico/a de arneses y cables|Harness and wire technician
+Instructor/a de armas escénicas|Stage weapons instructor
+Armero/a de utilería|Prop armourer
+Coordinador/a y entrenador/a de animales|Animal coordinator and trainer
+Cuidador/a y veterinario/a de rodaje|Animal handler and set veterinarian
+Guía de animales|Animal wrangler
+Responsable de bienestar animal|Animal welfare manager
+Coordinador/a de vehículos y transporte|Vehicles and transport coordinator
+Conductor/a de producción o reparto|Production or cast driver
+Conductor/a de vehículos especiales|Special vehicles driver
+Mecánico/a de rodaje|Set mechanic
+Coordinador/a de conducción de acción|Precision driving coordinator
+Responsable de vehículos de época|Period vehicles manager
+Especialista en modificaciones y seguridad automotriz|Vehicle modification and safety specialist
+Director/a de documental|Documentary director
+Periodista o reportero/a|Journalist or reporter
+Entrevistador/a|Interviewer
+Investigador/a y verificador/a de datos|Researcher and fact-checker
+Coordinador/a de participantes y testimonios|Participants and testimonies coordinator
+Responsable de permisos de imagen|Image release manager
+Coordinador/a de entrevistas|Interview coordinator
+Productor/a de viajes|Travel producer
+Coordinador/a de recreaciones históricas|Historical reenactment coordinator
+Presentador/a o moderador/a|Presenter or moderator
+Asesor/a temático/a|Subject matter advisor
+Director/a de realización|Broadcast director
+Realizador/a|Director (live TV)
+Productor/a ejecutivo/a del programa|Show executive producer
+Director/a de estudio|Studio director
+Ayudante y asistente de realización|Broadcast directing assistant
+Regidor/a de estudio (floor manager)|Floor manager
+Guionista y redactor/a de programa|Show writer
+Coordinador/a de contenidos e invitados|Content and guests coordinator
+Operador/a de cámara de estudio|Studio camera operator
+Operador/a de grúa de cámara|Camera crane operator
+Operador/a de teleprompter|Teleprompter operator
+Operador/a de mezclador de vídeo|Vision mixer operator
+Operador/a de control de cámaras|Camera control operator
+Operador/a de servidores y reproducción|Video server and playback operator
+Operador/a de gráficos y rótulos|Graphics and captions operator
+Técnico/a de continuidad de emisión|Broadcast continuity technician
+Operador/a de control de emisión|Master control operator
+Ingeniero/a de vídeo y audio|Video and audio engineer
+Técnico/a de control de calidad de señal|Signal quality control technician
+Operador/a de enlaces y transmisiones|Links and transmissions operator
+Técnico/a de fibra óptica|Fibre optic technician
+Operador/a de unidad móvil|OB van operator
+Operador/a de repetición deportiva o cámara lenta|Replay and slow-motion operator
+Técnico/a de intercomunicación|Intercom technician
+Operador/a de subtítulos en directo|Live captioning operator
+Primer/a y segundo/a ayudante de montaje|First and second assistant editor
+Auxiliar de montaje|Editing assistant
+Asistente editorial|Editorial assistant
+Supervisor/a de montaje|Supervising editor
+Editor/a de diálogos|Dialogue editor
+Editor/a de escenas de acción|Action scenes editor
+Editor/a de archivo y material documental|Archive and documentary footage editor
+Editor/a de tráileres, avances y promociones|Trailer and promo editor
+Editor/a de contenidos para redes sociales|Social media content editor
+Técnico/a de ingesta y sincronización|Ingest and sync technician
+Responsable de organización de medios|Media manager
+Técnico/a de conformado|Conform technician
+Especialista en gestión de archivos y relink|File management and relink specialist
+Supervisor/a de versiones y exportaciones|Versions and exports supervisor
+Editor/a de diálogos, efectos y ambientes|Dialogue, effects and ambience editor
+Editor/a de Foley|Foley editor
+Artista Foley|Foley artist
+Técnico/a de grabación Foley|Foley recordist
+Grabador/a y editor/a de ADR|ADR recordist and editor
+Director/a y técnico/a de doblaje|Dubbing director and technician
+Técnico/a de restauración de audio|Audio restoration technician
+Especialista en reducción de ruido|Noise reduction specialist
+Diseñador/a de sonido inmersivo|Immersive sound designer
+Técnico/a de mezcla 5.1, 7.1 o Dolby Atmos|5.1, 7.1 or Dolby Atmos mixing technician
+Supervisor/a de entregas de sonido|Sound deliverables supervisor
+Productor/a musical|Music producer
+Arreglista y orquestador/a|Arranger and orchestrator
+Director/a de orquesta o coro|Conductor
+Músico/a de sesión|Session musician
+Copista y editor/a musical|Music copyist and editor
+Técnico/a de grabación musical|Music recording technician
+Ingeniero/a de mezcla y masterización|Mixing and mastering engineer
+Coordinador/a de licencias y derechos musicales|Music licensing and rights coordinator
+Investigador/a de música de archivo|Archive music researcher
+Asistente y supervisor/a de color|Color assistant and supervisor
+Técnico/a de conformado online|Online conform technician
+Artista de acabado de imagen|Finishing artist
+Técnico/a de restauración de imagen|Image restoration technician
+Especialista en reducción de ruido visual y estabilización|Denoise and stabilization specialist
+Técnico/a de gestión del color y HDR|Color management and HDR technician
+Técnico/a de mastering y control de calidad|Mastering and QC technician
+Productor/a y coordinador/a de VFX|VFX producer and coordinator
+Supervisor/a de VFX en rodaje|On-set VFX supervisor
+Artista de composición digital|Compositor
+Artista de rotoscopia y matchmove|Rotoscopy and matchmove artist
+Artista de tracking de cámara|Camera tracking artist
+Artista de modelado, texturas e iluminación 3D|3D modeling, texturing and lighting artist
+Artista de render, rigging y animación|Render, rigging and animation artist
+Artista de simulaciones, fluidos, fuego y partículas|Simulation, fluids, fire and particles artist
+Artista de matte painting y entornos digitales|Matte painting and digital environments artist
+Artista de criaturas digitales|Digital creature artist
+Artista de look development|Look development artist
+Artista de previs y postvis|Previs and postvis artist
+Artista de captura de movimiento|Motion capture artist
+Supervisor/a de pipeline|Pipeline supervisor
+Desarrollador/a de herramientas para VFX|VFX tools developer
+Técnico/a de render farm|Render farm technician
+Director/a de diseño gráfico|Head of graphic design
+Diseñador/a de títulos de crédito y cabeceras|Title and credits designer
+Diseñador/a de rótulos|Lettering designer
+Artista de motion graphics|Motion graphics artist
+Animador/a gráfico/a|Graphic animator
+Ilustrador/a|Illustrator
+Diseñador/a de infografías y mapas|Infographics and maps designer
+Artista de visualización de datos|Data visualization artist
+Diseñador/a de gráficos para televisión y deportes|TV and sports graphics designer
+Artista de integración gráfica|Graphics integration artist
+Diseñador/a de identidad visual del proyecto|Project visual identity designer
+Traductor/a audiovisual|Audiovisual translator
+Adaptador/a de diálogos|Dialogue adapter
+Traductor/a y ajustador/a de subtítulos|Subtitle translator and timer
+Spotter o localizador/a de entradas|Subtitle spotter
+Sincronizador/a de subtítulos|Subtitle synchronizer
+Responsable de subtítulos para personas sordas|SDH subtitles manager
+Audiodescriptor/a|Audio describer
+Narrador/a de audiodescripción|Audio description narrator
+Adaptador/a para doblaje|Dubbing adapter
+Coordinador/a de doblaje|Dubbing coordinator
+Actor/actriz de doblaje|Dubbing actor
+Revisor/a lingüístico/a|Language reviewer
+Corrector/a de textos|Proofreader
+Especialista en localización cultural|Cultural localization specialist
+Técnico/a de subtitulado en directo|Live subtitling technician
+Documentalista audiovisual|Audiovisual documentalist
+Archivista|Archivist
+Investigador/a de archivo|Archive researcher
+Responsable de derechos de archivo|Archive rights manager
+Gestor/a de materiales de terceros|Third-party materials manager
+Investigador/a de fotografías, prensa y televisión|Photo, press and TV researcher
+Catalogador/a audiovisual|Audiovisual cataloguer
+Técnico/a de digitalización|Digitization technician
+Restaurador/a de película y audio|Film and audio restorer
+Responsable de conservación de negativos|Negative preservation manager
+Gestor/a de licencias de imágenes|Image licensing manager
+Responsable de autorización de materiales|Materials clearance manager
+Director/a de marketing|Marketing director
+Responsable de comunicación y prensa|Communications and press manager
+Publicista cinematográfico/a|Film publicist
+Responsable de redes sociales|Social media manager
+Community manager|Community manager
+Estratega y creador/a de contenidos|Content strategist and creator
+Redactor/a publicitario/a|Copywriter
+Diseñador/a de campaña y carteles|Campaign and poster designer
+Fotógrafo/a y videógrafo/a de promoción|Promotional photographer and videographer
+Editor/a de material promocional|Promotional material editor
+Responsable de making-of|Making-of manager
+Responsable de campañas digitales y publicidad pagada|Digital campaigns and paid advertising manager
+Analista de audiencia|Audience analyst
+Responsable de colaboraciones e influencers|Partnerships and influencers manager
+Coordinador/a de estreno|Premiere coordinator
+Responsable de materiales para festivales|Festival materials manager
+Diseñador/a de dossier de prensa|Press kit designer
+Responsable de tráiler y teaser|Trailer and teaser manager
+Productor/a de distribución|Distribution producer
+Director/a de distribución|Distribution director
+Agente de ventas internacionales|International sales agent
+Responsable de ventas nacionales|Domestic sales manager
+Responsable de adquisiciones|Acquisitions manager
+Programador/a de festivales|Festival programmer
+Coordinador/a de festivales|Festival coordinator
+Responsable de circulación de copias|Print circulation manager
+Responsable de distribución digital|Digital distribution manager
+Gestor/a de plataformas VOD|VOD platforms manager
+Responsable de entregas a plataformas|Platform deliveries manager
+Técnico/a de creación de DCP|DCP technician
+Operador/a de laboratorio digital|Digital lab operator
+Responsable de materiales de exhibición|Exhibition materials manager
+Gestor/a de derechos de explotación y licencias territoriales|Exploitation rights and territorial licensing manager
+Responsable de ventas para televisión o streaming|TV and streaming sales manager
+Abogado/a de producción|Production lawyer
+Asesor/a jurídico/a|Legal advisor
+Responsable de propiedad intelectual|Intellectual property manager
+Responsable de contratos de talento y localizaciones|Talent and location contracts manager
+Responsable de autorizaciones de imagen y voz|Image and voice release manager
+Responsable de clearance legal|Legal clearance manager
+Asesor/a fiscal|Tax advisor
+Contable y auditor/a de producción|Production accountant and auditor
+Responsable de financiación y subvenciones|Funding and grants manager
+Gestor/a de fondos públicos|Public funds manager
+Responsable de coproducción financiera|Financial co-production manager
+Responsable de seguros|Insurance manager
+Coordinador/a de riesgos laborales|Occupational risk coordinator
+Asesor/a de prevención de riesgos|Risk prevention advisor
+Responsable de cumplimiento normativo|Compliance manager
+Gestor/a de derechos musicales, adaptación y regalías|Music rights, adaptation and royalties manager
+Coordinador/a de seguridad|Safety coordinator
+Técnico/a de prevención de riesgos laborales|Occupational safety technician
+Médico/a y enfermero/a de rodaje|Set doctor and nurse
+Técnico/a de emergencias o paramédico/a|Paramedic
+Responsable de primeros auxilios|First aid manager
+Vigilante de seguridad|Security guard
+Responsable de control de accesos|Access control manager
+Personal de protección contra incendios|Fire safety staff
+Responsable de seguridad eléctrica|Electrical safety manager
+Coordinador/a de evacuación|Evacuation coordinator
+Responsable de higiene|Hygiene manager
+Personal de limpieza|Cleaning staff
+Responsable de catering|Catering manager
+Cocinero/a y ayudante de cocina|Cook and kitchen assistant
+Camarero/a de rodaje|Set server
+Responsable de agua y avituallamiento|Water and refreshments manager
+Personal de gestión de residuos|Waste management staff
+Coordinador/a de bienestar del equipo|Crew wellbeing coordinator
+Supervisor/a de tecnología de producción|Production technology supervisor
+Administrador/a de sistemas|Systems administrator
+Técnico/a informático/a y de redes|IT and network technician
+Ingeniero/a de infraestructura audiovisual|Audiovisual infrastructure engineer
+Técnico/a de almacenamiento y servidores|Storage and server technician
+Responsable de copias de seguridad|Backup manager
+Especialista en gestión de datos y ciberseguridad|Data management and cybersecurity specialist
+Ingeniero/a de sistemas audiovisuales|Audiovisual systems engineer
+Técnico/a de integración de equipos|Equipment integration technician
+Especialista en flujos de trabajo remotos y nube|Remote and cloud workflow specialist
+Supervisor/a de estudio virtual|Virtual studio supervisor
+Técnico/a de captura volumétrica|Volumetric capture technician
+Ingeniero/a de producción virtual|Virtual production engineer
+Operador/a de pantallas LED|LED wall operator
+Técnico/a de seguimiento de cámara|Camera tracking technician
+Operador/a de motor gráfico en tiempo real|Real-time engine operator
+Artista de Unreal Engine|Unreal Engine artist
+Técnico/a de sincronización de sistemas|Systems sync technician
+Responsable de continuidad técnica|Technical continuity manager
+Técnico/a de control de calidad de archivos|File QC technician
+Director/a y supervisor/a de producción virtual|Virtual production director and supervisor
+Productor/a de entornos virtuales|Virtual environments producer
+Diseñador/a de escenarios virtuales|Virtual set designer
+Artista de entornos 3D|3D environment artist
+Operador/a de motor gráfico|Game engine operator
+Técnico/a de volumen LED|LED volume technician
+Ingeniero/a de calibración de pantallas|Display calibration engineer
+Técnico/a de tracking|Tracking technician
+Supervisor/a de integración de cámara|Camera integration supervisor
+Artista de previsión virtual|Virtual previs artist
+Especialista en realidad aumentada o virtual|AR or VR specialist
+Desarrollador/a de experiencias inmersivas|Immersive experience developer
+Asesor/a histórico/a, científico/a o médico/a|Historical, scientific or medical advisor
+Asesor/a jurídico/a, cultural o lingüístico/a|Legal, cultural or linguistic advisor
+Asesor/a de accesibilidad|Accessibility advisor
+Asesor/a de representación cultural|Cultural representation advisor
+Asesor/a de diversidad e inclusión|Diversity and inclusion advisor
+Especialista en protocolos de trabajo con menores|Child work protocols specialist
+Asesor/a de bienestar animal|Animal welfare advisor
+Consultor/a de sostenibilidad|Sustainability consultant
+Investigador/a de campo|Field researcher
+Especialista en patrimonio y verificación de hechos|Heritage and fact-checking specialist
+Director/a y productor/a de animación|Animation director and producer
+Supervisor/a de animación|Animation supervisor
+Diseñador/a de personajes|Character designer
+Diseñador/a de fondos|Background designer
+Artista de storyboard y animática|Storyboard and animatic artist
+Artista de layout|Layout artist
+Diseñador/a de poses|Pose designer
+Animador/a 2D o 3D|2D or 3D animator
+Artista de rigging|Rigging artist
+Modelador/a de personajes y escenarios|Character and environment modeler
+Artista de texturas e iluminación|Texture and lighting artist
+Artista de composición y efectos|Compositing and effects artist
+Artista de color|Color artist
+Artista de cleanup e intercalación|Cleanup and in-between artist
+Artista de pintura digital|Digital painter
+Supervisor/a y técnico/a de render|Render supervisor and technician
+Coordinador/a de producción de animación|Animation production coordinator
+Artista de desarrollo visual|Visual development artist
+Artista de miniaturas|Miniatures artist
+Artista de stop motion|Stop motion artist
+Constructor/a y animador/a de marionetas|Puppet builder and animator
+Técnico/a de impresión 3D|3D printing technician
+Fotógrafo/a cinematográfico/a especializado/a en película|Film cinematographer
+Cargador/a de chasis|Film loader
+Técnico/a y auxiliar de laboratorio|Lab technician and assistant
+Responsable de negativos|Negatives manager
+Montador/a y cortador/a de negativo|Negative cutter
+Técnico/a de revelado|Developing technician
+Técnico/a de escaneado de película|Film scanning technician
+Colorista de laboratorio|Lab colorist
+Operador/a de telecine|Telecine operator
+Técnico/a de restauración fotoquímica|Photochemical restoration technician
+Responsable de conservación y archivo|Preservation and archive manager
+Técnico/a de copias de exhibición|Exhibition print technician

@@ -9,7 +9,11 @@ const err = (m) => errors.push(m), warn = (m) => warnings.push(m);
 
 const TYPES = ["ficcion", "documental", "serie", "videoclip", "encargo"];
 const STATUS = ["desarrollo", "produccion", "postproduccion", "estrenado"];
-const ROLES = ["direccion", "guion", "produccion", "produccionEj", "fotografia", "montaje", "sonido", "musica", "arte", "reparto", "cliente"];
+const root0 = process.argv[2] || ".";
+const rolesData = (() => { try { return JSON.parse(readFileSync(join(root0, "content", "roles.json"), "utf8")); } catch (e) { return { roles: [], legacy: {} }; } })();
+const ROLES = [...rolesData.roles.map((r) => r[0]), ...Object.keys(rolesData.legacy || {})];
+const MAIN_ROLES = new Set(rolesData.roles.filter((r) => r[4] === "p").map((r) => r[0]));
+const CONTACT_KINDS = ["instagram", "facebook", "whatsapp", "x", "tiktok", "youtube", "vimeo", "imdb", "linkedin", "telegram", "web", "email", "phone"];
 const CATS = ["estrenos", "rodajes", "convocatorias", "detras"];
 
 function load(name) {
@@ -54,7 +58,12 @@ list(proy && proy.items).forEach((p, i) => {
   if (p.trailer && !okUrl(String(p.trailer).trim())) err(`${n}: el enlace del tráiler no es válido (debe empezar por https://).`);
   if (p.supportUrl && !okUrl(String(p.supportUrl).trim())) err(`${n}: el enlace de la campaña de apoyo no es válido (debe empezar por https://).`);
   if (p.supportOn && p.status !== "desarrollo") warn(`${n}: el bloque «Apoya este proyecto» solo se muestra si el estado es «En desarrollo».`);
-  list(p.crew).forEach((c) => { if (c && !ROLES.includes(c.r)) warn(`${n}: cargo desconocido «${c.r}» en la ficha técnica (se omitirá).`); });
+  list(p.crew).forEach((c) => {
+    if (!c) return;
+    if (!ROLES.includes(c.r)) warn(`${n}: cargo desconocido «${c.r}» en la ficha técnica (se omitirá).`);
+    list(c.c).forEach((z) => { if (!z || !CONTACT_KINDS.includes(z.k)) warn(`${n}: contacto de «${c.n || "?"}» con red desconocida (se omitirá).`); else if (!String(z.u || "").trim()) warn(`${n}: contacto ${z.k} de «${c.n || "?"}» está vacío.`); });
+    if (list(c.c).length && !MAIN_ROLES.has(rolesData.legacy[c.r] || c.r)) warn(`${n}: «${c.n || "?"}» tiene contactos pero su puesto es secundario; en la ficha solo se muestran los de puestos principales.`);
+  });
   list(p.journey).forEach((j) => { if (j && j.d && !/^\d{4}-\d{2}$/.test(j.d)) warn(`${n}: la fecha «${j.d}» del recorrido debería tener formato AAAA-MM.`); });
   img(n, p.poster); list(p.stills).forEach((s) => img(n, typeof s === "string" ? s : s && s.image));
 });

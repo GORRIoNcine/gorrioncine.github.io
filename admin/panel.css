@@ -135,3 +135,14 @@
 .ed-gal__add:hover{border-color:var(--red2);color:var(--fg)}
 
 .ed-card2[hidden]{display:none!important}
+
+.ed-f[hidden]{display:none!important}
+.ed-combo{position:relative;display:grid;gap:6px}
+.ed-combo__list{position:absolute;z-index:30;left:0;right:0;top:44px;max-height:340px;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 12px 32px rgba(0,0,0,.22)}
+.ed-combo__g{position:sticky;top:0;display:flex;justify-content:space-between;gap:10px;padding:7px 12px;background:var(--bg);border-bottom:1px solid var(--line);font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mute)}
+.ed-combo__g em{font-style:normal;font-weight:600;letter-spacing:0}
+.ed-combo__o{padding:9px 12px;cursor:pointer;font-size:14px}
+.ed-combo__o.on,.ed-combo__o:hover{background:var(--red2);color:#fff}
+.ed-combo__o.sel{font-weight:700}
+.ed-combo__empty{padding:10px 12px;color:var(--mute);font-size:13px}
+.ed-combo__note{order:3}

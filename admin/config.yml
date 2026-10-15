@@ -586,24 +586,565 @@ collections:
                 summary: "{{fields.r}}: {{fields.n}}"
                 label_singular: "persona"
                 fields:
-                  - label: "Cargo"
+                  - label: "Cargo (escribe para buscar)"
                     name: r
                     widget: select
                     options:
-                      - { label: "Dirección", value: "direccion" }
-                      - { label: "Guion", value: "guion" }
-                      - { label: "Producción", value: "produccion" }
-                      - { label: "Producción ejecutiva", value: "produccionEj" }
-                      - { label: "Fotografía", value: "fotografia" }
-                      - { label: "Montaje", value: "montaje" }
-                      - { label: "Sonido", value: "sonido" }
-                      - { label: "Música", value: "musica" }
-                      - { label: "Dirección de arte", value: "arte" }
-                      - { label: "Reparto", value: "reparto" }
-                      - { label: "Cliente", value: "cliente" }
+                      - { label: "Dirección y guion · Director/a (principal)", value: "director-a" }
+                      - { label: "Dirección y guion · Primer/a ayudante de dirección (principal)", value: "primer-a-ayudante-de-direccion" }
+                      - { label: "Dirección y guion · Segundo/a ayudante de dirección (principal)", value: "segundo-a-ayudante-de-direccion" }
+                      - { label: "Dirección y guion · Guionista (principal)", value: "guionista" }
+                      - { label: "Dirección y guion · Creador/a de la serie (principal)", value: "creador-a-de-la-serie" }
+                      - { label: "Dirección y guion · Codirector/a", value: "codirector-a" }
+                      - { label: "Dirección y guion · Director/a de segunda unidad", value: "director-a-de-segunda-unidad" }
+                      - { label: "Dirección y guion · Director/a de actores", value: "director-a-de-actores" }
+                      - { label: "Dirección y guion · Asistente de dirección de actores", value: "asistente-de-direccion-de-actores" }
+                      - { label: "Dirección y guion · Auxiliar de dirección", value: "auxiliar-de-direccion" }
+                      - { label: "Dirección y guion · Consultor/a creativo/a", value: "consultor-a-creativo-a" }
+                      - { label: "Dirección y guion · Supervisor/a de continuidad narrativa", value: "supervisor-a-de-continuidad-narrativa" }
+                      - { label: "Dirección y guion · Coordinador/a de guionistas", value: "coordinador-a-de-guionistas" }
+                      - { label: "Dirección y guion · Editor/a de guion", value: "editor-a-de-guion" }
+                      - { label: "Dirección y guion · Coguionista", value: "coguionista" }
+                      - { label: "Dirección y guion · Adaptador/a", value: "adaptador-a" }
+                      - { label: "Dirección y guion · Asesor/a de dramaturgia", value: "asesor-a-de-dramaturgia" }
+                      - { label: "Dirección y guion · Lector/a o analista de guion", value: "lector-a-o-analista-de-guion" }
+                      - { label: "Dirección y guion · Investigador/a documental", value: "investigador-a-documental" }
+                      - { label: "Dirección y guion · Asesor/a histórico, científico o técnico", value: "asesor-a-historico-cientifico-o-tecnico" }
+                      - { label: "Producción · Productor/a ejecutivo/a (principal)", value: "productor-a-ejecutivo-a" }
+                      - { label: "Producción · Productor/a (principal)", value: "productor-a" }
+                      - { label: "Producción · Productor/a de línea (principal)", value: "productor-a-de-linea" }
+                      - { label: "Producción · Director/a de producción (principal)", value: "director-a-de-produccion" }
+                      - { label: "Producción · Jefe/a de producción (principal)", value: "jefe-a-de-produccion" }
+                      - { label: "Producción · Coordinador/a de producción (principal)", value: "coordinador-a-de-produccion" }
+                      - { label: "Producción · Ayudante de producción (principal)", value: "ayudante-de-produccion" }
+                      - { label: "Producción · Cliente (principal)", value: "cliente" }
+                      - { label: "Producción · Coproductor/a", value: "coproductor-a" }
+                      - { label: "Producción · Productor/a delegado/a", value: "productor-a-delegado-a" }
+                      - { label: "Producción · Productor/a asociado/a", value: "productor-a-asociado-a" }
+                      - { label: "Producción · Productor/a de campo", value: "productor-a-de-campo" }
+                      - { label: "Producción · Productor/a de unidad", value: "productor-a-de-unidad" }
+                      - { label: "Producción · Productor/a de postproducción", value: "productor-a-de-postproduccion" }
+                      - { label: "Producción · Secretario/a de producción", value: "secretario-a-de-produccion" }
+                      - { label: "Producción · Auxiliar de producción", value: "auxiliar-de-produccion" }
+                      - { label: "Producción · Asistente personal de producción", value: "asistente-personal-de-produccion" }
+                      - { label: "Producción · Administrador/a de producción", value: "administrador-a-de-produccion" }
+                      - { label: "Producción · Contable de producción", value: "contable-de-produccion" }
+                      - { label: "Producción · Cajero/a de producción", value: "cajero-a-de-produccion" }
+                      - { label: "Producción · Responsable de nóminas", value: "responsable-de-nominas" }
+                      - { label: "Producción · Responsable de compras y contratación", value: "responsable-de-compras-y-contratacion" }
+                      - { label: "Producción · Responsable de seguros y permisos", value: "responsable-de-seguros-y-permisos" }
+                      - { label: "Producción · Responsable de sostenibilidad", value: "responsable-de-sostenibilidad" }
+                      - { label: "Producción · Coordinador/a de viajes y alojamiento", value: "coordinador-a-de-viajes-y-alojamiento" }
+                      - { label: "Producción · Coordinador/a de proveedores", value: "coordinador-a-de-proveedores" }
+                      - { label: "Producción · Coordinador/a de coproducción internacional", value: "coordinador-a-de-coproduccion-internacional" }
+                      - { label: "Producción · Jefe/a de oficina de producción", value: "jefe-a-de-oficina-de-produccion" }
+                      - { label: "Producción · Coordinador/a de oficina", value: "coordinador-a-de-oficina" }
+                      - { label: "Producción · Asistente administrativo/a", value: "asistente-administrativo-a" }
+                      - { label: "Producción · Responsable de documentación y contratos", value: "responsable-de-documentacion-y-contratos" }
+                      - { label: "Producción · Responsable de acreditaciones", value: "responsable-de-acreditaciones" }
+                      - { label: "Producción · Coordinador/a de catering", value: "coordinador-a-de-catering" }
+                      - { label: "Producción · Coordinador/a de extras", value: "coordinador-a-de-extras" }
+                      - { label: "Producción · Mensajero/a de producción", value: "mensajero-a-de-produccion" }
+                      - { label: "Reparto y casting · Director/a de casting (principal)", value: "director-a-de-casting" }
+                      - { label: "Reparto y casting · Actor/actriz protagonista (principal)", value: "actor-actriz-protagonista" }
+                      - { label: "Reparto y casting · Actor/actriz de reparto (principal)", value: "actor-actriz-de-reparto" }
+                      - { label: "Reparto y casting · Figurantes o extras (principal)", value: "figurantes-o-extras" }
+                      - { label: "Reparto y casting · Reparto (principal)", value: "reparto-general" }
+                      - { label: "Reparto y casting · Asociado/a de casting", value: "asociado-a-de-casting" }
+                      - { label: "Reparto y casting · Asistente y auxiliar de casting", value: "asistente-y-auxiliar-de-casting" }
+                      - { label: "Reparto y casting · Coordinador/a de casting", value: "coordinador-a-de-casting" }
+                      - { label: "Reparto y casting · Responsable de convocatorias", value: "responsable-de-convocatorias" }
+                      - { label: "Reparto y casting · Lector/a de pruebas", value: "lector-a-de-pruebas" }
+                      - { label: "Reparto y casting · Operador/a de cámara para audiciones", value: "operador-a-de-camara-para-audiciones" }
+                      - { label: "Reparto y casting · Actor/actriz coprotagonista", value: "actor-actriz-coprotagonista" }
+                      - { label: "Reparto y casting · Actor/actriz secundario/a", value: "actor-actriz-secundario-a" }
+                      - { label: "Reparto y casting · Actor/actriz episódico/a", value: "actor-actriz-episodico-a" }
+                      - { label: "Reparto y casting · Actor/actriz de pequeñas partes", value: "actor-actriz-de-pequenas-partes" }
+                      - { label: "Reparto y casting · Extra especial", value: "extra-especial" }
+                      - { label: "Reparto y casting · Doble de cuerpo", value: "doble-de-cuerpo" }
+                      - { label: "Reparto y casting · Doble de luces", value: "doble-de-luces" }
+                      - { label: "Reparto y casting · Doble de acción o de riesgo", value: "doble-de-accion-o-de-riesgo" }
+                      - { label: "Reparto y casting · Doble de manos, pies u otras partes", value: "doble-de-manos-pies-u-otras-partes" }
+                      - { label: "Reparto y casting · Intérprete de voz", value: "interprete-de-voz" }
+                      - { label: "Reparto y casting · Narrador/a", value: "narrador-a" }
+                      - { label: "Reparto y casting · Presentador/a o participante", value: "presentador-a-o-participante" }
+                      - { label: "Reparto y casting · Asesor/a de interpretación", value: "asesor-a-de-interpretacion" }
+                      - { label: "Reparto y casting · Entrenador/a de dialectos y acentos", value: "entrenador-a-de-dialectos-y-acentos" }
+                      - { label: "Reparto y casting · Coordinador/a de intimidad", value: "coordinador-a-de-intimidad" }
+                      - { label: "Reparto y casting · Tutor/a legal de menores", value: "tutor-a-legal-de-menores" }
+                      - { label: "Fotografía y cámara · Director/a de fotografía (principal)", value: "director-a-de-fotografia" }
+                      - { label: "Fotografía y cámara · Operador/a de cámara (principal)", value: "operador-a-de-camara" }
+                      - { label: "Fotografía y cámara · Primer/a asistente de cámara (foquista) (principal)", value: "primer-a-asistente-de-camara-foquista" }
+                      - { label: "Fotografía y cámara · Segundo/a asistente de cámara (principal)", value: "segundo-a-asistente-de-camara" }
+                      - { label: "Fotografía y cámara · Auxiliar de cámara", value: "auxiliar-de-camara" }
+                      - { label: "Fotografía y cámara · Técnico/a de cámara", value: "tecnico-a-de-camara" }
+                      - { label: "Fotografía y cámara · Ayudante de cámara adicional", value: "ayudante-de-camara-adicional" }
+                      - { label: "Fotografía y cámara · Técnico/a de imagen digital (DIT)", value: "tecnico-a-de-imagen-digital-dit" }
+                      - { label: "Fotografía y cámara · Data wrangler o responsable de descarga de tarjetas", value: "data-wrangler-o-responsable-de-descarga-de-tarjetas" }
+                      - { label: "Fotografía y cámara · Técnico/a de gestión de datos", value: "tecnico-a-de-gestion-de-datos" }
+                      - { label: "Fotografía y cámara · Operador/a de cámara B o C", value: "operador-a-de-camara-b-o-c" }
+                      - { label: "Fotografía y cámara · Operador/a de cámara en mano", value: "operador-a-de-camara-en-mano" }
+                      - { label: "Fotografía y cámara · Operador/a de Steadicam o gimbal", value: "operador-a-de-steadicam-o-gimbal" }
+                      - { label: "Fotografía y cámara · Operador/a de cámara remota", value: "operador-a-de-camara-remota" }
+                      - { label: "Fotografía y cámara · Operador/a de cámara submarina", value: "operador-a-de-camara-submarina" }
+                      - { label: "Fotografía y cámara · Operador/a de cámara aérea o dron", value: "operador-a-de-camara-aerea-o-dron" }
+                      - { label: "Fotografía y cámara · Operador/a de cámara de alta velocidad", value: "operador-a-de-camara-de-alta-velocidad" }
+                      - { label: "Fotografía y cámara · Operador/a de cámara de acción", value: "operador-a-de-camara-de-accion" }
+                      - { label: "Fotografía y cámara · Fotógrafo/a de plató", value: "fotografo-a-de-plato" }
+                      - { label: "Fotografía y cámara · Auxiliar de fotografía", value: "auxiliar-de-fotografia" }
+                      - { label: "Fotografía y cámara · Técnico/a de vídeo asistencial", value: "tecnico-a-de-video-asistencial" }
+                      - { label: "Fotografía y cámara · Operador/a de monitores", value: "operador-a-de-monitores" }
+                      - { label: "Fotografía y cámara · Técnico/a de teleprompter", value: "tecnico-a-de-teleprompter" }
+                      - { label: "Fotografía y cámara · Operador/a de vídeo de referencia", value: "operador-a-de-video-de-referencia" }
+                      - { label: "Iluminación y maquinaria · Jefe/a de eléctricos (gaffer) (principal)", value: "jefe-a-de-electricos-gaffer" }
+                      - { label: "Iluminación y maquinaria · Jefe/a de maquinaria (key grip) (principal)", value: "jefe-a-de-maquinaria-key-grip" }
+                      - { label: "Iluminación y maquinaria · Eléctricos/as (principal)", value: "electricos-as" }
+                      - { label: "Iluminación y maquinaria · Maquinistas (principal)", value: "maquinistas" }
+                      - { label: "Iluminación y maquinaria · Segundo/a jefe/a de eléctricos (best boy electric)", value: "segundo-a-jefe-a-de-electricos-best-boy-electric" }
+                      - { label: "Iluminación y maquinaria · Ayudante y auxiliar de eléctricos", value: "ayudante-y-auxiliar-de-electricos" }
+                      - { label: "Iluminación y maquinaria · Técnico/a de iluminación LED", value: "tecnico-a-de-iluminacion-led" }
+                      - { label: "Iluminación y maquinaria · Operador/a de consola de iluminación", value: "operador-a-de-consola-de-iluminacion" }
+                      - { label: "Iluminación y maquinaria · Programador/a de iluminación", value: "programador-a-de-iluminacion" }
+                      - { label: "Iluminación y maquinaria · Técnico/a de dimmers y distribución eléctrica", value: "tecnico-a-de-dimmers-y-distribucion-electrica" }
+                      - { label: "Iluminación y maquinaria · Responsable y operador/a de generadores", value: "responsable-y-operador-a-de-generadores" }
+                      - { label: "Iluminación y maquinaria · Segundo/a jefe/a de maquinaria (best boy grip)", value: "segundo-a-jefe-a-de-maquinaria-best-boy-grip" }
+                      - { label: "Iluminación y maquinaria · Ayudante y auxiliar de maquinaria", value: "ayudante-y-auxiliar-de-maquinaria" }
+                      - { label: "Iluminación y maquinaria · Operador/a de dolly", value: "operador-a-de-dolly" }
+                      - { label: "Iluminación y maquinaria · Operador/a de grúa o technocrane", value: "operador-a-de-grua-o-technocrane" }
+                      - { label: "Iluminación y maquinaria · Operador/a de cabeza caliente", value: "operador-a-de-cabeza-caliente" }
+                      - { label: "Iluminación y maquinaria · Técnico/a de rigging", value: "tecnico-a-de-rigging" }
+                      - { label: "Iluminación y maquinaria · Especialista en soportes de cámara", value: "especialista-en-soportes-de-camara" }
+                      - { label: "Iluminación y maquinaria · Técnico/a de estructuras y plataformas", value: "tecnico-a-de-estructuras-y-plataformas" }
+                      - { label: "Iluminación y maquinaria · Técnico/a de vehículos cámara", value: "tecnico-a-de-vehiculos-camara" }
+                      - { label: "Sonido directo · Jefe/a de sonido directo o mezclador/a de sonido (principal)", value: "jefe-a-de-sonido-directo-o-mezclador-a-de-sonido" }
+                      - { label: "Sonido directo · Microfonista (principal)", value: "microfonista" }
+                      - { label: "Sonido directo · Segundo/a microfonista", value: "segundo-a-microfonista" }
+                      - { label: "Sonido directo · Ayudante y auxiliar de sonido", value: "ayudante-y-auxiliar-de-sonido" }
+                      - { label: "Sonido directo · Técnico/a de radiofrecuencia", value: "tecnico-a-de-radiofrecuencia" }
+                      - { label: "Sonido directo · Especialista en sistemas inalámbricos", value: "especialista-en-sistemas-inalambricos" }
+                      - { label: "Sonido directo · Técnico/a de grabación multipista", value: "tecnico-a-de-grabacion-multipista" }
+                      - { label: "Sonido directo · Operador/a de playback", value: "operador-a-de-playback" }
+                      - { label: "Sonido directo · Técnico/a de reproducción de música en rodaje", value: "tecnico-a-de-reproduccion-de-musica-en-rodaje" }
+                      - { label: "Sonido directo · Técnico/a de sonido para vehículos o rodajes submarinos", value: "tecnico-a-de-sonido-para-vehiculos-o-rodajes-submarinos" }
+                      - { label: "Arte, escenografía y construcción · Diseñador/a de producción (principal)", value: "disenador-a-de-produccion" }
+                      - { label: "Arte, escenografía y construcción · Director/a de arte (principal)", value: "director-a-de-arte" }
+                      - { label: "Arte, escenografía y construcción · Escenógrafo/a o ambientador/a (principal)", value: "escenografo-a-o-ambientador-a" }
+                      - { label: "Arte, escenografía y construcción · Responsable de utilería (principal)", value: "responsable-de-utileria" }
+                      - { label: "Arte, escenografía y construcción · Asistente de dirección artística", value: "asistente-de-direccion-artistica" }
+                      - { label: "Arte, escenografía y construcción · Coordinador/a, ayudante y auxiliar de arte", value: "coordinador-a-ayudante-y-auxiliar-de-arte" }
+                      - { label: "Arte, escenografía y construcción · Dibujante técnico/a", value: "dibujante-tecnico-a" }
+                      - { label: "Arte, escenografía y construcción · Diseñador/a de planos", value: "disenador-a-de-planos" }
+                      - { label: "Arte, escenografía y construcción · Ilustrador/a conceptual", value: "ilustrador-a-conceptual" }
+                      - { label: "Arte, escenografía y construcción · Artista de concepto", value: "artista-de-concepto" }
+                      - { label: "Arte, escenografía y construcción · Modelista y maquetista", value: "modelista-y-maquetista" }
+                      - { label: "Arte, escenografía y construcción · Constructor/a de decorados", value: "constructor-a-de-decorados" }
+                      - { label: "Arte, escenografía y construcción · Carpintero/a y ebanista", value: "carpintero-a-y-ebanista" }
+                      - { label: "Arte, escenografía y construcción · Herrero/a", value: "herrero-a" }
+                      - { label: "Arte, escenografía y construcción · Escultor/a", value: "escultor-a" }
+                      - { label: "Arte, escenografía y construcción · Pintor/a escenográfico/a", value: "pintor-a-escenografico-a" }
+                      - { label: "Arte, escenografía y construcción · Artista de acabados y envejecimiento", value: "artista-de-acabados-y-envejecimiento" }
+                      - { label: "Arte, escenografía y construcción · Atrecista", value: "atrecista" }
+                      - { label: "Arte, escenografía y construcción · Regidor/a de escena", value: "regidor-a-de-escena" }
+                      - { label: "Arte, escenografía y construcción · Ayudante de decoración", value: "ayudante-de-decoracion" }
+                      - { label: "Arte, escenografía y construcción · Auxiliar de utilería", value: "auxiliar-de-utileria" }
+                      - { label: "Arte, escenografía y construcción · Responsable de compras y almacén de arte", value: "responsable-de-compras-y-almacen-de-arte" }
+                      - { label: "Arte, escenografía y construcción · Técnico/a de montaje y desmontaje", value: "tecnico-a-de-montaje-y-desmontaje" }
+                      - { label: "Vestuario, maquillaje y peluquería · Diseñador/a o jefe/a de vestuario (principal)", value: "disenador-a-o-jefe-a-de-vestuario" }
+                      - { label: "Vestuario, maquillaje y peluquería · Jefe/a de maquillaje (principal)", value: "jefe-a-de-maquillaje" }
+                      - { label: "Vestuario, maquillaje y peluquería · Jefe/a de peluquería (principal)", value: "jefe-a-de-peluqueria" }
+                      - { label: "Vestuario, maquillaje y peluquería · Supervisor/a y ayudante de vestuario", value: "supervisor-a-y-ayudante-de-vestuario" }
+                      - { label: "Vestuario, maquillaje y peluquería · Auxiliar de vestuario", value: "auxiliar-de-vestuario" }
+                      - { label: "Vestuario, maquillaje y peluquería · Figurinista", value: "figurinista" }
+                      - { label: "Vestuario, maquillaje y peluquería · Sastre, modista y patronista", value: "sastre-modista-y-patronista" }
+                      - { label: "Vestuario, maquillaje y peluquería · Costurero/a", value: "costurero-a" }
+                      - { label: "Vestuario, maquillaje y peluquería · Bordador/a o tintorero/a especializado/a", value: "bordador-a-o-tintorero-a-especializado-a" }
+                      - { label: "Vestuario, maquillaje y peluquería · Responsable de continuidad de vestuario", value: "responsable-de-continuidad-de-vestuario" }
+                      - { label: "Vestuario, maquillaje y peluquería · Vestidor/a de actores", value: "vestidor-a-de-actores" }
+                      - { label: "Vestuario, maquillaje y peluquería · Comprador/a de vestuario", value: "comprador-a-de-vestuario" }
+                      - { label: "Vestuario, maquillaje y peluquería · Responsable de alquileres y almacén", value: "responsable-de-alquileres-y-almacen" }
+                      - { label: "Vestuario, maquillaje y peluquería · Especialista en envejecimiento de prendas", value: "especialista-en-envejecimiento-de-prendas" }
+                      - { label: "Vestuario, maquillaje y peluquería · Ayudante y auxiliar de maquillaje", value: "ayudante-y-auxiliar-de-maquillaje" }
+                      - { label: "Vestuario, maquillaje y peluquería · Maquillador/a de efectos especiales", value: "maquillador-a-de-efectos-especiales" }
+                      - { label: "Vestuario, maquillaje y peluquería · Artista y escultor/a de prótesis", value: "artista-y-escultor-a-de-protesis" }
+                      - { label: "Vestuario, maquillaje y peluquería · Fabricante de moldes", value: "fabricante-de-moldes" }
+                      - { label: "Vestuario, maquillaje y peluquería · Especialista en envejecimiento, heridas y cicatrices", value: "especialista-en-envejecimiento-heridas-y-cicatrices" }
+                      - { label: "Vestuario, maquillaje y peluquería · Artista de criaturas", value: "artista-de-criaturas" }
+                      - { label: "Vestuario, maquillaje y peluquería · Ayudante de peluquería", value: "ayudante-de-peluqueria" }
+                      - { label: "Vestuario, maquillaje y peluquería · Posticero/a y especialista en pelucas", value: "posticero-a-y-especialista-en-pelucas" }
+                      - { label: "Vestuario, maquillaje y peluquería · Barbero/a", value: "barbero-a" }
+                      - { label: "Vestuario, maquillaje y peluquería · Técnico/a de continuidad de maquillaje y peluquería", value: "tecnico-a-de-continuidad-de-maquillaje-y-peluqueria" }
+                      - { label: "Localizaciones y logística · Responsable de localizaciones (principal)", value: "responsable-de-localizaciones" }
+                      - { label: "Localizaciones y logística · Responsable de transporte (principal)", value: "responsable-de-transporte" }
+                      - { label: "Localizaciones y logística · Localizador/a", value: "localizador-a" }
+                      - { label: "Localizaciones y logística · Coordinador/a y asistente de localizaciones", value: "coordinador-a-y-asistente-de-localizaciones" }
+                      - { label: "Localizaciones y logística · Auxiliar de localizaciones", value: "auxiliar-de-localizaciones" }
+                      - { label: "Localizaciones y logística · Gestor/a de contratos y permisos", value: "gestor-a-de-contratos-y-permisos" }
+                      - { label: "Localizaciones y logística · Responsable de relaciones con propietarios", value: "responsable-de-relaciones-con-propietarios" }
+                      - { label: "Localizaciones y logística · Coordinador/a de estacionamiento y cierres de vías", value: "coordinador-a-de-estacionamiento-y-cierres-de-vias" }
+                      - { label: "Localizaciones y logística · Responsable de accesos y control del espacio", value: "responsable-de-accesos-y-control-del-espacio" }
+                      - { label: "Localizaciones y logística · Auxiliar de logística exterior", value: "auxiliar-de-logistica-exterior" }
+                      - { label: "Localizaciones y logística · Responsable de protección, limpieza y restitución de localizaciones", value: "responsable-de-proteccion-limpieza-y-restitucion-de-localizaciones" }
+                      - { label: "Efectos especiales y acción · Supervisor/a de efectos especiales físicos (principal)", value: "supervisor-a-de-efectos-especiales-fisicos" }
+                      - { label: "Efectos especiales y acción · Coordinador/a y técnico/a de efectos especiales", value: "coordinador-a-y-tecnico-a-de-efectos-especiales" }
+                      - { label: "Efectos especiales y acción · Ayudante y auxiliar de efectos especiales", value: "ayudante-y-auxiliar-de-efectos-especiales" }
+                      - { label: "Efectos especiales y acción · Especialista en pirotecnia", value: "especialista-en-pirotecnia" }
+                      - { label: "Efectos especiales y acción · Técnico/a de humo, niebla, lluvia, viento o nieve artificial", value: "tecnico-a-de-humo-niebla-lluvia-viento-o-nieve-artificial" }
+                      - { label: "Efectos especiales y acción · Especialista en mecanismos y automatismos", value: "especialista-en-mecanismos-y-automatismos" }
+                      - { label: "Efectos especiales y acción · Técnico/a de plataformas hidráulicas", value: "tecnico-a-de-plataformas-hidraulicas" }
+                      - { label: "Efectos especiales y acción · Especialista en roturas controladas", value: "especialista-en-roturas-controladas" }
+                      - { label: "Efectos especiales y acción · Técnico/a de efectos de agua, impactos y proyectiles escénicos", value: "tecnico-a-de-efectos-de-agua-impactos-y-proyectiles-escenicos" }
+                      - { label: "Efectos especiales y acción · Coordinador/a de seguridad de efectos", value: "coordinador-a-de-seguridad-de-efectos" }
+                      - { label: "Efectos especiales y acción · Técnico/a de sangre y fluidos", value: "tecnico-a-de-sangre-y-fluidos" }
+                      - { label: "Efectos especiales y acción · Coordinador/a de especialistas", value: "coordinador-a-de-especialistas" }
+                      - { label: "Efectos especiales y acción · Director/a de acción", value: "director-a-de-accion" }
+                      - { label: "Efectos especiales y acción · Especialista de acción y dobles de riesgo", value: "especialista-de-accion-y-dobles-de-riesgo" }
+                      - { label: "Efectos especiales y acción · Coreógrafo/a de peleas", value: "coreografo-a-de-peleas" }
+                      - { label: "Efectos especiales y acción · Instructor/a de artes marciales", value: "instructor-a-de-artes-marciales" }
+                      - { label: "Efectos especiales y acción · Especialista en caídas, fuego, alturas o escalada", value: "especialista-en-caidas-fuego-alturas-o-escalada" }
+                      - { label: "Efectos especiales y acción · Coordinador/a de escenas acuáticas", value: "coordinador-a-de-escenas-acuaticas" }
+                      - { label: "Efectos especiales y acción · Técnico/a de arneses y cables", value: "tecnico-a-de-arneses-y-cables" }
+                      - { label: "Efectos especiales y acción · Instructor/a de armas escénicas", value: "instructor-a-de-armas-escenicas" }
+                      - { label: "Efectos especiales y acción · Armero/a de utilería", value: "armero-a-de-utileria" }
+                      - { label: "Animales y vehículos · Coordinador/a y entrenador/a de animales", value: "coordinador-a-y-entrenador-a-de-animales" }
+                      - { label: "Animales y vehículos · Cuidador/a y veterinario/a de rodaje", value: "cuidador-a-y-veterinario-a-de-rodaje" }
+                      - { label: "Animales y vehículos · Guía de animales", value: "guia-de-animales" }
+                      - { label: "Animales y vehículos · Responsable de bienestar animal", value: "responsable-de-bienestar-animal" }
+                      - { label: "Animales y vehículos · Coordinador/a de vehículos y transporte", value: "coordinador-a-de-vehiculos-y-transporte" }
+                      - { label: "Animales y vehículos · Conductor/a de producción o reparto", value: "conductor-a-de-produccion-o-reparto" }
+                      - { label: "Animales y vehículos · Conductor/a de vehículos especiales", value: "conductor-a-de-vehiculos-especiales" }
+                      - { label: "Animales y vehículos · Mecánico/a de rodaje", value: "mecanico-a-de-rodaje" }
+                      - { label: "Animales y vehículos · Coordinador/a de conducción de acción", value: "coordinador-a-de-conduccion-de-accion" }
+                      - { label: "Animales y vehículos · Responsable de vehículos de época", value: "responsable-de-vehiculos-de-epoca" }
+                      - { label: "Animales y vehículos · Especialista en modificaciones y seguridad automotriz", value: "especialista-en-modificaciones-y-seguridad-automotriz" }
+                      - { label: "Documentales y no ficción · Director/a de documental", value: "director-a-de-documental" }
+                      - { label: "Documentales y no ficción · Periodista o reportero/a", value: "periodista-o-reportero-a" }
+                      - { label: "Documentales y no ficción · Entrevistador/a", value: "entrevistador-a" }
+                      - { label: "Documentales y no ficción · Investigador/a y verificador/a de datos", value: "investigador-a-y-verificador-a-de-datos" }
+                      - { label: "Documentales y no ficción · Coordinador/a de participantes y testimonios", value: "coordinador-a-de-participantes-y-testimonios" }
+                      - { label: "Documentales y no ficción · Responsable de permisos de imagen", value: "responsable-de-permisos-de-imagen" }
+                      - { label: "Documentales y no ficción · Coordinador/a de entrevistas", value: "coordinador-a-de-entrevistas" }
+                      - { label: "Documentales y no ficción · Productor/a de viajes", value: "productor-a-de-viajes" }
+                      - { label: "Documentales y no ficción · Coordinador/a de recreaciones históricas", value: "coordinador-a-de-recreaciones-historicas" }
+                      - { label: "Documentales y no ficción · Presentador/a o moderador/a", value: "presentador-a-o-moderador-a" }
+                      - { label: "Documentales y no ficción · Asesor/a temático/a", value: "asesor-a-tematico-a" }
+                      - { label: "Televisión en directo y multicámara · Director/a de realización", value: "director-a-de-realizacion" }
+                      - { label: "Televisión en directo y multicámara · Realizador/a", value: "realizador-a" }
+                      - { label: "Televisión en directo y multicámara · Productor/a ejecutivo/a del programa", value: "productor-a-ejecutivo-a-del-programa" }
+                      - { label: "Televisión en directo y multicámara · Director/a de estudio", value: "director-a-de-estudio" }
+                      - { label: "Televisión en directo y multicámara · Ayudante y asistente de realización", value: "ayudante-y-asistente-de-realizacion" }
+                      - { label: "Televisión en directo y multicámara · Regidor/a de estudio (floor manager)", value: "regidor-a-de-estudio-floor-manager" }
+                      - { label: "Televisión en directo y multicámara · Guionista y redactor/a de programa", value: "guionista-y-redactor-a-de-programa" }
+                      - { label: "Televisión en directo y multicámara · Coordinador/a de contenidos e invitados", value: "coordinador-a-de-contenidos-e-invitados" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de cámara de estudio", value: "operador-a-de-camara-de-estudio" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de grúa de cámara", value: "operador-a-de-grua-de-camara" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de teleprompter", value: "operador-a-de-teleprompter" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de mezclador de vídeo", value: "operador-a-de-mezclador-de-video" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de control de cámaras", value: "operador-a-de-control-de-camaras" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de servidores y reproducción", value: "operador-a-de-servidores-y-reproduccion" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de gráficos y rótulos", value: "operador-a-de-graficos-y-rotulos" }
+                      - { label: "Televisión en directo y multicámara · Técnico/a de continuidad de emisión", value: "tecnico-a-de-continuidad-de-emision" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de control de emisión", value: "operador-a-de-control-de-emision" }
+                      - { label: "Televisión en directo y multicámara · Ingeniero/a de vídeo y audio", value: "ingeniero-a-de-video-y-audio" }
+                      - { label: "Televisión en directo y multicámara · Técnico/a de control de calidad de señal", value: "tecnico-a-de-control-de-calidad-de-senal" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de enlaces y transmisiones", value: "operador-a-de-enlaces-y-transmisiones" }
+                      - { label: "Televisión en directo y multicámara · Técnico/a de fibra óptica", value: "tecnico-a-de-fibra-optica" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de unidad móvil", value: "operador-a-de-unidad-movil" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de repetición deportiva o cámara lenta", value: "operador-a-de-repeticion-deportiva-o-camara-lenta" }
+                      - { label: "Televisión en directo y multicámara · Técnico/a de intercomunicación", value: "tecnico-a-de-intercomunicacion" }
+                      - { label: "Televisión en directo y multicámara · Operador/a de subtítulos en directo", value: "operador-a-de-subtitulos-en-directo" }
+                      - { label: "Montaje y postproducción de imagen · Montador/a o editor/a (principal)", value: "montador-a-o-editor-a" }
+                      - { label: "Montaje y postproducción de imagen · Coordinador/a de postproducción (principal)", value: "coordinador-a-de-postproduccion" }
+                      - { label: "Montaje y postproducción de imagen · Primer/a y segundo/a ayudante de montaje", value: "primer-a-y-segundo-a-ayudante-de-montaje" }
+                      - { label: "Montaje y postproducción de imagen · Auxiliar de montaje", value: "auxiliar-de-montaje" }
+                      - { label: "Montaje y postproducción de imagen · Asistente editorial", value: "asistente-editorial" }
+                      - { label: "Montaje y postproducción de imagen · Supervisor/a de montaje", value: "supervisor-a-de-montaje" }
+                      - { label: "Montaje y postproducción de imagen · Editor/a de diálogos", value: "editor-a-de-dialogos" }
+                      - { label: "Montaje y postproducción de imagen · Editor/a de escenas de acción", value: "editor-a-de-escenas-de-accion" }
+                      - { label: "Montaje y postproducción de imagen · Editor/a de archivo y material documental", value: "editor-a-de-archivo-y-material-documental" }
+                      - { label: "Montaje y postproducción de imagen · Editor/a de tráileres, avances y promociones", value: "editor-a-de-traileres-avances-y-promociones" }
+                      - { label: "Montaje y postproducción de imagen · Editor/a de contenidos para redes sociales", value: "editor-a-de-contenidos-para-redes-sociales" }
+                      - { label: "Montaje y postproducción de imagen · Técnico/a de ingesta y sincronización", value: "tecnico-a-de-ingesta-y-sincronizacion" }
+                      - { label: "Montaje y postproducción de imagen · Responsable de organización de medios", value: "responsable-de-organizacion-de-medios" }
+                      - { label: "Montaje y postproducción de imagen · Técnico/a de conformado", value: "tecnico-a-de-conformado" }
+                      - { label: "Montaje y postproducción de imagen · Especialista en gestión de archivos y relink", value: "especialista-en-gestion-de-archivos-y-relink" }
+                      - { label: "Montaje y postproducción de imagen · Supervisor/a de versiones y exportaciones", value: "supervisor-a-de-versiones-y-exportaciones" }
+                      - { label: "Postproducción de sonido y música · Supervisor/a o diseñador/a de sonido (principal)", value: "supervisor-a-o-disenador-a-de-sonido" }
+                      - { label: "Postproducción de sonido y música · Editor/a de sonido (principal)", value: "editor-a-de-sonido" }
+                      - { label: "Postproducción de sonido y música · Mezclador/a de sonido (principal)", value: "mezclador-a-de-sonido" }
+                      - { label: "Postproducción de sonido y música · Compositor/a musical (principal)", value: "compositor-a-musical" }
+                      - { label: "Postproducción de sonido y música · Editor/a de diálogos, efectos y ambientes", value: "editor-a-de-dialogos-efectos-y-ambientes" }
+                      - { label: "Postproducción de sonido y música · Editor/a de Foley", value: "editor-a-de-foley" }
+                      - { label: "Postproducción de sonido y música · Artista Foley", value: "artista-foley" }
+                      - { label: "Postproducción de sonido y música · Técnico/a de grabación Foley", value: "tecnico-a-de-grabacion-foley" }
+                      - { label: "Postproducción de sonido y música · Grabador/a y editor/a de ADR", value: "grabador-a-y-editor-a-de-adr" }
+                      - { label: "Postproducción de sonido y música · Director/a y técnico/a de doblaje", value: "director-a-y-tecnico-a-de-doblaje" }
+                      - { label: "Postproducción de sonido y música · Técnico/a de restauración de audio", value: "tecnico-a-de-restauracion-de-audio" }
+                      - { label: "Postproducción de sonido y música · Especialista en reducción de ruido", value: "especialista-en-reduccion-de-ruido" }
+                      - { label: "Postproducción de sonido y música · Diseñador/a de sonido inmersivo", value: "disenador-a-de-sonido-inmersivo" }
+                      - { label: "Postproducción de sonido y música · Técnico/a de mezcla 5.1, 7.1 o Dolby Atmos", value: "tecnico-a-de-mezcla-5-1-7-1-o-dolby-atmos" }
+                      - { label: "Postproducción de sonido y música · Supervisor/a de entregas de sonido", value: "supervisor-a-de-entregas-de-sonido" }
+                      - { label: "Postproducción de sonido y música · Productor/a musical", value: "productor-a-musical" }
+                      - { label: "Postproducción de sonido y música · Arreglista y orquestador/a", value: "arreglista-y-orquestador-a" }
+                      - { label: "Postproducción de sonido y música · Director/a de orquesta o coro", value: "director-a-de-orquesta-o-coro" }
+                      - { label: "Postproducción de sonido y música · Músico/a de sesión", value: "musico-a-de-sesion" }
+                      - { label: "Postproducción de sonido y música · Copista y editor/a musical", value: "copista-y-editor-a-musical" }
+                      - { label: "Postproducción de sonido y música · Técnico/a de grabación musical", value: "tecnico-a-de-grabacion-musical" }
+                      - { label: "Postproducción de sonido y música · Ingeniero/a de mezcla y masterización", value: "ingeniero-a-de-mezcla-y-masterizacion" }
+                      - { label: "Postproducción de sonido y música · Coordinador/a de licencias y derechos musicales", value: "coordinador-a-de-licencias-y-derechos-musicales" }
+                      - { label: "Postproducción de sonido y música · Investigador/a de música de archivo", value: "investigador-a-de-musica-de-archivo" }
+                      - { label: "Color, VFX y animación digital · Colorista (principal)", value: "colorista" }
+                      - { label: "Color, VFX y animación digital · Supervisor/a de efectos visuales (principal)", value: "supervisor-a-de-efectos-visuales" }
+                      - { label: "Color, VFX y animación digital · Asistente y supervisor/a de color", value: "asistente-y-supervisor-a-de-color" }
+                      - { label: "Color, VFX y animación digital · Técnico/a de conformado online", value: "tecnico-a-de-conformado-online" }
+                      - { label: "Color, VFX y animación digital · Artista de acabado de imagen", value: "artista-de-acabado-de-imagen" }
+                      - { label: "Color, VFX y animación digital · Técnico/a de restauración de imagen", value: "tecnico-a-de-restauracion-de-imagen" }
+                      - { label: "Color, VFX y animación digital · Especialista en reducción de ruido visual y estabilización", value: "especialista-en-reduccion-de-ruido-visual-y-estabilizacion" }
+                      - { label: "Color, VFX y animación digital · Técnico/a de gestión del color y HDR", value: "tecnico-a-de-gestion-del-color-y-hdr" }
+                      - { label: "Color, VFX y animación digital · Técnico/a de mastering y control de calidad", value: "tecnico-a-de-mastering-y-control-de-calidad" }
+                      - { label: "Color, VFX y animación digital · Productor/a y coordinador/a de VFX", value: "productor-a-y-coordinador-a-de-vfx" }
+                      - { label: "Color, VFX y animación digital · Supervisor/a de VFX en rodaje", value: "supervisor-a-de-vfx-en-rodaje" }
+                      - { label: "Color, VFX y animación digital · Artista de composición digital", value: "artista-de-composicion-digital" }
+                      - { label: "Color, VFX y animación digital · Artista de rotoscopia y matchmove", value: "artista-de-rotoscopia-y-matchmove" }
+                      - { label: "Color, VFX y animación digital · Artista de tracking de cámara", value: "artista-de-tracking-de-camara" }
+                      - { label: "Color, VFX y animación digital · Artista de modelado, texturas e iluminación 3D", value: "artista-de-modelado-texturas-e-iluminacion-3d" }
+                      - { label: "Color, VFX y animación digital · Artista de render, rigging y animación", value: "artista-de-render-rigging-y-animacion" }
+                      - { label: "Color, VFX y animación digital · Artista de simulaciones, fluidos, fuego y partículas", value: "artista-de-simulaciones-fluidos-fuego-y-particulas" }
+                      - { label: "Color, VFX y animación digital · Artista de matte painting y entornos digitales", value: "artista-de-matte-painting-y-entornos-digitales" }
+                      - { label: "Color, VFX y animación digital · Artista de criaturas digitales", value: "artista-de-criaturas-digitales" }
+                      - { label: "Color, VFX y animación digital · Artista de look development", value: "artista-de-look-development" }
+                      - { label: "Color, VFX y animación digital · Artista de previs y postvis", value: "artista-de-previs-y-postvis" }
+                      - { label: "Color, VFX y animación digital · Artista de captura de movimiento", value: "artista-de-captura-de-movimiento" }
+                      - { label: "Color, VFX y animación digital · Supervisor/a de pipeline", value: "supervisor-a-de-pipeline" }
+                      - { label: "Color, VFX y animación digital · Desarrollador/a de herramientas para VFX", value: "desarrollador-a-de-herramientas-para-vfx" }
+                      - { label: "Color, VFX y animación digital · Técnico/a de render farm", value: "tecnico-a-de-render-farm" }
+                      - { label: "Diseño gráfico y títulos · Director/a de diseño gráfico", value: "director-a-de-diseno-grafico" }
+                      - { label: "Diseño gráfico y títulos · Diseñador/a de títulos de crédito y cabeceras", value: "disenador-a-de-titulos-de-credito-y-cabeceras" }
+                      - { label: "Diseño gráfico y títulos · Diseñador/a de rótulos", value: "disenador-a-de-rotulos" }
+                      - { label: "Diseño gráfico y títulos · Artista de motion graphics", value: "artista-de-motion-graphics" }
+                      - { label: "Diseño gráfico y títulos · Animador/a gráfico/a", value: "animador-a-grafico-a" }
+                      - { label: "Diseño gráfico y títulos · Ilustrador/a", value: "ilustrador-a" }
+                      - { label: "Diseño gráfico y títulos · Diseñador/a de infografías y mapas", value: "disenador-a-de-infografias-y-mapas" }
+                      - { label: "Diseño gráfico y títulos · Artista de visualización de datos", value: "artista-de-visualizacion-de-datos" }
+                      - { label: "Diseño gráfico y títulos · Diseñador/a de gráficos para televisión y deportes", value: "disenador-a-de-graficos-para-television-y-deportes" }
+                      - { label: "Diseño gráfico y títulos · Artista de integración gráfica", value: "artista-de-integracion-grafica" }
+                      - { label: "Diseño gráfico y títulos · Diseñador/a de identidad visual del proyecto", value: "disenador-a-de-identidad-visual-del-proyecto" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Traductor/a audiovisual", value: "traductor-a-audiovisual" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Adaptador/a de diálogos", value: "adaptador-a-de-dialogos" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Traductor/a y ajustador/a de subtítulos", value: "traductor-a-y-ajustador-a-de-subtitulos" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Spotter o localizador/a de entradas", value: "spotter-o-localizador-a-de-entradas" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Sincronizador/a de subtítulos", value: "sincronizador-a-de-subtitulos" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Responsable de subtítulos para personas sordas", value: "responsable-de-subtitulos-para-personas-sordas" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Audiodescriptor/a", value: "audiodescriptor-a" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Narrador/a de audiodescripción", value: "narrador-a-de-audiodescripcion" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Adaptador/a para doblaje", value: "adaptador-a-para-doblaje" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Coordinador/a de doblaje", value: "coordinador-a-de-doblaje" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Actor/actriz de doblaje", value: "actor-actriz-de-doblaje" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Revisor/a lingüístico/a", value: "revisor-a-linguistico-a" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Corrector/a de textos", value: "corrector-a-de-textos" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Especialista en localización cultural", value: "especialista-en-localizacion-cultural" }
+                      - { label: "Subtitulado, doblaje y accesibilidad · Técnico/a de subtitulado en directo", value: "tecnico-a-de-subtitulado-en-directo" }
+                      - { label: "Archivo y documentación · Documentalista audiovisual", value: "documentalista-audiovisual" }
+                      - { label: "Archivo y documentación · Archivista", value: "archivista" }
+                      - { label: "Archivo y documentación · Investigador/a de archivo", value: "investigador-a-de-archivo" }
+                      - { label: "Archivo y documentación · Responsable de derechos de archivo", value: "responsable-de-derechos-de-archivo" }
+                      - { label: "Archivo y documentación · Gestor/a de materiales de terceros", value: "gestor-a-de-materiales-de-terceros" }
+                      - { label: "Archivo y documentación · Investigador/a de fotografías, prensa y televisión", value: "investigador-a-de-fotografias-prensa-y-television" }
+                      - { label: "Archivo y documentación · Catalogador/a audiovisual", value: "catalogador-a-audiovisual" }
+                      - { label: "Archivo y documentación · Técnico/a de digitalización", value: "tecnico-a-de-digitalizacion" }
+                      - { label: "Archivo y documentación · Restaurador/a de película y audio", value: "restaurador-a-de-pelicula-y-audio" }
+                      - { label: "Archivo y documentación · Responsable de conservación de negativos", value: "responsable-de-conservacion-de-negativos" }
+                      - { label: "Archivo y documentación · Gestor/a de licencias de imágenes", value: "gestor-a-de-licencias-de-imagenes" }
+                      - { label: "Archivo y documentación · Responsable de autorización de materiales", value: "responsable-de-autorizacion-de-materiales" }
+                      - { label: "Marketing, comunicación y promoción · Responsable de marketing o comunicación (principal)", value: "responsable-de-marketing-o-comunicacion" }
+                      - { label: "Marketing, comunicación y promoción · Director/a de marketing", value: "director-a-de-marketing" }
+                      - { label: "Marketing, comunicación y promoción · Responsable de comunicación y prensa", value: "responsable-de-comunicacion-y-prensa" }
+                      - { label: "Marketing, comunicación y promoción · Publicista cinematográfico/a", value: "publicista-cinematografico-a" }
+                      - { label: "Marketing, comunicación y promoción · Responsable de redes sociales", value: "responsable-de-redes-sociales" }
+                      - { label: "Marketing, comunicación y promoción · Community manager", value: "community-manager" }
+                      - { label: "Marketing, comunicación y promoción · Estratega y creador/a de contenidos", value: "estratega-y-creador-a-de-contenidos" }
+                      - { label: "Marketing, comunicación y promoción · Redactor/a publicitario/a", value: "redactor-a-publicitario-a" }
+                      - { label: "Marketing, comunicación y promoción · Diseñador/a de campaña y carteles", value: "disenador-a-de-campana-y-carteles" }
+                      - { label: "Marketing, comunicación y promoción · Fotógrafo/a y videógrafo/a de promoción", value: "fotografo-a-y-videografo-a-de-promocion" }
+                      - { label: "Marketing, comunicación y promoción · Editor/a de material promocional", value: "editor-a-de-material-promocional" }
+                      - { label: "Marketing, comunicación y promoción · Responsable de making-of", value: "responsable-de-making-of" }
+                      - { label: "Marketing, comunicación y promoción · Responsable de campañas digitales y publicidad pagada", value: "responsable-de-campanas-digitales-y-publicidad-pagada" }
+                      - { label: "Marketing, comunicación y promoción · Analista de audiencia", value: "analista-de-audiencia" }
+                      - { label: "Marketing, comunicación y promoción · Responsable de colaboraciones e influencers", value: "responsable-de-colaboraciones-e-influencers" }
+                      - { label: "Marketing, comunicación y promoción · Coordinador/a de estreno", value: "coordinador-a-de-estreno" }
+                      - { label: "Marketing, comunicación y promoción · Responsable de materiales para festivales", value: "responsable-de-materiales-para-festivales" }
+                      - { label: "Marketing, comunicación y promoción · Diseñador/a de dossier de prensa", value: "disenador-a-de-dossier-de-prensa" }
+                      - { label: "Marketing, comunicación y promoción · Responsable de tráiler y teaser", value: "responsable-de-trailer-y-teaser" }
+                      - { label: "Distribución y exhibición · Responsable de distribución (principal)", value: "responsable-de-distribucion" }
+                      - { label: "Distribución y exhibición · Productor/a de distribución", value: "productor-a-de-distribucion" }
+                      - { label: "Distribución y exhibición · Director/a de distribución", value: "director-a-de-distribucion" }
+                      - { label: "Distribución y exhibición · Agente de ventas internacionales", value: "agente-de-ventas-internacionales" }
+                      - { label: "Distribución y exhibición · Responsable de ventas nacionales", value: "responsable-de-ventas-nacionales" }
+                      - { label: "Distribución y exhibición · Responsable de adquisiciones", value: "responsable-de-adquisiciones" }
+                      - { label: "Distribución y exhibición · Programador/a de festivales", value: "programador-a-de-festivales" }
+                      - { label: "Distribución y exhibición · Coordinador/a de festivales", value: "coordinador-a-de-festivales" }
+                      - { label: "Distribución y exhibición · Responsable de circulación de copias", value: "responsable-de-circulacion-de-copias" }
+                      - { label: "Distribución y exhibición · Responsable de distribución digital", value: "responsable-de-distribucion-digital" }
+                      - { label: "Distribución y exhibición · Gestor/a de plataformas VOD", value: "gestor-a-de-plataformas-vod" }
+                      - { label: "Distribución y exhibición · Responsable de entregas a plataformas", value: "responsable-de-entregas-a-plataformas" }
+                      - { label: "Distribución y exhibición · Técnico/a de creación de DCP", value: "tecnico-a-de-creacion-de-dcp" }
+                      - { label: "Distribución y exhibición · Operador/a de laboratorio digital", value: "operador-a-de-laboratorio-digital" }
+                      - { label: "Distribución y exhibición · Responsable de materiales de exhibición", value: "responsable-de-materiales-de-exhibicion" }
+                      - { label: "Distribución y exhibición · Gestor/a de derechos de explotación y licencias territoriales", value: "gestor-a-de-derechos-de-explotacion-y-licencias-territoriales" }
+                      - { label: "Distribución y exhibición · Responsable de ventas para televisión o streaming", value: "responsable-de-ventas-para-television-o-streaming" }
+                      - { label: "Legal, finanzas y derechos · Abogado/a de producción", value: "abogado-a-de-produccion" }
+                      - { label: "Legal, finanzas y derechos · Asesor/a jurídico/a", value: "asesor-a-juridico-a" }
+                      - { label: "Legal, finanzas y derechos · Responsable de propiedad intelectual", value: "responsable-de-propiedad-intelectual" }
+                      - { label: "Legal, finanzas y derechos · Responsable de contratos de talento y localizaciones", value: "responsable-de-contratos-de-talento-y-localizaciones" }
+                      - { label: "Legal, finanzas y derechos · Responsable de autorizaciones de imagen y voz", value: "responsable-de-autorizaciones-de-imagen-y-voz" }
+                      - { label: "Legal, finanzas y derechos · Responsable de clearance legal", value: "responsable-de-clearance-legal" }
+                      - { label: "Legal, finanzas y derechos · Asesor/a fiscal", value: "asesor-a-fiscal" }
+                      - { label: "Legal, finanzas y derechos · Contable y auditor/a de producción", value: "contable-y-auditor-a-de-produccion" }
+                      - { label: "Legal, finanzas y derechos · Responsable de financiación y subvenciones", value: "responsable-de-financiacion-y-subvenciones" }
+                      - { label: "Legal, finanzas y derechos · Gestor/a de fondos públicos", value: "gestor-a-de-fondos-publicos" }
+                      - { label: "Legal, finanzas y derechos · Responsable de coproducción financiera", value: "responsable-de-coproduccion-financiera" }
+                      - { label: "Legal, finanzas y derechos · Responsable de seguros", value: "responsable-de-seguros" }
+                      - { label: "Legal, finanzas y derechos · Coordinador/a de riesgos laborales", value: "coordinador-a-de-riesgos-laborales" }
+                      - { label: "Legal, finanzas y derechos · Asesor/a de prevención de riesgos", value: "asesor-a-de-prevencion-de-riesgos" }
+                      - { label: "Legal, finanzas y derechos · Responsable de cumplimiento normativo", value: "responsable-de-cumplimiento-normativo" }
+                      - { label: "Legal, finanzas y derechos · Gestor/a de derechos musicales, adaptación y regalías", value: "gestor-a-de-derechos-musicales-adaptacion-y-regalias" }
+                      - { label: "Seguridad, salud y servicios · Coordinador/a de seguridad", value: "coordinador-a-de-seguridad" }
+                      - { label: "Seguridad, salud y servicios · Técnico/a de prevención de riesgos laborales", value: "tecnico-a-de-prevencion-de-riesgos-laborales" }
+                      - { label: "Seguridad, salud y servicios · Médico/a y enfermero/a de rodaje", value: "medico-a-y-enfermero-a-de-rodaje" }
+                      - { label: "Seguridad, salud y servicios · Técnico/a de emergencias o paramédico/a", value: "tecnico-a-de-emergencias-o-paramedico-a" }
+                      - { label: "Seguridad, salud y servicios · Responsable de primeros auxilios", value: "responsable-de-primeros-auxilios" }
+                      - { label: "Seguridad, salud y servicios · Vigilante de seguridad", value: "vigilante-de-seguridad" }
+                      - { label: "Seguridad, salud y servicios · Responsable de control de accesos", value: "responsable-de-control-de-accesos" }
+                      - { label: "Seguridad, salud y servicios · Personal de protección contra incendios", value: "personal-de-proteccion-contra-incendios" }
+                      - { label: "Seguridad, salud y servicios · Responsable de seguridad eléctrica", value: "responsable-de-seguridad-electrica" }
+                      - { label: "Seguridad, salud y servicios · Coordinador/a de evacuación", value: "coordinador-a-de-evacuacion" }
+                      - { label: "Seguridad, salud y servicios · Responsable de higiene", value: "responsable-de-higiene" }
+                      - { label: "Seguridad, salud y servicios · Personal de limpieza", value: "personal-de-limpieza" }
+                      - { label: "Seguridad, salud y servicios · Responsable de catering", value: "responsable-de-catering" }
+                      - { label: "Seguridad, salud y servicios · Cocinero/a y ayudante de cocina", value: "cocinero-a-y-ayudante-de-cocina" }
+                      - { label: "Seguridad, salud y servicios · Camarero/a de rodaje", value: "camarero-a-de-rodaje" }
+                      - { label: "Seguridad, salud y servicios · Responsable de agua y avituallamiento", value: "responsable-de-agua-y-avituallamiento" }
+                      - { label: "Seguridad, salud y servicios · Personal de gestión de residuos", value: "personal-de-gestion-de-residuos" }
+                      - { label: "Seguridad, salud y servicios · Coordinador/a de bienestar del equipo", value: "coordinador-a-de-bienestar-del-equipo" }
+                      - { label: "Informática y tecnología · Supervisor/a de tecnología de producción", value: "supervisor-a-de-tecnologia-de-produccion" }
+                      - { label: "Informática y tecnología · Administrador/a de sistemas", value: "administrador-a-de-sistemas" }
+                      - { label: "Informática y tecnología · Técnico/a informático/a y de redes", value: "tecnico-a-informatico-a-y-de-redes" }
+                      - { label: "Informática y tecnología · Ingeniero/a de infraestructura audiovisual", value: "ingeniero-a-de-infraestructura-audiovisual" }
+                      - { label: "Informática y tecnología · Técnico/a de almacenamiento y servidores", value: "tecnico-a-de-almacenamiento-y-servidores" }
+                      - { label: "Informática y tecnología · Responsable de copias de seguridad", value: "responsable-de-copias-de-seguridad" }
+                      - { label: "Informática y tecnología · Especialista en gestión de datos y ciberseguridad", value: "especialista-en-gestion-de-datos-y-ciberseguridad" }
+                      - { label: "Informática y tecnología · Ingeniero/a de sistemas audiovisuales", value: "ingeniero-a-de-sistemas-audiovisuales" }
+                      - { label: "Informática y tecnología · Técnico/a de integración de equipos", value: "tecnico-a-de-integracion-de-equipos" }
+                      - { label: "Informática y tecnología · Especialista en flujos de trabajo remotos y nube", value: "especialista-en-flujos-de-trabajo-remotos-y-nube" }
+                      - { label: "Informática y tecnología · Supervisor/a de estudio virtual", value: "supervisor-a-de-estudio-virtual" }
+                      - { label: "Informática y tecnología · Técnico/a de captura volumétrica", value: "tecnico-a-de-captura-volumetrica" }
+                      - { label: "Informática y tecnología · Ingeniero/a de producción virtual", value: "ingeniero-a-de-produccion-virtual" }
+                      - { label: "Informática y tecnología · Operador/a de pantallas LED", value: "operador-a-de-pantallas-led" }
+                      - { label: "Informática y tecnología · Técnico/a de seguimiento de cámara", value: "tecnico-a-de-seguimiento-de-camara" }
+                      - { label: "Informática y tecnología · Operador/a de motor gráfico en tiempo real", value: "operador-a-de-motor-grafico-en-tiempo-real" }
+                      - { label: "Informática y tecnología · Artista de Unreal Engine", value: "artista-de-unreal-engine" }
+                      - { label: "Informática y tecnología · Técnico/a de sincronización de sistemas", value: "tecnico-a-de-sincronizacion-de-sistemas" }
+                      - { label: "Informática y tecnología · Responsable de continuidad técnica", value: "responsable-de-continuidad-tecnica" }
+                      - { label: "Informática y tecnología · Técnico/a de control de calidad de archivos", value: "tecnico-a-de-control-de-calidad-de-archivos" }
+                      - { label: "Producción virtual y realidad extendida · Director/a y supervisor/a de producción virtual", value: "director-a-y-supervisor-a-de-produccion-virtual" }
+                      - { label: "Producción virtual y realidad extendida · Productor/a de entornos virtuales", value: "productor-a-de-entornos-virtuales" }
+                      - { label: "Producción virtual y realidad extendida · Diseñador/a de escenarios virtuales", value: "disenador-a-de-escenarios-virtuales" }
+                      - { label: "Producción virtual y realidad extendida · Artista de entornos 3D", value: "artista-de-entornos-3d" }
+                      - { label: "Producción virtual y realidad extendida · Operador/a de motor gráfico", value: "operador-a-de-motor-grafico" }
+                      - { label: "Producción virtual y realidad extendida · Técnico/a de volumen LED", value: "tecnico-a-de-volumen-led" }
+                      - { label: "Producción virtual y realidad extendida · Ingeniero/a de calibración de pantallas", value: "ingeniero-a-de-calibracion-de-pantallas" }
+                      - { label: "Producción virtual y realidad extendida · Técnico/a de tracking", value: "tecnico-a-de-tracking" }
+                      - { label: "Producción virtual y realidad extendida · Supervisor/a de integración de cámara", value: "supervisor-a-de-integracion-de-camara" }
+                      - { label: "Producción virtual y realidad extendida · Artista de previsión virtual", value: "artista-de-prevision-virtual" }
+                      - { label: "Producción virtual y realidad extendida · Especialista en realidad aumentada o virtual", value: "especialista-en-realidad-aumentada-o-virtual" }
+                      - { label: "Producción virtual y realidad extendida · Desarrollador/a de experiencias inmersivas", value: "desarrollador-a-de-experiencias-inmersivas" }
+                      - { label: "Asesoramiento especializado · Asesor/a histórico/a, científico/a o médico/a", value: "asesor-a-historico-a-cientifico-a-o-medico-a" }
+                      - { label: "Asesoramiento especializado · Asesor/a jurídico/a, cultural o lingüístico/a", value: "asesor-a-juridico-a-cultural-o-linguistico-a" }
+                      - { label: "Asesoramiento especializado · Asesor/a de accesibilidad", value: "asesor-a-de-accesibilidad" }
+                      - { label: "Asesoramiento especializado · Asesor/a de representación cultural", value: "asesor-a-de-representacion-cultural" }
+                      - { label: "Asesoramiento especializado · Asesor/a de diversidad e inclusión", value: "asesor-a-de-diversidad-e-inclusion" }
+                      - { label: "Asesoramiento especializado · Especialista en protocolos de trabajo con menores", value: "especialista-en-protocolos-de-trabajo-con-menores" }
+                      - { label: "Asesoramiento especializado · Asesor/a de bienestar animal", value: "asesor-a-de-bienestar-animal" }
+                      - { label: "Asesoramiento especializado · Consultor/a de sostenibilidad", value: "consultor-a-de-sostenibilidad" }
+                      - { label: "Asesoramiento especializado · Investigador/a de campo", value: "investigador-a-de-campo" }
+                      - { label: "Asesoramiento especializado · Especialista en patrimonio y verificación de hechos", value: "especialista-en-patrimonio-y-verificacion-de-hechos" }
+                      - { label: "Animación · Director/a y productor/a de animación", value: "director-a-y-productor-a-de-animacion" }
+                      - { label: "Animación · Supervisor/a de animación", value: "supervisor-a-de-animacion" }
+                      - { label: "Animación · Diseñador/a de personajes", value: "disenador-a-de-personajes" }
+                      - { label: "Animación · Diseñador/a de fondos", value: "disenador-a-de-fondos" }
+                      - { label: "Animación · Artista de storyboard y animática", value: "artista-de-storyboard-y-animatica" }
+                      - { label: "Animación · Artista de layout", value: "artista-de-layout" }
+                      - { label: "Animación · Diseñador/a de poses", value: "disenador-a-de-poses" }
+                      - { label: "Animación · Animador/a 2D o 3D", value: "animador-a-2d-o-3d" }
+                      - { label: "Animación · Artista de rigging", value: "artista-de-rigging" }
+                      - { label: "Animación · Modelador/a de personajes y escenarios", value: "modelador-a-de-personajes-y-escenarios" }
+                      - { label: "Animación · Artista de texturas e iluminación", value: "artista-de-texturas-e-iluminacion" }
+                      - { label: "Animación · Artista de composición y efectos", value: "artista-de-composicion-y-efectos" }
+                      - { label: "Animación · Artista de color", value: "artista-de-color" }
+                      - { label: "Animación · Artista de cleanup e intercalación", value: "artista-de-cleanup-e-intercalacion" }
+                      - { label: "Animación · Artista de pintura digital", value: "artista-de-pintura-digital" }
+                      - { label: "Animación · Supervisor/a y técnico/a de render", value: "supervisor-a-y-tecnico-a-de-render" }
+                      - { label: "Animación · Coordinador/a de producción de animación", value: "coordinador-a-de-produccion-de-animacion" }
+                      - { label: "Animación · Artista de desarrollo visual", value: "artista-de-desarrollo-visual" }
+                      - { label: "Animación · Artista de miniaturas", value: "artista-de-miniaturas" }
+                      - { label: "Animación · Artista de stop motion", value: "artista-de-stop-motion" }
+                      - { label: "Animación · Constructor/a y animador/a de marionetas", value: "constructor-a-y-animador-a-de-marionetas" }
+                      - { label: "Animación · Técnico/a de impresión 3D", value: "tecnico-a-de-impresion-3d" }
+                      - { label: "Cine fotoquímico y laboratorio · Fotógrafo/a cinematográfico/a especializado/a en película", value: "fotografo-a-cinematografico-a-especializado-a-en-pelicula" }
+                      - { label: "Cine fotoquímico y laboratorio · Cargador/a de chasis", value: "cargador-a-de-chasis" }
+                      - { label: "Cine fotoquímico y laboratorio · Técnico/a y auxiliar de laboratorio", value: "tecnico-a-y-auxiliar-de-laboratorio" }
+                      - { label: "Cine fotoquímico y laboratorio · Responsable de negativos", value: "responsable-de-negativos" }
+                      - { label: "Cine fotoquímico y laboratorio · Montador/a y cortador/a de negativo", value: "montador-a-y-cortador-a-de-negativo" }
+                      - { label: "Cine fotoquímico y laboratorio · Técnico/a de revelado", value: "tecnico-a-de-revelado" }
+                      - { label: "Cine fotoquímico y laboratorio · Técnico/a de escaneado de película", value: "tecnico-a-de-escaneado-de-pelicula" }
+                      - { label: "Cine fotoquímico y laboratorio · Colorista de laboratorio", value: "colorista-de-laboratorio" }
+                      - { label: "Cine fotoquímico y laboratorio · Operador/a de telecine", value: "operador-a-de-telecine" }
+                      - { label: "Cine fotoquímico y laboratorio · Técnico/a de restauración fotoquímica", value: "tecnico-a-de-restauracion-fotoquimica" }
+                      - { label: "Cine fotoquímico y laboratorio · Responsable de conservación y archivo", value: "responsable-de-conservacion-y-archivo" }
+                      - { label: "Cine fotoquímico y laboratorio · Técnico/a de copias de exhibición", value: "tecnico-a-de-copias-de-exhibicion" }
+                      - { label: "(antiguo) Dirección", value: "direccion" }
+                      - { label: "(antiguo) Guion", value: "guion" }
+                      - { label: "(antiguo) Producción", value: "produccion" }
+                      - { label: "(antiguo) Producción ejecutiva", value: "produccionEj" }
+                      - { label: "(antiguo) Fotografía", value: "fotografia" }
+                      - { label: "(antiguo) Montaje", value: "montaje" }
+                      - { label: "(antiguo) Sonido", value: "sonido" }
+                      - { label: "(antiguo) Música", value: "musica" }
+                      - { label: "(antiguo) Dirección de arte", value: "arte" }
+                      - { label: "(antiguo) Reparto", value: "reparto" }
+                      - { label: "(antiguo) Cliente", value: "cliente" }
                   - label: "Nombre(s)"
                     name: n
                     widget: string
+                  - label: "Contactos (se muestran como iconos; solo en puestos principales)"
+                    name: c
+                    widget: list
+                    required: false
+                    collapsed: false
+                    summary: "{{fields.k}}: {{fields.u}}"
+                    label_singular: "contacto"
+                    fields:
+                      - label: "Red o medio"
+                        name: k
+                        widget: select
+                        options:
+                          - { label: "Instagram", value: "instagram" }
+                          - { label: "Facebook", value: "facebook" }
+                          - { label: "WhatsApp", value: "whatsapp" }
+                          - { label: "X (Twitter)", value: "x" }
+                          - { label: "TikTok", value: "tiktok" }
+                          - { label: "YouTube", value: "youtube" }
+                          - { label: "Vimeo", value: "vimeo" }
+                          - { label: "IMDb", value: "imdb" }
+                          - { label: "LinkedIn", value: "linkedin" }
+                          - { label: "Telegram", value: "telegram" }
+                          - { label: "Sitio web", value: "web" }
+                          - { label: "Correo electrónico", value: "email" }
+                          - { label: "Teléfono", value: "phone" }
+                      - label: "Usuario, número o enlace"
+                        name: u
+                        widget: string
+                        required: false
+                        hint: "@usuario, número con prefijo (+53…), correo o enlace completo."
               - label: "Nota del director"
                 name: note
                 widget: object

@@ -86,6 +86,7 @@
     if (def.summary) {
       const s = def.summary.replace(/\{\{fields\.(\w+)\}\}/g, (_, k) => {
         const f = (def.fields || []).find((x) => x.name === k), v = it[k];
+        if (f && f.picker === "roles") { const r = roleInfo(v); return r ? r.es : v || ""; }
         if (f && f.widget === "select") { const o = (f.options || []).find((x) => x[1] === v); return o ? o[0] : v || ""; }
         return L(v);
       }).replace(/^[\s·:|]+|[\s·:|]+$/g, "").trim();
@@ -119,6 +120,7 @@
       c.addEventListener("change", () => { set(c.checked); touch(); });
       return h("label", { class: "ed-sw" }, c, h("span", { class: "ed-sw__t" }));
     }
+    if (w === "select" && def.picker === "roles" && S.rl) return rolePicker(get, set, ctx);
     if (w === "select") {
       const s = h("select", {}, h("option", { value: "" }, "— Elige —"), (def.options || []).map(([l, v]) => h("option", { value: v }, l)));
       s.value = get() ?? ""; if (s.value !== (get() ?? "")) s.value = "";
@@ -138,6 +140,61 @@
     if (w === "object") return isBil(def) ? bilCtrl(def, get, set, ctx, path) : objCtrl(def, get, set, ctx, path);
     if (w === "list") return def.field && !def.fields && def.field.widget === "image" ? galleryCtrl(def, get, set, ctx) : listCtrl(def, get, set, ctx, path);
     return h("em", {}, "(campo no soportado: " + w + ")");
+  }
+
+  /* ---------- Cargos de la ficha técnica (más de 500): buscador ---------- */
+  const fold = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const syn = (n) => { const f = fold(n); return [/director|dirigir/.test(f) ? "direccion dirigir" : "", /guion/.test(f) ? "guion libreto" : "", /product/.test(f) ? "produccion" : "", /mont|edit/.test(f) ? "montaje edicion" : "", /fotograf/.test(f) ? "fotografia camara" : "", /operador/.test(f) ? "operacion camara" : "", /maquill|peluq/.test(f) ? "caracterizacion" : "", /vfx|efectos/.test(f) ? "efectos especiales" : ""].join(" "); };
+  function buildRoles(d) {
+    if (!d || !Array.isArray(d.roles)) return null;
+    const dn = {}; d.depts.forEach((x) => { dn[x[0]] = x[1]; });
+    const di = {}; d.depts.forEach((x, i) => { di[x[0]] = i; });
+    const list = d.roles.map((r, o) => ({ k: r[0], es: r[1], d: r[3], dn: dn[r[3]] || r[3], main: r[4] === "p", di: di[r[3]] ?? 99, o, q: fold(r[1] + " " + r[2] + " " + (dn[r[3]] || "") + " " + syn(r[1])) }));
+    const by = {}; list.forEach((r) => { by[r.k] = r; });
+    return { list, by, legacy: d.legacy || {} };
+  }
+  const roleInfo = (k) => (S.rl ? S.rl.by[S.rl.legacy[k] || k] : null);
+  function rolePicker(get, set, ctx) {
+    const R = S.rl;
+    const inp = h("input", { type: "text", class: "ed-combo__in", placeholder: "Escribe para buscar: director, sonido, maquillaje, drone…", autocomplete: "off", role: "combobox", "aria-expanded": "false", "aria-autocomplete": "list" });
+    const list = h("div", { class: "ed-combo__list", role: "listbox", hidden: true });
+    const note = h("small", { class: "ed-hint ed-combo__note" });
+    const wrap = h("div", { class: "ed-combo" }, inp, list, note);
+    let act = -1, shown = [], pristine = true, closeT = 0;
+    const cur = () => roleInfo(get());
+    const paintNote = () => {
+      const r = cur();
+      note.textContent = !r ? "Hay más de 500 puestos: escribe una parte del nombre o del departamento." : r.main ? "Puesto principal · aparece siempre en la ficha, y admite contactos." : "Puesto secundario · aparece en «Ver todo el equipo».";
+    };
+    const show = () => {
+      const q = pristine ? "" : fold(inp.value.trim());
+      let items = R.list;
+      if (q) { const ws = q.split(/\s+/); items = items.filter((r) => ws.every((w) => r.q.includes(w))); items = items.slice().sort((a, b) => (b.main - a.main) || a.di - b.di || a.o - b.o); }
+      else items = items.filter((r) => r.main);
+      const total = items.length; shown = items.slice(0, 80);
+      list.replaceChildren();
+      if (!shown.length) list.append(h("div", { class: "ed-combo__empty" }, "Ningún puesto coincide. Prueba con otra palabra."));
+      let lastG = null;
+      shown.forEach((r, i) => {
+        const g = (r.main ? "P" : "S") + r.d;
+        if (g !== lastG) { lastG = g; list.append(h("div", { class: "ed-combo__g" }, r.dn, h("em", {}, r.main ? "Principales" : "Secundarios"))); }
+        list.append(h("div", { class: "ed-combo__o" + (i === act ? " on" : "") + (cur() && cur().k === r.k ? " sel" : ""), role: "option", "data-i": i, onmousedown: (e) => { e.preventDefault(); pick(r); } }, r.es));
+      });
+      if (total > shown.length) list.append(h("div", { class: "ed-combo__empty" }, `Hay ${total - shown.length} más: sigue escribiendo para afinar.`));
+      list.hidden = false; inp.setAttribute("aria-expanded", "true");
+    };
+    const hide = () => { list.hidden = true; inp.setAttribute("aria-expanded", "false"); act = -1; };
+    const pick = (r) => { set(r.k); ctx.touch(); inp.value = r.es; pristine = true; hide(); paintNote(); wrap.dispatchEvent(new CustomEvent("rolechange", { bubbles: true })); };
+    inp.addEventListener("focus", () => { clearTimeout(closeT); pristine = true; act = -1; show(); inp.select(); });
+    inp.addEventListener("input", () => { pristine = false; act = -1; show(); });
+    inp.addEventListener("blur", () => { closeT = setTimeout(() => { hide(); const r = cur(); inp.value = r ? r.es : ""; pristine = true; }, 120); });
+    inp.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (list.hidden) show(); act = Math.max(0, Math.min(shown.length - 1, act + (e.key === "ArrowDown" ? 1 : -1))); list.querySelectorAll(".ed-combo__o").forEach((o) => o.classList.toggle("on", +o.dataset.i === act)); const o = list.querySelector(".ed-combo__o.on"); if (o) o.scrollIntoView({ block: "nearest" }); }
+      else if (e.key === "Enter") { e.preventDefault(); const r = shown[act >= 0 ? act : 0]; if (r && !list.hidden) pick(r); }
+      else if (e.key === "Escape") { hide(); const r = cur(); inp.value = r ? r.es : ""; pristine = true; }
+    });
+    const r0 = cur(); inp.value = r0 ? r0.es : (get() || ""); paintNote();
+    return wrap;
   }
 
   function imageCtrl(def, get, set, ctx) {
@@ -247,6 +304,13 @@
           const sum = h("summary", {}, h("span", { class: "ed-li__t" }, summaryOf(def, A()[i], i)), tools);
           det.addEventListener("toggle", () => { det.open ? openIdx.add(i) : openIdx.delete(i); });
           const inner = h("div", { class: "ed-li__b" }, def.fields.map((sub) => fieldEl(sub, () => (A()[i] || {})[sub.name], (v) => { A()[i][sub.name] = v; sum.firstChild.textContent = summaryOf(def, A()[i], i); }, ctx, path + "[" + i + "]." + sub.name)));
+          if (def.name === "crew" && S.rl) {
+            /* Los contactos solo existen para puestos principales: con un puesto secundario el campo se oculta. */
+            const cf = Array.from(inner.children).find((x) => (x.dataset.p || "").endsWith(".c"));
+            const sync = () => { const r = roleInfo((A()[i] || {}).r); if (cf) cf.hidden = !!r && !r.main; };
+            inner.addEventListener("rolechange", () => { sum.firstChild.textContent = summaryOf(def, A()[i], i); sync(); });
+            sync();
+          }
           det.append(sum, inner); wrap.append(det);
         }
       });
@@ -528,6 +592,7 @@
   async function open(name, force) {
     const el = root();
     if (!S.schema) S.schema = await fetch("schema.json", { cache: "no-store" }).then((r) => r.json());
+    if (!S.rl) { try { S.rl = buildRoles(await fetch("../content/roles.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null))); } catch (e) { S.rl = null; } }
     S.item = null; S.itemDirty = false; S.dirty = false; S.filter = "";
     if (name === "medios") { S.name = "medios"; return viewMedia(); }
     if (name === "estadisticas") { S.name = "estadisticas"; return viewStats(); }
