@@ -744,7 +744,7 @@ const FX = (() => {
   const PG = { es: "PÁG.", en: "PAGE", fr: "PAGE", pt: "PÁG.", it: "PAG.", de: "SEITE" };
   const TEXT_SEL = "main h1, main h2, main .lede, main .hero__sub, main .tagline, main .prose p, main .quote, .scene .slug, .scene .cut";
   const RV_SEL = ".card, .nitem, .svc__i, .values > div, .step, .person, .laurel, .where, .tl, .still, .kit__i, .press a, .press .pr";
-  let items = [], activeItems = new Set(), itemByElement = new WeakMap(), io = null, ioText = null, enabled = false, ticking = false, lastY = 0, cursorEl = null, pager = null, bound = false;
+  let items = [], activeItems = new Set(), itemByElement = new WeakMap(), io = null, ioText = null, enabled = false, ticking = false, lastY = 0, cursorEl = null, pager = null, bound = false, lastFrameAt = 0, frameTimer = 0;
   const COARSE = () => !!(window.matchMedia && (window.matchMedia("(pointer: coarse)").matches || window.matchMedia("(max-width: 900px)").matches));
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const html = document.documentElement;
@@ -803,6 +803,7 @@ const FX = (() => {
   let lastProg = -1, lastPage = "";
   function frame() {
     ticking = false;
+    lastFrameAt = performance.now();
     const y = window.scrollY, vh = vhC || window.innerHeight;
     const dy = y - lastY;
     if (Math.abs(dy) > 1) { const d = dy > 0 ? "down" : "up"; if (html.dataset.dir !== d) html.dataset.dir = d; lastY = y; }
@@ -837,14 +838,30 @@ const FX = (() => {
     const ce = cur ? cur.chars[cur.n - 1] : null;
     if (ce !== cursorEl) { if (cursorEl) cursorEl.classList.remove("cur"); if (ce) ce.classList.add("cur"); cursorEl = ce; }
   }
-  function onScroll() { if (enabled && !ticking) { ticking = true; requestAnimationFrame(frame); } }
+  let scrollPauseTimer = 0;
+  function onScroll() {
+    if (!enabled) return;
+    if (COARSE()) {
+      html.classList.add("scrolling");
+      clearTimeout(scrollPauseTimer);
+      scrollPauseTimer = setTimeout(() => html.classList.remove("scrolling"), 120);
+    }
+    if (ticking) return;
+    ticking = true;
+    const delay = COARSE() ? Math.max(0, 32 - (performance.now() - lastFrameAt)) : 0;
+    if (delay) frameTimer = setTimeout(() => { frameTimer = 0; requestAnimationFrame(frame); }, delay);
+    else requestAnimationFrame(frame);
+  }
 
   function init(root) {
     if (io) { io.disconnect(); io = null; }
     if (ioText) { ioText.disconnect(); ioText = null; }
+    clearTimeout(frameTimer); clearTimeout(scrollPauseTimer);
+    frameTimer = 0; scrollPauseTimer = 0; ticking = false;
     items = []; activeItems.clear(); itemByElement = new WeakMap(); cursorEl = null;
     enabled = !lite && !mq.matches && "IntersectionObserver" in window;
     html.classList.toggle("fx", enabled);
+    html.classList.remove("scrolling");
     if (!bound) {
       bound = true;
       window.addEventListener("scroll", onScroll, { passive: true });
@@ -964,6 +981,7 @@ const Buddy = (() => {
       art.style.setProperty("--by", (s * 110).toFixed(1) + "px");
       art.style.setProperty("--br", (s * -6).toFixed(2) + "deg");
       art.style.setProperty("--bsc", (1 - s * 0.14).toFixed(3));
+      art.classList.toggle("is-moving", Math.abs(target - s) > 0.002);
     }
     if (Math.abs(target - s) > 0.002) raf = requestAnimationFrame(tick);
   }
@@ -991,7 +1009,7 @@ const Buddy = (() => {
     }
     on = !on; setOn(!on); // fuerza estado coherente tras re-render
     s = 0; target = 0;
-    if (art) { art.style.removeProperty("--by"); art.style.removeProperty("--br"); art.style.removeProperty("--bsc"); }
+    if (art) { art.style.removeProperty("--by"); art.style.removeProperty("--br"); art.style.removeProperty("--bsc"); art.classList.remove("is-moving"); }
     onScroll();
   }
   return { sync };
