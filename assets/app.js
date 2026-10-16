@@ -744,7 +744,7 @@ const FX = (() => {
   const PG = { es: "PÁG.", en: "PAGE", fr: "PAGE", pt: "PÁG.", it: "PAG.", de: "SEITE" };
   const TEXT_SEL = "main h1, main h2, main .lede, main .hero__sub, main .tagline, main .prose p, main .quote, .scene .slug, .scene .cut";
   const RV_SEL = ".card, .nitem, .svc__i, .values > div, .step, .person, .laurel, .where, .tl, .still, .kit__i, .press a, .press .pr";
-  let items = [], io = null, enabled = false, ticking = false, lastY = 0, cursorEl = null, pager = null, bound = false;
+  let items = [], activeItems = new Set(), itemByElement = new WeakMap(), io = null, ioText = null, enabled = false, ticking = false, lastY = 0, cursorEl = null, pager = null, bound = false;
   const COARSE = () => !!(window.matchMedia && (window.matchMedia("(pointer: coarse)").matches || window.matchMedia("(max-width: 900px)").matches));
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const html = document.documentElement;
@@ -820,7 +820,7 @@ const FX = (() => {
       if (txt !== lastPage) { lastPage = txt; pager.firstChild.textContent = txt; }
     }
     let cur = null;
-    for (const it of items) {
+    for (const it of activeItems) {
       const top = it.top - y, bottom = top + it.h;
       let p;
       if (top > vh * 1.1) p = 0;
@@ -832,7 +832,7 @@ const FX = (() => {
         for (let i = a; i < b; i++) it.chars[i].classList.toggle("on", on);
         it.n = n;
       }
-      if (n > 0 && top < vh * 0.95 && bottom > 0) cur = it;
+      if (n > 0 && top < vh * 0.95 && bottom > 0 && (!cur || it.index > cur.index)) cur = it;
     }
     const ce = cur ? cur.chars[cur.n - 1] : null;
     if (ce !== cursorEl) { if (cursorEl) cursorEl.classList.remove("cur"); if (ce) ce.classList.add("cur"); cursorEl = ce; }
@@ -841,7 +841,8 @@ const FX = (() => {
 
   function init(root) {
     if (io) { io.disconnect(); io = null; }
-    items = []; cursorEl = null;
+    if (ioText) { ioText.disconnect(); ioText = null; }
+    items = []; activeItems.clear(); itemByElement = new WeakMap(); cursorEl = null;
     enabled = !lite && !mq.matches && "IntersectionObserver" in window;
     html.classList.toggle("fx", enabled);
     if (!bound) {
@@ -866,8 +867,24 @@ const FX = (() => {
       if (el.closest(".card, .nitem, .notice, .sdlg")) return;
       if (docTop(el) < vh * 0.9) return;
       const chars = split(el);
-      if (chars.length) items.push({ el, chars, n: 0 });
+      if (chars.length) {
+        const item = { el, chars, n: 0, index: items.length };
+        items.push(item);
+        itemByElement.set(el, item);
+      }
     });
+    ioText = new IntersectionObserver((entries) => {
+      let changed = false;
+      entries.forEach((entry) => {
+        const item = itemByElement.get(entry.target);
+        if (!item) return;
+        if (entry.isIntersecting) {
+          if (!activeItems.has(item)) { activeItems.add(item); changed = true; }
+        } else if (activeItems.delete(item)) changed = true;
+      });
+      if (changed) onScroll();
+    }, { rootMargin: `${Math.ceil(vh * 1.3)}px 0px` });
+    items.forEach((item) => ioText.observe(item.el));
 
     /* Bloques: fundido y telón según el sentido del scroll */
     io = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("in", e.isIntersecting)), { rootMargin: "0px 0px -6% 0px", threshold: 0.06 });
@@ -901,6 +918,7 @@ const FX = (() => {
    ========================================================================== */
 const Buddy = (() => {
   let el = null, bound = false, on = false, dismissed = false, s = 0, target = 0, raf = 0, tIn = 0, tOut = 0;
+  let hero = null, art = null, heroTop = 0, heroHeight = 0;
   const html = document.documentElement;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
@@ -931,15 +949,17 @@ const Buddy = (() => {
     on = v; el.classList.toggle("on", v); html.classList.toggle("buddy-on", v);
     if (v) { el.removeAttribute("inert"); talk(true, 1000); } else { el.setAttribute("inert", ""); talk(false); }
   }
-  function heroTarget() {
-    const h = document.querySelector(".hero");
-    if (!h) return 0;
-    return clamp(window.scrollY / Math.max(1, h.offsetHeight), 0, 1);
+  function measureHero() {
+    hero = document.querySelector(".hero");
+    art = hero && hero.querySelector(".hero__art svg");
+    if (!hero) { heroTop = 0; heroHeight = 0; return; }
+    const rect = hero.getBoundingClientRect();
+    heroTop = rect.top + window.scrollY;
+    heroHeight = rect.height;
   }
   function tick() {
     raf = 0;
     s += (target - s) * 0.07;
-    const art = document.querySelector(".hero__art svg");
     if (art) {
       art.style.setProperty("--by", (s * 110).toFixed(1) + "px");
       art.style.setProperty("--br", (s * -6).toFixed(2) + "deg");
@@ -949,23 +969,28 @@ const Buddy = (() => {
   }
   function onScroll() {
     const vh = window.innerHeight, y = window.scrollY;
-    const hero = document.querySelector(".hero");
     /* Inicio: el gorrión vuela a la esquina al terminar el hero. Resto de páginas: ya está en la esquina, sin vuelo. */
-    const past = hero ? y >= hero.offsetTop + hero.offsetHeight - vh * 0.3 : true;
-    el.classList.toggle("static", !hero);
+    const past = hero ? y >= heroTop + heroHeight - vh * 0.3 : true;
+    if (el.classList.contains("static") !== !hero) el.classList.toggle("static", !hero);
     setOn(past && window.__route !== "contacto");
-    if (html.classList.contains("fx") || true) {
-      target = heroTarget();
-      if (!raf) raf = requestAnimationFrame(tick);
+    const nextTarget = hero ? clamp(y / Math.max(1, heroHeight), 0, 1) : 0;
+    if (nextTarget !== target) {
+      target = nextTarget;
+      if (!raf && Math.abs(target - s) > 0.002) raf = requestAnimationFrame(tick);
     }
   }
   function sync() {
     if (!el) build();
     fill();
-    if (!bound) { bound = true; window.addEventListener("scroll", onScroll, { passive: true }); window.addEventListener("resize", onScroll); }
+    measureHero();
+    if (!bound) {
+      bound = true;
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", () => { measureHero(); onScroll(); }, { passive: true });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureHero);
+    }
     on = !on; setOn(!on); // fuerza estado coherente tras re-render
     s = 0; target = 0;
-    const art = document.querySelector(".hero__art svg");
     if (art) { art.style.removeProperty("--by"); art.style.removeProperty("--br"); art.style.removeProperty("--bsc"); }
     onScroll();
   }
