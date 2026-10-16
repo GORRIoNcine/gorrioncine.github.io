@@ -43,9 +43,9 @@ const TYPES = {
 };
 
 const STATUS = {
-  desarrollo: { es: "En desarrollo", en: "In development", cls: "chip--dev" },
-  produccion: { es: "En producción", en: "In production", cls: "chip--prod" },
-  postproduccion: { es: "En postproducción", en: "In post-production", cls: "chip--post" },
+  desarrollo: { es: "Desarrollo", en: "Development", cls: "chip--dev" },
+  produccion: { es: "Producción", en: "Production", cls: "chip--prod" },
+  postproduccion: { es: "Postproducción", en: "Post-production", cls: "chip--post" },
   estrenado: { es: "Estrenada", en: "Released", cls: "chip--ok" }
 };
 
