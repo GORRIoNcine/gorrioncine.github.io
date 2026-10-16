@@ -209,7 +209,7 @@ h1 u, h2 u, h3 u, h4 u { text-decoration: underline; text-decoration-thickness: 
 @media (min-width: 700px) { .grid--posters { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (min-width: 1040px) { .grid--posters { grid-template-columns: repeat(4, minmax(0, 1fr)); } .grid--home { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .card { position: relative; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.card__poster { position: relative; display: block; overflow: hidden; background: var(--ink); aspect-ratio: 2 / 3;; width: 100%; height: 100%; transition: transform .6s var(--ease); }
+.card__poster {position: relative; display: block; overflow: hidden; background: var(--ink); aspect-ratio: 2 / 3; }
 .card__poster svg { display: block; width: 100%; height: 100%; transition: transform .6s var(--ease); }
 .card__poster img { display: block; width: 100%; height: 100%; transition: transform .6s var(--ease); }
 .card:hover .card__poster svg, .card:focus-within .card__poster svg { transform: scale(1.05); }
