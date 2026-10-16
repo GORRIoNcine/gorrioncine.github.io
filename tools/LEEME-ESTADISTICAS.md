@@ -21,7 +21,7 @@ pequeño servicio gratuito en Cloudflare que guarde la clave de forma segura. Se
 4. **Deploy**. Copia la dirección del Worker (algo como `https://gorrion-stats.TU-USUARIO.workers.dev`).
 
 ## 3. Conectarlo al panel
-En el panel: **Ajustes del sitio** → «Estadísticas: dirección del Worker de Cloudflare» → pega la dirección → **Guardar y publicar**.
+En el panel: **Ajustes del sitio** → «Estadísticas: dirección del Worker de Cloudflare» → pega `https://gorrion-stats.niguelcruzz2.workers.dev/` → **Guardar y publicar**. El panel solo envía la sesión de GitHub a ese origen HTTPS de confianza; otra dirección no será aceptada. Si cambias el dominio del Worker, actualiza también `TRUSTED_STATS_ORIGIN` en `admin/stats.js`.
 Espera 1–2 minutos y abre **Estadísticas** en el menú.
 
 ## Qué se ve
@@ -30,6 +30,7 @@ países, páginas más vistas, de dónde llegan, dispositivos, navegadores y sis
 
 ## Seguridad
 - Solo ven las estadísticas las personas que tienen permiso de escritura en el repositorio (la misma sesión de GitHub del panel).
+- La dirección del Worker se valida contra un origen HTTPS de confianza antes de enviar la sesión de GitHub.
 - El token de Cloudflare vive solo en el Worker. Nunca está en la web ni en el repositorio.
 
 ## Si algo falla

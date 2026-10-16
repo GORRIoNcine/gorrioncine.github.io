@@ -4,6 +4,7 @@
 (() => {
   "use strict";
   const TZ = "America/Havana";
+  const TRUSTED_STATS_ORIGIN = "https://gorrion-stats.niguelcruzz2.workers.dev";
   const nf = new Intl.NumberFormat("es");
   const fmt = (n) => nf.format(Math.round(n || 0));
   const DEVICES = { desktop: "Ordenador", mobile: "Móvil", tablet: "Tableta", unknown: "Desconocido" };
@@ -41,25 +42,39 @@
 `;
 
   function fmtDay(key) { const [y, m, d] = key.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d, 12)).toLocaleDateString("es", { day: "numeric", month: "short", timeZone: "UTC" }); }
-  const dayKey = new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" });
-  const hourOf = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hour12: false });
+  const dayFormatter = new Intl.DateTimeFormat("en", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" });
+  const dayKey = (date) => {
+    const parts = Object.fromEntries(dayFormatter.formatToParts(date).map(({ type, value }) => [type, value]));
+    return `${parts.year}-${parts.month}-${parts.day}`;
+  };
+  const hourOf = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hourCycle: "h23" });
+  const hourLabel = new Intl.DateTimeFormat("es", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+  const hourLabelWithZone = new Intl.DateTimeFormat("es", { timeZone: TZ, hour: "2-digit", minute: "2-digit", timeZoneName: "short", hourCycle: "h23" });
 
   function buckets(series, days) {
     const hourly = days <= 1;
     const map = new Map();
     series.forEach((p) => {
       const d = new Date(p.t);
-      const key = hourly ? dayKey.format(d) + " " + hourOf.format(d).slice(0, 2) : dayKey.format(d);
+      const key = hourly ? Math.floor(d.getTime() / 3600000) * 3600000 : dayKey(d);
       const b = map.get(key) || { key, views: 0, visits: 0 };
       b.views += p.views; b.visits += p.visits; map.set(key, b);
     });
-    // Rellena los días/horas sin visitas para que el eje sea continuo.
     const out = [];
-    const end = Date.now(), n = hourly ? 24 : days;
-    for (let i = n - 1; i >= 0; i--) {
-      const d = new Date(end - i * (hourly ? 3600000 : 86400000));
-      const key = hourly ? dayKey.format(d) + " " + hourOf.format(d).slice(0, 2) : dayKey.format(d);
-      if (!out.length || out[out.length - 1].key !== key) out.push(map.get(key) || { key, views: 0, visits: 0 });
+    if (hourly) {
+      const end = Math.floor(Date.now() / 3600000) * 3600000;
+      for (let i = 23; i >= 0; i--) {
+        const time = new Date(end - i * 3600000);
+        const key = time.getTime();
+        out.push({ ...(map.get(key) || { views: 0, visits: 0 }), key, time });
+      }
+    } else {
+      const [year, month, day] = dayKey(new Date()).split("-").map(Number);
+      const today = Date.UTC(year, month - 1, day);
+      for (let i = days - 1; i >= 0; i--) {
+        const key = new Date(today - i * 86400000).toISOString().slice(0, 10);
+        out.push({ ...(map.get(key) || { views: 0, visits: 0 }), key });
+      }
     }
     return { out, hourly };
   }
@@ -77,7 +92,13 @@
       const card = (title, ...kids) => h("section", { class: "ed-card2" }, h("h2", {}, title), h("div", { class: "gs-body" }, ...kids));
 
       let url = "";
-      try { const s = await fetch("../content/site.json", { cache: "no-store" }).then((r) => r.json()); url = String(s.statsUrl || "").trim().replace(/\/+$/, ""); } catch (e) { /* nada */ }
+      try {
+        const r = await fetch("../content/site.json", { cache: "no-store" });
+        if (!r.ok) throw new Error("No se pudo leer la configuración del sitio (HTTP " + r.status + ").");
+        const s = await r.json();
+        const configured = new URL(String(s.statsUrl || ""));
+        if (configured.protocol === "https:" && configured.origin === TRUSTED_STATS_ORIGIN && configured.pathname === "/" && !configured.username && !configured.password && !configured.search && !configured.hash) url = TRUSTED_STATS_ORIGIN;
+      } catch (e) { /* La URL ausente o inválida se muestra como configuración pendiente. */ }
 
       if (!url) {
         el.append(card("Falta conectar las estadísticas",
@@ -111,7 +132,7 @@
         out.replaceChildren(h("p", { class: "ed-empty" }, "Cargando estadísticas…"));
         let d;
         try {
-          const r = await fetch(url + "/?days=" + days, { headers: { Authorization: "Bearer " + token() } });
+          const r = await fetch(url + "/?days=" + days, { headers: { Authorization: "Bearer " + token() }, redirect: "error" });
           d = await r.json().catch(() => ({}));
           if (!r.ok) throw new Error(d.error || "Error " + r.status);
         } catch (e) {
@@ -124,7 +145,9 @@
         const { out: bs, hourly } = buckets(d.series || [], days);
         const views = (d.series || []).reduce((a, p) => a + p.views, 0), visits = (d.series || []).reduce((a, p) => a + p.visits, 0);
         const max = Math.max(1, ...bs.map((b) => b.visits));
-        const label = (b) => (hourly ? `${b.key.slice(11)}:00` : fmtDay(b.key));
+        const hourLabels = hourly ? bs.map((b) => hourLabel.format(b.time)) : [];
+        const repeatedHours = new Set(hourLabels.filter((label, i) => hourLabels.indexOf(label) !== i));
+        const label = (b) => (hourly ? (repeatedHours.has(hourLabel.format(b.time)) ? hourLabelWithZone.format(b.time) : hourLabel.format(b.time)) : fmtDay(b.key));
         const bar = (b, text) => h("div", { class: "gs-bar" + (b.visits ? "" : " gs-zero"), tabindex: "0", title: text, style: `height:${Math.max(1, (b.visits / max) * 100)}%` });
         const hod = byHourOfDay(d.series || []);
         const hmax = Math.max(1, ...hod.map((b) => b.visits));
