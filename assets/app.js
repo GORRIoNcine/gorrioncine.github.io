@@ -1961,4 +1961,6 @@ function loadContent() {
 
 /* ---------- Arranque ---------- */
 document.body.insertAdjacentHTML("afterbegin", LOGO_SPRITE);
+auditContent();
+render();
 loadContent().then(() => { auditContent(); render(); showWarnings(); });
