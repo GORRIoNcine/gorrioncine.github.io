@@ -1657,6 +1657,7 @@ function fitHeads() {
   if (!fitW) { fitW = 1; let rt = 0; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(run, 150); }, { passive: true }); }
 }
 function render(opts = {}) {
+  document.documentElement.classList.remove("nav-lock");
   const r = parseRoute();
   document.documentElement.lang = lang;
   document.documentElement.classList.toggle("lite", lite);
