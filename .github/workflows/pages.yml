@@ -1,36 +1,51 @@
-# Publica la web. Cada vez que cambia algo en main (también cuando se guarda desde el panel):
-#   1) valida el contenido, 2) regenera las páginas para Google y redes (tools/build-pages.mjs), 3) publica.
-# Requiere, una sola vez:  Settings → Pages → Build and deployment → Source: "GitHub Actions".
+
+# Publica la web cuando hay cambios en main o se ejecuta manualmente.
+# Valida el contenido, optimiza imágenes, regenera páginas y publica en GitHub Pages.
+
 name: Publicar web
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
+
 permissions:
   contents: write
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: true
+
 jobs:
   publicar:
     runs-on: ubuntu-24.04
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: Descargar el repositorio
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
         with:
           node-version: 20
-      - uses: actions/setup-python@v6
+
+      - name: Configurar Python
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+
       - name: Optimizar imágenes
         run: |
           pip install --quiet pillow
           python tools/optimize-images.py .
+
       - name: Guardar las imágenes optimizadas en el repositorio
         continue-on-error: true
         run: |
@@ -39,13 +54,26 @@ jobs:
           git add uploads content
           if ! git diff --cached --quiet; then
             git commit -q -m "Optimiza imágenes automáticamente"
-            git pull --rebase -q && git push -q || { git rebase --abort 2>/dev/null; echo "No se pudo guardar en el repositorio; la web se publica igualmente optimizada."; }
+            git pull --rebase -q && git push -q || {
+              git rebase --abort 2>/dev/null
+              echo "No se pudo guardar en el repositorio; la web se publica igualmente optimizada."
+            }
           fi
-      - run: node tools/validate-content.mjs .
-      - run: node tools/build-pages.mjs .
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Validar contenido
+        run: node tools/validate-content.mjs .
+
+      - name: Regenerar páginas
+        run: node tools/build-pages.mjs .
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Preparar artefacto de publicación
+        uses: actions/upload-pages-artifact@v4
         with:
           path: .
-      - id: deployment
-        uses: actions/deploy-pages@v4
+
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
