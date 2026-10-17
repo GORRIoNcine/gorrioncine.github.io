@@ -111,7 +111,7 @@ collections:
                     name: en
                     widget: string
                     required: false
-              - label: "Imagen al compartir en redes (por defecto)"
+          - label: "Imagen al compartir en redes (por defecto)"
             name: ogImage
             widget: image
             required: false
@@ -1436,7 +1436,7 @@ collections:
                         label: "Elemento"
                         name: p
                         widget: string
-              - label: "Cómo trabajamos (pasos)"
+          - label: "Cómo trabajamos (pasos)"
             name: steps
             widget: list
             required: false
@@ -1529,7 +1529,7 @@ collections:
                     name: en
                     widget: text
                     required: true
-              - label: "Historia"
+          - label: "Historia"
             name: history
             widget: list
             required: false
@@ -1570,7 +1570,7 @@ collections:
                     name: en
                     widget: text
                     required: true
-              - label: "Aliados y festivales"
+          - label: "Aliados y festivales"
             name: allies
             widget: list
             required: false
