@@ -718,14 +718,10 @@ const FX = (() => {
   const SLUGS = {
     es: ["INT. SALA DE PROYECCIÓN — NOCHE", "EXT. AZOTEA — ATARDECER", "INT. CUARTO DE MONTAJE — MADRUGADA", "EXT. MALECÓN — AMANECER", "INT. ESTUDIO — DÍA", "EXT. LA CUADRA — TARDE"],
     en: ["INT. SCREENING ROOM — NIGHT", "EXT. ROOFTOP — DUSK", "INT. EDITING ROOM — EARLY MORNING", "EXT. MALECÓN — DAWN", "INT. STUDIO — DAY", "EXT. THE BLOCK — AFTERNOON"],
-    fr: ["INT. SALLE DE PROJECTION — NUIT", "EXT. TOIT-TERRASSE — CRÉPUSCULE", "INT. SALLE DE MONTAGE — PETIT MATIN", "EXT. MALECÓN — AUBE", "INT. STUDIO — JOUR", "EXT. LE QUARTIER — APRÈS-MIDI"],
-    pt: ["INT. SALA DE PROJEÇÃO — NOITE", "EXT. TERRAÇO — ENTARDECER", "INT. SALA DE MONTAGEM — MADRUGADA", "EXT. MALECÓN — AMANHECER", "INT. ESTÚDIO — DIA", "EXT. O QUARTEIRÃO — TARDE"],
-    it: ["INT. SALA DI PROIEZIONE — NOTTE", "EXT. TERRAZZA — TRAMONTO", "INT. SALA DI MONTAGGIO — NOTTE FONDA", "EXT. MALECÓN — ALBA", "INT. STUDIO — GIORNO", "EXT. L'ISOLATO — POMERIGGIO"],
-    de: ["INT. VORFÜHRRAUM — NACHT", "EXT. DACHTERRASSE — ABENDDÄMMERUNG", "INT. SCHNITTRAUM — FRÜHER MORGEN", "EXT. MALECÓN — MORGENGRAUEN", "INT. STUDIO — TAG", "EXT. DER HÄUSERBLOCK — NACHMITTAG"]
   };
-  const CUT = { es: "CORTE A:", en: "CUT TO:", fr: "COUPE SUR :", pt: "CORTE PARA:", it: "STACCO SU:", de: "SCHNITT AUF:" };
-  const OUT = { es: "FUNDIDO A NEGRO.", en: "FADE OUT.", fr: "FONDU AU NOIR.", pt: "FADE OUT.", it: "DISSOLVENZA IN NERO.", de: "ABBLENDE." };
-  const PG = { es: "PÁG.", en: "PAGE", fr: "PAGE", pt: "PÁG.", it: "PAG.", de: "SEITE" };
+  const CUT = { es: "CORTE A:", en: "CUT TO:" };
+  const OUT = { es: "FUNDIDO A NEGRO.", en: "FADE OUT." };
+  const PG = { es: "PÁG.", en: "PAGE" };
   const TEXT_SEL = "main h1, main h2, main .lede, main .hero__sub, main .tagline, main .prose p, main .quote, .scene .slug, .scene .cut";
   const RV_SEL = ".card, .nitem, .svc__i, .values > div, .step, .person, .laurel, .where, .tl, .still, .kit__i, .press a, .press .pr";
   let items = [], activeItems = new Set(), itemByElement = new WeakMap(), io = null, ioText = null, enabled = false, ticking = false, lastY = 0, cursorEl = null, pager = null, bound = false, lastFrameAt = 0, frameTimer = 0;
@@ -1159,7 +1155,6 @@ const L = (o) => {
   if (o === null || o === undefined) return "";
   if (typeof o !== "object" || Array.isArray(o)) return o;
   if (o[lang] !== undefined && o[lang] !== "" && !(Array.isArray(o[lang]) && !o[lang].length)) return o[lang];
-  if (o.otros && o.otros[lang] !== undefined && o.otros[lang] !== "" && !(Array.isArray(o.otros[lang]) && !o.otros[lang].length)) return o.otros[lang];
   return Array.isArray(o.es) ? o.es.map((s, i) => trs(s, (o.en || [])[i])) : trs(o.es, o.en);
 };
 const norm = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -1226,8 +1221,7 @@ function header(route) {
       <button class="tbtn" data-act="lite" aria-pressed="${lite}" title="${esc(t("lite_d"))}" aria-label="${esc(t("lite"))}">${ICONS.bolt}</button>
       <div class="lang theme"><button class="tbtn" data-act="thememenu" aria-haspopup="true" aria-expanded="false" aria-controls="themelist" title="${esc(t("theme_label"))}" aria-label="${esc(t("theme_label"))}">${ICONS["theme_" + theme]}</button>
         <ul class="lang__list" id="themelist" hidden>${["dark", "light", "sys"].map((k) => { const v = k === "sys" ? "system" : k; return `<li><button type="button" data-act="settheme" data-v="${v}"${v === theme ? ' aria-current="true"' : ""}><span class="theme__i">${ICONS["theme_" + v]}</span>${esc(t("theme_" + k))}</button></li>`; }).join("")}</ul></div>
-      <div class="lang"><button class="tbtn" data-act="langmenu" aria-haspopup="true" aria-expanded="false" aria-controls="langlist" aria-label="${esc(t("lang_label"))}">${lang.toUpperCase()} <span aria-hidden="true">▾</span></button>
-        <ul class="lang__list" id="langlist" hidden>${LANGS.map((l) => `<li><button type="button" data-act="setlang" data-v="${l.c}" lang="${l.c}"${l.c === lang ? ' aria-current="true"' : ""}>${l.n}</button></li>`).join("")}</ul></div>
+      ${(() => { const o = LANGS.find((l) => l.c !== lang); return `<a class="tbtn langsw" data-act="setlang" data-v="${o.c}" lang="${o.c}" hreflang="${o.c}" href="${PATHMODE ? localizedRoute(o.c) : "#"}" title="${esc(o.n)}" aria-label="${esc(o.n)}">${o.c.toUpperCase()}</a>`; })()}
       <button class="tbtn" data-act="search" aria-label="${esc(t("search"))}">${ICONS.search}</button>
       <button class="tbtn burger" data-act="menu" aria-expanded="false" aria-controls="nav" aria-label="${esc(t("menu"))}">${ICONS.menu}</button>
     </div></div></header>`;
@@ -1797,7 +1791,7 @@ async function handleNewsletter(f, d) {
 }
 
 /* ---------- Eventos ---------- */
-function closeLangMenu(keep) { [["langlist", "langmenu"], ["themelist", "thememenu"]].forEach(([l, b]) => { const m = $("#" + l); if (m && !m.hidden && l !== keep) { m.hidden = true; const bt = $(`[data-act="${b}"]`); if (bt) bt.setAttribute("aria-expanded", "false"); } }); }
+function closeLangMenu(keep) { [["themelist", "thememenu"]].forEach(([l, b]) => { const m = $("#" + l); if (m && !m.hidden && l !== keep) { m.hidden = true; const bt = $(`[data-act="${b}"]`); if (bt) bt.setAttribute("aria-expanded", "false"); } }); }
 document.addEventListener("click", (e) => {
   const el = e.target.closest("[data-act]");
   { const w = e.target.closest(".lang"); if (!w) closeLangMenu(); else closeLangMenu($(".lang__list", w) && $(".lang__list", w).id); }
@@ -1823,8 +1817,9 @@ document.addEventListener("click", (e) => {
     case "skip": e.preventDefault(); { const m = $("#main"); if (m) m.focus(); } break;
     case "thememenu": { const m = $("#themelist"), o = m.hidden; m.hidden = !o; el.setAttribute("aria-expanded", String(o)); if (o) { const cur = $("[aria-current]", m); (cur || $("button", m)).focus(); } break; }
     case "settheme": theme = el.dataset.v; try { localStorage.setItem("tf-theme", theme); } catch (x) { /* ok */ } applyTheme(); render({ keepScroll: true }); { const b = $('[data-act="thememenu"]'); if (b) b.focus(); } break;
-    case "langmenu": { const m = $("#langlist"), o = m.hidden; m.hidden = !o; el.setAttribute("aria-expanded", String(o)); if (o) { const cur = $("[aria-current]", m); (cur || $("button", m)).focus(); } break; }
     case "setlang": {
+      if (el.tagName === "A" && (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) break; /* abrir en otra pestaña: enlace normal */
+      e.preventDefault();
       const next = el.dataset.v;
       if (PATHMODE && (next === "en" || next === "es")) {
         const to = localizedRoute(next);
@@ -1834,7 +1829,7 @@ document.addEventListener("click", (e) => {
       } else lang = next;
       try { localStorage.setItem("tf-lang", lang); } catch (x) { /* ok */ }
       render({ keepScroll: true });
-      { const b = $('[data-act="langmenu"]'); if (b) b.focus(); }
+      { const b = $('[data-act="setlang"]'); if (b) b.focus(); }
       break;
     }
     case "lite": lite = !lite; try { localStorage.setItem("tf-lite", lite ? "1" : "0"); } catch (x) { /* ok */ } render({ keepScroll: true }); toast(lite ? t("lite") + " ✓" : t("lite") + " ✗"); break;
