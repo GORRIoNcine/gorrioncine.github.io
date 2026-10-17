@@ -1820,7 +1820,7 @@ document.addEventListener("click", (e) => {
       const tok = href[0] === "#" ? decodeURIComponent(href.slice(1)) : PATHMODE && href.startsWith(BASE) && !a.target && !a.hasAttribute("download") ? hrefToken(href) : "";
       const plain = e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
       if (tok && isToken(tok)) {
-        const nav = $("#nav"); if (nav) nav.classList.remove("is-open");
+        const nav = $("#nav"); if (nav) nav.classList.remove("is-open"); document.documentElement.classList.remove("nav-lock");
         if (PATHMODE && plain) {
           e.preventDefault();
           const to = tokenHref(tok);
@@ -1851,7 +1851,7 @@ document.addEventListener("click", (e) => {
       break;
     }
     case "lite": lite = !lite; try { localStorage.setItem("tf-lite", lite ? "1" : "0"); } catch (x) { /* ok */ } render({ keepScroll: true }); toast(lite ? t("lite") + " ✓" : t("lite") + " ✗"); break;
-    case "menu": { const nav = $("#nav"), o = nav.classList.toggle("is-open"); el.setAttribute("aria-expanded", String(o)); break; }
+    case "menu": { const nav = $("#nav"), o = nav.classList.toggle("is-open"); document.documentElement.classList.toggle("nav-lock", o); el.setAttribute("aria-expanded", String(o)); break; }
     case "search": openSearch(); break;
     case "close-ov": closeOv(); break;
     case "flt": F[el.dataset.g] = el.dataset.v; refreshGrid(); break;
@@ -1877,7 +1877,7 @@ document.addEventListener("input", (e) => {
 });
 document.addEventListener("submit", (e) => { const f = e.target.closest("form[data-form]"); if (!f) return; e.preventDefault(); handleSubmit(f); });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") { closeLangMenu(); if (ov().innerHTML) closeOv(); else { const nav = $("#nav"); if (nav && nav.classList.contains("is-open")) { nav.classList.remove("is-open"); const b = $(".burger"); if (b) b.setAttribute("aria-expanded", "false"); } } }
+  if (e.key === "Escape") { closeLangMenu(); if (ov().innerHTML) closeOv(); else { const nav = $("#nav"); if (nav && nav.classList.contains("is-open")) { nav.classList.remove("is-open"); document.documentElement.classList.remove("nav-lock"); const b = $(".burger"); if (b) b.setAttribute("aria-expanded", "false"); } } }
   if (lb && e.key === "ArrowRight") openLightbox(lb.slug, lb.i + 1);
   if (lb && e.key === "ArrowLeft") openLightbox(lb.slug, lb.i - 1);
   if (e.key === "/" && !/input|textarea|select/i.test((document.activeElement || {}).tagName || "") && !ov().innerHTML) { e.preventDefault(); openSearch(); }
