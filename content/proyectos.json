@@ -220,7 +220,8 @@
         "/uploads/mv8i3xmn-corte-5min-00-00-41-23-imagen-fija001.webp"
       ],
       "style": "circle",
-      "seed": 11
+      "seed": 11,
+      "poster": "/uploads/mvc1k9tc-poster-venus.webp"
     },
     {
       "id": "proj-malecon",
