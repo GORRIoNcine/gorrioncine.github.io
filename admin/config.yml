@@ -44,7 +44,8 @@ collections:
               - label: "English"
                 name: en
                 widget: string
-                required: false          - label: "Descripción de la portada en Google"
+                required: false
+          - label: "Descripción de la portada en Google"
             name: homeDesc
             widget: object
             required: false
@@ -59,7 +60,8 @@ collections:
               - label: "English"
                 name: en
                 widget: string
-                required: false          - label: "Otras páginas (Proyectos, Servicios, Contacto…)"
+                required: false
+          - label: "Otras páginas (Proyectos, Servicios, Contacto…)"
             name: pages
             widget: list
             required: false
@@ -93,7 +95,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false              - label: "Descripción en Google"
+                    required: false
+              - label: "Descripción en Google"
                 name: description
                 widget: object
                 required: false
@@ -107,7 +110,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false          - label: "Imagen al compartir en redes (por defecto)"
+                    required: false
+              - label: "Imagen al compartir en redes (por defecto)"
             name: ogImage
             widget: image
             required: false
@@ -146,7 +150,8 @@ collections:
               - label: "English"
                 name: en
                 widget: string
-                required: true          - label: "Dirección de la web (sin barra final)"
+                required: true
+          - label: "Dirección de la web (sin barra final)"
             name: siteUrl
             widget: string
             required: false
@@ -256,7 +261,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Año"
+                    required: true
+              - label: "Año"
                 name: year
                 widget: number
                 value_type: "int"
@@ -287,7 +293,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false              - label: "Idioma hablado"
+                    required: false
+              - label: "Idioma hablado"
                 name: lang
                 widget: string
                 required: false
@@ -320,7 +327,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false              - label: "Sinopsis corta"
+                    required: false
+              - label: "Sinopsis corta"
                 name: short
                 widget: object
                 required: true
@@ -334,7 +342,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true              - label: "Sinopsis larga"
+                    required: true
+              - label: "Sinopsis larga"
                 name: long
                 widget: object
                 required: false
@@ -348,7 +357,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: false              - label: "Ficha técnica"
+                    required: false
+              - label: "Ficha técnica"
                 name: crew
                 widget: list
                 required: false
@@ -881,7 +891,6 @@ collections:
                       - { label: "(antiguo) Música", value: "musica" }
                       - { label: "(antiguo) Dirección de arte", value: "arte" }
                       - { label: "(antiguo) Reparto", value: "reparto" }
-                      - { label: "(antiguo) Cliente", value: "cliente" }
                   - label: "Nombre(s)"
                     name: n
                     widget: string
@@ -929,7 +938,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: false              - label: "Firma de la nota"
+                    required: false
+              - label: "Firma de la nota"
                 name: noteBy
                 widget: string
                 required: false
@@ -959,7 +969,8 @@ collections:
                       - label: "English"
                         name: en
                         widget: string
-                        required: true                  - label: "Festival o lugar"
+                        required: true
+                  - label: "Festival o lugar"
                     name: p
                     widget: string
                     required: false
@@ -985,7 +996,8 @@ collections:
                       - label: "English"
                         name: en
                         widget: text
-                        required: true                  - label: "Medio"
+                        required: true
+                  - label: "Medio"
                     name: s
                     widget: string
               - label: "Dónde verla"
@@ -1009,7 +1021,8 @@ collections:
                       - label: "English"
                         name: en
                         widget: string
-                        required: true                  - label: "Detalle"
+                        required: true
+                  - label: "Detalle"
                     name: n
                     widget: object
                     required: false
@@ -1023,7 +1036,8 @@ collections:
                       - label: "English"
                         name: en
                         widget: string
-                        required: false                  - label: "Enlace"
+                        required: false
+                  - label: "Enlace"
                     name: url
                     widget: string
                     required: false
@@ -1086,7 +1100,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: false              - label: "Meta o estado de la campaña (opcional)"
+                    required: false
+              - label: "Meta o estado de la campaña (opcional)"
                 name: supportGoal
                 widget: string
                 required: false
@@ -1132,7 +1147,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false              - label: "Descripción en Google (opcional)"
+                    required: false
+              - label: "Descripción en Google (opcional)"
                 name: seoDesc
                 widget: object
                 required: false
@@ -1147,7 +1163,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false              - label: "Ocultar esta página de Google"
+                    required: false
+              - label: "Ocultar esta página de Google"
                 name: noindex
                 widget: boolean
                 required: false
@@ -1179,7 +1196,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Identificador del enlace"
+                    required: true
+              - label: "Identificador del enlace"
                 name: slug
                 widget: string
                 hint: "Ejemplo: premio-en-festival-2026"
@@ -1225,7 +1243,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true              - label: "Texto de la noticia"
+                    required: true
+              - label: "Texto de la noticia"
                 name: body
                 widget: object
                 required: true
@@ -1247,7 +1266,8 @@ collections:
                     field:
                         label: "Párrafo"
                         name: p
-                        widget: text              - label: "Variante del diseño (número, avanzado)"
+                        widget: text
+              - label: "Variante del diseño (número, avanzado)"
                 name: seed
                 widget: number
                 required: false
@@ -1267,7 +1287,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false              - label: "Descripción en Google (opcional)"
+                    required: false
+              - label: "Descripción en Google (opcional)"
                 name: seoDesc
                 widget: object
                 required: false
@@ -1282,7 +1303,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false              - label: "Ocultar esta página de Google"
+                    required: false
+              - label: "Ocultar esta página de Google"
                 name: noindex
                 widget: boolean
                 required: false
@@ -1317,7 +1339,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Biografía breve"
+                    required: true
+              - label: "Biografía breve"
                 name: b
                 widget: object
                 required: true
@@ -1331,7 +1354,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true              - label: "Foto"
+                    required: true
+              - label: "Foto"
                 name: photo
                 widget: image
                 required: false
@@ -1374,7 +1398,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Descripción"
+                    required: true
+              - label: "Descripción"
                 name: d
                 widget: object
                 required: true
@@ -1388,7 +1413,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true              - label: "Qué incluye"
+                    required: true
+              - label: "Qué incluye"
                 name: l
                 widget: object
                 required: true
@@ -1409,7 +1435,8 @@ collections:
                     field:
                         label: "Elemento"
                         name: p
-                        widget: string          - label: "Cómo trabajamos (pasos)"
+                        widget: string
+              - label: "Cómo trabajamos (pasos)"
             name: steps
             widget: list
             required: false
@@ -1430,7 +1457,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Descripción"
+                    required: true
+              - label: "Descripción"
                 name: d
                 widget: object
                 required: true
@@ -1444,7 +1472,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true      - name: nosotros
+                    required: true
+      - name: nosotros
         label: "Nosotros"
         file: content/nosotros.json
         fields:
@@ -1462,7 +1491,8 @@ collections:
               - label: "English"
                 name: en
                 widget: text
-                required: true          - label: "Valores"
+                required: true
+          - label: "Valores"
             name: values
             widget: list
             required: false
@@ -1483,7 +1513,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Descripción"
+                    required: true
+              - label: "Descripción"
                 name: d
                 widget: object
                 required: true
@@ -1497,7 +1528,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true          - label: "Historia"
+                    required: true
+              - label: "Historia"
             name: history
             widget: list
             required: false
@@ -1522,7 +1554,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Descripción"
+                    required: true
+              - label: "Descripción"
                 name: d
                 widget: object
                 required: true
@@ -1536,7 +1569,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true          - label: "Aliados y festivales"
+                    required: true
+              - label: "Aliados y festivales"
             name: allies
             widget: list
             required: false
@@ -1579,7 +1613,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Descripción"
+                    required: true
+              - label: "Descripción"
                 name: x
                 widget: object
                 required: false
@@ -1593,7 +1628,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: false              - label: "Enlace"
+                    required: false
+              - label: "Enlace"
                 name: url
                 widget: string
                 required: false
@@ -1623,7 +1659,8 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true              - label: "Festival"
+                    required: true
+              - label: "Festival"
                 name: f
                 widget: string
               - label: "Proyecto"
