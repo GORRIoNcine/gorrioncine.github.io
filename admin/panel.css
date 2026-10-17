@@ -149,4 +149,32 @@
 .ed-combo__t{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--red2);color:#fff;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .ed-combo__t em{font-style:normal;font-weight:500;letter-spacing:0;text-transform:none;opacity:.9}
 .ed-combo__g{position:static!important;padding:7px 12px 7px 16px;border-left:4px solid var(--red2)}
-.ed-pubmode{display:grid;gap:8px}.ed-pubmode [hidden]{display:none}
+.ed-pubmode{display:grid;gap:12px}.ed-pubmode [hidden]{display:none!important}
+/* Cuándo publicar: tres opciones planas, la activa en rojo */
+.ed-seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card)}
+.ed-seg button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--mute);font:inherit;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.ed-seg button:first-child{border-left:0}
+.ed-seg button .i{width:18px;height:18px}
+.ed-seg button:hover{color:var(--fg);background:var(--chip)}
+.ed-seg button.on{background:var(--red);color:#fff}
+.ed-seg button:focus-visible{outline:2px solid var(--red2);outline-offset:-3px}
+/* Selector de día y hora */
+.ed-sch__in{display:grid;gap:12px;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.ed-sch__sum{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;border-left:3px solid var(--red2);background:var(--chip)}
+.ed-sch__sum .i{width:18px;height:18px;color:var(--red2)}.ed-sch__sum b{font-weight:700}.ed-sch__sum span{margin-left:auto;color:var(--mute);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.ed-sch__pre{display:flex;gap:6px;flex-wrap:wrap}
+.ed-chipbtn{padding:5px 10px;border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:var(--r);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.ed-chipbtn:hover{border-color:var(--fg)}.ed-chipbtn.on{background:var(--red);border-color:var(--red);color:#fff}
+.ed-cal__h{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;text-transform:capitalize}
+.ed-cal__h button{width:30px;height:30px;border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:var(--r);font-size:18px;line-height:1;cursor:pointer}
+.ed-cal__h button:hover:not(:disabled){border-color:var(--fg)}.ed-cal__h button:disabled{opacity:.35;cursor:default}
+.ed-cal__g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.ed-cal__g i{font-style:normal;font-size:11px;font-weight:700;color:var(--mute);padding:4px 0;letter-spacing:.06em}
+.ed-cal__g button{aspect-ratio:1;border:1px solid transparent;background:transparent;color:var(--fg);border-radius:var(--r);font:inherit;font-size:13px;cursor:pointer}
+.ed-cal__g button:hover:not(:disabled){border-color:var(--fg)}
+.ed-cal__g button:disabled{color:var(--mute);opacity:.35;cursor:default}
+.ed-cal__g button.is-today{border-color:var(--red2);font-weight:700}
+.ed-cal__g button.is-sel{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+.ed-cal__g button:focus-visible{outline:2px solid var(--red2);outline-offset:1px}
+.ed-sch__t{display:flex;align-items:center;gap:8px}.ed-sch__t label{margin-right:auto;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.ed-sch__t select{width:auto;padding:7px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--fg);font:inherit;font-variant-numeric:tabular-nums}

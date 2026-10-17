@@ -471,6 +471,46 @@
     el.append(saveBar("Guardar orden y publicar", async () => { try { await persist(`Reordena ${cfg.plural.toLowerCase()} desde el panel`); viewGrid(); } catch (e) { /* aviso ya mostrado */ } }, async () => { await open(S.name, true); }, S.dirty));
   }
 
+  /* ---------- Selector de fecha y hora (hora de Cuba) con el estilo del panel ---------- */
+  function schedulePicker(initial, onChange) {
+    const MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    const DOW = ["sáb", "dom", "lun", "mar", "mié", "jue", "vie"];
+    const pad = (n) => String(n).padStart(2, "0");
+    const cuba = () => new Date(Date.now() - 4 * 3600e3); /* hora de Cuba aproximada (UTC-4) */
+    const ymd = (d) => `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
+    const todayS = () => ymd(cuba());
+    const m0 = /^(\d{4}-\d{2}-\d{2})(?:T(\d{2}):(\d{2}))?/.exec(String(initial || ""));
+    let date = m0 ? m0[1] : "", hh = m0 && m0[2] ? m0[2] : "09", mm = m0 && m0[3] ? m0[3] : "00";
+    let view = (date || todayS()).slice(0, 7);
+    const el = h("div", { class: "ed-sch__in" });
+    const val = () => (date ? `${date}T${hh}:${mm}` : "");
+    const emit = () => { onChange(val()); paint(); };
+    const nice = () => { if (!date) return "Elige un día"; const d = new Date(date + "T00:00:00Z"); return `${DOW[(d.getUTCDay() + 1) % 7]} ${d.getUTCDate()} ${MES[d.getUTCMonth()].slice(0, 3)} ${d.getUTCFullYear()} · ${hh}:${mm}`; };
+    const plus = (n) => { const d = cuba(); d.setUTCDate(d.getUTCDate() + n); return ymd(d); };
+    const nextMonday = () => { const d = cuba(); d.setUTCDate(d.getUTCDate() + ((8 - d.getUTCDay()) % 7 || 7)); return ymd(d); };
+    function paint() {
+      const [y, mo] = view.split("-").map(Number), first = new Date(Date.UTC(y, mo - 1, 1)), lead = (first.getUTCDay() + 6) % 7, days = new Date(Date.UTC(y, mo, 0)).getUTCDate(), t = todayS();
+      const move = (d) => { const n = new Date(Date.UTC(y, mo - 1 + d, 1)); view = `${n.getUTCFullYear()}-${pad(n.getUTCMonth() + 1)}`; paint(); };
+      const grid = h("div", { class: "ed-cal__g" }, ["L", "M", "X", "J", "V", "S", "D"].map((x) => h("i", {}, x)), Array.from({ length: lead }, () => h("span", {})));
+      for (let d = 1; d <= days; d++) {
+        const s = `${y}-${pad(mo)}-${pad(d)}`;
+        grid.append(h("button", { type: "button", class: (s === date ? "is-sel " : "") + (s === t ? "is-today" : ""), disabled: s < t, "aria-label": `${d} de ${MES[mo - 1]}`, "aria-pressed": String(s === date), onclick: () => { date = s; emit(); } }, d));
+      }
+      const hs = h("select", { "aria-label": "Hora", onchange: (e) => { hh = e.target.value; emit(); } }, Array.from({ length: 24 }, (_, i) => h("option", { value: pad(i) }, pad(i))));
+      const ms = h("select", { "aria-label": "Minutos", onchange: (e) => { mm = e.target.value; emit(); } }, Array.from({ length: 12 }, (_, i) => h("option", { value: pad(i * 5) }, pad(i * 5))));
+      hs.value = hh; ms.value = mm;
+      const pre = (l, s) => h("button", { type: "button", class: "ed-chipbtn" + (date === s ? " on" : ""), onclick: () => { date = s; view = s.slice(0, 7); emit(); } }, l);
+      el.replaceChildren(
+        h("div", { class: "ed-sch__sum" }, ico("cal"), h("b", {}, nice()), h("span", {}, "hora de Cuba")),
+        h("div", { class: "ed-sch__pre" }, pre("Mañana", plus(1)), pre("Lunes", nextMonday()), pre("En 1 semana", plus(7))),
+        h("div", { class: "ed-cal" },
+          h("div", { class: "ed-cal__h" }, h("button", { type: "button", "aria-label": "Mes anterior", disabled: view <= t.slice(0, 7), onclick: () => move(-1) }, "‹"), h("b", {}, `${MES[mo - 1]} ${y}`), h("button", { type: "button", "aria-label": "Mes siguiente", onclick: () => move(1) }, "›")), grid),
+        h("div", { class: "ed-sch__t" }, h("label", {}, "Hora"), hs, h("b", {}, ":"), ms));
+    }
+    paint();
+    return { el, value: val, ensure: () => { if (!date) { date = plus(1); view = date.slice(0, 7); hh = "09"; mm = "00"; emit(); } } };
+  }
+
   /* ---------- Vista previa (abre la web con el contenido aún sin guardar) ---------- */
   function openPreview(path, data, title) {
     try { localStorage.setItem("gorrion-preview", JSON.stringify({ file: S.name, data, at: Date.now(), title })); }
@@ -524,21 +564,24 @@
     const hasPub = def.fields.some((f) => f.name === "publishAt");
     let pubSel = null, pubBox = null;
     if (hasPub) {
-      pubSel = h("select", { "aria-label": "Estado de publicación" }, h("option", { value: "now" }, "Publicar ahora"), h("option", { value: "draft" }, "Guardar como borrador"), h("option", { value: "sched" }, "Programar publicación"));
-      pubSel.value = item.draft === true ? "draft" : item.publishAt ? "sched" : "now";
-      const at = h("input", { type: "datetime-local", "aria-label": "Fecha y hora de publicación (hora de Cuba)", value: item.publishAt ? String(item.publishAt).slice(0, 16) : "" });
-      const note = h("small", { class: "ed-hint" });
+      pubSel = { value: item.draft === true ? "draft" : item.publishAt ? "sched" : "now" };
+      const seg = h("div", { class: "ed-seg", role: "radiogroup", "aria-label": "Cuándo publicar" });
+      const schedBox = h("div", { class: "ed-sch" }), note = h("small", { class: "ed-hint" });
+      const MODES = [["now", "ok", "Ahora"], ["draft", "edit", "Borrador"], ["sched", "cal", "Programar"]];
+      const picker = schedulePicker(item.publishAt, (v) => { item.publishAt = v; ctx.touch(); refreshPub(); });
+      schedBox.append(picker.el);
       const refreshPub = () => {
-        const m = pubSel.value; at.hidden = m !== "sched";
+        const m = pubSel.value;
+        [...seg.children].forEach((b) => { const on = b.dataset.m === m; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
+        schedBox.hidden = m !== "sched";
         if (m === "draft") { item.draft = true; delete item.publishAt; }
-        else if (m === "sched") { delete item.draft; item.publishAt = at.value || undefined; }
+        else if (m === "sched") { delete item.draft; item.publishAt = picker.value() || undefined; }
         else { delete item.draft; delete item.publishAt; }
-        saveBtn.lastChild.textContent = m === "draft" ? "Guardar borrador" : m === "sched" ? "Programar" : isNew ? "Publicar" : "Guardar y publicar";
+        saveBtn.lastChild.textContent = m === "draft" ? "Guardar borrador" : m === "sched" ? "Programar publicación" : isNew ? "Publicar" : "Guardar y publicar";
         note.textContent = m === "draft" ? "No se verá en la web hasta que lo publiques." : m === "sched" ? "Se publica solo a esa fecha y hora de Cuba (la web se regenera cada 30 minutos)." : "Se publica de inmediato.";
       };
-      pubSel.addEventListener("change", () => { if (pubSel.value === "sched" && !at.value) { const d = new Date(Date.now() - 4 * 3600e3 + 864e5); d.setUTCHours(9, 0, 0, 0); at.value = d.toISOString().slice(0, 16); } ctx.touch(); refreshPub(); });
-      at.addEventListener("input", () => { ctx.touch(); refreshPub(); });
-      pubBox = h("div", { class: "ed-pubmode" }, pubSel, at, note);
+      MODES.forEach(([m, ic, l]) => seg.append(h("button", { type: "button", role: "radio", "data-m": m, onclick: () => { if (pubSel.value === m) return; pubSel.value = m; if (m === "sched") picker.ensure(); ctx.touch(); refreshPub(); } }, ico(ic), l)));
+      pubBox = h("div", { class: "ed-pubmode" }, seg, schedBox, note);
       refreshPub();
     }
     const previewBtn = (S.name === "proyectos" || S.name === "noticias") ? h("button", { type: "button", class: "ed-btn", onclick: () => previewItem(item, idx, isNew) }, ico("ext"), "Vista previa") : null;
