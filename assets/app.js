@@ -1361,7 +1361,7 @@ function crewBlock(p) {
 const PHASES = ["desarrollo", "produccion", "postproduccion", "estrenado"];
 function phaseTrack(p) {
   const cur = Math.max(0, PHASES.indexOf(p.status));
-  return `<ol class="phases" aria-label="${esc(t("k_status"))}">${PHASES.map((k, i) => `<li class="${i < cur ? "is-done" : i === cur ? "is-now" : ""}"${i === cur ? ' aria-current="step"' : ""}><i aria-hidden="true"></i><span>${esc(L(STATUS[k]))}</span></li>`).join("")}</ol>`;
+  return `<ol class="phases" style="--cur:${cur}" aria-label="${esc(t("k_status"))}">${PHASES.map((k, i) => `<li style="--i:${i}" class="${i < cur ? "is-done" : i === cur ? "is-now" : ""}"${i === cur ? ' aria-current="step"' : ""}><i aria-hidden="true"></i><span>${esc(L(STATUS[k]))}</span></li>`).join("")}</ol>`;
 }
 function pageProject(p) {
   const same = PROJECTS.filter((x) => x !== p && x.type === p.type), rest = PROJECTS.filter((x) => x !== p && x.type !== p.type);
@@ -1375,9 +1375,9 @@ function pageProject(p) {
   return `
   <section class="fh fh--${p.status}"><div class="fh__bg" aria-hidden="true">${posterSVG(p, lang).replace(/preserveAspectRatio="[^"]*"/, 'preserveAspectRatio="xMidYMid slice"')}</div>
     <div class="wrap fh__in"><div><div class="crumb"><a href="${routeHref("inicio")}">${t("crumb_home")}</a><span>/</span><a href="${routeHref("proyectos")}">${t("nav_proyectos")}</a><span>/</span><span>${esc(p.title)}</span></div>
-      <div class="fh__state">${statusChip(p)}<span>${t("stn_" + p.status)}</span></div>${phaseTrack(p)}<h1 id="page-h">${esc(p.title)}</h1><p class="tagline">${esc(L(p.tagline))}</p>
+      <div class="fh__state">${statusChip(p)}<span>${t("stn_" + p.status)}</span></div><h1 id="page-h">${esc(p.title)}</h1><p class="tagline">${esc(L(p.tagline))}</p>
       <div class="fh__cta">${hasTrailer ? `<a class="btn btn--red" href="${routeHref("project", p.slug)}" data-act="to" data-to="trailer">${ICONS.play} ${t(p.trailerKind === "teaser" ? "teaser_btn" : "trailer")}</a>` : trailer && hasWhere ? ext(trailer.url, `${ICONS.play} ${t("trailer")}`, "btn btn--red") : ""}${hasSupport ? `<a class="btn${hasTrailer ? "" : " btn--red"}" href="${routeHref("project", p.slug)}" data-act="to" data-to="support">${t("support_hero")}</a>` : ""}${hasWhere ? `<a class="btn" href="${routeHref("project", p.slug)}" data-act="to" data-to="where">${t("where_h")}</a>` : ""}</div></div>
-      <div class="fh__poster"><div class="card__poster" data-title="${esc(p.title)}">${posterSVG(p, lang)}</div></div></div></section>
+      <div class="fh__aside">${phaseTrack(p)}<div class="fh__poster"><div class="card__poster" data-title="${esc(p.title)}">${posterSVG(p, lang)}</div></div></div></div></section>
   <div class="wrap"><dl class="facts facts--${p.status}">${facts.map((f) => `<div class="fact"><dt>${t(f[0])}</dt><dd>${esc(f[1])}</dd></div>`).join("")}</dl></div>
 
   <div class="wrap">

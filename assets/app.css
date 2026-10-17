@@ -666,12 +666,20 @@ html[data-theme="light"] .pager { background: var(--ink); }
 .fact dd { overflow-wrap: normal; word-break: normal; hyphens: none; text-wrap: balance; }
 
 /* Fase de producción: recorrido y carácter propio de cada página */
-.phases { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 0; margin: 18px 0 0; padding: 0; font-size: .66rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
-.phases li { display: flex; align-items: center; gap: 8px; }
-.phases li + li::before { content: ""; width: clamp(14px, 3vw, 34px); height: 0; border-top: 1px solid var(--line); margin-inline: 8px; }
-.phases i { width: 10px; height: 10px; border: 1px solid currentColor; border-radius: 50%; flex: none; }
+.fh__aside { display: flex; align-items: stretch; justify-content: flex-end; gap: clamp(16px, 2.4vw, 32px); justify-self: end; min-width: 0; }
+.fh__aside .fh__poster { order: 0; justify-self: auto; flex: none; width: clamp(150px, 17vw, 260px); max-width: none; }
+.phases { list-style: none; display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 4px 0; position: relative; font-size: .66rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.phases::before, .phases::after { content: ""; position: absolute; left: 5px; top: 14px; bottom: 14px; width: 1px; }
+.phases::before { background: var(--line); }
+.phases::after { background: var(--ph, var(--rec)); transform-origin: top; transform: scaleY(0); animation: ph-fill 1.1s .25s cubic-bezier(.2, .7, .2, 1) forwards; height: auto; bottom: calc(14px + (100% - 28px) * (3 - var(--cur, 0)) / 3); }
+.phases li { position: relative; display: flex; align-items: center; gap: 10px; z-index: 1; opacity: 0; transform: translateX(10px); animation: ph-in .5s calc(.15s + var(--i) * .22s) ease-out forwards; }
+.phases i { width: 11px; height: 11px; border: 1px solid currentColor; border-radius: 50%; flex: none; background: var(--ink); }
 .phases .is-done { color: var(--bone, #efefef); } .phases .is-done i { background: currentColor; }
-.phases .is-now { color: var(--bone, #efefef); } .phases .is-now i { background: var(--ph, var(--rec)); border-color: var(--ph, var(--rec)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ph, var(--rec)) 35%, transparent); }
+.phases .is-now { color: var(--bone, #efefef); } .phases .is-now i { background: var(--ph, var(--rec)); border-color: var(--ph, var(--rec)); animation: ph-pulse 1.8s 1.2s ease-out infinite; }
+@keyframes ph-fill { to { transform: scaleY(1); } }
+@keyframes ph-in { to { opacity: 1; transform: none; } }
+@keyframes ph-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ph, var(--rec)) 60%, transparent); } 100% { box-shadow: 0 0 0 11px transparent; } }
+@media (max-width: 800px) { .fh__aside { justify-self: start; order: -1; } .fh__aside .fh__poster { width: 170px; } }
 .fh--desarrollo { --ph: var(--bone, #efefef); }
 .fh--produccion { --ph: var(--rec); }
 .fh--postproduccion { --ph: #d9a441; }
@@ -694,5 +702,4 @@ html[data-theme="light"] .pager { background: var(--ink); }
 /* Estrenada: sello de estreno */
 .fh--estrenado .fh__poster { box-shadow: 14px 14px 0 var(--red); }
 .facts--estrenado { border-bottom: 2px solid var(--bone, #efefef); }
-@media (prefers-reduced-motion: reduce) { .phases i { transition: none; } }
-@media (max-width: 520px) { .phases { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; } .phases li + li::before { display: none; } }
+@media (prefers-reduced-motion: reduce) { .phases::after { animation: none; transform: none; } .phases li { animation: none; opacity: 1; transform: none; } }
