@@ -679,7 +679,7 @@ html[data-theme="light"] .pager { background: var(--ink); }
 @keyframes ph-fill { to { transform: scaleY(1); } }
 @keyframes ph-in { to { opacity: 1; transform: none; } }
 @keyframes ph-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ph, var(--rec)) 60%, transparent); } 100% { box-shadow: 0 0 0 11px transparent; } }
-@media (max-width: 800px) { .fh__aside { justify-self: start; order: -1; } .fh__aside .fh__poster { width: 170px; } }
+@media (max-width: 800px) { .fh__aside { flex-direction: row-reverse; justify-content: flex-end; justify-self: start; order: -1; max-width: 100%; } .fh__aside .fh__poster { width: clamp(130px, 40vw, 170px); } .phases { font-size: .6rem; letter-spacing: .1em; } }
 .fh--desarrollo { --ph: var(--bone, #efefef); }
 .fh--produccion { --ph: var(--rec); }
 .fh--postproduccion { --ph: #d9a441; }
