@@ -1,0 +1,61 @@
+name: Revisión semanal (enlaces y velocidad)
+
+on:
+  schedule:
+    - cron: "17 12 * * 1" # lunes por la mañana (hora de Cuba)
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Dirección de la web a revisar (vacío = la oficial)"
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: revision-semanal
+  cancel-in-progress: true
+
+jobs:
+  revision:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      SITE_URL: ${{ github.event.inputs.url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+      - name: Enlaces rotos
+        run: node tools/check-links.mjs
+      - name: Instalar Lighthouse
+        run: npm i -g lighthouse@12
+      - name: Velocidad (Lighthouse)
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: node tools/lighthouse-run.mjs
+      - name: Resumen
+        id: res
+        run: node tools/revision-report.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: informes-revision
+          path: reports/
+          retention-days: 30
+      - name: Aviso en Issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          N: ${{ steps.res.outputs.problemas }}
+        run: |
+          gh label create revision-semanal --color 0E8A16 --description "Revisión automática semanal" 2>/dev/null || true
+          OPEN=$(gh issue list --label revision-semanal --state open --json number --jq '.[0].number // empty')
+          if [ "${N:-0}" -gt 0 ]; then
+            if [ -n "$OPEN" ]; then gh issue comment "$OPEN" --body-file reports/resumen.md
+            else gh issue create --title "Revisión semanal: hay cosas por mejorar" --label revision-semanal --body-file reports/resumen.md; fi
+          elif [ -n "$OPEN" ]; then
+            gh issue comment "$OPEN" --body "✅ Todo en orden en la última revisión."
+            gh issue close "$OPEN"
+          fi
