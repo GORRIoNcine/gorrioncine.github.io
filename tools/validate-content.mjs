@@ -52,6 +52,7 @@ list(proy && proy.items).forEach((p, i) => {
   if (!p.slug) err(`${n}: falta la dirección web (slug).`);
   else if (!/^[a-z0-9-]+$/.test(p.slug)) err(`${n}: el slug «${p.slug}» solo puede llevar minúsculas, números y guiones.`);
   else if (slugs.has(p.slug)) err(`${n}: el slug «${p.slug}» ya lo usa «${slugs.get(p.slug)}».`); else slugs.set(p.slug, p.title);
+  if (p.slugEn) { if (!/^[a-z0-9-]+$/.test(p.slugEn)) err(`${n}: la dirección en inglés «${p.slugEn}» solo puede llevar minúsculas, números y guiones.`); else if (slugs.has(p.slugEn) && slugs.get(p.slugEn) !== p.title) err(`${n}: la dirección en inglés «${p.slugEn}» ya la usa «${slugs.get(p.slugEn)}».`); else slugs.set(p.slugEn, p.title); }
   if (p.type && !TYPES.includes(p.type)) err(`${n}: tipo desconocido «${p.type}».`);
   if (p.status && !STATUS.includes(p.status)) err(`${n}: estado desconocido «${p.status}».`);
   const okUrl = (u) => { try { return /^https?:$/.test(new URL(u).protocol); } catch (e) { return false; } };
@@ -77,6 +78,7 @@ list(noti && noti.items).forEach((n, i) => {
   const t = `Noticia ${i + 1} «${txt(n.title) || "sin título"}»`;
   if (!txt(n.title)) err(`${t}: falta el título.`);
   if (!n.slug) err(`${t}: falta la dirección web (slug).`); else if (nslugs.has(n.slug)) err(`${t}: el slug «${n.slug}» está repetido.`); else nslugs.add(n.slug);
+  if (n.slugEn) { if (!/^[a-z0-9-]+$/.test(n.slugEn)) err(`${t}: la dirección en inglés «${n.slugEn}» solo puede llevar minúsculas, números y guiones.`); else if (nslugs.has(n.slugEn)) err(`${t}: la dirección en inglés «${n.slugEn}» ya está en uso.`); else nslugs.add(n.slugEn); }
   if (n.cat && !CATS.includes(n.cat)) err(`${t}: categoría desconocida «${n.cat}».`);
   if (n.date && !/^\d{4}-\d{2}-\d{2}/.test(String(n.date))) warn(`${t}: la fecha «${n.date}» debería tener formato AAAA-MM-DD.`);
   if (n.project && !ids.has(n.project)) err(`${t}: apunta a un proyecto que no existe (${n.project}). Elige otro proyecto o déjalo vacío.`);

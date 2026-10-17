@@ -335,6 +335,17 @@
             "hint": "Ejemplo: mi-nueva-pelicula. Solo afecta a la dirección de la página del proyecto; si la cambias, los enlaces antiguos a esa página dejan de funcionar."
           },
           {
+            "name": "slugEn",
+            "label": "Dirección web en inglés (opcional)",
+            "widget": "string",
+            "required": false,
+            "pattern": [
+              "^[a-z0-9-]+$",
+              "Solo minúsculas, números y guiones"
+            ],
+            "hint": "Opcional. Así se escribe el enlace en la versión inglesa, por ejemplo /en/projects/my-film/. Si lo dejas vacío se usa el mismo que en español."
+          },
+          {
             "name": "type",
             "label": "Tipo",
             "widget": "select",
@@ -3100,6 +3111,17 @@
               "Solo minúsculas, números y guiones"
             ],
             "hint": "Ejemplo: premio-en-festival-2026"
+          },
+          {
+            "name": "slugEn",
+            "label": "Dirección web en inglés (opcional)",
+            "widget": "string",
+            "required": false,
+            "pattern": [
+              "^[a-z0-9-]+$",
+              "Solo minúsculas, números y guiones"
+            ],
+            "hint": "Opcional. Así se escribe el enlace en la versión inglesa, por ejemplo /en/news/festival-award-2026/. Si lo dejas vacío se usa el mismo que en español."
           },
           {
             "name": "cat",

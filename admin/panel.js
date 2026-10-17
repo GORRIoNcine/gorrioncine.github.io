@@ -405,14 +405,14 @@
       title: (i) => i.title, sub: (i, d) => [optLabel(d, "type", i.type), i.year].filter(Boolean).join(" · "), img: (i) => i.poster,
       chip: (i) => STATUS[i.status], star: (i) => i.featured, sideExtra: ["status", "featured"],
       newItem: () => ({ id: "proj-" + rid(), type: "ficcion", status: "desarrollo", year: new Date().getFullYear(), featured: false, style: "rays" }),
-      groups: [["Datos básicos", ["title", "slug", "type", "format", "year", "status", "runtime", "genre", "lang", "subs", "featured"]], ["Cartel y textos", ["poster", "tagline", "short", "long", "note", "noteBy"]], ["Ficha técnica", ["crew"]], ["Recorrido y prensa", ["journey", "press"]], ["Tráiler o teaser", ["trailer", "trailerKind"]], ["Dónde verla (solo para proyectos estrenados)", ["whereHidden", "where"]], ["Apoyar el proyecto (solo en desarrollo)", ["supportOn", "supportUrl", "supportText", "supportGoal"]], ["Fotogramas", ["stills", "style"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
+      groups: [["Datos básicos", ["title", "slug", "slugEn", "type", "format", "year", "status", "runtime", "genre", "lang", "subs", "featured"]], ["Cartel y textos", ["poster", "tagline", "short", "long", "note", "noteBy"]], ["Ficha técnica", ["crew"]], ["Recorrido y prensa", ["journey", "press"]], ["Tráiler o teaser", ["trailer", "trailerKind"]], ["Dónde verla (solo para proyectos estrenados)", ["whereHidden", "where"]], ["Apoyar el proyecto (solo en desarrollo)", ["supportOn", "supportUrl", "supportText", "supportGoal"]], ["Fotogramas", ["stills", "style"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
     },
     noticias: {
       noun: "noticia", plural: "Noticias", add: "Escribir noticia", ratio: "wide",
       lead: "Estrenos, rodajes, convocatorias y detrás de cámaras.",
       title: (i) => L(i.title), sub: (i, d) => [optLabel(d, "cat", i.cat), i.date].filter(Boolean).join(" · "), img: (i) => i.image,
       newItem: () => ({ cat: "estrenos", date: today(), seed: Math.floor(Math.random() * 90) + 1 }),
-      groups: [["Datos", ["title", "slug", "cat", "date", "project"]], ["Imagen", ["image"]], ["Texto", ["sum", "body"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
+      groups: [["Datos", ["title", "slug", "slugEn", "cat", "date", "project"]], ["Imagen", ["image"]], ["Texto", ["sum", "body"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
     },
     equipo: {
       noun: "persona", plural: "Equipo", add: "Añadir persona", ratio: "square",
@@ -486,7 +486,8 @@
     ctx.touch = () => { S.itemDirty = true; stat.textContent = "Cambios sin guardar"; stat.classList.add("dirty"); };
     const saveBtn = h("button", { type: "button", class: "ed-btn ed-btn--main ed-pub__b", id: "savebtn", onclick: async () => {
       const errs = []; validate(def.fields, item, "$", errs);
-      const sl = item.slug; if (sl && S.data.items.some((o, j) => j !== idx && o.slug === sl)) errs.push({ p: "$.slug", msg: "Ya existe otro elemento con esta dirección web." });
+      const sl = item.slug; if (sl && S.data.items.some((o, j) => j !== idx && (o.slug === sl || o.slugEn === sl))) errs.push({ p: "$.slug", msg: "Ya existe otro elemento con esta dirección web." });
+      const se = item.slugEn; if (se && S.data.items.some((o, j) => j !== idx && (o.slug === se || o.slugEn === se))) errs.push({ p: "$.slugEn", msg: "Ya existe otro elemento con esta dirección web (en inglés)." });
       if (errs.length) { showErrors(errs, el); toast(`Revisa ${errs.length} campo(s) marcado(s) en rojo.`, "err"); return; }
       saveBtn.disabled = true;
       const prev = clone(S.data);

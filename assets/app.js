@@ -1506,18 +1506,36 @@ function pageNotFound() {
 const BASE = (() => { const m = document.querySelector('meta[name="gorrion-base"]'); let b = (m && m.content) || "/"; if (b[0] !== "/") b = "/" + b; if (b.slice(-1) !== "/") b += "/"; return b; })();
 const PATHMODE = /^https?:$/.test(location.protocol) && !document.querySelector('meta[name="gorrion-routing"][content="hash"]');
 let routeEnglish = URL_ENGLISH;
+/* En inglés las secciones y (si se define) el enlace de cada proyecto/noticia tienen su propio nombre: /en/services/, /en/projects/mi-pelicula/ */
+const SEC_EN = { proyectos: "projects", servicios: "services", nosotros: "about", prensa: "press", noticias: "news", contacto: "contact", legal: "legal" };
+const SEC_FROM_EN = Object.fromEntries(Object.entries(SEC_EN).map(([k, v]) => [v, k]));
+const okSlug = (x) => typeof x === "string" && /^[a-z0-9][a-z0-9-]*$/.test(x);
+const itemSlug = (list, slug, en) => { if (!en) return slug; const it = list.find((x) => x.slug === slug); return it && okSlug(it.slugEn) ? it.slugEn : slug; };
+function buildHref(name, slug, en) {
+  const sec = (n) => (en ? SEC_EN[n] : n);
+  return BASE + (en ? "en/" : "") + (name === "inicio" ? "" : name === "project" ? sec("proyectos") + "/" + encodeURIComponent(itemSlug(PROJECTS, slug, en)) + "/" : name === "article" ? sec("noticias") + "/" + encodeURIComponent(itemSlug(NEWS, slug, en)) + "/" : sec(name) + "/");
+}
+/* Segmentos de una dirección → "inicio" | sección | "p-slug" | "n-slug" | "" (acepta también los nombres antiguos /en/servicios/ y los enlaces en español dentro de /en/) */
+function pathToToken(seg) {
+  const en = seg[0] === "en"; if (en) seg = seg.slice(1);
+  if (!seg.length) return "inicio";
+  const name = (en && SEC_FROM_EN[seg[0]]) || seg[0];
+  if (seg.length === 1) return SECTIONS.includes(name) ? name : "";
+  if (seg.length === 2 && name === "proyectos") { const q = PROJECTS.find((x) => (en && x.slugEn === seg[1]) || x.slug === seg[1]); return "p-" + (q ? q.slug : seg[1]); }
+  if (seg.length === 2 && name === "noticias") { const q = NEWS.find((x) => (en && x.slugEn === seg[1]) || x.slug === seg[1]); return "n-" + (q ? q.slug : seg[1]); }
+  return "";
+}
 function localizedRoute(target, path = location.pathname) {
-  let relative = path.startsWith(BASE) ? path.slice(BASE.length) : path.replace(/^\/+/, "");
-  const segments = relative.split("/").filter(Boolean);
-  if (segments[0] === "en") segments.shift();
-  relative = segments.join("/");
-  const suffix = relative ? `${relative}${path.endsWith("/") ? "/" : ""}` : "";
-  return BASE + (target === "en" ? "en/" : "") + suffix;
+  let p = path; try { p = decodeURIComponent(p); } catch (e) { /* nada */ }
+  p = p.startsWith(BASE) ? p.slice(BASE.length) : p.replace(/^\/+/, "");
+  const tok = pathToToken(p.replace(/index\.html$/, "").split("/").filter(Boolean)), en = target === "en";
+  if (!tok) return BASE + (en ? "en/" : "");
+  return tok === "inicio" ? buildHref("inicio", null, en) : tok.startsWith("p-") ? buildHref("project", tok.slice(2), en) : tok.startsWith("n-") ? buildHref("article", tok.slice(2), en) : buildHref(tok, null, en);
 }
 const SECTIONS = ["proyectos", "servicios", "nosotros", "prensa", "noticias", "contacto", "legal"];
 /* name: inicio | proyectos | servicios… | project | article (estos dos con slug) */
 function routeHref(name, slug) {
-  if (PATHMODE) return BASE + (routeEnglish ? "en/" : "") + (name === "inicio" ? "" : name === "project" ? "proyectos/" + encodeURIComponent(slug) + "/" : name === "article" ? "noticias/" + encodeURIComponent(slug) + "/" : name + "/");
+  if (PATHMODE) return buildHref(name, slug, routeEnglish);
   return "#" + (name === "project" ? "p-" + slug : name === "article" ? "n-" + slug : name);
 }
 const routeLink = (r) => (isToken(r) ? tokenHref(r) : "#" + r);
@@ -1530,13 +1548,12 @@ function currentToken() {
   if (isToken(hash)) { try { history.replaceState(null, "", tokenHref(hash)); } catch (e) { /* nada */ } return hash; }
   let p = location.pathname; try { p = decodeURIComponent(p); } catch (e) { /* nada */ }
   if (p.startsWith(BASE)) p = p.slice(BASE.length);
-  const seg = p.replace(/index\.html$/, "").split("/").filter(Boolean);
-  if (seg[0] === "en") seg.shift();
-  if (!seg.length) return "inicio";
-  if (seg.length === 1 && SECTIONS.includes(seg[0])) return seg[0];
-  if (seg.length === 2 && seg[0] === "proyectos") return "p-" + seg[1];
-  if (seg.length === 2 && seg[0] === "noticias") return "n-" + seg[1];
-  return "";
+  const tok = pathToToken(p.replace(/index\.html$/, "").split("/").filter(Boolean));
+  if (tok && !location.hash) { /* dirección canónica: los nombres antiguos o en otro idioma se corrigen sin recargar */
+    const want = tokenHref(tok), have = location.pathname.replace(/index\.html$/, "");
+    if (want !== have && want !== have + "/") { try { history.replaceState(null, "", want + location.search); } catch (e) { /* nada */ } }
+  }
+  return tok;
 }
 function parseRoute() {
   const h = currentToken();
@@ -1876,13 +1893,7 @@ window.addEventListener("popstate", () => {
 /* "/proyectos/nombre/" → "p-nombre" (para los enlaces generados con direcciones reales) */
 function hrefToken(href) {
   let p = href.split("#")[0].split("?")[0]; try { p = decodeURIComponent(p); } catch (e) { /* nada */ }
-  p = p.slice(BASE.length); const seg = p.split("/").filter(Boolean);
-  if (seg[0] === "en") seg.shift();
-  if (!seg.length) return "inicio";
-  if (seg.length === 1 && SECTIONS.includes(seg[0])) return seg[0];
-  if (seg.length === 2 && seg[0] === "proyectos") return "p-" + seg[1];
-  if (seg.length === 2 && seg[0] === "noticias") return "n-" + seg[1];
-  return "";
+  return pathToToken(p.slice(BASE.length).split("/").filter(Boolean));
 }
 
 /* ---------- Fotogramas: fotos subidas desde el panel (p.stills) o, si no hay, 6 fotogramas generados ---------- */

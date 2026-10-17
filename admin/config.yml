@@ -238,6 +238,12 @@ collections:
                 widget: string
                 hint: "Ejemplo: mi-nueva-pelicula. Solo afecta a la dirección de la página del proyecto; si la cambias, los enlaces antiguos a esa página dejan de funcionar."
                 pattern: ["^[a-z0-9-]+$", "Solo minúsculas, números y guiones"]
+              - label: "Dirección web en inglés (opcional)"
+                name: slugEn
+                widget: string
+                required: false
+                hint: "Así se escribe el enlace en la versión inglesa, por ejemplo /en/projects/my-film/. Si lo dejas vacío se usa el mismo que en español."
+                pattern: ["^[a-z0-9-]+$", "Solo minúsculas, números y guiones"]
               - label: "Tipo"
                 name: type
                 widget: select
@@ -1201,6 +1207,12 @@ collections:
                 name: slug
                 widget: string
                 hint: "Ejemplo: premio-en-festival-2026"
+                pattern: ["^[a-z0-9-]+$", "Solo minúsculas, números y guiones"]
+              - label: "Dirección web en inglés (opcional)"
+                name: slugEn
+                widget: string
+                required: false
+                hint: "Así se escribe el enlace en la versión inglesa, por ejemplo /en/news/festival-award-2026/. Si lo dejas vacío se usa el mismo que en español."
                 pattern: ["^[a-z0-9-]+$", "Solo minúsculas, números y guiones"]
               - label: "Categoría"
                 name: cat

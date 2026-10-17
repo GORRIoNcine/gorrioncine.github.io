@@ -25,8 +25,24 @@ const ENGLISH = BUILD_LANG === "en";
 const read = (f) => readFileSync(join(ROOT, f), "utf8");
 const json = (f, d) => { try { return JSON.parse(read(f)); } catch (e) { if (d !== undefined) return d; throw new Error(`No se pudo leer ${f}: ${e.message}`); } };
 const write = (f, txt) => { const p = join(ROOT, f); mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, txt); };
-const localizedPath = (path) => ENGLISH && path.startsWith("/") && !path.startsWith("/en/") ? `/en${path}` : path;
-const outputFile = (file) => ENGLISH ? `en/${file}` : file;
+/* Direcciones: internamente todo se escribe con la dirección española (/proyectos/<slug>/); en la versión inglesa se traduce
+   (secciones: /en/services/…; proyectos y noticias: su «slugEn» si lo tienen, si no el mismo enlace). */
+const SEC_EN = { proyectos: "projects", servicios: "services", nosotros: "about", prensa: "press", noticias: "news", contacto: "contact", legal: "legal" };
+function toEnPath(path) {
+  const seg = path.split("/").filter(Boolean);
+  if (!seg.length) return "/en/";
+  const sec = seg[0];
+  seg[0] = SEC_EN[sec] || sec;
+  if (seg[1] && (sec === "proyectos" || sec === "noticias")) {
+    const it = (sec === "proyectos" ? projects : news).find((x) => x && x.slug === seg[1]);
+    if (it && slugOk(it.slugEn)) seg[1] = it.slugEn;
+  }
+  return "/en/" + seg.join("/") + (path.endsWith("/") ? "/" : "");
+}
+const localizedPath = (path) => ENGLISH && path.startsWith("/") && !path.startsWith("/en/") ? toEnPath(path) : path;
+const outputFile = (file) => ENGLISH ? toEnPath("/" + file).slice(1) : file;
+const ES_PATHS = () => ["/", ...Object.keys(SEC_EN).map((k) => `/${k}/`), ...projects.filter((p) => p && p.title && slugOk(p.slug)).map((p) => `/proyectos/${p.slug}/`), ...news.filter((n) => n && n.title && slugOk(n.slug)).map((n) => `/noticias/${n.slug}/`)];
+const esPathOf = (enPath) => ES_PATHS().find((e) => toEnPath(e) === enPath) || (enPath === "/en/404.html" ? "/404.html" : enPath.slice(3));
 
 /* ---------- Datos ---------- */
 const site = json("content/site.json", {});
@@ -139,8 +155,8 @@ const template = read("tools/template.html");
 function page({ path, title, desc, type = "website", image, imageAlt, noindex, ld = [], body }) {
   noindex = noindex || !INDEXAR;
   const url = SITE_URL + path;
-  const esPath = path.startsWith("/en/") ? path.slice(3) : path;
-  const enPath = path.startsWith("/en/") ? path : `/en${path}`;
+  const esPath = path.startsWith("/en/") ? esPathOf(path) : path;
+  const enPath = path.startsWith("/en/") ? path : toEnPath(path);
   const img = image || OG_DEFAULT;
   const head = [
     `<title>${esc(title)}</title>`,
@@ -273,14 +289,27 @@ for (const n of validNews) {
 pages[outputFile("404.html")] = page({ path: localizedPath("/404.html"), title: `${ui("notfound_h", "Página no encontrada")} · ${NAME}`, desc: ui("notfound_p", "La página que buscas no existe."), noindex: true, body: shell(`<h1>${ui("notfound_h", "Página no encontrada")}</h1><p class="seo__lede">${tr("La dirección no existe o ha cambiado.")} ${link("/", ui("home", "Volver al inicio"))}.</p>`, "") });
 
 /* ---------- Limpieza de páginas generadas que ya no existen ---------- */
-for (const base of ["proyectos", "noticias"]) {
+/* Redirecciones desde las direcciones inglesas antiguas (/en/servicios/…) a las nuevas */
+if (ENGLISH) {
+  const stub = (to) => `<!doctype html>\n${MARK}\n<html lang="en"><head><meta charset="utf-8"><title>${NAME}</title><link rel="canonical" href="${esc(SITE_URL + to)}"><meta http-equiv="refresh" content="0;url=${esc(to)}"><script>location.replace(${JSON.stringify(to)}+location.search+location.hash)</script></head><body><a href="${esc(to)}">${esc(SITE_URL + to)}</a></body></html>`;
+  const live = new Set(["/", ...Object.keys(SEC_EN).map((k) => `/${k}/`), ...validProjects.map((p) => `/proyectos/${p.slug}/`), ...validNews.map((n) => `/noticias/${n.slug}/`)]);
+  for (const es of live) {
+    const now = toEnPath(es), old = `/en${es}`;
+    const file = old.slice(1) + "index.html";
+    if (old !== now && !(file in pages)) pages[file] = stub(now);
+  }
+}
+
+/* ---------- Limpieza de páginas generadas que ya no existen ---------- */
+for (const base of ENGLISH ? ["projects", "news", "proyectos", "noticias"] : ["proyectos", "noticias"]) {
   const dir = join(ROOT, ...(ENGLISH ? ["en"] : []), base);
   if (!existsSync(dir)) continue;
   for (const d of readdirSync(dir)) {
     const f = join(dir, d, "index.html");
     if (!existsSync(f) || !statSync(join(dir, d)).isDirectory()) continue;
     if (!readFileSync(f, "utf8").slice(0, 200).includes(MARK)) continue;
-    if (!(outputFile(`${base}/${d}/index.html`) in pages)) { rmSync(join(dir, d), { recursive: true, force: true }); console.log(`– Eliminada ${ENGLISH ? "en/" : ""}${base}/${d}/`); }
+    const key = `${ENGLISH ? "en/" : ""}${base}/${d}/index.html`;
+    if (!(key in pages)) { rmSync(join(dir, d), { recursive: true, force: true }); console.log(`– Eliminada ${ENGLISH ? "en/" : ""}${base}/${d}/`); }
   }
 }
 for (const [f, html] of Object.entries(pages)) write(f, html);
@@ -297,7 +326,7 @@ if (ENGLISH) {
   if (child.status !== 0) throw new Error(`Falló la generación de páginas /en/ (código ${child.status}).`);
   const sitemapEntries = out.map((u) => {
     const esUrl = SITE_URL + u.path;
-    const enUrl = SITE_URL + `/en${u.path}`;
+    const enUrl = SITE_URL + toEnPath(u.path);
     const alternateLinks = `<xhtml:link rel="alternate" hreflang="es" href="${xml(esUrl)}"/><xhtml:link rel="alternate" hreflang="en" href="${xml(enUrl)}"/><xhtml:link rel="alternate" hreflang="x-default" href="${xml(esUrl)}"/>`;
     const metadata = `${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ""}<priority>${u.priority}</priority>`;
     return `  <url><loc>${xml(esUrl)}</loc>${alternateLinks}${metadata}</url>\n  <url><loc>${xml(enUrl)}</loc>${alternateLinks}${metadata}</url>`;
