@@ -2,18 +2,20 @@
 # Si hay referencias rotas (una noticia o un premio que apunta a un proyecto que ya no existe, ids repetidos…),
 # la ejecución sale en rojo ❌ junto al cambio y GitHub avisa por correo a quien lo hizo.
 name: Validar contenido
+
 on:
   push:
     branches: [main]
     paths: ["content/**", "admin/**", "tools/**"]
   pull_request:
     paths: ["content/**", "admin/**", "tools/**"]
+
 jobs:
   validar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 20
       - run: node tools/validate-content.mjs .
