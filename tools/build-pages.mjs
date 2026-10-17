@@ -3,7 +3,7 @@
  *
  * Lee content/*.json y crea, junto a la web (que sigue siendo la misma aplicación):
  *   /index.html, /proyectos/, /proyectos/<nombre>/, /noticias/<nombre>/, /servicios/, /nosotros/, /prensa/, /contacto/, /legal/
- *   /404.html, /sitemap.xml, /robots.txt, /site.webmanifest
+ *   /404.html, /en/… (versiones inglesas), /sitemap.xml, /robots.txt, /site.webmanifest
  * Cada página lleva su título, descripción, enlace canónico, tarjeta para redes (Open Graph / Twitter),
  * datos estructurados (JSON-LD) y un resumen del contenido legible sin JavaScript.
  * La aplicación, al cargar, sustituye ese resumen por la web completa.
@@ -15,13 +15,18 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import vm from "node:vm";
 
 const ROOT = process.argv[2] || ".";
 const MARK = "<!-- gorrion:generated -->";
+const BUILD_LANG = process.argv.includes("--english-build") ? "en" : "es";
+const ENGLISH = BUILD_LANG === "en";
 const read = (f) => readFileSync(join(ROOT, f), "utf8");
 const json = (f, d) => { try { return JSON.parse(read(f)); } catch (e) { if (d !== undefined) return d; throw new Error(`No se pudo leer ${f}: ${e.message}`); } };
 const write = (f, txt) => { const p = join(ROOT, f); mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, txt); };
+const localizedPath = (path) => ENGLISH && path.startsWith("/") && !path.startsWith("/en/") ? `/en${path}` : path;
+const outputFile = (file) => ENGLISH ? `en/${file}` : file;
 
 /* ---------- Datos ---------- */
 const site = json("content/site.json", {});
@@ -55,31 +60,68 @@ function extractConst(name) {
   const j = appSrc.indexOf("\n};", i);
   try { return vm.runInNewContext("(" + appSrc.slice(i + `const ${name} = `.length, j + 2) + ")"); } catch (e) { return {}; }
 }
-const TYPES = extractConst("TYPES"), STATUS = extractConst("STATUS"), NEWS_CATS = extractConst("NEWS_CATS");
+const TYPES = extractConst("TYPES"), STATUS = extractConst("STATUS"), NEWS_CATS = extractConst("NEWS_CATS"), UI = extractConst("S");
+if (!Object.keys(UI).length) throw new Error("No se pudo cargar el diccionario de interfaz bilingüe desde assets/app.js.");
+const UI_BY_ES = new Map(Object.values(UI).filter((x) => Array.isArray(x) && typeof x[0] === "string" && typeof x[1] === "string").map((x) => [x[0], x[1]]));
+const EN_COPY = {
+  "Proyecto destacado": "Featured project", "Últimas noticias": "Latest news", "Cómo trabajamos": "How we work",
+  "Valores": "Values", "Historia": "History", "Equipo": "Team", "Premios y selecciones": "Awards and selections",
+  "En los medios": "In the media", "Correo": "Email", "Prensa": "Press", "Ciudad": "City",
+  "Titular": "Owner", "productora audiovisual independiente con sede en La Habana, Cuba.": "an independent audiovisual production company based in Havana, Cuba.",
+  "Contacto": "Contact", "Ficha técnica": "Credits", "Nota del director": "Director's note", "Recorrido": "Festival run",
+  "Dónde verla": "Where to watch", "Tráiler": "Trailer", "Apoya este proyecto": "Support this project",
+  "Contribuir a la campaña": "Contribute to the campaign", "Quiero colaborar": "I want to collaborate",
+  "Noticias relacionadas": "Related news", "Proyecto relacionado": "Related project", "Página no encontrada": "Page not found",
+  "La página que buscas no existe.": "The page you are looking for does not exist.",
+  "La dirección no existe o ha cambiado.": "This address does not exist or has changed.",
+  "Volver al inicio": "Back to home", "español": "Spanish", "Ficción": "Fiction",
+};
+function tr(es, en) {
+  if (!ENGLISH) return es;
+  const value = en || UI_BY_ES.get(es) || EN_COPY[es];
+  if (value === undefined) throw new Error(`Falta traducción al inglés para el texto de interfaz: «${es}»`);
+  return value;
+}
 function ui(key, fallback = "") {
-  const m = appSrc.match(new RegExp(`\\b${key}: \\["((?:[^"\\\\]|\\\\.)*)"`));
-  if (!m) return fallback;
-  try { return JSON.parse(`"${m[1]}"`); } catch (e) { return fallback; }
+  const value = UI[key];
+  if (Array.isArray(value)) return value[ENGLISH ? 1 : 0] || fallback;
+  return fallback ? tr(fallback) : "";
 }
 const httpUrl = (u) => (typeof u === "string" && /^https?:\/\//i.test(u.trim()) ? u.trim() : "");
 const stripTags = (s) => String(s).replace(/<[^>]*>/g, "");
 
 /* ---------- Utilidades ---------- */
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-const L = (o) => (o == null ? "" : typeof o === "string" ? o : Array.isArray(o) ? o : o.es || o.en || "");
+const hasText = (v) => Array.isArray(v) ? v.length > 0 : v != null && String(v).trim() !== "";
+const L = (o) => {
+  if (o == null || typeof o === "string" || Array.isArray(o)) return o || "";
+  if (ENGLISH) {
+    if (hasText(o.en)) return o.en;
+    if (hasText(o.otros && o.otros.en)) return o.otros.en;
+    if (hasText(o.es)) throw new Error(`Falta traducción al inglés en contenido: «${cut(txt(o.es), 80)}»`);
+    return "";
+  }
+  return hasText(o.es) ? o.es : o.en || "";
+};
 const txt = (o) => { const v = L(o); return Array.isArray(v) ? v.join(" ") : String(v); };
 const cut = (x, n = 200) => { x = String(x || "").replace(/\s+/g, " ").trim(); return x.length > n ? x.slice(0, n - 3).replace(/\s+\S*$/, "") + "…" : x; };
 const abs = (u) => (!u ? "" : /^https?:/.test(u) ? u : SITE_URL + (u[0] === "/" ? u : "/" + u));
 const jsonld = (o) => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, "\\u003c")}</script>`;
 const slugOk = (s) => typeof s === "string" && /^[a-z0-9][a-z0-9-]*$/.test(s);
 const projBy = (ref) => projects.find((p) => p.id === ref) || projects.find((p) => p.slug === ref);
-const typeLabel = (t) => (TYPES[t] ? TYPES[t].es : t || "");
-const fmtDate = (d) => { const m = String(d || "").match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/); if (!m) return String(d || ""); const mes = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"][+m[2] - 1] || ""; return m[3] ? `${+m[3]} de ${mes} de ${m[1]}` : `${mes} de ${m[1]}`; };
+const typeLabel = (t) => (TYPES[t] ? TYPES[t][BUILD_LANG] : t || "");
+const fmtDate = (d) => {
+  const m = String(d || "").match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);
+  if (!m) return String(d || "");
+  if (ENGLISH) return new Intl.DateTimeFormat("en", { month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(+m[1], +m[2] - 1, +(m[3] || 1)))) + (m[3] ? ` ${+m[3]}, ${m[1]}` : ` ${m[1]}`);
+  const mes = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"][+m[2] - 1] || "";
+  return m[3] ? `${+m[3]} de ${mes} de ${m[1]}` : `${mes} de ${m[1]}`;
+};
 
 const assetHash = createHash("sha1").update(appSrc).update(read("assets/app.css")).digest("hex").slice(0, 10);
 const OG_DEFAULT = seo.ogImage ? abs(seo.ogImage) : `${SITE_URL}/assets/og-default.png`;
 
-const NAV = [["proyectos", "Proyectos"], ["servicios", "Servicios"], ["nosotros", "Nosotros"], ["prensa", "Prensa"], ["noticias", "Noticias"], ["contacto", "Contacto"]];
+const NAV = [["proyectos", ui("nav_proyectos")], ["servicios", ui("nav_servicios")], ["nosotros", ui("nav_nosotros")], ["prensa", ui("nav_prensa")], ["noticias", ui("nav_noticias")], ["contacto", ui("nav_contacto")]];
 const SECTION_DESC = {
   proyectos: ui("projects_lede", "Películas, documentales, series, videoclips y encargos."),
   servicios: ui("svc_lede", "Producción audiovisual para proyectos propios y ajenos."),
@@ -87,7 +129,7 @@ const SECTION_DESC = {
   prensa: ui("press_lede", "Premios, selecciones, menciones en medios y materiales para periodistas."),
   noticias: ui("news_lede", "Estrenos, rodajes, convocatorias y lo que pasa detrás de cámaras."),
   contacto: ui("contact_lede", "Colaboraciones, encargos, prensa o distribución."),
-  legal: "Aviso legal y política de privacidad de GORRIóN.",
+  legal: tr("Aviso legal y política de privacidad de GORRIóN.", "Legal notice and privacy policy of GORRIóN."),
 };
 const HOME_DESC = ui("hero_sub", "Productora audiovisual independiente de La Habana, Cuba.");
 const HOME_H1 = stripTags(ui("hero_h1", "Cine independiente hecho en Cuba."));
@@ -97,6 +139,8 @@ const template = read("tools/template.html");
 function page({ path, title, desc, type = "website", image, imageAlt, noindex, ld = [], body }) {
   noindex = noindex || !INDEXAR;
   const url = SITE_URL + path;
+  const esPath = path.startsWith("/en/") ? path.slice(3) : path;
+  const enPath = path.startsWith("/en/") ? path : `/en${path}`;
   const img = image || OG_DEFAULT;
   const head = [
     `<title>${esc(title)}</title>`,
@@ -107,36 +151,39 @@ function page({ path, title, desc, type = "website", image, imageAlt, noindex, l
     noindex ? "" : `<link rel="canonical" href="${esc(url)}">`,
     `<meta property="og:site_name" content="${NAME}">`,
     `<meta property="og:type" content="${type}">`,
-    `<meta property="og:locale" content="es_ES">`,
-    `<meta property="og:locale:alternate" content="en_US">`,
+    `<meta property="og:locale" content="${ENGLISH ? "en_US" : "es_ES"}">`,
+    `<meta property="og:locale:alternate" content="${ENGLISH ? "es_ES" : "en_US"}">`,
+    noindex ? "" : `<link rel="alternate" hreflang="es" href="${esc(SITE_URL + esPath)}">`,
+    noindex ? "" : `<link rel="alternate" hreflang="en" href="${esc(SITE_URL + enPath)}">`,
+    noindex ? "" : `<link rel="alternate" hreflang="x-default" href="${esc(SITE_URL + esPath)}">`,
     `<meta property="og:title" content="${esc(title)}">`,
     `<meta property="og:description" content="${esc(desc)}">`,
     `<meta property="og:url" content="${esc(url)}">`,
     `<meta property="og:image" content="${esc(img)}">`,
     image ? "" : `<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">`,
-    `<meta property="og:image:alt" content="${esc(imageAlt || `${NAME} · productora audiovisual independiente de La Habana`)}">`,
+    `<meta property="og:image:alt" content="${esc(imageAlt || `${NAME} · ${tr("productora audiovisual independiente con sede en La Habana, Cuba.")}`)}">`,
     `<meta name="twitter:card" content="summary_large_image">`,
     `<meta name="twitter:title" content="${esc(title)}">`,
     `<meta name="twitter:description" content="${esc(desc)}">`,
     `<meta name="twitter:image" content="${esc(img)}">`,
     ...ld.map(jsonld),
   ].filter(Boolean).join("\n");
-  return template.replace("{{SEO}}", head).replace(/\{\{V\}\}/g, assetHash).replace("{{LITE}}", body).replace("{{ANALYTICS}}", ANALYTICS ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${ANALYTICS}", "spa": true}'></script>` : "").replace("<!doctype html>", "<!doctype html>\n" + MARK);
+  return template.replace("{{SEO}}", head).replace(/\{\{V\}\}/g, assetHash).replace("{{LITE}}", body).replace("{{LANG}}", BUILD_LANG).replace("{{ANALYTICS}}", ANALYTICS ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${ANALYTICS}", "spa": true}'></script>` : "").replace("<!doctype html>", "<!doctype html>\n" + MARK);
 }
 
-const link = (href, label, cls) => `<a href="${esc(href)}"${cls ? ` class="${cls}"` : ""}>${esc(label)}</a>`;
+const link = (href, label, cls) => `<a href="${esc(localizedPath(href))}"${cls ? ` class="${cls}"` : ""}>${esc(label)}</a>`;
 function shell(main, current) {
   const nav = NAV.map(([k, l]) => link(`/${k}/`, l, current === k ? "on" : "")).join("");
   const email = site.email ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : "";
-  return `<div class="seo"><header class="seo__h"><a class="seo__brand" href="/">${NAME}</a><nav aria-label="Principal">${nav}</nav></header><main class="seo__m">${main}</main><footer class="seo__f"><span>© ${new Date().getFullYear()} ${NAME}</span> ${email} <a href="/legal/">Aviso legal y privacidad</a></footer></div>`;
+  return `<div class="seo"><header class="seo__h"><a class="seo__brand" href="${localizedPath("/")}">${NAME}</a><nav aria-label="${tr("Principal", "Primary")}">${nav}</nav></header><main class="seo__m">${main}</main><footer class="seo__f"><span>© ${new Date().getFullYear()} ${NAME}</span> ${email} ${link("/legal/", ui("legal", "Aviso legal y privacidad"))}</footer></div>`;
 }
 const paras = (v) => (Array.isArray(v) ? v : String(v || "").split(/\n{2,}/)).filter((x) => String(x).trim()).map((x) => `<p>${esc(x)}</p>`).join("");
-const breadcrumb = (items) => ({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items.map(([name, path], i) => ({ "@type": "ListItem", position: i + 1, name, item: SITE_URL + path })) });
+const breadcrumb = (items) => ({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items.map(([name, path], i) => ({ "@type": "ListItem", position: i + 1, name: name === "Inicio" ? ui("crumb_home", name) : name, item: SITE_URL + localizedPath(path) })) });
 const ORG = () => {
   const sameAs = (site.social || []).map((s) => s && s.url).filter((u) => { try { const x = new URL(u); return x.pathname.replace(/\//g, "").length > 0; } catch (e) { return false; } });
   const o = { "@context": "https://schema.org", "@type": "Organization", name: NAME, url: SITE_URL + "/", logo: `${SITE_URL}/assets/icon-512.png`, description: HOME_DESC };
   if (site.email && !/\.example$/.test(site.email)) o.email = site.email;
-  o.address = { "@type": "PostalAddress", addressLocality: "La Habana", addressCountry: "CU" };
+  o.address = { "@type": "PostalAddress", addressLocality: tr("La Habana", "Havana"), addressCountry: "CU" };
   if (sameAs.length) o.sameAs = sameAs;
   return o;
 };
@@ -146,7 +193,7 @@ const out = []; // { path, lastmod, priority }
 const pages = {}; // fichero -> html
 
 function projectList(items) {
-  return `<ul class="seo__list">${items.map((p) => `<li>${link(`/proyectos/${p.slug}/`, p.title)} <span>${esc([typeLabel(p.type), p.year].filter(Boolean).join(" · "))}</span>${txt(p.short) ? `<p>${esc(cut(txt(p.short), 220))}</p>` : ""}</li>`).join("")}</ul>`;
+  return `<ul class="seo__list">${items.map((p) => `<li>${link(`/proyectos/${p.slug}/`, txt(p.title))} <span>${esc([typeLabel(p.type), p.year].filter(Boolean).join(" · "))}</span>${txt(p.short) ? `<p>${esc(cut(txt(p.short), 220))}</p>` : ""}</li>`).join("")}</ul>`;
 }
 function newsList(items) {
   return `<ul class="seo__list">${items.map((n) => `<li>${link(`/noticias/${n.slug}/`, txt(n.title))} <span>${esc(fmtDate(n.date))}</span>${txt(n.sum) ? `<p>${esc(cut(txt(n.sum), 220))}</p>` : ""}</li>`).join("")}</ul>`;
@@ -159,83 +206,105 @@ news.filter((n) => n && txt(n.title) && !slugOk(n.slug)).forEach((n) => console.
 /* Inicio */
 {
   const feat = validProjects.find((p) => p.featured) || validProjects[0];
-  const main = `<h1>${esc(HOME_H1)}</h1><p class="seo__lede">${esc(HOME_DESC)}</p>${feat ? `<h2>Proyecto destacado</h2>${projectList([feat])}` : ""}<h2>Proyectos</h2>${projectList(validProjects.slice(0, 8))}${validNews.length ? `<h2>Últimas noticias</h2>${newsList(validNews.slice(0, 4))}` : ""}`;
-  pages["index.html"] = page({ path: "/", title: txt(seo.homeTitle) || `${NAME} · Productora audiovisual independiente de La Habana`, desc: cut(txt(seo.homeDesc) || HOME_DESC), ld: [ORG(), { "@context": "https://schema.org", "@type": "WebSite", name: NAME, url: SITE_URL + "/", inLanguage: ["es", "en", "fr", "pt", "it", "de"] }], body: shell(main, "") });
-  out.push({ path: "/", priority: "1.0" });
+  const homePath = localizedPath("/");
+  const main = `<h1>${esc(HOME_H1)}</h1><p class="seo__lede">${esc(HOME_DESC)}</p>${feat ? `<h2>${tr("Proyecto destacado")}</h2>${projectList([feat])}` : ""}<h2>${ui("nav_proyectos")}</h2>${projectList(validProjects.slice(0, 8))}${validNews.length ? `<h2>${tr("Últimas noticias")}</h2>${newsList(validNews.slice(0, 4))}` : ""}`;
+  const fallbackTitle = ENGLISH ? "GORRIóN · Independent film production company from Havana" : "GORRIóN · Productora audiovisual independiente de La Habana";
+  pages[outputFile("index.html")] = page({ path: homePath, title: txt(seo.homeTitle) || fallbackTitle, desc: cut(txt(seo.homeDesc) || HOME_DESC), ld: [ORG(), { "@context": "https://schema.org", "@type": "WebSite", name: NAME, url: SITE_URL + homePath, inLanguage: BUILD_LANG }], body: shell(main, "") });
+  if (!ENGLISH) out.push({ path: "/", priority: "1.0" });
 }
 
 /* Secciones */
-const SECTION_TITLE = { proyectos: "Proyectos", servicios: "Servicios", nosotros: "Nosotros", prensa: "Prensa", noticias: "Noticias", contacto: "Contacto", legal: "Aviso legal y privacidad" };
+const SECTION_TITLE = {
+  proyectos: ui("nav_proyectos"), servicios: ui("nav_servicios"), nosotros: ui("nav_nosotros"),
+  prensa: ui("nav_prensa"), noticias: ui("nav_noticias"), contacto: ui("nav_contacto"),
+  legal: ui("legal", "Aviso legal y privacidad"),
+};
 function section(name, main, ld = []) {
   const o = (Array.isArray(seo.pages) ? seo.pages : []).find((x) => x && x.page === name) || {};
-  pages[`${name}/index.html`] = page({ path: `/${name}/`, title: txt(o.title) || `${SECTION_TITLE[name]} · ${NAME}`, desc: cut(txt(o.description) || SECTION_DESC[name]), ld: [...ld, breadcrumb([["Inicio", "/"], [SECTION_TITLE[name], `/${name}/`]])], body: shell(`<h1>${esc(SECTION_TITLE[name])}</h1><p class="seo__lede">${esc(SECTION_DESC[name])}</p>${main}`, name) });
-  out.push({ path: `/${name}/`, priority: name === "legal" ? "0.2" : "0.8" });
+  const path = localizedPath(`/${name}/`);
+  pages[outputFile(`${name}/index.html`)] = page({ path, title: txt(o.title) || `${SECTION_TITLE[name]} · ${NAME}`, desc: cut(txt(o.description) || SECTION_DESC[name]), ld: [...ld, breadcrumb([["Inicio", "/"], [SECTION_TITLE[name], `/${name}/`]])], body: shell(`<h1>${esc(SECTION_TITLE[name])}</h1><p class="seo__lede">${esc(SECTION_DESC[name])}</p>${main}`, name) });
+  if (!ENGLISH) out.push({ path: `/${name}/`, priority: name === "legal" ? "0.2" : "0.8" });
 }
 section("proyectos", projectList(validProjects));
-section("servicios", `<ul class="seo__list">${(serv.services || []).filter((s) => s && s.t).map((s) => `<li><b>${esc(txt(s.t))}</b><p>${esc(txt(s.d))}</p>${Array.isArray(L(s.l)) && L(s.l).length ? `<ul>${L(s.l).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}</li>`).join("")}</ul>${(serv.steps || []).length ? `<h2>Cómo trabajamos</h2><ol class="seo__list">${serv.steps.filter((s) => s && s.t).map((s) => `<li><b>${esc(txt(s.t))}</b><p>${esc(txt(s.d))}</p></li>`).join("")}</ol>` : ""}`);
-section("nosotros", `${txt(about.press_bio) ? `<p>${esc(txt(about.press_bio))}</p>` : ""}${(about.values || []).length ? `<h2>Valores</h2><ul class="seo__list">${about.values.filter((v) => v && v.t).map((v) => `<li><b>${esc(txt(v.t))}</b><p>${esc(txt(v.d))}</p></li>`).join("")}</ul>` : ""}${(about.history || []).length ? `<h2>Historia</h2><ul class="seo__list">${about.history.filter((h) => h && h.t).map((h) => `<li><b>${esc(h.y)} · ${esc(txt(h.t))}</b><p>${esc(txt(h.d))}</p></li>`).join("")}</ul>` : ""}${team.length ? `<h2>Equipo</h2><ul class="seo__list">${team.filter((m) => m && m.n).map((m) => `<li><b>${esc(m.n)}</b> <span>${esc(txt(m.r))}</span><p>${esc(txt(m.b))}</p></li>`).join("")}</ul>` : ""}`, [ORG()]);
-section("prensa", `${(press.awards || []).length ? `<h2>Premios y selecciones</h2><ul class="seo__list">${press.awards.filter((a) => a && a.a).map((a) => { const p = projBy(a.p); return `<li><b>${esc(a.y)} · ${esc(txt(a.a))}</b> <span>${esc(a.f)}${p ? " · " : ""}</span>${p ? link(`/proyectos/${p.slug}/`, p.title) : ""}</li>`; }).join("")}</ul>` : ""}${(press.press || []).length ? `<h2>En los medios</h2><ul class="seo__list">${press.press.filter((x) => x && x.t).map((x) => `<li>${x.url ? `<a href="${esc(x.url)}" rel="noopener">${esc(txt(x.t))}</a>` : `<b>${esc(txt(x.t))}</b>`} <span>${esc(x.s)} · ${esc(x.d)}</span><p>${esc(txt(x.x))}</p></li>`).join("")}</ul>` : ""}`);
+section("servicios", `<ul class="seo__list">${(serv.services || []).filter((s) => s && s.t).map((s) => `<li><b>${esc(txt(s.t))}</b><p>${esc(txt(s.d))}</p>${Array.isArray(L(s.l)) && L(s.l).length ? `<ul>${L(s.l).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}</li>`).join("")}</ul>${(serv.steps || []).length ? `<h2>${ui("how", "Cómo trabajamos")}</h2><ol class="seo__list">${serv.steps.filter((s) => s && s.t).map((s) => `<li><b>${esc(txt(s.t))}</b><p>${esc(txt(s.d))}</p></li>`).join("")}</ol>` : ""}`);
+section("nosotros", `${txt(about.press_bio) ? `<p>${esc(txt(about.press_bio))}</p>` : ""}${(about.values || []).length ? `<h2>${ui("values", "Valores")}</h2><ul class="seo__list">${about.values.filter((v) => v && v.t).map((v) => `<li><b>${esc(txt(v.t))}</b><p>${esc(txt(v.d))}</p></li>`).join("")}</ul>` : ""}${(about.history || []).length ? `<h2>${ui("history", "Historia")}</h2><ul class="seo__list">${about.history.filter((h) => h && h.t).map((h) => `<li><b>${esc(h.y)} · ${esc(txt(h.t))}</b><p>${esc(txt(h.d))}</p></li>`).join("")}</ul>` : ""}${team.length ? `<h2>${ui("team", "Equipo")}</h2><ul class="seo__list">${team.filter((m) => m && m.n).map((m) => `<li><b>${esc(m.n)}</b> <span>${esc(txt(m.r))}</span><p>${esc(txt(m.b))}</p></li>`).join("")}</ul>` : ""}`, [ORG()]);
+section("prensa", `${(press.awards || []).length ? `<h2>${ui("awards_h", "Premios y selecciones")}</h2><ul class="seo__list">${press.awards.filter((a) => a && a.a).map((a) => { const p = projBy(a.p); return `<li><b>${esc(a.y)} · ${esc(txt(a.a))}</b> <span>${esc(a.f)}${p ? " · " : ""}</span>${p ? link(`/proyectos/${p.slug}/`, txt(p.title)) : ""}</li>`; }).join("")}</ul>` : ""}${(press.press || []).length ? `<h2>${ui("inpress", "En los medios")}</h2><ul class="seo__list">${press.press.filter((x) => x && x.t).map((x) => `<li>${x.url ? `<a href="${esc(x.url)}" rel="noopener">${esc(txt(x.t))}</a>` : `<b>${esc(txt(x.t))}</b>`} <span>${esc(x.s)} · ${esc(x.d)}</span><p>${esc(txt(x.x))}</p></li>`).join("")}</ul>` : ""}`);
 section("noticias", newsList(validNews));
-section("contacto", `<ul class="seo__list">${site.email ? `<li><b>Correo</b> <a href="mailto:${esc(site.email)}">${esc(site.email)}</a></li>` : ""}${site.pressEmail ? `<li><b>Prensa</b> <a href="mailto:${esc(site.pressEmail)}">${esc(site.pressEmail)}</a></li>` : ""}${txt(site.city) ? `<li><b>Ciudad</b> ${esc(txt(site.city))}</li>` : ""}${(site.social || []).filter((s) => s && s.url).map((s) => `<li><b>${esc(s.name)}</b> <a href="${esc(s.url)}" rel="noopener">${esc(s.handle || s.url)}</a></li>`).join("")}</ul>`, [ORG()]);
-section("legal", `<p>Titular: ${NAME}, productora audiovisual independiente con sede en La Habana, Cuba.${site.email ? ` Contacto: ${esc(site.email)}.` : ""}</p>${ANALYTICS ? `<p>${esc(ui("legal_stats", ""))}</p>` : ""}`);
+section("contacto", `<ul class="seo__list">${site.email ? `<li><b>${tr("Correo", "Email")}</b> <a href="mailto:${esc(site.email)}">${esc(site.email)}</a></li>` : ""}${site.pressEmail ? `<li><b>${ui("nav_prensa")}</b> <a href="mailto:${esc(site.pressEmail)}">${esc(site.pressEmail)}</a></li>` : ""}${txt(site.city) ? `<li><b>${tr("Ciudad", "City")}</b> ${esc(txt(site.city))}</li>` : ""}${(site.social || []).filter((s) => s && s.url).map((s) => `<li><b>${esc(s.name)}</b> <a href="${esc(s.url)}" rel="noopener">${esc(s.handle || s.url)}</a></li>`).join("")}</ul>`, [ORG()]);
+section("legal", `<p>${tr("Titular: ", "Owner: ")}${NAME}, ${tr("productora audiovisual independiente con sede en La Habana, Cuba.")}${site.email ? ` ${tr("Contacto: ", "Contact: ")}${esc(site.email)}.` : ""}</p>${ANALYTICS ? `<p>${esc(ui("legal_stats", ""))}</p>` : ""}`);
 
 /* Proyectos */
 for (const p of validProjects) {
-  const path = `/proyectos/${p.slug}/`;
+  const path = localizedPath(`/proyectos/${p.slug}/`);
   const desc = cut(txt(p.seoDesc) || txt(p.short) || txt(p.tagline) || `${p.title} · ${NAME}`);
   const dir = (p.crew || []).filter((c) => c && c.r === "direccion").flatMap((c) => String(c.n || "").split(/,| y /).map((x) => x.trim()).filter(Boolean));
   const mins = String(p.runtime || "").match(/(\d+)\s*min/i);
-  const status = STATUS[p.status] ? STATUS[p.status].es : "";
+  const status = STATUS[p.status] ? STATUS[p.status][BUILD_LANG] : "";
   const ldType = p.type === "serie" ? "TVSeries" : p.type === "ficcion" || p.type === "documental" ? "Movie" : "CreativeWork";
-  const ld = { "@context": "https://schema.org", "@type": ldType, name: p.title, description: desc, url: SITE_URL + path, inLanguage: undefined, productionCompany: { "@type": "Organization", name: NAME, url: SITE_URL + "/" } };
+  const ld = { "@context": "https://schema.org", "@type": ldType, name: txt(p.title), description: desc, url: SITE_URL + path, inLanguage: BUILD_LANG, productionCompany: { "@type": "Organization", name: NAME, url: SITE_URL + "/" } };
   if (p.poster) ld.image = abs(p.poster);
   if (p.year && p.status === "estrenado") ld.datePublished = String(p.year);
-  if (p.type && TYPES[p.type]) ld.genre = TYPES[p.type].es;
+  if (p.type && TYPES[p.type]) ld.genre = TYPES[p.type][BUILD_LANG];
   if (dir.length && ldType !== "CreativeWork") ld.director = dir.map((n) => ({ "@type": "Person", name: n }));
   if (mins && ldType === "Movie") ld.duration = `PT${+mins[1]}M`;
   const trUrl = httpUrl(p.trailer), trYt = trUrl && (trUrl.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{6,15})/) || [])[1], trVm = trUrl && (trUrl.match(/vimeo\.com\/(?:video\/)?(\d{5,})/) || [])[1];
-  if (trUrl) ld.trailer = { "@type": "VideoObject", name: `${p.title} · ${p.trailerKind === "teaser" ? "Teaser" : "Tráiler"}`, description: desc, url: trUrl, ...(trYt ? { embedUrl: `https://www.youtube-nocookie.com/embed/${trYt}`, thumbnailUrl: `https://i.ytimg.com/vi/${trYt}/hqdefault.jpg` } : trVm ? { embedUrl: `https://player.vimeo.com/video/${trVm}` } : {}) };
+  if (trUrl) ld.trailer = { "@type": "VideoObject", name: `${txt(p.title)} · ${p.trailerKind === "teaser" ? "Teaser" : tr("Tráiler", "Trailer")}`, description: desc, url: trUrl, ...(trYt ? { embedUrl: `https://www.youtube-nocookie.com/embed/${trYt}`, thumbnailUrl: `https://i.ytimg.com/vi/${trYt}/hqdefault.jpg` } : trVm ? { embedUrl: `https://player.vimeo.com/video/${trVm}` } : {}) };
   const showWhere = p.status === "estrenado" && !p.whereHidden && (p.where || []).length, showSupport = p.status === "desarrollo" && p.supportOn;
   const rel = validNews.filter((n) => n.project && projBy(n.project) === p);
-  const main = `<p class="seo__crumb"><a href="/proyectos/">Proyectos</a> / ${esc(p.title)}</p><h1>${esc(p.title)}</h1><p class="seo__meta">${esc([typeLabel(p.type), txt(p.format), p.year, p.runtime, status].filter(Boolean).join(" · "))}</p>${txt(p.tagline) ? `<p class="seo__lede">${esc(txt(p.tagline))}</p>` : ""}${p.poster ? `<noscript><img class="seo__img" src="${esc(p.poster)}" alt="${esc(p.title)}" loading="lazy"></noscript>` : ""}${paras(txt(p.short))}${paras(txt(p.long))}${trUrl ? `<h2>${p.trailerKind === "teaser" ? "Teaser" : "Tráiler"}</h2><p><a href="${esc(trUrl)}" rel="noopener">${esc(p.title)} · ${p.trailerKind === "teaser" ? "Teaser" : "Tráiler"}</a></p>` : ""}${(p.crew || []).length ? `<h2>Ficha técnica</h2><dl>${p.crew.filter((c) => c && roleOf(c.r)).map((c, i) => ({ r: roleOf(c.r), c, i })).sort((a, b) => a.r.di - b.r.di || a.r.o - b.r.o || a.i - b.i).map((x) => `<dt>${esc(x.r.es)}</dt><dd>${esc(x.c.n)}</dd>`).join("")}</dl>` : ""}${txt(p.note) ? `<h2>Nota del director</h2><blockquote>${esc(txt(p.note))}${p.noteBy ? `<cite> — ${esc(p.noteBy)}</cite>` : ""}</blockquote>` : ""}${(p.journey || []).length ? `<h2>Recorrido</h2><ul class="seo__list">${p.journey.filter((j) => j && j.t).map((j) => `<li><b>${esc(j.d)}</b> ${esc(txt(j.t))} <span>${esc(j.p)}</span></li>`).join("")}</ul>` : ""}${(p.press || []).length ? `<h2>Prensa</h2>${p.press.filter((x) => x && x.q).map((x) => `<blockquote>${esc(txt(x.q))}<cite> — ${esc(x.s)}</cite></blockquote>`).join("")}` : ""}${showWhere ? `<h2>Dónde verla</h2><ul class="seo__list">${p.where.filter((w) => w && w.l).map((w) => `<li>${w.url ? `<a href="${esc(w.url)}" rel="noopener">${esc(txt(w.l))}</a>` : `<b>${esc(txt(w.l))}</b>`} <span>${esc(txt(w.n))}</span></li>`).join("")}</ul>` : ""}${showSupport ? `<h2>Apoya este proyecto</h2><p>${esc(txt(p.supportText) || ui("support_p", ""))}</p>${p.supportGoal ? `<p>${esc(p.supportGoal)}</p>` : ""}<p>${httpUrl(p.supportUrl) ? `<a href="${esc(httpUrl(p.supportUrl))}" rel="noopener">Contribuir a la campaña</a>` : `<a href="/contacto/">Quiero colaborar</a>`}</p>` : ""}${rel.length ? `<h2>Noticias relacionadas</h2>${newsList(rel)}` : ""}`;
-  pages[`proyectos/${p.slug}/index.html`] = page({ path, title: txt(p.seoTitle) || `${p.title} · ${NAME}`, desc, noindex: !!p.noindex, type: "video.movie", image: p.poster ? abs(p.poster) : "", imageAlt: p.poster ? `Cartel de ${p.title}` : "", ld: [ld, breadcrumb([["Inicio", "/"], ["Proyectos", "/proyectos/"], [p.title, path]])], body: shell(main, "proyectos") });
-  if (!p.noindex) out.push({ path, priority: "0.7" });
+  const main = `<p class="seo__crumb">${link("/proyectos/", ui("nav_proyectos"))} / ${esc(txt(p.title))}</p><h1>${esc(txt(p.title))}</h1><p class="seo__meta">${esc([typeLabel(p.type), txt(p.format), p.year, p.runtime, status].filter(Boolean).join(" · "))}</p>${txt(p.tagline) ? `<p class="seo__lede">${esc(txt(p.tagline))}</p>` : ""}${p.poster ? `<noscript><img class="seo__img" src="${esc(p.poster)}" alt="${esc(txt(p.title))}" loading="lazy"></noscript>` : ""}${paras(txt(p.short))}${paras(txt(p.long))}${trUrl ? `<h2>${p.trailerKind === "teaser" ? "Teaser" : tr("Tráiler", "Trailer")}</h2><p><a href="${esc(trUrl)}" rel="noopener">${esc(txt(p.title))} · ${p.trailerKind === "teaser" ? "Teaser" : tr("Tráiler", "Trailer")}</a></p>` : ""}${(p.crew || []).length ? `<h2>${ui("credits", "Ficha técnica")}</h2><dl>${p.crew.filter((c) => c && roleOf(c.r)).map((c, i) => ({ r: roleOf(c.r), c, i })).sort((a, b) => a.r.di - b.r.di || a.r.o - b.r.o || a.i - b.i).map((x) => `<dt>${esc(x.r[BUILD_LANG])}</dt><dd>${esc(x.c.n)}</dd>`).join("")}</dl>` : ""}${txt(p.note) ? `<h2>${ui("note_h", "Nota de dirección")}</h2><blockquote>${esc(txt(p.note))}${p.noteBy ? `<cite> — ${esc(p.noteBy)}</cite>` : ""}</blockquote>` : ""}${(p.journey || []).length ? `<h2>${ui("journey", "Recorrido")}</h2><ul class="seo__list">${p.journey.filter((j) => j && j.t).map((j) => `<li><b>${esc(j.d)}</b> ${esc(txt(j.t))} <span>${esc(j.p)}</span></li>`).join("")}</ul>` : ""}${(p.press || []).length ? `<h2>${ui("press_h", "Prensa")}</h2>${p.press.filter((x) => x && x.q).map((x) => `<blockquote>${esc(txt(x.q))}<cite> — ${esc(x.s)}</cite></blockquote>`).join("")}` : ""}${showWhere ? `<h2>${ui("where_h", "Dónde verla")}</h2><ul class="seo__list">${p.where.filter((w) => w && w.l).map((w) => `<li>${w.url ? `<a href="${esc(w.url)}" rel="noopener">${esc(txt(w.l))}</a>` : `<b>${esc(txt(w.l))}</b>`} <span>${esc(txt(w.n))}</span></li>`).join("")}</ul>` : ""}${showSupport ? `<h2>${tr("Apoya este proyecto")}</h2><p>${esc(txt(p.supportText) || ui("support_p", ""))}</p>${p.supportGoal ? `<p>${esc(p.supportGoal)}</p>` : ""}<p>${httpUrl(p.supportUrl) ? `<a href="${esc(httpUrl(p.supportUrl))}" rel="noopener">${tr("Contribuir a la campaña")}</a>` : link("/contacto/", tr("Quiero colaborar"))}</p>` : ""}${rel.length ? `<h2>${tr("Noticias relacionadas")}</h2>${newsList(rel)}` : ""}`;
+  pages[outputFile(`proyectos/${p.slug}/index.html`)] = page({ path, title: txt(p.seoTitle) || `${txt(p.title)} · ${NAME}`, desc, noindex: !!p.noindex, type: "video.movie", image: p.poster ? abs(p.poster) : "", imageAlt: p.poster ? `${tr("Cartel", "Poster")} ${txt(p.title)}` : "", ld: [ld, breadcrumb([["Inicio", "/"], [ui("nav_proyectos"), "/proyectos/"], [txt(p.title), path]])], body: shell(main, "proyectos") });
+  if (!p.noindex && !ENGLISH) out.push({ path: `/proyectos/${p.slug}/`, priority: "0.7" });
 }
 
 /* Noticias */
 for (const n of validNews) {
-  const path = `/noticias/${n.slug}/`, title = txt(n.title);
+  const path = localizedPath(`/noticias/${n.slug}/`), title = txt(n.title);
   const body = Array.isArray(L(n.body)) ? L(n.body) : [];
   const desc = cut(txt(n.seoDesc) || txt(n.sum) || body[0] || title);
   const pr = n.project ? projBy(n.project) : null;
-  const ld = { "@context": "https://schema.org", "@type": "NewsArticle", headline: cut(title, 110), description: desc, datePublished: String(n.date).slice(0, 10), inLanguage: "es", mainEntityOfPage: SITE_URL + path, author: { "@type": "Organization", name: NAME }, publisher: { "@type": "Organization", name: NAME, logo: { "@type": "ImageObject", url: `${SITE_URL}/assets/icon-512.png` } } };
+  const ld = { "@context": "https://schema.org", "@type": "NewsArticle", headline: cut(title, 110), description: desc, datePublished: String(n.date).slice(0, 10), inLanguage: BUILD_LANG, mainEntityOfPage: SITE_URL + path, author: { "@type": "Organization", name: NAME }, publisher: { "@type": "Organization", name: NAME, logo: { "@type": "ImageObject", url: `${SITE_URL}/assets/icon-512.png` } } };
   if (n.image) ld.image = abs(n.image);
-  const main = `<p class="seo__crumb"><a href="/noticias/">Noticias</a> / ${esc(title)}</p><h1>${esc(title)}</h1><p class="seo__meta">${esc(fmtDate(n.date))}${NEWS_CATS[n.cat] ? " · " + esc(NEWS_CATS[n.cat].es) : ""}</p>${n.image ? `<noscript><img class="seo__img" src="${esc(n.image)}" alt="${esc(title)}" loading="lazy"></noscript>` : ""}${txt(n.sum) ? `<p class="seo__lede">${esc(txt(n.sum))}</p>` : ""}${body.map((x) => `<p>${esc(x)}</p>`).join("")}${pr ? `<h2>Proyecto relacionado</h2>${projectList([pr])}` : ""}`;
-  pages[`noticias/${n.slug}/index.html`] = page({ path, title: txt(n.seoTitle) || `${title} · ${NAME}`, desc, noindex: !!n.noindex, type: "article", image: n.image ? abs(n.image) : "", imageAlt: n.image ? title : "", ld: [ld, breadcrumb([["Inicio", "/"], ["Noticias", "/noticias/"], [title, path]])], body: shell(main, "noticias") });
-  if (!n.noindex) out.push({ path, lastmod: String(n.date).slice(0, 10), priority: "0.6" });
+  const main = `<p class="seo__crumb">${link("/noticias/", ui("nav_noticias"))} / ${esc(title)}</p><h1>${esc(title)}</h1><p class="seo__meta">${esc(fmtDate(n.date))}${NEWS_CATS[n.cat] ? " · " + esc(NEWS_CATS[n.cat][BUILD_LANG]) : ""}</p>${n.image ? `<noscript><img class="seo__img" src="${esc(n.image)}" alt="${esc(title)}" loading="lazy"></noscript>` : ""}${txt(n.sum) ? `<p class="seo__lede">${esc(txt(n.sum))}</p>` : ""}${body.map((x) => `<p>${esc(x)}</p>`).join("")}${pr ? `<h2>${ui("related_project", "Proyecto relacionado")}</h2>${projectList([pr])}` : ""}`;
+  pages[outputFile(`noticias/${n.slug}/index.html`)] = page({ path, title: txt(n.seoTitle) || `${title} · ${NAME}`, desc, noindex: !!n.noindex, type: "article", image: n.image ? abs(n.image) : "", imageAlt: n.image ? title : "", ld: [ld, breadcrumb([["Inicio", "/"], [ui("nav_noticias"), "/noticias/"], [title, path]])], body: shell(main, "noticias") });
+  if (!n.noindex && !ENGLISH) out.push({ path: `/noticias/${n.slug}/`, lastmod: String(n.date).slice(0, 10), priority: "0.6" });
 }
 
 /* 404: también sirve la web completa para direcciones nuevas que aún no tienen página generada */
-pages["404.html"] = page({ path: "/404.html", title: `Página no encontrada · ${NAME}`, desc: "La página que buscas no existe.", noindex: true, body: shell(`<h1>Página no encontrada</h1><p class="seo__lede">La dirección no existe o ha cambiado. <a href="/">Volver al inicio</a>.</p>`, "") });
+pages[outputFile("404.html")] = page({ path: localizedPath("/404.html"), title: `${ui("notfound_h", "Página no encontrada")} · ${NAME}`, desc: ui("notfound_p", "La página que buscas no existe."), noindex: true, body: shell(`<h1>${ui("notfound_h", "Página no encontrada")}</h1><p class="seo__lede">${tr("La dirección no existe o ha cambiado.")} ${link("/", ui("home", "Volver al inicio"))}.</p>`, "") });
 
 /* ---------- Limpieza de páginas generadas que ya no existen ---------- */
 for (const base of ["proyectos", "noticias"]) {
-  const dir = join(ROOT, base);
+  const dir = join(ROOT, ...(ENGLISH ? ["en"] : []), base);
   if (!existsSync(dir)) continue;
   for (const d of readdirSync(dir)) {
     const f = join(dir, d, "index.html");
     if (!existsSync(f) || !statSync(join(dir, d)).isDirectory()) continue;
     if (!readFileSync(f, "utf8").slice(0, 200).includes(MARK)) continue;
-    if (!(`${base}/${d}/index.html` in pages)) { rmSync(join(dir, d), { recursive: true, force: true }); console.log(`– Eliminada ${base}/${d}/`); }
+    if (!(outputFile(`${base}/${d}/index.html`) in pages)) { rmSync(join(dir, d), { recursive: true, force: true }); console.log(`– Eliminada ${ENGLISH ? "en/" : ""}${base}/${d}/`); }
   }
 }
 for (const [f, html] of Object.entries(pages)) write(f, html);
 
 /* ---------- sitemap.xml, robots.txt, manifiesto ---------- */
 const xml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
-write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${out.map((u) => `  <url><loc>${xml(SITE_URL + u.path)}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ""}<priority>${u.priority}</priority></url>`).join("\n")}\n</urlset>\n`);
-write("robots.txt", INDEXAR ? `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n` : `User-agent: *\nDisallow: /\n`);
-if (!INDEXAR) console.log("⚠ Indexación desactivada en Buscadores (SEO): la web NO aparecerá en Google.");
-write("site.webmanifest", JSON.stringify({ name: NAME, short_name: NAME, description: HOME_DESC, start_url: "/", scope: "/", display: "standalone", background_color: "#000000", theme_color: "#000000", lang: "es", icons: [{ src: "/assets/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "/assets/icon-512.png", sizes: "512x512", type: "image/png" }, { src: "/assets/icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }] }, null, 2) + "\n");
-
-console.log(`✔ ${Object.keys(pages).length} páginas · ${out.length} direcciones en sitemap.xml · sitio ${SITE_URL}`);
+if (ENGLISH) {
+  console.log(`✔ ${Object.keys(pages).length} páginas en inglés`);
+} else {
+  const child = spawnSync(process.execPath, [process.argv[1], ROOT, "--english-build"], { encoding: "utf8" });
+  if (child.stdout) process.stdout.write(child.stdout);
+  if (child.stderr) process.stderr.write(child.stderr);
+  if (child.error) throw new Error(`No se pudo generar /en/: ${child.error.message}`);
+  if (child.status !== 0) throw new Error(`Falló la generación de páginas /en/ (código ${child.status}).`);
+  const sitemapEntries = out.map((u) => {
+    const esUrl = SITE_URL + u.path;
+    const enUrl = SITE_URL + `/en${u.path}`;
+    const alternateLinks = `<xhtml:link rel="alternate" hreflang="es" href="${xml(esUrl)}"/><xhtml:link rel="alternate" hreflang="en" href="${xml(enUrl)}"/><xhtml:link rel="alternate" hreflang="x-default" href="${xml(esUrl)}"/>`;
+    const metadata = `${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ""}<priority>${u.priority}</priority>`;
+    return `  <url><loc>${xml(esUrl)}</loc>${alternateLinks}${metadata}</url>\n  <url><loc>${xml(enUrl)}</loc>${alternateLinks}${metadata}</url>`;
+  }).join("\n");
+  write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${sitemapEntries}\n</urlset>\n`);
+  write("robots.txt", INDEXAR ? `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\n` : `User-agent: *\nDisallow: /\n`);
+  if (!INDEXAR) console.log("⚠ Indexación desactivada en Buscadores (SEO): la web NO aparecerá en Google.");
+  write("site.webmanifest", JSON.stringify({ name: NAME, short_name: NAME, description: HOME_DESC, start_url: "/", scope: "/", display: "standalone", background_color: "#000000", theme_color: "#000000", lang: "es", icons: [{ src: "/assets/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "/assets/icon-512.png", sizes: "512x512", type: "image/png" }, { src: "/assets/icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" }] }, null, 2) + "\n");
+  console.log(`✔ ${Object.keys(pages).length} páginas ES + EN · ${out.length * 2} direcciones en sitemap.xml · sitio ${SITE_URL}`);
+}

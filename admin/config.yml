@@ -44,30 +44,7 @@ collections:
               - label: "English"
                 name: en
                 widget: string
-                required: false
-              - label: "Otros idiomas (opcional)"
-                name: otros
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: "Français"
-                    name: fr
-                    widget: string
-                    required: false
-                  - label: "Português"
-                    name: pt
-                    widget: string
-                    required: false
-                  - label: "Italiano"
-                    name: it
-                    widget: string
-                    required: false
-                  - label: "Deutsch"
-                    name: de
-                    widget: string
-                    required: false
-          - label: "Descripción de la portada en Google"
+                required: false          - label: "Descripción de la portada en Google"
             name: homeDesc
             widget: object
             required: false
@@ -82,30 +59,7 @@ collections:
               - label: "English"
                 name: en
                 widget: string
-                required: false
-              - label: "Otros idiomas (opcional)"
-                name: otros
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: "Français"
-                    name: fr
-                    widget: string
-                    required: false
-                  - label: "Português"
-                    name: pt
-                    widget: string
-                    required: false
-                  - label: "Italiano"
-                    name: it
-                    widget: string
-                    required: false
-                  - label: "Deutsch"
-                    name: de
-                    widget: string
-                    required: false
-          - label: "Otras páginas (Proyectos, Servicios, Contacto…)"
+                required: false          - label: "Otras páginas (Proyectos, Servicios, Contacto…)"
             name: pages
             widget: list
             required: false
@@ -139,30 +93,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Descripción en Google"
+                    required: false              - label: "Descripción en Google"
                 name: description
                 widget: object
                 required: false
@@ -176,30 +107,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-          - label: "Imagen al compartir en redes (por defecto)"
+                    required: false          - label: "Imagen al compartir en redes (por defecto)"
             name: ogImage
             widget: image
             required: false
@@ -238,30 +146,7 @@ collections:
               - label: "English"
                 name: en
                 widget: string
-                required: true
-              - label: "Otros idiomas (opcional)"
-                name: otros
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: "Français"
-                    name: fr
-                    widget: string
-                    required: false
-                  - label: "Português"
-                    name: pt
-                    widget: string
-                    required: false
-                  - label: "Italiano"
-                    name: it
-                    widget: string
-                    required: false
-                  - label: "Deutsch"
-                    name: de
-                    widget: string
-                    required: false
-          - label: "Dirección de la web (sin barra final)"
+                required: true          - label: "Dirección de la web (sin barra final)"
             name: siteUrl
             widget: string
             required: false
@@ -371,30 +256,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Año"
+                    required: true              - label: "Año"
                 name: year
                 widget: number
                 value_type: "int"
@@ -425,30 +287,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Idioma hablado"
+                    required: false              - label: "Idioma hablado"
                 name: lang
                 widget: string
                 required: false
@@ -481,30 +320,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Sinopsis corta"
+                    required: false              - label: "Sinopsis corta"
                 name: short
                 widget: object
                 required: true
@@ -518,30 +334,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-              - label: "Sinopsis larga"
+                    required: true              - label: "Sinopsis larga"
                 name: long
                 widget: object
                 required: false
@@ -555,30 +348,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-              - label: "Ficha técnica"
+                    required: false              - label: "Ficha técnica"
                 name: crew
                 widget: list
                 required: false
@@ -1159,30 +929,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-              - label: "Firma de la nota"
+                    required: false              - label: "Firma de la nota"
                 name: noteBy
                 widget: string
                 required: false
@@ -1212,30 +959,7 @@ collections:
                       - label: "English"
                         name: en
                         widget: string
-                        required: true
-                      - label: "Otros idiomas (opcional)"
-                        name: otros
-                        widget: object
-                        required: false
-                        collapsed: true
-                        fields:
-                          - label: "Français"
-                            name: fr
-                            widget: string
-                            required: false
-                          - label: "Português"
-                            name: pt
-                            widget: string
-                            required: false
-                          - label: "Italiano"
-                            name: it
-                            widget: string
-                            required: false
-                          - label: "Deutsch"
-                            name: de
-                            widget: string
-                            required: false
-                  - label: "Festival o lugar"
+                        required: true                  - label: "Festival o lugar"
                     name: p
                     widget: string
                     required: false
@@ -1261,30 +985,7 @@ collections:
                       - label: "English"
                         name: en
                         widget: text
-                        required: true
-                      - label: "Otros idiomas (opcional)"
-                        name: otros
-                        widget: object
-                        required: false
-                        collapsed: true
-                        fields:
-                          - label: "Français"
-                            name: fr
-                            widget: text
-                            required: false
-                          - label: "Português"
-                            name: pt
-                            widget: text
-                            required: false
-                          - label: "Italiano"
-                            name: it
-                            widget: text
-                            required: false
-                          - label: "Deutsch"
-                            name: de
-                            widget: text
-                            required: false
-                  - label: "Medio"
+                        required: true                  - label: "Medio"
                     name: s
                     widget: string
               - label: "Dónde verla"
@@ -1308,30 +1009,7 @@ collections:
                       - label: "English"
                         name: en
                         widget: string
-                        required: true
-                      - label: "Otros idiomas (opcional)"
-                        name: otros
-                        widget: object
-                        required: false
-                        collapsed: true
-                        fields:
-                          - label: "Français"
-                            name: fr
-                            widget: string
-                            required: false
-                          - label: "Português"
-                            name: pt
-                            widget: string
-                            required: false
-                          - label: "Italiano"
-                            name: it
-                            widget: string
-                            required: false
-                          - label: "Deutsch"
-                            name: de
-                            widget: string
-                            required: false
-                  - label: "Detalle"
+                        required: true                  - label: "Detalle"
                     name: n
                     widget: object
                     required: false
@@ -1345,30 +1023,7 @@ collections:
                       - label: "English"
                         name: en
                         widget: string
-                        required: false
-                      - label: "Otros idiomas (opcional)"
-                        name: otros
-                        widget: object
-                        required: false
-                        collapsed: true
-                        fields:
-                          - label: "Français"
-                            name: fr
-                            widget: string
-                            required: false
-                          - label: "Português"
-                            name: pt
-                            widget: string
-                            required: false
-                          - label: "Italiano"
-                            name: it
-                            widget: string
-                            required: false
-                          - label: "Deutsch"
-                            name: de
-                            widget: string
-                            required: false
-                  - label: "Enlace"
+                        required: false                  - label: "Enlace"
                     name: url
                     widget: string
                     required: false
@@ -1431,31 +1086,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    summary: "{{fields.es}}"
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-              - label: "Meta o estado de la campaña (opcional)"
+                    required: false              - label: "Meta o estado de la campaña (opcional)"
                 name: supportGoal
                 widget: string
                 required: false
@@ -1501,30 +1132,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Descripción en Google (opcional)"
+                    required: false              - label: "Descripción en Google (opcional)"
                 name: seoDesc
                 widget: object
                 required: false
@@ -1539,30 +1147,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Ocultar esta página de Google"
+                    required: false              - label: "Ocultar esta página de Google"
                 name: noindex
                 widget: boolean
                 required: false
@@ -1594,30 +1179,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Identificador del enlace"
+                    required: true              - label: "Identificador del enlace"
                 name: slug
                 widget: string
                 hint: "Ejemplo: premio-en-festival-2026"
@@ -1663,30 +1225,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-              - label: "Texto de la noticia"
+                    required: true              - label: "Texto de la noticia"
                 name: body
                 widget: object
                 required: true
@@ -1708,46 +1247,7 @@ collections:
                     field:
                         label: "Párrafo"
                         name: p
-                        widget: text
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: list
-                        required: false
-                        field:
-                            label: "Párrafo"
-                            name: p
-                            widget: text
-                      - label: "Português"
-                        name: pt
-                        widget: list
-                        required: false
-                        field:
-                            label: "Párrafo"
-                            name: p
-                            widget: text
-                      - label: "Italiano"
-                        name: it
-                        widget: list
-                        required: false
-                        field:
-                            label: "Párrafo"
-                            name: p
-                            widget: text
-                      - label: "Deutsch"
-                        name: de
-                        widget: list
-                        required: false
-                        field:
-                            label: "Párrafo"
-                            name: p
-                            widget: text
-              - label: "Variante del diseño (número, avanzado)"
+                        widget: text              - label: "Variante del diseño (número, avanzado)"
                 name: seed
                 widget: number
                 required: false
@@ -1767,30 +1267,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Descripción en Google (opcional)"
+                    required: false              - label: "Descripción en Google (opcional)"
                 name: seoDesc
                 widget: object
                 required: false
@@ -1805,30 +1282,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Ocultar esta página de Google"
+                    required: false              - label: "Ocultar esta página de Google"
                 name: noindex
                 widget: boolean
                 required: false
@@ -1863,30 +1317,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Biografía breve"
+                    required: true              - label: "Biografía breve"
                 name: b
                 widget: object
                 required: true
@@ -1900,30 +1331,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-              - label: "Foto"
+                    required: true              - label: "Foto"
                 name: photo
                 widget: image
                 required: false
@@ -1966,30 +1374,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Descripción"
+                    required: true              - label: "Descripción"
                 name: d
                 widget: object
                 required: true
@@ -2003,30 +1388,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-              - label: "Qué incluye"
+                    required: true              - label: "Qué incluye"
                 name: l
                 widget: object
                 required: true
@@ -2047,46 +1409,7 @@ collections:
                     field:
                         label: "Elemento"
                         name: p
-                        widget: string
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: list
-                        required: false
-                        field:
-                            label: "Elemento"
-                            name: p
-                            widget: string
-                      - label: "Português"
-                        name: pt
-                        widget: list
-                        required: false
-                        field:
-                            label: "Elemento"
-                            name: p
-                            widget: string
-                      - label: "Italiano"
-                        name: it
-                        widget: list
-                        required: false
-                        field:
-                            label: "Elemento"
-                            name: p
-                            widget: string
-                      - label: "Deutsch"
-                        name: de
-                        widget: list
-                        required: false
-                        field:
-                            label: "Elemento"
-                            name: p
-                            widget: string
-          - label: "Cómo trabajamos (pasos)"
+                        widget: string          - label: "Cómo trabajamos (pasos)"
             name: steps
             widget: list
             required: false
@@ -2107,30 +1430,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Descripción"
+                    required: true              - label: "Descripción"
                 name: d
                 widget: object
                 required: true
@@ -2144,30 +1444,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-      - name: nosotros
+                    required: true      - name: nosotros
         label: "Nosotros"
         file: content/nosotros.json
         fields:
@@ -2185,30 +1462,7 @@ collections:
               - label: "English"
                 name: en
                 widget: text
-                required: true
-              - label: "Otros idiomas (opcional)"
-                name: otros
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: "Français"
-                    name: fr
-                    widget: text
-                    required: false
-                  - label: "Português"
-                    name: pt
-                    widget: text
-                    required: false
-                  - label: "Italiano"
-                    name: it
-                    widget: text
-                    required: false
-                  - label: "Deutsch"
-                    name: de
-                    widget: text
-                    required: false
-          - label: "Valores"
+                required: true          - label: "Valores"
             name: values
             widget: list
             required: false
@@ -2229,30 +1483,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Descripción"
+                    required: true              - label: "Descripción"
                 name: d
                 widget: object
                 required: true
@@ -2266,30 +1497,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-          - label: "Historia"
+                    required: true          - label: "Historia"
             name: history
             widget: list
             required: false
@@ -2314,30 +1522,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Descripción"
+                    required: true              - label: "Descripción"
                 name: d
                 widget: object
                 required: true
@@ -2351,30 +1536,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-          - label: "Aliados y festivales"
+                    required: true          - label: "Aliados y festivales"
             name: allies
             widget: list
             required: false
@@ -2417,30 +1579,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Descripción"
+                    required: true              - label: "Descripción"
                 name: x
                 widget: object
                 required: false
@@ -2454,30 +1593,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: text
-                    required: false
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: text
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: text
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: text
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: text
-                        required: false
-              - label: "Enlace"
+                    required: false              - label: "Enlace"
                 name: url
                 widget: string
                 required: false
@@ -2507,30 +1623,7 @@ collections:
                   - label: "English"
                     name: en
                     widget: string
-                    required: true
-                  - label: "Otros idiomas (opcional)"
-                    name: otros
-                    widget: object
-                    required: false
-                    collapsed: true
-                    fields:
-                      - label: "Français"
-                        name: fr
-                        widget: string
-                        required: false
-                      - label: "Português"
-                        name: pt
-                        widget: string
-                        required: false
-                      - label: "Italiano"
-                        name: it
-                        widget: string
-                        required: false
-                      - label: "Deutsch"
-                        name: de
-                        widget: string
-                        required: false
-              - label: "Festival"
+                    required: true              - label: "Festival"
                 name: f
                 widget: string
               - label: "Proyecto"

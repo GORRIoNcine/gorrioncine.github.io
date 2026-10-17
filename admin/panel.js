@@ -80,7 +80,7 @@
 
   /* ---------- Controles ---------- */
   const isBil = (d) => d.widget === "object" && d.fields && d.fields[0] && d.fields[0].name === "es" && d.fields[1] && d.fields[1].name === "en";
-  const LANGS = [["es", "Español"], ["en", "English"], ["fr", "Français"], ["pt", "Português"], ["it", "Italiano"], ["de", "Deutsch"]];
+  const LANGS = [["es", "Español"], ["en", "English"]];
   const summaryOf = (def, it, i) => {
     if (typeof it !== "object" || it == null) return String(it || "").slice(0, 80) || `${def.label_singular || "Elemento"} ${i + 1}`;
     if (def.summary) {
@@ -375,10 +375,7 @@
       const o = {};
       for (const [k, x] of Object.entries(v)) {
         if (x === undefined) continue;
-        if (k === "otros") {
-          const n = x && typeof x === "object" ? Object.fromEntries(Object.entries(x).filter(([, y]) => !isBlank(y))) : null;
-          o.otros = n && Object.keys(n).length ? n : null;
-        } else o[k] = normalize(x);
+        o[k] = normalize(x);
       }
       return o;
     }

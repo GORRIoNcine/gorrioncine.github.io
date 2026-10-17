@@ -7,16 +7,14 @@
       "type": "ficcion",
       "format": {
         "es": "Cortometraje",
-        "en": "Short film",
-        "otros": null
+        "en": "Short film"
       },
       "year": 2025,
       "status": "estrenado",
       "runtime": "5 min",
       "genre": {
         "es": "Drama íntimo",
-        "en": "Intimate drama",
-        "otros": null
+        "en": "Intimate drama"
       },
       "lang": "Español",
       "subs": "EN · FR",
@@ -24,18 +22,15 @@
       "poster": "https://picsum.photos/id/657/1280/1920.webp",
       "tagline": {
         "es": "¿Qué es un grano de arroz?",
-        "en": "What is a grain of rice?",
-        "otros": null
+        "en": "What is a grain of rice?"
       },
       "short": {
         "es": "Lucía, una estudiante de arquitectura en un barrio de edificios grises, cuestiona un entorno que sacrifica la belleza por la funcionalidad. En medio del desencanto, una rosa roja se convierte en un pequeño acto de resistencia y esperanza.",
-        "en": "Lucía, an architecture student living in a neighborhood of gray buildings, questions an environment that sacrifices beauty for functionality. Amid this disillusionment, a red rose becomes a small act of resistance and hope.",
-        "otros": null
+        "en": "Lucía, an architecture student living in a neighborhood of gray buildings, questions an environment that sacrifices beauty for functionality. Amid this disillusionment, a red rose becomes a small act of resistance and hope."
       },
       "long": {
         "es": "Lucía, una joven estudiante de arquitectura en Cuba, despierta cada día en un barrio donde los edificios de Micro Brigada dominan el paisaje. Una mañana, mientras se prepara para la universidad, escucha en las noticias que en el municipio Habana del Este comenzará otro proyecto idéntico. Con resignación, apaga el televisor y sale a la calle.  \n\nAl caminar hacia la universidad, observa con nostalgia los edificios de su barrio, preguntándose: \"¿Dónde está la belleza?\". Sus pensamientos se interrumpen al ver flores silvestres creciendo al pie de uno de esos bloques, un contraste fugaz entre lo rígido y lo orgánico. En la universidad, la conversación de sus compañeras —que sueñan con emigrar— y las estrictas reglas de su profesor de\narquitectura (que exige copiar planos racionalistas \"sin cambiar ni un cimiento\") profundizan su conflicto interno. Al atardecer, Lucía busca refugio en la costa. Mientras moja sus pies en el agua, escucha el pregón de un vendedor de flores. Compra una rosa roja, un gesto simple pero significativo que le devuelve una sonrisa.",
-        "en": "Lucía, a young architecture student in Cuba, wakes up every day in a neighborhood where Micro Brigada buildings dominate the landscape. One morning, as she gets ready for college, she hears on the news that another identical project is set to begin in the municipality of Habana del Este. With resignation, she turns off the TV and steps out onto the street.\n\nAs she walks toward the university, she looks at the buildings in her neighborhood with nostalgia, wondering, “Where is the beauty?” Her thoughts are interrupted when she sees wildflowers growing at the base of one of those apartment blocks—a fleeting contrast between the rigid and the organic. At the university, the conversations of her classmates—who dream of emigrating—and the strict rules of her architecture professor\n(who demands that they copy rationalist blueprints “without changing a single foundation”) deepen her inner conflict. At sunset, Lucía seeks refuge on the coast. As she dips her feet in the water, she hears the call of a flower vendor. She buys a red rose, a simple yet meaningful gesture that brings a smile back to her face.",
-        "otros": null
+        "en": "Lucía, a young architecture student in Cuba, wakes up every day in a neighborhood where Micro Brigada buildings dominate the landscape. One morning, as she gets ready for college, she hears on the news that another identical project is set to begin in the municipality of Habana del Este. With resignation, she turns off the TV and steps out onto the street.\n\nAs she walks toward the university, she looks at the buildings in her neighborhood with nostalgia, wondering, “Where is the beauty?” Her thoughts are interrupted when she sees wildflowers growing at the base of one of those apartment blocks—a fleeting contrast between the rigid and the organic. At the university, the conversations of her classmates—who dream of emigrating—and the strict rules of her architecture professor\n(who demands that they copy rationalist blueprints “without changing a single foundation”) deepen her inner conflict. At sunset, Lucía seeks refuge on the coast. As she dips her feet in the water, she hears the call of a flower vendor. She buys a red rose, a simple yet meaningful gesture that brings a smile back to her face."
       },
       "crew": [
         {
@@ -196,8 +191,7 @@
       ],
       "note": {
         "es": "Es una mirada íntima a la Cuba de hoy, a sus contradicciones y a esa necesidad profundamente humana de encontrar algo hermoso en medio del desencanto. Porque, incluso en los lugares más grises, la vida insiste en florecer.",
-        "en": "The film offers an intimate look at today's Cuba, its contradictions, and that deeply human need to find beauty amid disillusionment. Because even in the bleakest of places, life insists on blossoming.",
-        "otros": null
+        "en": "The film offers an intimate look at today's Cuba, its contradictions, and that deeply human need to find beauty amid disillusionment. Because even in the bleakest of places, life insists on blossoming."
       },
       "noteBy": "Karely Mesa",
       "journey": [],
@@ -206,13 +200,11 @@
         {
           "l": {
             "es": "Tráiler",
-            "en": "Trailer",
-            "otros": null
+            "en": "Trailer"
           },
           "n": {
             "es": "Vimeo · 1 min 40 s",
-            "en": "Vimeo · 1 min 40 s",
-            "otros": null
+            "en": "Vimeo · 1 min 40 s"
           },
           "url": "https://vimeo.com/",
           "screener": false,
@@ -238,16 +230,14 @@
       "type": "ficcion",
       "format": {
         "es": "Cortometraje",
-        "en": "Short Film",
-        "otros": null
+        "en": "Short Film"
       },
       "year": 2026,
       "status": "postproduccion",
       "runtime": "15 min",
       "genre": {
         "es": "Drama Social - Musical",
-        "en": "Observational documentary",
-        "otros": null
+        "en": "Observational documentary"
       },
       "lang": "Español",
       "subs": "EN",
@@ -255,18 +245,15 @@
       "poster": "",
       "tagline": {
         "es": "La ciudad despierta de cara al mar.",
-        "en": "The city wakes up facing the sea.",
-        "otros": null
+        "en": "The city wakes up facing the sea."
       },
       "short": {
         "es": "Pescadores, barrenderos, corredores y enamorados al borde del muro durante los noventa minutos en que el Malecón cambia de turno.",
-        "en": "Fishermen, street sweepers, runners and lovers on the seawall during the ninety minutes in which the Malecón changes shift.",
-        "otros": null
+        "en": "Fishermen, street sweepers, runners and lovers on the seawall during the ninety minutes in which the Malecón changes shift."
       },
       "long": {
         "es": "Durante once meses, un equipo de cuatro personas filmó cada amanecer en el mismo tramo del Malecón habanero. Sin entrevistas ni voz en off, la película se arma con lo que el muro ve cuando casi nadie lo mira: el pescador que lleva treinta años en el mismo escalón, la brigada que lava la acera antes del primer sol, la pareja que se despide sin saber si será por mucho tiempo. Un retrato coral de la ciudad a esa hora en que todavía no ha decidido quién va a ser hoy.",
-        "en": "For eleven months, a crew of four filmed every sunrise on the same stretch of Havana's Malecón. With no interviews or voice-over, the film is built from what the wall sees when almost nobody is watching: the fisherman who has sat on the same step for thirty years, the crew that washes the pavement before first light, the couple saying goodbye without knowing for how long. A choral portrait of the city at the hour when it has not yet decided who it will be today.",
-        "otros": null
+        "en": "For eleven months, a crew of four filmed every sunrise on the same stretch of Havana's Malecón. With no interviews or voice-over, the film is built from what the wall sees when almost nobody is watching: the fisherman who has sat on the same step for thirty years, the crew that washes the pavement before first light, the couple saying goodbye without knowing for how long. A choral portrait of the city at the hour when it has not yet decided who it will be today."
       },
       "crew": [
         {
@@ -296,8 +283,7 @@
       ],
       "note": {
         "es": "No buscábamos explicar el Malecón. Queríamos quedarnos el tiempo suficiente para que dejara de ser un lugar y se volviera una costumbre.",
-        "en": "We were not trying to explain the Malecón. We wanted to stay long enough for it to stop being a place and become a habit.",
-        "otros": null
+        "en": "We were not trying to explain the Malecón. We wanted to stay long enough for it to stop being a place and become a habit."
       },
       "noteBy": "Rolando Béquer",
       "journey": [],
@@ -314,16 +300,14 @@
       "type": "ficcion",
       "format": {
         "es": "Cortometraje",
-        "en": "Short Film",
-        "otros": null
+        "en": "Short Film"
       },
       "year": 2026,
       "status": "postproduccion",
       "runtime": "13 min",
       "genre": {
         "es": "Drama - Horror Corporal - Queer",
-        "en": "Drama - Body Horror - Queer",
-        "otros": null
+        "en": "Drama - Body Horror - Queer"
       },
       "lang": "Español",
       "subs": "EN",
@@ -331,18 +315,15 @@
       "poster": "",
       "tagline": {
         "es": "Nadie puede escapar de aquello que lleva dentro.",
-        "en": "No one can escape what's inside them.",
-        "otros": null
+        "en": "No one can escape what's inside them."
       },
       "short": {
         "es": "Un joven campesino enfrenta en soledad sus deseos reprimidos y la culpa que estos le provocan. Entre fantasías, sueños y una realidad cada vez más perturbadora, su lucha por aceptar aquello que siente lo conduce hacia un enfrentamiento brutal con su propia identidad.",
-        "en": "A young farmer struggles alone with his repressed desires and the guilt they cause him. Amid fantasies, dreams, and an increasingly disturbing reality, his struggle to accept his feelings leads him into a brutal confrontation with his own identity.",
-        "otros": null
+        "en": "A young farmer struggles alone with his repressed desires and the guilt they cause him. Amid fantasies, dreams, and an increasingly disturbing reality, his struggle to accept his feelings leads him into a brutal confrontation with his own identity."
       },
       "long": {
         "es": "Adrián, un joven campesino, mantiene en secreto un deseo que ni siquiera se permite reconocer.\n\nAtrapado entre la culpa, la fantasía y una profunda represión, busca refugio en la intimidad de su habitación.\n\nUna noche, un sueño lo enfrenta con aquello que intenta ocultar de sí mismo.\n\nAl despertar, regresa al corral y lleva su conflicto interno hasta un límite perturbador.\n\nEntonces, una revelación transforma la escena en el reflejo de un miedo mucho más profundo: el rechazo hacia su propia identidad.",
-        "en": "Adrián, a young farmer, keeps secret a desire he doesn’t even allow himself to acknowledge.\n\nCaught between guilt, fantasy, and deep repression, he seeks refuge in the privacy of his room.\n\nOne night, a dream confronts him with what he is trying to hide from himself.\n\nUpon waking, he returns to the corral and pushes his inner conflict to a disturbing limit.\n\nThen, a revelation transforms the scene into a reflection of a much deeper fear: the rejection of his own identity.",
-        "otros": null
+        "en": "Adrián, a young farmer, keeps secret a desire he doesn’t even allow himself to acknowledge.\n\nCaught between guilt, fantasy, and deep repression, he seeks refuge in the privacy of his room.\n\nOne night, a dream confronts him with what he is trying to hide from himself.\n\nUpon waking, he returns to the corral and pushes his inner conflict to a disturbing limit.\n\nThen, a revelation transforms the scene into a reflection of a much deeper fear: the rejection of his own identity."
       },
       "crew": [
         {
@@ -401,7 +382,6 @@
           "n": "Kevin Dany"
         }
       ],
-      "note": null,
       "noteBy": "",
       "journey": [],
       "press": [],
@@ -409,13 +389,11 @@
         {
           "l": {
             "es": "Seguir el rodaje",
-            "en": "Follow the shoot",
-            "otros": null
+            "en": "Follow the shoot"
           },
           "n": {
             "es": "Diario de rodaje en Noticias",
-            "en": "Shooting diary in News",
-            "otros": null
+            "en": "Shooting diary in News"
           },
           "url": "",
           "screener": false,
@@ -434,16 +412,14 @@
       "type": "ficcion",
       "format": {
         "es": "Largometraje",
-        "en": "Feature",
-        "otros": null
+        "en": "Feature"
       },
       "year": 2030,
       "status": "desarrollo",
       "runtime": "80 min (previsto)",
       "genre": {
         "es": "Suspenso y autoreferencial",
-        "en": "Suspense and self-reference",
-        "otros": null
+        "en": "Suspense and self-reference"
       },
       "lang": "Español",
       "subs": "EN",
@@ -451,18 +427,15 @@
       "poster": "/uploads/mv8bo3kv-poster-fangal.webp",
       "tagline": {
         "es": "El silencio también mata.",
-        "en": "Silence kills, too.",
-        "otros": null
+        "en": "Silence kills, too."
       },
       "short": {
         "es": "Maret, una joven cineasta empuña su cámara como extensión de su memoria para registrar el pulso de ¨Yonse¨, un pueblo remoto que visita con su novio Marcos antes de que sus destinos se separen. A través de lo que vive logra un retrato crudo de una familia con secretos y costumbres violentas.",
-        "en": "Maret, a young filmmaker, wields her camera as an extension of her memory to capture the pulse of “Yonse,” a remote town she visits with her boyfriend Marcos before their paths diverge. Through her experiences, she paints a raw portrait of a family with secrets and violent customs.",
-        "otros": null
+        "en": "Maret, a young filmmaker, wields her camera as an extension of her memory to capture the pulse of “Yonse,” a remote town she visits with her boyfriend Marcos before their paths diverge. Through her experiences, she paints a raw portrait of a family with secrets and violent customs."
       },
       "long": {
         "es": "Maret, una joven cineasta viaja con su novio Marcos a “Yonse”, un pueblo recóndito del oriente cubano, donde él ha pasado sus vacaciones desde niño. Es su último encuentro antes de que Marcos parta al servicio militar obligatorio. Maret lleva su cámara con el fin de registrar esos días de despedida. \n\nLa familia de Marcos habita un conjunto de patios que conectan casas de madera. Son recibidos por Eri, una mujer que cuida a su madre Nancy, una anciana con demencia que pasa las horas inmóviles bajo un rancho. En la casa de al lado Maret conoce a Mili, esposa de Chichi, el cabeza de familia, y a Beto, el exesposo de Nancy y padre de Eri y Chichi. Marcos lleva a Maret de tour por el resto de familiares lejanos, quedando fascinada por el entorno.\n\nEl primer choque de Maret ocurre el primer día, cuando un jinete trae un ovejo muerto y un perro amarrado al que acusa de asesino. Maret toma una foto momentos antes de que ante sus ojos el perro pierde la cabeza de un hachazo. En la noche se da cuenta de que la cámara no solo registra, sino que revela algo que late bajo la superficie del recuerdo. Decide grabar un documental, que se convierte en la disección del paisaje y los que lo habitan. \n\nAl segundo día, grabando a Nancy, Beto se aproxima, lo que provoca que la anciana estalla en gritos acusándolo de haber matado a alguien. Maret entrevista a Mili y le cuenta que la demencia de Nancy estalló el mismo día que desapareció en la playa la hija de La China, una vecina que vive sola. Ese día Nancy tuvo un ataque violento y la muchacha nunca regresó del mar. Maret y Marcos se alojan en la casa de La China, que guarda la memoria de su hija en un cuarto de quinceañera intacto, y les muestra las fotos que guarda como en un altar. \n\nEn una entrevista para el documental, Marcos cuenta que de niño vio a Beto dentro del establo con una mujer que gritaba. Eri revela que Nancy atrapó a Beto siendo infiel toda su vida, y el día de la playa no paraba de acusar a Beto de asesinar a la hija de La China, pero nadie le creyó. \n\nEl último día del viaje se van de excursión a la playa. Maret termina bebiendo en exceso luego de que Beto le diera una botella de ron. De regreso, la sientan mareada al lado de Nancy. La anciana le susurra que está muerta y describe a Beto ahogándola. Esa noche Maret sueña que encarna a la hija de La China siendo ahogada por Beto, y Nancy intentando salvarla. Luego encarna a Nancy y cuando logra acercarse se ve a sí misma ahogada en el mar. Al despedirse de la familia, pide hacer un último retrato. Todos se reúnen alrededor de Nancy para la foto. Maret y Marcos se marchan en un carretón. Él toma la cámara para preguntarle a Maret cómo la pasó. Ella mira al lente, aún flotan en su mirada el fango y la certeza de que hay muertes que no se ahogan en el mar sino en el silencio de quienes la rodean.",
-        "en": "Maret, a young filmmaker, travels with her boyfriend Marcos to “Yonse,” a remote village in eastern Cuba, where he has spent his vacations since childhood. It is their last time together before Marcos leaves for mandatory military service. Maret brings her camera to document those final days together.\n\nMarcos’s family lives in a complex of courtyards connecting wooden houses. They are welcomed by Eri, a woman who cares for her mother, Nancy—an elderly woman with dementia who spends her days motionless under a thatched shelter. Next door, Maret meets Mili, the wife of Chichi, the head of the family, and Beto, Nancy’s ex-husband and the father of Eri and Chichi. Marcos takes Maret on a tour to visit the rest of their distant relatives, and she is fascinated by the surroundings.\n\nMaret’s first shock comes on the first day, when a horseman brings a dead sheep and a tied-up dog that he accuses of being the killer. Maret takes a photo moments before the dog’s head is severed by an axe blow right before her eyes. That night, she realizes that the camera not only records but also reveals something that beats beneath the surface of memory. She decides to shoot a documentary, which becomes a dissection of the landscape and those who inhabit it.\n\nOn the second day, while filming Nancy, Beto approaches her, causing the elderly woman to burst into screams, accusing him of having killed someone. Maret interviews Mili, who tells her that Nancy’s dementia flared up on the very same day that La China’s daughter—a neighbor who lives alone—disappeared from the beach. That day, Nancy had a violent outburst, and the girl never returned from the sea. Maret and Marcos stay at La China’s house, where she keeps her daughter’s memory alive in an untouched quinceañera-themed room, and shows them the photos she keeps as if on an altar.\n\nIn an interview for the documentary, Marcos recounts that as a child he saw Beto inside the barn with a woman who was screaming. Eri reveals that Nancy caught Beto cheating on her his entire life, and on the day at the beach, she wouldn’t stop accusing Beto of murdering La China’s daughter, but no one believed her. \n\nOn the last day of the trip, they go on an outing to the beach. Maret ends up drinking too much after Beto gives her a bottle of rum. On the way back, they seat her—dizzy—next to Nancy. The old woman whispers to her that she is dead and describes Beto drowning her. That night, Maret dreams that she is reincarnated as La China’s daughter, being drowned by Beto, while Nancy tries to save her. Then she is reincarnated as Nancy, and just as she manages to get close, she sees herself drowning in the sea. As she says goodbye to the family, she asks to take one last portrait. Everyone gathers around Nancy for the photo. Maret and Marcos leave in a cart. He picks up the camera to ask Maret how she’s been. She looks into the lens; her gaze still holds the mud and the certainty that there are deaths that do not drown in the sea but in the silence of those around her.\n",
-        "otros": null
+        "en": "Maret, a young filmmaker, travels with her boyfriend Marcos to “Yonse,” a remote village in eastern Cuba, where he has spent his vacations since childhood. It is their last time together before Marcos leaves for mandatory military service. Maret brings her camera to document those final days together.\n\nMarcos’s family lives in a complex of courtyards connecting wooden houses. They are welcomed by Eri, a woman who cares for her mother, Nancy—an elderly woman with dementia who spends her days motionless under a thatched shelter. Next door, Maret meets Mili, the wife of Chichi, the head of the family, and Beto, Nancy’s ex-husband and the father of Eri and Chichi. Marcos takes Maret on a tour to visit the rest of their distant relatives, and she is fascinated by the surroundings.\n\nMaret’s first shock comes on the first day, when a horseman brings a dead sheep and a tied-up dog that he accuses of being the killer. Maret takes a photo moments before the dog’s head is severed by an axe blow right before her eyes. That night, she realizes that the camera not only records but also reveals something that beats beneath the surface of memory. She decides to shoot a documentary, which becomes a dissection of the landscape and those who inhabit it.\n\nOn the second day, while filming Nancy, Beto approaches her, causing the elderly woman to burst into screams, accusing him of having killed someone. Maret interviews Mili, who tells her that Nancy’s dementia flared up on the very same day that La China’s daughter—a neighbor who lives alone—disappeared from the beach. That day, Nancy had a violent outburst, and the girl never returned from the sea. Maret and Marcos stay at La China’s house, where she keeps her daughter’s memory alive in an untouched quinceañera-themed room, and shows them the photos she keeps as if on an altar.\n\nIn an interview for the documentary, Marcos recounts that as a child he saw Beto inside the barn with a woman who was screaming. Eri reveals that Nancy caught Beto cheating on her his entire life, and on the day at the beach, she wouldn’t stop accusing Beto of murdering La China’s daughter, but no one believed her. \n\nOn the last day of the trip, they go on an outing to the beach. Maret ends up drinking too much after Beto gives her a bottle of rum. On the way back, they seat her—dizzy—next to Nancy. The old woman whispers to her that she is dead and describes Beto drowning her. That night, Maret dreams that she is reincarnated as La China’s daughter, being drowned by Beto, while Nancy tries to save her. Then she is reincarnated as Nancy, and just as she manages to get close, she sees herself drowning in the sea. As she says goodbye to the family, she asks to take one last portrait. Everyone gathers around Nancy for the photo. Maret and Marcos leave in a cart. He picks up the camera to ask Maret how she’s been. She looks into the lens; her gaze still holds the mud and the certainty that there are deaths that do not drown in the sea but in the silence of those around her.\n"
       },
       "crew": [
         {
@@ -566,16 +539,14 @@
       "type": "documental",
       "format": {
         "es": "Mediometraje",
-        "en": "Medium-length",
-        "otros": null
+        "en": "Medium-length"
       },
       "year": 2026,
       "status": "produccion",
       "runtime": "27 min",
       "genre": {
         "es": "Documental",
-        "en": "Documentary",
-        "otros": null
+        "en": "Documentary"
       },
       "lang": "Español",
       "subs": "EN",
@@ -583,18 +554,15 @@
       "poster": "",
       "tagline": {
         "es": "Un pueblo que aprendió a oír el silencio de su fábrica.",
-        "en": "A town that learned to hear the silence of its factory.",
-        "otros": null
+        "en": "A town that learned to hear the silence of its factory."
       },
       "short": {
         "es": "Un pueblo y su antiguo central azucarero, entre la memoria de la zafra y lo que se hace hoy con sus ruinas.",
-        "en": "A town and its former sugar mill, between the memory of the harvest and what is done today with its ruins.",
-        "otros": null
+        "en": "A town and its former sugar mill, between the memory of the harvest and what is done today with its ruins."
       },
       "long": {
         "es": "Los obreros que quedan recorren las naves del central como quien visita a un familiar. Los hijos usan el batey para jugar béisbol, y los camiones que pasan por la carretera ya no se detienen. Con archivo familiar y sonido directo, el documental escucha cómo cambia la relación de un pueblo con el lugar que le dio nombre.",
-        "en": "The remaining workers walk through the mill's halls like someone visiting a relative. Their children use the yard to play baseball, and trucks on the road no longer stop. With family archive and direct sound, the documentary listens to how a town's relationship with the place that gave it its name is changing.",
-        "otros": null
+        "en": "The remaining workers walk through the mill's halls like someone visiting a relative. Their children use the yard to play baseball, and trucks on the road no longer stop. With family archive and direct sound, the documentary listens to how a town's relationship with the place that gave it its name is changing."
       },
       "crew": [
         {
@@ -618,7 +586,6 @@
           "c": []
         }
       ],
-      "note": null,
       "noteBy": "",
       "journey": [],
       "press": [],
@@ -626,13 +593,11 @@
         {
           "l": {
             "es": "Ver completo",
-            "en": "Watch in full",
-            "otros": null
+            "en": "Watch in full"
           },
           "n": {
             "es": "Vimeo · acceso libre",
-            "en": "Vimeo · free access",
-            "otros": null
+            "en": "Vimeo · free access"
           },
           "url": "https://vimeo.com/",
           "screener": false,

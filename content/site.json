@@ -4,8 +4,7 @@
   "pressEmail": "prensa@gorrion.example",
   "city": {
     "es": "La Habana, Cuba",
-    "en": "Havana, Cuba",
-    "otros": null
+    "en": "Havana, Cuba"
   },
   "reelUrl": "https://vimeo.com/",
   "formEndpoint": "",
