@@ -1681,7 +1681,7 @@ function render(opts = {}) {
     try { console.error("[GORRIóN] No se pudo generar la página «" + r.name + "»", e); } catch (x) { /* nada */ }
     main = pageProblem();
   }
-  app().innerHTML = header(r) + `<main id="main" tabindex="-1">${main}</main>` + footer();
+  app().innerHTML = header(r) + `<main id="main" tabindex="-1"${r.name === "project" ? ' class="page--project"' : ""}>${main}</main>` + footer();
   { const b = document.getElementById("boot"); if (b) { b.style.transition = "opacity .25s"; b.style.opacity = "0"; setTimeout(() => b.remove(), 280); } }
   brandifyDOM(app());
   document.title = routeTitle(r);

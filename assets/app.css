@@ -468,6 +468,7 @@ html.fx .ch.cur::after { content: ""; position: absolute; left: 100%; top: .1em;
 
 /* Rótulos de escena y transiciones */
 .scene { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 24px; margin-bottom: clamp(22px, 3vw, 38px); font-weight: 700; font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+.page--project .scene { margin-top: clamp(22px, 3vw, 38px); }
 .scene .cut { margin-left: auto; }
 .scene--out { padding-top: 22px; margin-bottom: -26px; }
 .sec--tight .scene { margin-bottom: 16px; }
