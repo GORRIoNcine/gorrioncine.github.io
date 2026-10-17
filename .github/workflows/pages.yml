@@ -9,6 +9,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  # Cada 30 minutos: publica lo que se programó desde el panel («Programar publicación»)
+  schedule:
+    - cron: "7,37 * * * *"
 
 permissions:
   contents: write
@@ -65,6 +68,9 @@ jobs:
 
       - name: Regenerar páginas
         run: node tools/build-pages.mjs .
+
+      - name: Retirar borradores y publicaciones programadas
+        run: node tools/publish-filter.mjs .
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v6

@@ -234,7 +234,7 @@ const gmsg=t=>{$("#gmsg").textContent=t||""};
 let booted=false,curHash="";
 function bootEditor(){
   if(booted)return;booted=true;
-  const s=document.createElement("script");s.src="panel.js?v=20261017a";s.onload=route;document.head.append(s);
+  const s=document.createElement("script");s.src="panel.js?v=20261017b";s.onload=route;document.head.append(s);
   window.addEventListener("hashchange",()=>{
     if(window.GEditor&&window.GEditor.isDirty()&&location.hash!==curHash){
       if(!confirm("Tienes cambios sin guardar. ¿Salir sin guardar?")){history.replaceState(null,"",curHash||"#/");return}

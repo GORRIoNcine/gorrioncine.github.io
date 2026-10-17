@@ -1176,6 +1176,20 @@ collections:
                 required: false
                 default: false
                 hint: "La página sigue existiendo, pero Google no la mostrará."
+              - label: "Borrador (no se muestra en la web)"
+                name: draft
+                widget: boolean
+                required: false
+                default: false
+                hint: "Si lo activas, queda guardado pero no aparece en la web."
+              - label: "Programar publicación (hora de Cuba)"
+                name: publishAt
+                widget: datetime
+                required: false
+                date_format: "YYYY-MM-DD"
+                time_format: "HH:mm"
+                format: "YYYY-MM-DDTHH:mm"
+                hint: "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
       - name: noticias
         label: "Noticias"
         file: content/noticias.json
@@ -1322,6 +1336,20 @@ collections:
                 required: false
                 default: false
                 hint: "La página sigue existiendo, pero Google no la mostrará."
+              - label: "Borrador (no se muestra en la web)"
+                name: draft
+                widget: boolean
+                required: false
+                default: false
+                hint: "Si lo activas, queda guardado pero no aparece en la web."
+              - label: "Programar publicación (hora de Cuba)"
+                name: publishAt
+                widget: datetime
+                required: false
+                date_format: "YYYY-MM-DD"
+                time_format: "HH:mm"
+                format: "YYYY-MM-DDTHH:mm"
+                hint: "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
       - name: equipo
         label: "Equipo"
         file: content/equipo.json
@@ -1645,6 +1673,20 @@ collections:
                 name: url
                 widget: string
                 required: false
+              - label: "Borrador (no se muestra en la web)"
+                name: draft
+                widget: boolean
+                required: false
+                default: false
+                hint: "Si lo activas, queda guardado pero no aparece en la web."
+              - label: "Programar publicación (hora de Cuba)"
+                name: publishAt
+                widget: datetime
+                required: false
+                date_format: "YYYY-MM-DD"
+                time_format: "HH:mm"
+                format: "YYYY-MM-DDTHH:mm"
+                hint: "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
           - label: "Premios y selecciones"
             name: awards
             widget: list
@@ -1684,3 +1726,17 @@ collections:
                 value_field: "items.*.id"
                 search_fields: ["items.*.title"]
                 display_fields: ["items.*.title"]
+              - label: "Borrador (no se muestra en la web)"
+                name: draft
+                widget: boolean
+                required: false
+                default: false
+                hint: "Si lo activas, queda guardado pero no aparece en la web."
+              - label: "Programar publicación (hora de Cuba)"
+                name: publishAt
+                widget: datetime
+                required: false
+                date_format: "YYYY-MM-DD"
+                time_format: "HH:mm"
+                format: "YYYY-MM-DDTHH:mm"
+                hint: "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."

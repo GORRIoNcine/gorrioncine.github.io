@@ -3062,6 +3062,21 @@
             "default": false,
             "required": false,
             "hint": "La página sigue existiendo, pero Google no la mostrará."
+          },
+          {
+            "name": "draft",
+            "label": "Borrador (no se muestra en la web)",
+            "widget": "boolean",
+            "required": false,
+            "default": false,
+            "hint": "Si lo activas, queda guardado pero no aparece en la web."
+          },
+          {
+            "name": "publishAt",
+            "label": "Programar publicación (hora de Cuba)",
+            "widget": "datetimelocal",
+            "required": false,
+            "hint": "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
           }
         ]
       }
@@ -3289,6 +3304,21 @@
             "default": false,
             "required": false,
             "hint": "La página sigue existiendo, pero Google no la mostrará."
+          },
+          {
+            "name": "draft",
+            "label": "Borrador (no se muestra en la web)",
+            "widget": "boolean",
+            "required": false,
+            "default": false,
+            "hint": "Si lo activas, queda guardado pero no aparece en la web."
+          },
+          {
+            "name": "publishAt",
+            "label": "Programar publicación (hora de Cuba)",
+            "widget": "datetimelocal",
+            "required": false,
+            "hint": "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
           }
         ]
       }
@@ -3779,6 +3809,21 @@
             "label": "Enlace",
             "widget": "string",
             "required": false
+          },
+          {
+            "name": "draft",
+            "label": "Borrador (no se muestra en la web)",
+            "widget": "boolean",
+            "required": false,
+            "default": false,
+            "hint": "Si lo activas, queda guardado pero no aparece en la web."
+          },
+          {
+            "name": "publishAt",
+            "label": "Programar publicación (hora de Cuba)",
+            "widget": "datetimelocal",
+            "required": false,
+            "hint": "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
           }
         ]
       },
@@ -3838,6 +3883,21 @@
             "display_fields": [
               "items.*.title"
             ]
+          },
+          {
+            "name": "draft",
+            "label": "Borrador (no se muestra en la web)",
+            "widget": "boolean",
+            "required": false,
+            "default": false,
+            "hint": "Si lo activas, queda guardado pero no aparece en la web."
+          },
+          {
+            "name": "publishAt",
+            "label": "Programar publicación (hora de Cuba)",
+            "widget": "datetimelocal",
+            "required": false,
+            "hint": "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
           }
         ]
       }

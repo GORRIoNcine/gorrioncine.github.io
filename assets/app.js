@@ -1905,11 +1905,30 @@ function stillMedia(p, i) { const im = stillImgs(p); return im.length ? `<img ${
    El texto vive en content/*.json (lo edita el panel /admin). data.js solo trae el contenido de ejemplo:
    si un archivo no existe o falla, la web sigue con los datos de ejemplo. */
 const slugify = (s) => norm(s).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+/* Borradores y publicación programada: lo que tenga draft:true o una fecha publishAt (hora de Cuba) aún no llegada no se muestra.
+   El generador ya lo retira de lo publicado; esto es una segunda barrera y permite la vista previa del panel (/?preview). */
+const havanaNow = () => {
+  try { const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "America/Havana", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map((x) => [x.type, x.value])); return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`; }
+  catch (e) { return new Date().toISOString().slice(0, 16); }
+};
+const normAt = (v) => { v = String(v || "").trim(); return /^\d{4}-\d{2}-\d{2}$/.test(v) ? v + "T00:00" : v.slice(0, 16); };
+const isHidden = (x) => !!x && typeof x === "object" && (x.draft === true || (!!x.publishAt && normAt(x.publishAt) > havanaNow()));
+const PREVIEW = (() => {
+  if (!/[?&]preview\b/.test(location.search)) return null;
+  try { const v = JSON.parse(localStorage.getItem("gorrion-preview") || "null"); return v && v.file && v.data && Date.now() - v.at < 6 * 3600 * 1000 ? v : null; } catch (e) { return null; }
+})();
+function onlyVisible(name, j) {
+  if (!j || typeof j !== "object") return j;
+  if (name === "proyectos" || name === "noticias") return { ...j, items: asArr(j.items).filter((x) => !isHidden(x)) };
+  if (name === "prensa") return { ...j, press: asArr(j.press).filter((x) => !isHidden(x)), awards: asArr(j.awards).filter((x) => !isHidden(x)) };
+  return j;
+}
 function fetchJSON(name) {
+  if (PREVIEW && PREVIEW.file === name) return Promise.resolve(PREVIEW.data); /* vista previa: contenido sin guardar enviado desde el panel */
   return Promise.race([
     fetch(BASE + "content/" + name + ".json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)),
     new Promise((res) => setTimeout(() => res(null), 4000))
-  ]).catch(() => null);
+  ]).then((j) => (PREVIEW ? j : onlyVisible(name, j))).catch(() => null);
 }
 function swap(arr, next) { if (Array.isArray(next)) arr.splice(0, arr.length, ...next); }
 const asArr = (v) => (Array.isArray(v) ? v.filter((x) => x !== null && x !== undefined) : []);
@@ -1989,6 +2008,16 @@ function loadContent() {
 }
 
 /* ---------- Arranque ---------- */
+if (PREVIEW) {
+  const m = document.createElement("meta"); m.name = "robots"; m.content = "noindex,nofollow"; document.head.appendChild(m);
+  const b = document.createElement("div");
+  b.setAttribute("role", "status");
+  b.style.cssText = "position:fixed;left:0;right:0;bottom:0;z-index:300;background:#5f140f;color:#fff;padding:10px 16px;font:700 13px/1.4 'Courier New',monospace;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center";
+  b.innerHTML = "<span>VISTA PREVIA · lo que ves aún no está publicado</span>";
+  const x = document.createElement("a"); x.href = "#"; x.textContent = "Cerrar vista previa"; x.style.cssText = "color:#fff;text-decoration:underline";
+  x.addEventListener("click", (e) => { e.preventDefault(); try { localStorage.removeItem("gorrion-preview"); } catch (z) { /* nada */ } window.close(); location.href = BASE; });
+  b.appendChild(x); document.body.appendChild(b);
+}
 document.body.insertAdjacentHTML("afterbegin", LOGO_SPRITE);
 auditContent();
 render();

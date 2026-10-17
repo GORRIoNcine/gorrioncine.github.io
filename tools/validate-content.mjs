@@ -42,6 +42,11 @@ load("site"); load("servicios"); load("nosotros");
   }
 }
 
+/* Borradores y publicación programada (draft / publishAt) en proyectos, noticias, prensa y premios */
+const AT = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/;
+[["Proyecto", list(proy && proy.items)], ["Noticia", list(noti && noti.items)], ["Mención de prensa", list(pre && pre.press)], ["Premio", list(pre && pre.awards)]].forEach(([k, arr]) => arr.forEach((x, i) => {
+  if (x && x.publishAt && !AT.test(String(x.publishAt))) err(`${k} ${i + 1}: la fecha de publicación «${x.publishAt}» no es válida (formato AAAA-MM-DDTHH:mm).`);
+}));
 const ids = new Map(), slugs = new Map();
 list(proy && proy.items).forEach((p, i) => {
   const n = `Proyecto ${i + 1} «${p.title || "sin título"}»`;

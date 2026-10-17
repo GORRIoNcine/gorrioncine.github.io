@@ -13,6 +13,7 @@
  * Sin dependencias: solo Node 18 o superior. La dirección del sitio sale de content/site.json → siteUrl.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, statSync } from "node:fs";
+import { visibleContent } from "./visibility.mjs";
 import { join, dirname } from "node:path";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -46,8 +47,10 @@ const esPathOf = (enPath) => ES_PATHS().find((e) => toEnPath(e) === enPath) || (
 
 /* ---------- Datos ---------- */
 const site = json("content/site.json", {});
-const projects = json("content/proyectos.json", { items: [] }).items || [];
-const news = json("content/noticias.json", { items: [] }).items || [];
+/* Borradores y publicaciones programadas (aún sin llegar su hora) no generan páginas ni salen en el sitemap */
+const VIS = visibleContent({ proyectos: json("content/proyectos.json", { items: [] }), noticias: json("content/noticias.json", { items: [] }), prensa: json("content/prensa.json", {}) });
+const projects = VIS.proyectos.items || [];
+const news = VIS.noticias.items || [];
 const team = json("content/equipo.json", { items: [] }).items || [];
 const rolesData = json("content/roles.json", { depts: [], roles: [], legacy: {} });
 const DEPT_I = Object.fromEntries(rolesData.depts.map((d, i) => [d[0], i]));
@@ -55,7 +58,7 @@ const ROLES = Object.fromEntries(rolesData.roles.map((r, o) => [r[0], { es: r[1]
 const roleOf = (k) => ROLES[rolesData.legacy[k] || k];
 const serv = json("content/servicios.json", {});
 const about = json("content/nosotros.json", {});
-const press = json("content/prensa.json", {});
+const press = VIS.prensa;
 const seo = json("content/seo.json", {});
 // Acepta el código solo, «google-site-verification=…» o la etiqueta <meta …content="…"> completa: se queda con el código.
 const cleanCode = (v) => { let t = String(v || "").trim(); const m = t.match(/content\s*=\s*["']([^"']+)["']/i); if (m) t = m[1]; return t.replace(/^google-site-verification\s*=\s*/i, "").replace(/^["']|["']$/g, "").trim(); };

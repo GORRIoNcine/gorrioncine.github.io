@@ -107,6 +107,11 @@
       if (def.name === "slug") ctx.slugInput = { el: inp, set };
       return inp;
     }
+    if (w === "datetimelocal") {
+      const inp = h("input", { type: "datetime-local", value: String(get() || "").slice(0, 16), autocomplete: "off" });
+      inp.addEventListener("input", () => { set(inp.value || undefined); touch(); });
+      return inp;
+    }
     if (w === "text") {
       const ta = h("textarea", { rows: "3" });
       ta.value = get() ?? "";
@@ -398,6 +403,11 @@
   /* ---------- Colecciones (tarjetas) ---------- */
   const optLabel = (defs, name, v) => { const f = defs.find((x) => x.name === name); const o = f && (f.options || []).find((x) => x[1] === v); return o ? o[0] : v || ""; };
   const STATUS = { desarrollo: ["En desarrollo", ""], produccion: ["En producción", "warn"], postproduccion: ["En postproducción", "warn"], estrenado: ["Estrenada", "ok"] };
+  const pubState = (i) => {
+    if (i && i.draft === true) return ["Borrador", "warn"];
+    if (i && i.publishAt) { const at = String(i.publishAt).slice(0, 16), n = new Date(Date.now() - 4 * 3600e3).toISOString().slice(0, 16); if (at > n) { const d = new Date(at.length === 10 ? at + "T00:00" : at); return ["Programado · " + d.toLocaleString("es", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }), "warn"]; } }
+    return null;
+  };
   const COL = {
     proyectos: {
       noun: "proyecto", plural: "Proyectos", add: "Añadir proyecto", ratio: "poster",
@@ -453,12 +463,25 @@
           h("div", { class: "ed-card__img" }, im ? h("img", { src: imgUrl(im), alt: "", loading: "lazy", onerror: function () { this.remove(); } }) : null, !im ? h("span", {}, (t || "?").slice(0, 2).toUpperCase()) : null,
             cfg.star && cfg.star(it) ? h("i", { class: "ed-star", title: "Destacado en el inicio" }, "★") : null,
             h("span", { class: "ed-mv" }, h("button", { type: "button", title: "Mover antes", onclick: mv(-1) }, "‹"), h("button", { type: "button", title: "Mover después", onclick: mv(1) }, "›"))),
-          h("div", { class: "ed-card__b" }, h("b", {}, t), h("span", {}, cfg.sub(it, def.fields)), chip ? h("em", { class: "chip " + chip[1] }, chip[0]) : null)));
+          h("div", { class: "ed-card__b" }, h("b", {}, t), h("span", {}, cfg.sub(it, def.fields)), chip ? h("em", { class: "chip " + chip[1] }, chip[0]) : null, pubState(it) ? h("em", { class: "chip warn" }, pubState(it)[0]) : null)));
       });
       grid.append(h("button", { type: "button", class: "ed-card ed-card--add", onclick: () => openItem(-1) }, h("span", {}, ico("plus")), h("b", {}, cfg.add)));
     };
     paint();
     el.append(saveBar("Guardar orden y publicar", async () => { try { await persist(`Reordena ${cfg.plural.toLowerCase()} desde el panel`); viewGrid(); } catch (e) { /* aviso ya mostrado */ } }, async () => { await open(S.name, true); }, S.dirty));
+  }
+
+  /* ---------- Vista previa (abre la web con el contenido aún sin guardar) ---------- */
+  function openPreview(path, data, title) {
+    try { localStorage.setItem("gorrion-preview", JSON.stringify({ file: S.name, data, at: Date.now(), title })); }
+    catch (e) { toast("No se pudo preparar la vista previa en este navegador.", "err"); return; }
+    window.open("../" + path + "?preview=1", "gorrion-preview");
+  }
+  function previewItem(item, idx, isNew) {
+    const data = normalize(S.data), it = normalize(item);
+    if (isNew) data.items.push(it); else data.items[idx] = it;
+    const slug = it.slug || slugify(L(it.title));
+    openPreview(S.name === "proyectos" ? `proyectos/${slug}/` : S.name === "noticias" ? `noticias/${slug}/` : "", data, L(it.title));
   }
 
   /* ---------- Editor de un elemento ---------- */
@@ -479,13 +502,16 @@
     const adv = (f) => /avanzad/i.test(f.label) || f.name === "seed";
     const byName = Object.fromEntries(def.fields.map((f) => [f.name, f]));
     const sideNames = def.fields.filter((f) => f.widget === "image").map((f) => f.name).concat(cfg.sideExtra || []);
-    const used = new Set(sideNames);
+    const used = new Set(sideNames.concat(["draft", "publishAt"]));
     const add = (body, f) => { const fe = fieldEl(f, () => item[f.name], (v) => { item[f.name] = v; }, ctx, "$." + f.name); if (fe) body.append(fe); };
     const main = h("div", { class: "ed-main" }), side = h("aside", { class: "ed-side" });
     const stat = h("span", { class: "ed-pub__s" }, isNew ? "Borrador sin publicar" : "Sin cambios");
     ctx.touch = () => { S.itemDirty = true; stat.textContent = "Cambios sin guardar"; stat.classList.add("dirty"); };
     const saveBtn = h("button", { type: "button", class: "ed-btn ed-btn--main ed-pub__b", id: "savebtn", onclick: async () => {
-      const errs = []; validate(def.fields, item, "$", errs);
+      let errs = []; validate(def.fields, item, "$", errs);
+      /* Un borrador puede estar a medias: solo exige título y dirección web */
+      if (pubSel && pubSel.value === "draft") errs = errs.filter((e) => !/obligatori/.test(e.msg) || /^«(Título|Dirección web)[^»]*»( \(Español\))? es obligatorio/.test(e.msg));
+      if (pubSel && pubSel.value === "sched" && !item.publishAt) errs.push({ p: "$.publishAt", msg: "Elige la fecha y hora de publicación." });
       const sl = item.slug; if (sl && S.data.items.some((o, j) => j !== idx && (o.slug === sl || o.slugEn === sl))) errs.push({ p: "$.slug", msg: "Ya existe otro elemento con esta dirección web." });
       const se = item.slugEn; if (se && S.data.items.some((o, j) => j !== idx && (o.slug === se || o.slugEn === se))) errs.push({ p: "$.slugEn", msg: "Ya existe otro elemento con esta dirección web (en inglés)." });
       if (errs.length) { showErrors(errs, el); toast(`Revisa ${errs.length} campo(s) marcado(s) en rojo.`, "err"); return; }
@@ -495,7 +521,28 @@
       try { await persist(`${isNew ? "Añade" : "Actualiza"} ${cfg.noun} «${cfg.title(item)}» desde el panel`); S.itemDirty = false; S.item = null; viewGrid(); }
       catch (e) { S.data = prev; saveBtn.disabled = false; }
     } }, ico("ok"), isNew ? "Publicar" : "Guardar y publicar");
-    side.append(h("section", { class: "ed-card2 ed-pub" }, h("h2", {}, "Publicar"), h("div", { class: "ed-card2__b" }, stat, saveBtn, h("small", { class: "ed-hint" }, "La web se actualiza en 1–2 minutos."), !isNew ? h("button", { type: "button", class: "ed-btn ed-btn--danger", onclick: () => removeItem(idx) }, "Eliminar " + cfg.noun) : null)));
+    const hasPub = def.fields.some((f) => f.name === "publishAt");
+    let pubSel = null, pubBox = null;
+    if (hasPub) {
+      pubSel = h("select", { "aria-label": "Estado de publicación" }, h("option", { value: "now" }, "Publicar ahora"), h("option", { value: "draft" }, "Guardar como borrador"), h("option", { value: "sched" }, "Programar publicación"));
+      pubSel.value = item.draft === true ? "draft" : item.publishAt ? "sched" : "now";
+      const at = h("input", { type: "datetime-local", "aria-label": "Fecha y hora de publicación (hora de Cuba)", value: item.publishAt ? String(item.publishAt).slice(0, 16) : "" });
+      const note = h("small", { class: "ed-hint" });
+      const refreshPub = () => {
+        const m = pubSel.value; at.hidden = m !== "sched";
+        if (m === "draft") { item.draft = true; delete item.publishAt; }
+        else if (m === "sched") { delete item.draft; item.publishAt = at.value || undefined; }
+        else { delete item.draft; delete item.publishAt; }
+        saveBtn.lastChild.textContent = m === "draft" ? "Guardar borrador" : m === "sched" ? "Programar" : isNew ? "Publicar" : "Guardar y publicar";
+        note.textContent = m === "draft" ? "No se verá en la web hasta que lo publiques." : m === "sched" ? "Se publica solo a esa fecha y hora de Cuba (la web se regenera cada 30 minutos)." : "Se publica de inmediato.";
+      };
+      pubSel.addEventListener("change", () => { if (pubSel.value === "sched" && !at.value) { const d = new Date(Date.now() - 4 * 3600e3 + 864e5); d.setUTCHours(9, 0, 0, 0); at.value = d.toISOString().slice(0, 16); } ctx.touch(); refreshPub(); });
+      at.addEventListener("input", () => { ctx.touch(); refreshPub(); });
+      pubBox = h("div", { class: "ed-pubmode" }, pubSel, at, note);
+      refreshPub();
+    }
+    const previewBtn = (S.name === "proyectos" || S.name === "noticias") ? h("button", { type: "button", class: "ed-btn", onclick: () => previewItem(item, idx, isNew) }, ico("ext"), "Vista previa") : null;
+    side.append(h("section", { class: "ed-card2 ed-pub" }, h("h2", {}, "Publicar"), h("div", { class: "ed-card2__b" }, stat, pubBox, previewBtn, saveBtn, h("small", { class: "ed-hint" }, "La web se actualiza en 1–2 minutos."), !isNew ? h("button", { type: "button", class: "ed-btn ed-btn--danger", onclick: () => removeItem(idx) }, "Eliminar " + cfg.noun) : null)));
     const sideBody = h("div", { class: "ed-card2__b" });
     sideNames.forEach((k) => { const f = byName[k]; if (f) add(sideBody, f); });
     if (sideBody.children.length) side.append(h("section", { class: "ed-card2" }, h("h2", {}, "Imagen y estado"), sideBody));
@@ -539,7 +586,7 @@
   function viewForm() {
     const el = root(); el.replaceChildren();
     const ctx = { touch: setDirty };
-    el.append(pageHead(S.sec.label, SEC_LEAD[S.name], []));
+    el.append(pageHead(S.sec.label, SEC_LEAD[S.name], S.name === "prensa" ? [h("button", { type: "button", class: "ed-btn", onclick: () => openPreview("prensa/", normalize(S.data), "Prensa y premios") }, ico("ext"), "Vista previa")] : []));
     S.sec.fields.forEach((f) => {
       const fe = fieldEl(f, () => S.data[f.name], (v) => { S.data[f.name] = v; }, ctx, "$." + f.name);
       if (fe) el.append(h("section", { class: "ed-card2" }, h("div", { class: "ed-card2__b" }, fe)));
