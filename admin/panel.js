@@ -586,6 +586,18 @@
     window.GStats.render(el, { h, pageHead, ico, token: () => G.token() });
   }
 
+  /* ---------- Historial (Git) ---------- */
+  async function viewHistory() {
+    const el = root();
+    el.replaceChildren(h("p", { class: "ed-empty" }, "Cargando…"));
+    if (!window.GHistory) {
+      try { await new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = "history.js?v=2"; sc.onload = ok; sc.onerror = no; document.head.append(sc); }); }
+      catch (e) { el.replaceChildren(h("p", { class: "ed-empty" }, "No se pudo cargar el historial.")); return; }
+    }
+    if (!S.schema) S.schema = await fetch("schema.json", { cache: "no-store" }).then((r) => r.json());
+    window.GHistory.render(el, { h, pageHead, token: () => G.token(), repo: G.repo, sections: S.schema.map((x) => [x.name, x.label]) });
+  }
+
   /* ---------- Entrada ---------- */
   async function open(name, force) {
     const el = root();
@@ -594,6 +606,7 @@
     S.item = null; S.itemDirty = false; S.dirty = false; S.filter = "";
     if (name === "medios") { S.name = "medios"; return viewMedia(); }
     if (name === "estadisticas") { S.name = "estadisticas"; return viewStats(); }
+    if (name === "historial") { S.name = "historial"; return viewHistory(); }
     const sec = S.schema.find((s) => s.name === name);
     if (!sec) { el.replaceChildren(h("p", { class: "ed-empty" }, "Sección desconocida.")); return; }
     el.replaceChildren(h("p", { class: "ed-empty" }, "Cargando " + sec.label.toLowerCase() + "…"));
