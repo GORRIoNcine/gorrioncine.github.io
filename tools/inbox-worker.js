@@ -268,6 +268,8 @@ export default {
     const h = cors(origin, env);
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: h });
     const url = new URL(request.url);
+    /* Si la base de datos se conectó con otro nombre (p. ej. «gorrion-buzon»), se usa igualmente */
+    if (!env.DB) { const d = Object.values(env).find((v) => v && typeof v.prepare === "function" && typeof v.batch === "function"); if (d) env = { ...env, DB: d }; }
     try {
       if (request.method === "GET" && url.pathname === "/") return new Response("Buzón de GORRIóN: funcionando. Los mensajes se leen desde el panel.", { headers: { "Content-Type": "text/plain; charset=utf-8" } });
       if (!env.DB) return json({ ok: false, error: "Falta conectar la base de datos D1 (binding DB)." }, 500, h);

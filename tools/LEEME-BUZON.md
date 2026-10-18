@@ -24,7 +24,7 @@ Formulario de la web ──► Worker «gorrion-buzon» ──► base de datos 
 1. **Workers & Pages** → **Create** → **Create Worker**. Nombre: `gorrion-buzon` → **Deploy**.
    (Con ese nombre y tu cuenta, la dirección será `https://gorrion-buzon.niguelcruzz2.workers.dev`, que es la que el panel acepta de confianza.)
 2. **Edit code**: borra lo que hay, pega todo `tools/inbox-worker.js` y pulsa **Deploy**.
-3. **Settings → Bindings → Add → D1 database**: nombre de variable `DB`, elige `gorrion-buzon`.
+3. **Settings → Bindings → Add → D1 database**: en «Variable name» escribe exactamente `DB` y elige la base `gorrion-buzon` (la nueva versión del Worker acepta otros nombres, pero `DB` es lo recomendado).
 4. **Settings → Variables and Secrets → Add**:
    - `TURNSTILE_SECRET` → **Secret** → la Secret key del paso 2.
    - `NOTIFY_TO` → **Text** → el correo donde quieres recibir los avisos.
