@@ -7,7 +7,7 @@
     "en": "Havana, Cuba"
   },
   "reelUrl": "https://vimeo.com/",
-  "formEndpoint": "",
+  "formEndpoint": "https://gorrion-buzon.niguelcruzz2.workers.dev",
   "social": [
     {
       "name": "Instagram",
@@ -45,5 +45,6 @@
     }
   ],
   "analyticsToken": "d31477a7866c4dc8abddcc70a622974e",
-  "statsUrl": "https://gorrion-stats.niguelcruzz2.workers.dev/"
+  "statsUrl": "https://gorrion-stats.niguelcruzz2.workers.dev/",
+  "turnstileSiteKey": "0x4AAAAAAFZ-PbadWhF0KDtP"
 }
