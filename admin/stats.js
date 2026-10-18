@@ -38,7 +38,8 @@
 .gs-table th,.gs-table td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
 .gs-steps{margin:8px 0 0;padding-left:20px;line-height:1.7}
 .gs-steps code{background:var(--chip);padding:1px 5px;border-radius:3px;font-size:12.5px}
-@media (prefers-color-scheme:dark){.gs-bar,.gs-list li i{background:#d0574d}.gs-list li i{opacity:.22}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gs-bar,:root:not([data-theme="light"]) .gs-list li i{background:#d0574d}:root:not([data-theme="light"]) .gs-list li i{opacity:.22}}
+:root[data-theme="dark"] .gs-bar,:root[data-theme="dark"] .gs-list li i{background:#d0574d}:root[data-theme="dark"] .gs-list li i{opacity:.22}
 `;
 
   function fmtDay(key) { const [y, m, d] = key.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d, 12)).toLocaleDateString("es", { day: "numeric", month: "short", timeZone: "UTC" }); }

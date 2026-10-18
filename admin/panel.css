@@ -9,12 +9,14 @@
 .ed-btn--ghost{background:transparent}
 .ed-btn--danger{color:#b3261e;border-color:#b3261e;background:transparent}
 .ed-btn--danger:hover{background:#b3261e;color:#fff;border-color:#b3261e}
-@media (prefers-color-scheme:dark){.ed-btn--danger{color:#ff8a80;border-color:#a33}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ed-btn--danger{color:#ff8a80;border-color:#a33}}
+:root[data-theme="dark"] .ed-btn--danger{color:#ff8a80;border-color:#a33}
 .ed-search{padding:8px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--fg);font:inherit;min-width:200px}
 .ed-empty{padding:30px;color:var(--mute);text-align:center}
 .ed-crumb{margin:0 0 6px;color:var(--mute);font-size:13px}
 .ed-crumb a{color:var(--red2);font-weight:600}
-@media (prefers-color-scheme:dark){.ed-crumb a{color:#e07a70}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ed-crumb a{color:#e07a70}}
+:root[data-theme="dark"] .ed-crumb a{color:#e07a70}
 /* Rejilla de tarjetas */
 .ed-grid{display:grid;gap:16px;margin-top:8px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
 .ed-grid--wide{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
@@ -59,7 +61,8 @@
 .ed-f.bad>.ed-fl,.ed-f.bad>.ed-fl b{color:#b3261e}
 .ed-f.bad input,.ed-f.bad select,.ed-f.bad textarea,.ed-f.bad .ed-bil{border-color:#b3261e!important}
 .ed-err{color:#b3261e;font-size:12.5px;font-weight:600}
-@media (prefers-color-scheme:dark){.ed-err,.ed-f.bad>.ed-fl{color:#ff8a80}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ed-err,:root:not([data-theme="light"]) .ed-f.bad>.ed-fl{color:#ff8a80}}
+:root[data-theme="dark"] .ed-err,:root[data-theme="dark"] .ed-f.bad>.ed-fl{color:#ff8a80}
 /* Interruptor */
 .ed-boolrow{display:flex;align-items:center;gap:12px}
 .ed-sw{position:relative;display:inline-block;width:44px;height:24px;flex:none}
