@@ -1800,8 +1800,10 @@ async function handleSubmit(f) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email || "")) { err.textContent = t("e_email"); $('[name="email"]', f).focus(); return; }
   if (!d.message || !d.message.trim()) { err.textContent = t("e_msg"); $('[name="message"]', f).focus(); return; }
   const m = buildMessage(kind, d, f), out = f.parentElement.querySelector(".form-out");
+  let why = "";
   if (SITE.formEndpoint) {
     const ts = SITE.turnstileSiteKey ? tsState(f) : null;
+    if (SITE.turnstileSiteKey && !(ts && ts.ready)) why = "Turnstile no se cargó (¿bloqueador de anuncios, o el dominio no está en los Hostnames del widget?)";
     const btn = $("button[type=submit]", f); if (btn) btn.disabled = true;
     if (ts && ts.ready && !d["cf-turnstile-response"]) {
       /* la verificación suele ir sola en segundo plano: se espera hasta 8 s a que termine */
@@ -1814,13 +1816,16 @@ async function handleSubmit(f) {
       const res = await fetch(SITE.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ ...fields, kind, subject: m.subject, lang, page: location.pathname, token: token || "" }) });
       if (res.ok) { out.innerHTML = `<div class="notice"><b>${t("n_sent")}</b><p>${t("n_sent_d")}</p></div>`; f.reset(); tsReset(f); out.scrollIntoView({ block: "center" }); if (btn) btn.disabled = false; return; }
       tsReset(f);
+      const info = await res.clone().json().catch(() => ({}));
+      why = `el buzón respondió ${res.status}${info.error ? " · " + info.error : ""}`;
+      console.warn("Buzón:", why);
       if (res.status === 429) { err.textContent = t("e_rate"); if (btn) btn.disabled = false; return; }
-      if (res.status === 403 && ts && ts.ready && ((await res.json().catch(() => ({}))).error === "turnstile")) { err.textContent = t("e_ts"); if (btn) btn.disabled = false; return; }
-    } catch (e) { /* pasa al mensaje para copiar */ }
+      if (res.status === 403 && ts && ts.ready && info.error === "turnstile") { err.textContent = t("e_ts"); if (btn) btn.disabled = false; return; }
+    } catch (e) { why = "no se pudo conectar con el buzón (red, bloqueador o CORS)"; console.warn("Buzón:", e); }
     if (btn) btn.disabled = false;
   }
   const mail = `mailto:${SITE.email}?subject=${encodeURIComponent(m.subject)}&body=${encodeURIComponent(m.body)}`;
-  out.innerHTML = `<div class="notice" style="margin-top:20px"><b>${t("n_prepared")}</b><p>${t("n_prepared_d")} <span class="mono">${esc(SITE.email)}</span>.</p><pre>${esc(m.subject)}\n\n${esc(m.body)}</pre>
+  out.innerHTML = `<div class="notice" style="margin-top:20px"><b>${t("n_prepared")}</b><p>${t("n_prepared_d")} <span class="mono">${esc(SITE.email)}</span>.</p>${why ? `<p class="mute" style="font-size:.8rem">⚠ ${esc(why)}</p>` : ""}<pre>${esc(m.subject)}\n\n${esc(m.body)}</pre>
     <div class="notice__act"><button class="btn btn--red btn--sm" data-act="copy" data-text="${esc(m.subject + "\n\n" + m.body)}">${t("copy")}</button><a class="btn btn--sm" href="${esc(mail)}">${t("open_mail")}</a></div></div>`;
   out.scrollIntoView({ block: "center" });
 }
