@@ -704,3 +704,10 @@ html[data-theme="light"] .pager { background: var(--ink); }
 .facts--estrenado { border-bottom: 2px solid var(--bone, #efefef); }
 @media (prefers-reduced-motion: reduce) { .phases::after { animation: none; transform: none; } .phases li { animation: none; opacity: 1; transform: none; } }
 .ts { min-height: 0; margin: 4px 0 0; } .ts:empty { display: none; }
+
+/* Buscador: resultados con resaltado, tipo y fragmento */
+.sres mark { background: color-mix(in srgb, var(--rec) 35%, transparent); color: inherit; padding: 0 1px; border-radius: 2px; }
+.sres .th--k { display: grid; place-items: center; aspect-ratio: 2 / 3; border: 1px solid var(--line); font-family: var(--f-mono); font-size: .58rem; font-weight: 700; letter-spacing: .08em; color: var(--red-hi, var(--rec)); text-align: center; }
+.sres .sn { display: block; margin-top: 6px; font-size: .85rem; line-height: 1.4; color: var(--mute); overflow-wrap: anywhere; }
+.sres__n { margin: 0 0 4px; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+.sres a:focus-visible { outline: 2px solid var(--rec); outline-offset: 2px; }

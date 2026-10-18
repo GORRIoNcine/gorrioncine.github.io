@@ -1018,8 +1018,8 @@ const S = {
   problem_p: ["Hubo un problema con el contenido de esta página. Vuelve al inicio o inténtalo de nuevo en unos minutos.", "There was a problem with this page's content. Go back to the home page or try again in a few minutes."],
   sw_black: ["Negro", "Black"], sw_white: ["Blanco", "White"], sw_red: ["Rojo", "Red"],
   hero_h1: ['Cine <i class="lc">independiente</i> hecho en <span class="hl">Cuba</span>.', '<i class="lc">Independent</i> cinema <b>made</b> in <span class="hl">Cuba</span>.'],
-  search_ph: ["Título, nombre, tema…", "Title, name, topic…"], search_hint: ["Busca entre proyectos y noticias.", "Search across projects and news."],
-  search_none: ["No hay resultados para", "No results for"],
+  search_ph: ["Título, nombre, tema…", "Title, name, topic…"], search_hint: ["Busca entre proyectos, noticias, servicios, equipo y prensa, en español o inglés.", "Search projects, news, services, team and press, in Spanish or English."],
+  search_none: ["No hay resultados para", "No results for"], n_result: ["resultado", "result"], n_results: ["resultados", "results"], n_more_results: ["Hay más resultados: escribe más palabras para afinar.", "There are more results: type more words to narrow down."],
   kicker: ["Productora audiovisual independiente · La Habana", "Independent audiovisual production company · Havana"],
   hero_sub: ["Hacemos ficción, documental, series y videoclips con equipos pequeños y mucha calle. Producimos nuestros proyectos y los de quienes quieren filmar en Cuba.", "We make fiction, documentaries, series and music videos with small crews and plenty of street. We produce our own projects and those of people who want to film in Cuba."],
   see_projects: ["Ver proyectos", "See projects"], see_reel: ["Ver el reel", "Watch the reel"],
@@ -1715,13 +1715,88 @@ function openSearch() {
   document.body.style.overflow = "hidden";
   $("#sinput").focus();
 }
-function searchHTML(qraw) {
-  const q = norm(qraw.trim());
-  if (!q) return `<p class="mute">${t("search_hint")}</p>`;
+/* Buscador interno (estático, sin servidor): se construye en el navegador con el contenido ya cargado.
+   Busca en español e inglés a la vez, sin distinguir tildes ni mayúsculas, con varias palabras (todas deben aparecer),
+   y ordena por relevancia: título > etiquetas > texto. */
+const KIND = { page: ["Página", "Page", "PÁG", "PAGE"], project: ["Proyecto", "Project", "", ""], news: ["Noticia", "News", "NOT", "NEWS"], service: ["Servicio", "Service", "SERV", "SERV"], team: ["Equipo", "Team", "EQUIPO", "TEAM"], press: ["Prensa", "Press", "PRENSA", "PRESS"], award: ["Premio", "Award", "PREMIO", "AWARD"] };
+const kindName = (k) => KIND[k][lang === "en" ? 1 : 0], kindShort = (k) => KIND[k][lang === "en" ? 3 : 2];
+const flat = (v) => (v == null ? [] : typeof v === "string" || typeof v === "number" ? [String(v)] : Array.isArray(v) ? v.flatMap(flat) : typeof v === "object" ? Object.values(v).flatMap(flat) : []);
+/* Igual que flat, pero solo el idioma de la web (para los fragmentos que se muestran) */
+const flatL = (v) => (v && typeof v === "object" && !Array.isArray(v) && ("es" in v || "en" in v) ? flatL(v[lang] != null ? v[lang] : v.es != null ? v.es : v.en) : Array.isArray(v) ? v.flatMap(flatL) : v && typeof v === "object" ? Object.values(v).flatMap(flatL) : flat(v));
+const hay = (...vs) => norm(vs.flatMap(flat).join(" · "));
+let searchIdx = null, searchIdxLang = "";
+function buildSearchIndex() {
   const out = [];
-  PROJECTS.forEach((p) => { if (norm([p.title, L(p.tagline), L(p.short), typeLabel(p), p.year, p.crew.map((c) => c.n).join(" ")].join(" ")).includes(q)) out.push(`<a href="${routeHref("project", p.slug)}"><span class="th" data-title="${esc(p.title)}">${posterSVG(p, lang)}</span><span><b>${esc(p.title)}</b><br><span class="mono">${esc(typeLabel(p))} · ${p.year}</span></span></a>`); });
-  NEWS.forEach((n) => { if (norm([L(n.title), L(n.sum), L(n.body).join(" ")].join(" ")).includes(q)) out.push(`<a href="${routeHref("article", n.slug)}"><span class="th" style="aspect-ratio:2/3;display:grid;place-items:center;font-family:var(--f-mono);font-size:.6rem;color:var(--red-hi)">NEWS</span><span><b>${esc(L(n.title))}</b><br><span class="mono">${esc(fmtDate(n.date))}</span></span></a>`); });
-  return out.length ? out.join("") : `<p class="mute">${t("search_none")} “${esc(qraw)}”.</p>`;
+  const add = (kind, title, sub, href, head, body, extra) => out.push({ kind, title, sub, href, head: hay(head), body: hay(body), raw: flatL(body).join(" "), ...extra });
+  const PAGES = [
+    ["inicio", t("crumb_home"), "home inicio portada principal reel"],
+    ["proyectos", t("nav_proyectos"), "proyectos películas films projects catalogue catálogo cortometrajes documentales series videoclips"],
+    ["servicios", t("nav_servicios"), "servicios services presupuesto quote budget producción de campo fixing encargos"],
+    ["nosotros", t("nav_nosotros"), "nosotros about us equipo team historia history valores values aliados allies"],
+    ["prensa", t("nav_prensa"), "prensa press premios awards festivales festivals dossier kit"],
+    ["noticias", t("nav_noticias"), "noticias news novedades blog"],
+    ["contacto", t("nav_contacto"), "contacto contact escribir write email correo teléfono phone redes social"],
+    ["legal", lang === "en" ? "Legal notice and privacy" : "Aviso legal y privacidad", "legal privacidad privacy aviso notice cookies términos terms"],
+  ];
+  PAGES.forEach(([r, title, kw]) => add("page", title, "", routeHref(r), [title, kw], []));
+  PROJECTS.forEach((p) => add("project", p.title, `${typeLabel(p)} · ${p.year}`, routeHref("project", p.slug),
+    [p.title, p.tagline, Object.values(TYPES[p.type] || {}), p.format, p.genre, p.year, STATUS[p.status]],
+    [p.short, p.long, p.crew.map((c) => c.n), p.lang, p.subs, p.note, p.where.map((w) => [w.l, w.n])], { p }));
+  NEWS.forEach((n) => add("news", L(n.title), fmtDate(n.date), routeHref("article", n.slug), [n.title, n.cat && NEWS_CATS[n.cat]], [n.sum, n.body]));
+  SERVICES.forEach((x) => add("service", L(x.t), "", routeHref("servicios"), [x.t], [x.d, x.l]));
+  TEAM.forEach((x) => add("team", x.n, L(x.r), routeHref("nosotros"), [x.n, x.r], [x.b]));
+  PRESS.forEach((x) => add("press", L(x.t), x.s, routeHref("prensa"), [x.t, x.s], [x.x]));
+  AWARDS.forEach((x) => add("award", L(x.a), `${x.f} · ${x.y}`, routeHref("prensa"), [x.a, x.f, x.y], []));
+  return out;
+}
+const rxEsc = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+/* Resalta las palabras buscadas ignorando tildes: se compara sobre el texto normalizado, que conserva la longitud */
+function mark(text, toks) {
+  const src = String(text), n = norm(src);
+  if (n.length !== src.length) return esc(src);
+  const rx = new RegExp(toks.map(rxEsc).join("|"), "g"); let o = "", i = 0, m;
+  while ((m = rx.exec(n)) && m[0]) { o += esc(src.slice(i, m.index)) + "<mark>" + esc(src.slice(m.index, m.index + m[0].length)) + "</mark>"; i = m.index + m[0].length; }
+  return o + esc(src.slice(i));
+}
+function snippet(raw, toks) {
+  const src = flat(raw).join(" "), n = norm(src);
+  if (n.length !== src.length) return "";
+  const at = toks.map((w) => n.indexOf(w)).filter((i) => i >= 0).sort((a, b) => a - b)[0];
+  if (at == null) return "";
+  const from = Math.max(0, at - 50), to = Math.min(src.length, at + 90);
+  return (from ? "… " : "") + src.slice(from, to).trim() + (to < src.length ? " …" : "");
+}
+function searchHTML(qraw) {
+  const toks = norm(qraw).split(/\s+/).filter(Boolean);
+  if (!toks.length) return `<p class="mute">${t("search_hint")}</p>`;
+  if (!searchIdx || searchIdxLang !== lang) { searchIdx = buildSearchIndex(); searchIdxLang = lang; }
+  const phrase = toks.join(" ");
+  const hits = [];
+  for (const e of searchIdx) {
+    let sc = 0, ok = true;
+    for (const w of toks) {
+      const wb = new RegExp("(^|[^a-z0-9])" + rxEsc(w));
+      if (wb.test(e.head)) sc += e.head.startsWith(w) ? 14 : 9;
+      else if (e.head.includes(w)) sc += 5;
+      else if (e.body.includes(w)) sc += 1;
+      else { ok = false; break; }
+    }
+    if (!ok) continue;
+    if (norm(e.title).includes(phrase)) sc += 8;
+    if (norm(e.title) === phrase) sc += 20;
+    if (e.kind === "page") sc += 3;
+    hits.push([sc, e]);
+  }
+  hits.sort((a, b) => b[0] - a[0] || (a[1].kind === "news" ? 1 : 0) - (b[1].kind === "news" ? 1 : 0));
+  if (!hits.length) return `<p class="mute">${t("search_none")} “${esc(qraw)}”.</p>`;
+  const MAX = 24;
+  const row = ([, e]) => {
+    const thumb = e.p ? `<span class="th" data-title="${esc(e.p.title)}">${posterSVG(e.p, lang)}</span>` : `<span class="th th--k">${esc(kindShort(e.kind))}</span>`;
+    const inHead = toks.every((w) => norm(e.title + " " + e.sub).includes(w));
+    const sn = inHead ? "" : snippet(e.raw, toks);
+    return `<a href="${e.href}">${thumb}<span><b>${mark(e.title, toks)}</b><br><span class="mono">${esc(kindName(e.kind))}${e.sub ? " · " + mark(e.sub, toks) : ""}</span>${sn ? `<span class="sn">${mark(sn, toks)}</span>` : ""}</span></a>`;
+  };
+  return `<p class="mute sres__n" aria-live="polite">${hits.length} ${hits.length === 1 ? t("n_result") : t("n_results")}</p>` + hits.slice(0, MAX).map(row).join("") + (hits.length > MAX ? `<p class="mute">${t("n_more_results")}</p>` : "");
 }
 function openLightbox(slug, i) {
   const p = projBy(slug); if (!p) return;
@@ -1930,6 +2005,13 @@ document.addEventListener("input", (e) => {
 });
 document.addEventListener("submit", (e) => { const f = e.target.closest("form[data-form]"); if (!f) return; e.preventDefault(); handleSubmit(f); });
 document.addEventListener("keydown", (e) => {
+  /* Buscador: flechas para recorrer los resultados, Enter abre el primero */
+  if (ov().querySelector(".sdlg") && (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter")) {
+    const links = [...ov().querySelectorAll(".sres a")], i = links.indexOf(document.activeElement), inp = $("#sinput");
+    if (e.key === "Enter" && document.activeElement === inp && links[0]) { e.preventDefault(); links[0].click(); return; }
+    if (e.key === "ArrowDown" && links.length) { e.preventDefault(); (links[i + 1] || links[links.length - 1]).focus(); return; }
+    if (e.key === "ArrowUp" && i >= 0) { e.preventDefault(); (i === 0 ? inp : links[i - 1]).focus(); return; }
+  }
   if (e.key === "Escape") { closeLangMenu(); if (ov().innerHTML) closeOv(); else { const nav = $("#nav"); if (nav && nav.classList.contains("is-open")) { nav.classList.remove("is-open"); document.documentElement.classList.remove("nav-lock"); const b = $(".burger"); if (b) b.setAttribute("aria-expanded", "false"); } } }
   if (lb && e.key === "ArrowRight") openLightbox(lb.slug, lb.i + 1);
   if (lb && e.key === "ArrowLeft") openLightbox(lb.slug, lb.i - 1);
