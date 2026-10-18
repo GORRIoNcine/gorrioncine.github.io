@@ -1,0 +1,58 @@
+[
+  {
+    "file": "01-bienvenida",
+    "kind": "Automatización",
+    "name": "Bienvenida",
+    "when": "Al instante, cuando alguien entra en el grupo «Boletín»",
+    "subject": "Ya estás dentro · You're in",
+    "preheader": "Estrenos, rodajes y convocatorias. Pocas veces, sin ruido."
+  },
+  {
+    "file": "02-conoce-el-trabajo",
+    "kind": "Automatización",
+    "name": "Conoce el trabajo",
+    "when": "3 días después de la bienvenida",
+    "subject": "Tres películas para empezar · Three films to start",
+    "preheader": "Una estrenada, una en rodaje y una en montaje."
+  },
+  {
+    "file": "03-reenganche",
+    "kind": "Automatización",
+    "name": "¿Seguimos en contacto?",
+    "when": "A los 90 días, solo a quien no ha abierto ningún correo",
+    "subject": "¿Seguimos en contacto? · Shall we keep in touch?",
+    "preheader": "Un clic para seguir recibiéndolo. Si no, lo dejamos aquí."
+  },
+  {
+    "file": "04-prensa-y-festivales",
+    "kind": "Automatización",
+    "name": "Material para prensa y festivales",
+    "when": "Al instante, cuando alguien entra en el grupo «Prensa y festivales»",
+    "subject": "Material para prensa y festivales · Press & festival kit",
+    "preheader": "Dossier, carteles, fotogramas y contacto de prensa."
+  },
+  {
+    "file": "05-novedades",
+    "kind": "Campaña",
+    "name": "Novedades (boletín)",
+    "when": "Manual · 1 vez al mes",
+    "subject": "Novedades de GORRIóN · GORRIóN news",
+    "preheader": "Lo último: estrenos, rodajes y convocatorias."
+  },
+  {
+    "file": "06-estreno",
+    "kind": "Campaña",
+    "name": "Estreno o proyecto nuevo",
+    "when": "Manual · cuando haya un estreno, tráiler o proyecto nuevo",
+    "subject": "[Título]: estreno · [Title]: release",
+    "preheader": "[Una frase que haga querer abrir el correo.]"
+  },
+  {
+    "file": "07-convocatoria",
+    "kind": "Campaña",
+    "name": "Convocatoria (equipo o casting)",
+    "when": "Manual · cuando se abra una convocatoria",
+    "subject": "Convocatoria: [qué buscamos] · Open call: [what we need]",
+    "preheader": "[Rol o perfil]. Fecha límite: [fecha]."
+  }
+]
