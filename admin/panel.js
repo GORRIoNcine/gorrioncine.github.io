@@ -676,6 +676,17 @@
     window.GStats.render(el, { h, pageHead, ico, token: () => G.token() });
   }
 
+  /* ---------- Mensajes (buzón) ---------- */
+  async function viewInbox() {
+    const el = root();
+    el.replaceChildren(h("p", { class: "ed-empty" }, "Cargando…"));
+    if (!window.GInbox) {
+      try { await new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = "inbox.js?v=1"; sc.onload = ok; sc.onerror = no; document.head.append(sc); }); }
+      catch (e) { el.replaceChildren(h("p", { class: "ed-empty" }, "No se pudo cargar el buzón.")); return; }
+    }
+    window.GInbox.render(el, { h, pageHead, ico, token: () => G.token(), toast, inboxUrl: G.inboxUrl, refresh: G.refreshInbox });
+  }
+
   /* ---------- Historial (Git) ---------- */
   async function viewHistory() {
     const el = root();
@@ -696,6 +707,7 @@
     S.item = null; S.itemDirty = false; S.dirty = false; S.filter = "";
     if (name === "medios") { S.name = "medios"; return viewMedia(); }
     if (name === "estadisticas") { S.name = "estadisticas"; return viewStats(); }
+    if (name === "mensajes") { S.name = "mensajes"; return viewInbox(); }
     if (name === "historial") { S.name = "historial"; return viewHistory(); }
     const sec = S.schema.find((s) => s.name === name);
     if (!sec) { el.replaceChildren(h("p", { class: "ed-empty" }, "Sección desconocida.")); return; }

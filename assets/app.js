@@ -19,6 +19,8 @@ const SITE = {
   // Si pones aquí la URL de un servicio de formularios (Formspree, Getform…),
   // los formularios se envían por POST. Vacío: se genera un mensaje para copiar.
   formEndpoint: "",
+  // Clave PÚBLICA de Cloudflare Turnstile (antispam de los formularios). Vacío: sin verificación.
+  turnstileSiteKey: "",
   // Boletín con MailerLite (plan gratuito): URL de suscripción de tu formulario.
   newsletterUrl: "https://assets.mailerlite.com/jsonp/2705137/forms/201109371772470645/subscribe",
   social: [
@@ -1085,7 +1087,7 @@ const S = {
   i_email: ["Correo", "Email"], i_city: ["Ciudad", "City"], i_resp: ["Tiempo de respuesta", "Response time"], i_resp_v: ["Uno o dos días laborables. Si la conexión falla, puede tardar un poco más.", "One or two working days. If the connection is poor, it may take a little longer."],
   i_social: ["Redes", "Social"], i_alt: ["Otros canales", "Other channels"], i_alt_p: ["Si tienes poca conexión, escríbenos por mensajería. Aceptamos mensajes cortos y enlaces a tu material.", "If your connection is limited, write to us by messaging app. Short messages and links to your material are fine."],
   /* formularios */
-  e_name: ["Escribe tu nombre.", "Please enter your name."], e_email: ["Escribe un correo válido.", "Please enter a valid email."], e_msg: ["Escribe un mensaje.", "Please write a message."],
+  e_name: ["Escribe tu nombre.", "Please enter your name."], e_email: ["Escribe un correo válido.", "Please enter a valid email."], e_msg: ["Escribe un mensaje.", "Please write a message."], e_ts: ["Confirma que no eres un robot para enviar.", "Please confirm you are not a robot to send."], e_rate: ["Has enviado varios mensajes seguidos. Espera unos minutos e inténtalo de nuevo.", "You sent several messages in a row. Please wait a few minutes and try again."],
   n_prepared: ["Mensaje preparado", "Message ready"],
   n_prepared_d: ["Este sitio todavía no tiene un servicio de envío conectado. Copia el mensaje o ábrelo en tu correo, y envíalo a", "This site does not have a sending service connected yet. Copy the message or open it in your email, and send it to"],
   n_sent: ["Mensaje enviado", "Message sent"], n_sent_d: ["Gracias. Te responderemos pronto.", "Thank you. We will reply soon."],
@@ -1202,6 +1204,7 @@ function fld(id, label, o = {}) {
 function sel(id, label, opts, val) {
   return `<label class="lbl" for="${id}">${esc(label)}<select class="select field" id="${id}" name="${id}">${opts.map((o) => `<option value="${esc(o.v)}"${o.v === val ? " selected" : ""}>${esc(o.l)}</option>`).join("")}</select></label>`;
 }
+const tsBox = () => (SITE.turnstileSiteKey && SITE.formEndpoint ? `<div class="ts" data-ts></div>` : "");
 const hpField = () => `<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">`;
 
 /* ---------- Cabecera y pie ---------- */
@@ -1396,7 +1399,7 @@ function pageProject(p) {
         <form class="form" data-form="request" novalidate><input type="hidden" name="project" value="${esc(p.title)}">
           ${sel("what", t("req_what"), whatOpts, "screener")}
           <div class="form__row">${fld("r-name", t("name"), { req: true, ac: "name", name: "name" })}${fld("r-email", t("email"), { type: "email", req: true, ac: "email", name: "email" })}</div>
-          ${fld("r-org", t("org"), { name: "org", ac: "organization" })}${fld("r-msg", t("message"), { type: "textarea", rows: 4, name: "message", req: true })}${hpField()}
+          ${fld("r-org", t("org"), { name: "org", ac: "organization" })}${fld("r-msg", t("message"), { type: "textarea", rows: 4, name: "message", req: true })}${hpField()}${tsBox()}
           <p class="err" role="alert"></p><div><button class="btn btn--red" type="submit">${t("send")}</button></div></form><div class="form-out" aria-live="polite"></div></div></div></section>
     <section class="block"><h2 style="font-size:clamp(2rem,4vw,3rem);margin-bottom:24px">${t("related")}</h2><div class="grid grid--posters">${related.map(card).join("")}</div></section>
   </div>`;
@@ -1418,7 +1421,7 @@ function pageServices() {
       <div class="form__row">${fld("q-name", t("name"), { req: true, ac: "name", name: "name" })}${fld("q-email", t("email"), { type: "email", req: true, ac: "email", name: "email" })}</div>
       ${fld("q-org", t("org"), { name: "org", ac: "organization" })}
       <div class="form__row">${sel("service", t("q_service"), svcOpts)}${sel("budget", t("q_budget"), bud)}</div>
-      ${fld("q-deadline", t("q_deadline"), { name: "deadline" })}${fld("q-msg", t("q_desc"), { type: "textarea", rows: 6, name: "message", req: true })}${hpField()}
+      ${fld("q-deadline", t("q_deadline"), { name: "deadline" })}${fld("q-msg", t("q_desc"), { type: "textarea", rows: 6, name: "message", req: true })}${hpField()}${tsBox()}
       <p class="err" role="alert"></p><div><button class="btn btn--red" type="submit">${t("q_send")}</button></div></form><div class="form-out" aria-live="polite"></div></div></div></section>`;
 }
 
@@ -1482,7 +1485,7 @@ function pageContact() {
     <div><form class="form" data-form="contact" novalidate>
       ${sel("reason", t("reason"), reasons)}
       <div class="form__row">${fld("c-name", t("name"), { req: true, ac: "name", name: "name" })}${fld("c-email", t("email"), { type: "email", req: true, ac: "email", name: "email" })}</div>
-      ${fld("c-org", t("org"), { name: "org", ac: "organization" })}${fld("c-msg", t("message"), { type: "textarea", rows: 7, name: "message", req: true })}${hpField()}
+      ${fld("c-org", t("org"), { name: "org", ac: "organization" })}${fld("c-msg", t("message"), { type: "textarea", rows: 7, name: "message", req: true })}${hpField()}${tsBox()}
       <p class="err" role="alert"></p><div><button class="btn btn--red" type="submit">${t("send")}</button></div></form><div class="form-out" aria-live="polite"></div></div>
     <dl class="info"><div><dt>${t("i_email")}</dt><dd>${cp(SITE.email)}</dd></div><div><dt>${t("i_city")}</dt><dd>${esc(L(SITE.city))}</dd></div>
       <div><dt>${t("i_resp")}</dt><dd style="font-size:1rem">${t("i_resp_v")}</dd></div>
@@ -1762,6 +1765,32 @@ function buildMessage(kind, d, f) {
   lines.push("", d.message);
   return { subject, body: lines.join("\n") };
 }
+/* Cloudflare Turnstile: se carga solo cuando alguien empieza a escribir en un formulario (no frena la carga de la página) */
+let tsLoad = null;
+function tsScript() {
+  if (tsLoad) return tsLoad;
+  tsLoad = new Promise((ok) => {
+    if (window.turnstile) return ok(true);
+    const sc = document.createElement("script");
+    sc.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    sc.async = true; sc.onload = () => ok(!!window.turnstile); sc.onerror = () => ok(false);
+    document.head.appendChild(sc);
+  });
+  return tsLoad;
+}
+const tsState = (f) => { const b = $(".ts", f); return { ready: !!(b && b.dataset.tsId && window.turnstile) }; };
+function tsReset(f) { const b = $(".ts", f); if (b && b.dataset.tsId && window.turnstile) { try { window.turnstile.reset(b.dataset.tsId); } catch (e) { /* nada */ } } }
+async function tsMount(f) {
+  const b = $(".ts", f);
+  if (!b || b.dataset.tsId || b.dataset.tsBusy || !SITE.turnstileSiteKey) return;
+  b.dataset.tsBusy = "1";
+  if (await tsScript()) {
+    try { b.dataset.tsId = window.turnstile.render(b, { sitekey: SITE.turnstileSiteKey, theme: document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark", language: lang, appearance: "interaction-only" }); } catch (e) { /* sin verificación: se usará el correo */ }
+  }
+  delete b.dataset.tsBusy;
+}
+document.addEventListener("focusin", (e) => { const f = e.target.closest && e.target.closest("form[data-form]"); if (f && f.querySelector(".ts")) tsMount(f); });
+
 async function handleSubmit(f) {
   const kind = f.dataset.form, d = Object.fromEntries(new FormData(f)), err = $(".err", f);
   if (d.website) return;
@@ -1772,10 +1801,23 @@ async function handleSubmit(f) {
   if (!d.message || !d.message.trim()) { err.textContent = t("e_msg"); $('[name="message"]', f).focus(); return; }
   const m = buildMessage(kind, d, f), out = f.parentElement.querySelector(".form-out");
   if (SITE.formEndpoint) {
+    const ts = SITE.turnstileSiteKey ? tsState(f) : null;
+    const btn = $("button[type=submit]", f); if (btn) btn.disabled = true;
+    if (ts && ts.ready && !d["cf-turnstile-response"]) {
+      /* la verificación suele ir sola en segundo plano: se espera hasta 8 s a que termine */
+      for (let i = 0; i < 40 && !(new FormData(f).get("cf-turnstile-response")); i++) await new Promise((r) => setTimeout(r, 200));
+      d["cf-turnstile-response"] = new FormData(f).get("cf-turnstile-response") || "";
+      if (!d["cf-turnstile-response"]) { err.textContent = t("e_ts"); if (btn) btn.disabled = false; return; }
+    }
     try {
-      const res = await fetch(SITE.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ subject: m.subject, ...d }) });
-      if (res.ok) { out.innerHTML = `<div class="notice"><b>${t("n_sent")}</b><p>${t("n_sent_d")}</p></div>`; f.reset(); out.scrollIntoView({ block: "center" }); return; }
+      const { website, "cf-turnstile-response": token, ...fields } = d;
+      const res = await fetch(SITE.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ ...fields, kind, subject: m.subject, lang, page: location.pathname, token: token || "" }) });
+      if (res.ok) { out.innerHTML = `<div class="notice"><b>${t("n_sent")}</b><p>${t("n_sent_d")}</p></div>`; f.reset(); tsReset(f); out.scrollIntoView({ block: "center" }); if (btn) btn.disabled = false; return; }
+      tsReset(f);
+      if (res.status === 429) { err.textContent = t("e_rate"); if (btn) btn.disabled = false; return; }
+      if (res.status === 403 && ts && ts.ready && ((await res.json().catch(() => ({}))).error === "turnstile")) { err.textContent = t("e_ts"); if (btn) btn.disabled = false; return; }
     } catch (e) { /* pasa al mensaje para copiar */ }
+    if (btn) btn.disabled = false;
   }
   const mail = `mailto:${SITE.email}?subject=${encodeURIComponent(m.subject)}&body=${encodeURIComponent(m.body)}`;
   out.innerHTML = `<div class="notice" style="margin-top:20px"><b>${t("n_prepared")}</b><p>${t("n_prepared_d")} <span class="mono">${esc(SITE.email)}</span>.</p><pre>${esc(m.subject)}\n\n${esc(m.body)}</pre>

@@ -96,6 +96,14 @@ list(pre && pre.awards).forEach((a, i) => {
 list(equ && equ.items).forEach((m) => img(`Equipo «${m.n}»`, m.photo));
 imgs.forEach(([w, f]) => { if (!existsSync(join(root, f.slice(1)))) warn(`${w}: la imagen ${f} no está en la carpeta uploads.`); });
 
+/* Buzón de mensajes y antispam (Ajustes del sitio) */
+{
+  const site = (() => { try { return JSON.parse(readFileSync(join(root0, "content", "site.json"), "utf8")); } catch (e) { return {}; } })();
+  if (site.formEndpoint && !/^https:\/\/[^\s]+$/.test(String(site.formEndpoint))) err("Ajustes del sitio: la dirección del buzón de mensajes debe empezar por https://");
+  if (site.turnstileSiteKey && !/^0x[A-Za-z0-9_-]{8,}$/.test(String(site.turnstileSiteKey).trim())) err("Ajustes del sitio: la clave de Turnstile no parece una «Site key» (empieza por 0x). ¿Pegaste la clave secreta por error?");
+  if (site.turnstileSiteKey && !site.formEndpoint) warn("Ajustes del sitio: hay clave de Turnstile pero falta la dirección del buzón; los formularios no usarán el antispam.");
+}
+
 const out = [];
 if (errors.length) out.push(`❌ ${errors.length} error(es) que rompen enlaces o datos:`, ...errors.map((m) => "  - " + m));
 if (warnings.length) out.push(`⚠️ ${warnings.length} aviso(s):`, ...warnings.map((m) => "  - " + m));

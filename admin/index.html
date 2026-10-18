@@ -182,7 +182,18 @@ const ico=n=>`<svg class="i" viewBox="0 0 24 24">${IC[n]}</svg>`;
 const icoEl=n=>{const d=document.createElement("span");d.innerHTML=ico(n);return d.firstChild};
 window.GADMIN={repo:REPO,token:()=>TOKEN,toast,ico:icoEl};
 const EDIT=n=>n==="media"?"#/medios":`#/${n}`;
-const MENU=[["dash","Escritorio","#/",null],["film","Proyectos",EDIT("proyectos"),"p"],["news","Noticias",EDIT("noticias"),"n"],["team","Equipo",EDIT("equipo"),"e"],["tool","Servicios",EDIT("servicios"),"s"],["info","Nosotros",EDIT("nosotros"),null],["award","Prensa y premios",EDIT("prensa"),"a"],["img","Medios (imágenes)",EDIT("media"),null],["search","Buscadores (SEO)",EDIT("seo"),null],["chart","Estadísticas",EDIT("estadisticas"),null],["hist","Historial",EDIT("historial"),null],["gear","Ajustes del sitio",EDIT("site"),null]];
+const MENU=[["dash","Escritorio","#/",null],["mail","Mensajes",EDIT("mensajes"),"m"],["film","Proyectos",EDIT("proyectos"),"p"],["news","Noticias",EDIT("noticias"),"n"],["team","Equipo",EDIT("equipo"),"e"],["tool","Servicios",EDIT("servicios"),"s"],["info","Nosotros",EDIT("nosotros"),null],["award","Prensa y premios",EDIT("prensa"),"a"],["img","Medios (imágenes)",EDIT("media"),null],["search","Buscadores (SEO)",EDIT("seo"),null],["chart","Estadísticas",EDIT("estadisticas"),null],["hist","Historial",EDIT("historial"),null],["gear","Ajustes del sitio",EDIT("site"),null]];
+/* Buzón de mensajes: solo se envía la sesión de GitHub a un Worker de confianza */
+const INBOX_TRUSTED=["https://gorrion-buzon.niguelcruzz2.workers.dev"];
+function inboxUrl(site){try{const u=new URL(String((site&&site.formEndpoint)||""));if(u.protocol==="https:"&&INBOX_TRUSTED.includes(u.origin)&&!u.username&&!u.password&&!u.search&&!u.hash)return u.origin}catch(e){}return ""}
+let INBOX_SITE=null;
+async function refreshInbox(site){
+  if(site)INBOX_SITE=site;
+  const base=inboxUrl(INBOX_SITE),b=$("#inboxb");if(!base||!b||!TOKEN)return;
+  try{const r=await fetch(base+"/unread",{headers:{Authorization:"Bearer "+TOKEN},redirect:"error"});const j=r.ok?await r.json():null;if(j&&typeof j.unread==="number"){b.textContent=j.unread>99?"99+":j.unread;b.hidden=!j.unread;b.style.background=j.unread?"var(--red2)":"";b.style.color=j.unread?"#fff":""}}catch(e){}
+}
+setInterval(()=>refreshInbox(),180000);
+window.GADMIN.inboxUrl=inboxUrl;window.GADMIN.refreshInbox=refreshInbox;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const L=o=>o==null?"":typeof o==="string"?o:(o.es||o.en||"");
@@ -201,7 +212,8 @@ async function startDash(){
   const [site,pr,nw,eq,sv,no,pe]=await Promise.all(["site","proyectos","noticias","equipo","servicios","nosotros","prensa"].map(n=>get("../content/"+n+".json")));
   const P=(pr&&pr.items)||[],N=(nw&&nw.items)||[],E=(eq&&eq.items)||[],S=(sv&&sv.services)||[],M=(pe&&pe.press)||[],A=(pe&&pe.awards)||[];
   const cnt={p:P.length,n:N.length,e:E.length,s:S.length,a:A.length};
-  $("#menu").innerHTML=MENU.map(([i,l,h,k],ix)=>`${ix===7?'<li class="sep"></li>':""}<li><a href="${h}" class="">${ico(i)}${l}${k&&cnt[k]!=null?`<small>${cnt[k]}</small>`:""}</a></li>`).join("");
+  $("#menu").innerHTML=MENU.map(([i,l,h,k],ix)=>`${ix===8?'<li class="sep"></li>':""}<li><a href="${h}" class="">${ico(i)}${l}${k==="m"?'<small id="inboxb" hidden>0</small>':k&&cnt[k]!=null?`<small>${cnt[k]}</small>`:""}</a></li>`).join("");
+  refreshInbox(site);
   markMenu();$("#newmenu").innerHTML=[["film","Proyecto","proyectos"],["news","Noticia","noticias"],["team","Persona del equipo","equipo"],["award","Premio o mención","prensa"]].map(([i,l,n])=>`<li><a href="${EDIT(n)}">${ico(i)}${l}</a></li>`).join("");
   if(site&&site.name)$("#sitename").lastChild.textContent=" "+site.name;
   $("#lead").textContent=P.length||N.length?`Resumen del sitio: ${P.length} proyectos, ${N.length} noticias y ${E.length} personas en el equipo.`:"No se pudo leer el contenido (¿estás abriendo el archivo sin servidor?).";
@@ -215,6 +227,7 @@ async function startDash(){
   const ids=new Set(P.map(p=>p.id)),checks=[];
   const add=(ok,txt,to)=>checks.push([ok,txt,to]);
   add(!/example/.test((site&&site.email)||"x.example"),"Correo de contacto real configurado","site");
+  add(!!inboxUrl(site)&&!!(site&&site.turnstileSiteKey),"Buzón de mensajes con antispam conectado (Turnstile)","site");
   add(!(site&&site.newsletterUrl===""),"Boletín conectado (MailerLite)","site");
   const nop=P.filter(p=>!p.poster).length; add(nop===0,nop?`${nop} proyecto(s) sin cartel (se genera uno automático)`:"Todos los proyectos tienen cartel","proyectos");
   const nos=P.filter(p=>!(p.short&&(p.short.es||p.short.en))).length; add(nos===0,nos?`${nos} proyecto(s) sin sinopsis corta`:"Todos los proyectos tienen sinopsis","proyectos");
@@ -236,7 +249,7 @@ const gmsg=t=>{$("#gmsg").textContent=t||""};
 let booted=false,curHash="";
 function bootEditor(){
   if(booted)return;booted=true;
-  const s=document.createElement("script");s.src="panel.js?v=20261017c";s.onload=route;document.head.append(s);
+  const s=document.createElement("script");s.src="panel.js?v=20261018a";s.onload=route;document.head.append(s);
   window.addEventListener("hashchange",()=>{
     if(window.GEditor&&window.GEditor.isDirty()&&location.hash!==curHash){
       if(!confirm("Tienes cambios sin guardar. ¿Salir sin guardar?")){history.replaceState(null,"",curHash||"#/");return}

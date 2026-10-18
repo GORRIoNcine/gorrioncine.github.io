@@ -165,11 +165,16 @@ collections:
             widget: string
             required: false
             hint: "Ya viene configurada. Déjala vacía para desactivar el boletín."
-          - label: "Servicio de formularios (Formspree, etc.)"
+          - label: "Buzón de mensajes: dirección del Worker de Cloudflare"
             name: formEndpoint
             widget: string
             required: false
-            hint: "Opcional. Pega aquí la URL del servicio para que los formularios se envíen solos."
+            hint: "La dirección del Worker «gorrion-buzon» (termina en .workers.dev). Los formularios se envían ahí y los lees en Mensajes. Vacío: cada formulario prepara un correo."
+          - label: "Turnstile (antispam): clave del sitio"
+            name: turnstileSiteKey
+            widget: string
+            required: false
+            hint: "La clave PÚBLICA («Site key») del widget de Cloudflare Turnstile. Empieza por 0x. Vacío: sin verificación antispam."
           - label: "Estadísticas de visitas: código de Cloudflare"
             name: analyticsToken
             widget: string

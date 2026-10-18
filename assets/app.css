@@ -703,3 +703,4 @@ html[data-theme="light"] .pager { background: var(--ink); }
 .fh--estrenado .fh__poster { box-shadow: 14px 14px 0 var(--red); }
 .facts--estrenado { border-bottom: 2px solid var(--bone, #efefef); }
 @media (prefers-reduced-motion: reduce) { .phases::after { animation: none; transform: none; } .phases li { animation: none; opacity: 1; transform: none; } }
+.ts { min-height: 0; margin: 4px 0 0; } .ts:empty { display: none; }
