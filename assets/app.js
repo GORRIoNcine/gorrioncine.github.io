@@ -1461,7 +1461,6 @@ function partnersHTML() {
     <div class="pts__top"><span class="pts__rec"><i></i>REC</span><span class="pts__tc" data-tc aria-hidden="true">00:00:00:00</span><span class="pts__scene">${t("partners_eyebrow")} · 99</span></div>
     <div class="pts__hd">
       <div role="heading" aria-level="2" id="pts-h" class="pts__h"><span class="ln"><span>${t("partners_h1")}</span></span><span class="ln"><span>${t("partners_h2")}</span></span></div>
-      <div class="clap" aria-hidden="true"><div class="clap__stick"></div><div class="clap__body"><b>${t("partners_eyebrow")}</b><span>TOMA 1</span></div></div>
     </div>
   </div>
   <div class="pts__stage">
