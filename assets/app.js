@@ -1072,7 +1072,7 @@ const S = {
   values: ["Cómo entendemos el <u>cine</u>", "How we understand <u>cinema</u>"], team: ["Equipo", "Team"], history: ["Historia", "History"], allies: ["Colaboradores y aliados", "Collaborators and allies"],
   about_long: [["Somos cineastas, productoras y técnicos que se conocieron filmando en azoteas, portales y bodegas. Producimos ficción, documental, series y videoclips, y también damos servicio a otros proyectos.", "Creemos que el cine independiente es una forma de elegir qué historias se cuentan y con quién. Por eso trabajamos con equipos pequeños, con vecinos en el reparto y con un presupuesto que cabe en un buen plano."], ["We are filmmakers, producers and technicians who met while shooting on rooftops, in doorways and in corner shops. We produce fiction, documentaries, series and music videos, and also provide services for other projects.", "We believe independent cinema is a way of choosing which stories are told and with whom. That is why we work with small crews, neighbours in the cast and a budget that fits a good shot."]],
   /* prensa */
-  partners_eyebrow: ["Colaboradores", "Collaborators"], partners_h: ["Con quienes hacemos cine", "Who we make films with"],
+  partners_eyebrow: ["Colaboradores", "Collaborators"], partners_h1: ["Con quienes", "Who we"], partners_h2: ["hacemos cine", "make films with"],
   press_eyebrow: ["Prensa y festivales", "Press & festivals"], press_page_h: ["Prensa", "Press"], press_lede: ["Premios, selecciones, menciones en medios y materiales para periodistas y programadores.", "Awards, selections, media coverage and materials for journalists and programmers."],
   awards_h: ["Premios y selecciones", "Awards and selections"], inpress: ["En la prensa", "In the press"], kit: ["Kit de prensa", "Press kit"],
   bio: ["Biografía", "Biography"], copy: ["Copiar", "Copy"], copied: ["Copiado", "Copied"], copy_fail: ["Selecciona el texto y cópialo", "Select the text and copy it"],
@@ -1441,18 +1441,52 @@ function pageAbout() {
   <section class="sec sc-red"><div class="wrap cta"><div><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div><a class="btn" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></section>`;
 }
 
-/* Colaboradores del inicio: cinta de logos que se desplaza sola (se pausa al pasar el ratón o al enfocar).
-   Con pocos colaboradores se muestran fijos y centrados. Si no hay ninguno, la sección no se dibuja. */
+/* Colaboradores del inicio — «créditos finales»: una tira de película inclinada con un fotograma por colaborador,
+   nombres gigantes en contorno que corren en sentido contrario, claqueta, indicador REC y código de tiempo.
+   Todo se activa al entrar en pantalla y se detiene fuera de ella. Si no hay colaboradores, no se dibuja nada. */
 function partnersHTML() {
-  const one = (c) => {
-    const inner = c.logo ? `<img ${imgAttrs(c.logo, "200px")} alt="${esc(c.name)}" loading="lazy" decoding="async">` : `<span class="pt__n">${esc(c.name)}</span>`;
-    const ok = /^https?:\/\//i.test(String(c.url || ""));
-    return ok ? `<a class="pt${c.logo ? " pt--logo" : ""}" href="${esc(c.url)}" target="_blank" rel="noopener nofollow" title="${esc(c.name)}" aria-label="${esc(c.name)}">${inner}</a>` : `<span class="pt${c.logo ? " pt--logo" : ""}" title="${esc(c.name)}">${inner}</span>`;
+  const n = PARTNERS.length, reps = Math.max(2, Math.ceil(10 / n)), pad = (k) => String(k).padStart(2, "0");
+  const one = (c, k, live) => {
+    const ok = live && /^https?:\/\//i.test(String(c.url || ""));
+    const img = c.logo ? `<img ${imgAttrs(c.logo, "220px")} alt="${live ? esc(c.name) : ""}" loading="lazy" decoding="async">` : `<span class="fr__txt">${esc(c.name)}</span>`;
+    const body = `<span class="fr__no">${pad(k % 99 + 1)}A</span><span class="fr__img">${img}</span><span class="fr__tag">${esc(c.name)}${ok ? " ↗" : ""}</span>`;
+    return ok ? `<a class="fr" href="${esc(c.url)}" target="_blank" rel="noopener nofollow" aria-label="${esc(c.name)}">${body}</a>` : `<span class="fr"${live ? ` title="${esc(c.name)}"` : ""}>${body}</span>`;
   };
-  const run = PARTNERS.length >= 5;
-  const list = PARTNERS.map(one).join("");
-  const track = run ? `<div class="pts__track"><div class="pts__set">${list}</div><div class="pts__set" aria-hidden="true">${PARTNERS.map((c) => one({ ...c, url: "" })).join("")}</div></div>` : `<div class="pts__static">${list}</div>`;
-  return `<section class="sec--tight sc-bone pts-sec" aria-labelledby="pts-h"><div class="wrap"><div class="sec__head" style="margin-bottom:22px"><div><span class="eyebrow">${t("partners_eyebrow")}</span><h2 id="pts-h" class="pts__h">${t("partners_h")}</h2></div></div></div><div class="pts${run ? " pts--run" : ""}">${track}</div></section>`;
+  const set = (live, off) => Array.from({ length: live ? 1 : reps - 1 }, (_, r) => PARTNERS.map((c, i) => one(c, i + r * n + off, live && r === 0)).join("")).join("");
+  const track = `<div class="pts__set">${PARTNERS.map((c, i) => one(c, i, true)).join("")}${set(false, n)}</div><div class="pts__set" aria-hidden="true">${PARTNERS.map((c, i) => one(c, i, false)).join("")}${set(false, n)}</div>`;
+  const names = PARTNERS.map((c) => esc(c.name).toUpperCase()).join(" <i>✦</i> ");
+  const ghost = Array.from({ length: Math.max(2, Math.ceil(6 / n)) * 2 }, () => `<span>${names} <i>✦</i> </span>`).join("");
+  return `<section class="sec--tight sc-dark pts-sec" aria-labelledby="pts-h" data-pts>
+  <div class="wrap">
+    <div class="pts__top"><span class="pts__rec"><i></i>REC</span><span class="pts__tc" data-tc aria-hidden="true">00:00:00:00</span><span class="pts__scene">${t("partners_eyebrow")} · 99</span></div>
+    <div class="pts__hd">
+      <div role="heading" aria-level="2" id="pts-h" class="pts__h"><span class="ln"><span>${t("partners_h1")}</span></span><span class="ln"><span>${t("partners_h2")}</span></span></div>
+      <div class="clap" aria-hidden="true"><div class="clap__stick"></div><div class="clap__body"><b>${t("partners_eyebrow")}</b><span>TOMA 1</span></div></div>
+    </div>
+  </div>
+  <div class="pts__stage">
+    <div class="pts__ghost" aria-hidden="true"><div class="pts__gt">${ghost}</div></div>
+    <div class="pts__strip"><div class="pts__track">${track}</div></div>
+    <div class="pts__flash" aria-hidden="true"></div>
+  </div>
+</section>`;
+}
+/* Activa/pausa la animación según la visibilidad, anima el código de tiempo y mueve el parallax al hacer scroll */
+let ptsIO = null, ptsRaf = 0;
+function initPartners() {
+  if (ptsIO) { ptsIO.disconnect(); ptsIO = null; }
+  const el = document.querySelector("[data-pts]");
+  if (!el || !("IntersectionObserver" in window)) { if (el) el.classList.add("in"); return; }
+  const tc = el.querySelector("[data-tc]"); let t0 = 0, timer = 0;
+  const tick = () => { const f = Math.floor((performance.now() - t0) / 41.667), p = (v) => String(v).padStart(2, "0"); tc.textContent = `${p(Math.floor(f / 86400) % 100)}:${p(Math.floor(f / 1440) % 60)}:${p(Math.floor(f / 24) % 60)}:${p(f % 24)}`; };
+  const par = () => { ptsRaf = 0; const r = el.getBoundingClientRect(), vh = innerHeight; el.style.setProperty("--sp", Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / vh)).toFixed(3)); };
+  const onScroll = () => { if (!ptsRaf) ptsRaf = requestAnimationFrame(par); };
+  ptsIO = new IntersectionObserver((es) => es.forEach((e) => {
+    el.classList.toggle("live", e.isIntersecting);
+    if (e.isIntersecting) { el.classList.add("in"); t0 = performance.now(); clearInterval(timer); timer = setInterval(tick, 83); addEventListener("scroll", onScroll, { passive: true }); par(); }
+    else { clearInterval(timer); removeEventListener("scroll", onScroll); }
+  }), { threshold: 0.12 });
+  ptsIO.observe(el);
 }
 
 /* --- Prensa --- */
@@ -1719,6 +1753,7 @@ function render(opts = {}) {
   if (!opts.keepScroll && key !== lastKey) { window.scrollTo(0, 0); const h = $("#page-h"); if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); } }
   lastKey = key;
   if (typeof FX !== "undefined") { FX.init(app()); FX.watchAnim(document); }
+  if (typeof initPartners === "function") initPartners();
   if (typeof Buddy !== "undefined") Buddy.sync();
   fitHeads();
 }
