@@ -318,6 +318,7 @@ const AWARDS = [
   { y: 2024, a: { es: "Mención especial del jurado", en: "Special jury mention" }, f: "Encuentro de Cine Documental Sur-Sur", p: "proj-sal-y-canaveral" }
 ];
 
+const PARTNERS = [];
 const PRESS = [
   { d: "2026-02", s: "Revista Cuadro a Cuadro", t: { es: "GORRIóN y el cine que mira desde la azotea", en: "GORRIóN and the cinema that looks from the rooftop" }, x: { es: "Perfil de la productora tras el estreno de La Hora del Zunzún.", en: "Profile of the company after the premiere of La Hora del Zunzún." }, url: "" },
   { d: "2025-11", s: "Diario del Cine Latino", t: { es: "Cinco cortos latinoamericanos para seguir de cerca", en: "Five Latin American shorts to watch" }, x: { es: "La Hora del Zunzún entre las recomendaciones del festival.", en: "La Hora del Zunzún among the festival's recommendations." }, url: "" },
@@ -1071,6 +1072,7 @@ const S = {
   values: ["Cómo entendemos el <u>cine</u>", "How we understand <u>cinema</u>"], team: ["Equipo", "Team"], history: ["Historia", "History"], allies: ["Colaboradores y aliados", "Collaborators and allies"],
   about_long: [["Somos cineastas, productoras y técnicos que se conocieron filmando en azoteas, portales y bodegas. Producimos ficción, documental, series y videoclips, y también damos servicio a otros proyectos.", "Creemos que el cine independiente es una forma de elegir qué historias se cuentan y con quién. Por eso trabajamos con equipos pequeños, con vecinos en el reparto y con un presupuesto que cabe en un buen plano."], ["We are filmmakers, producers and technicians who met while shooting on rooftops, in doorways and in corner shops. We produce fiction, documentaries, series and music videos, and also provide services for other projects.", "We believe independent cinema is a way of choosing which stories are told and with whom. That is why we work with small crews, neighbours in the cast and a budget that fits a good shot."]],
   /* prensa */
+  partners_eyebrow: ["Colaboradores", "Collaborators"], partners_h: ["Con quienes hacemos cine", "Who we make films with"],
   press_eyebrow: ["Prensa y festivales", "Press & festivals"], press_page_h: ["Prensa", "Press"], press_lede: ["Premios, selecciones, menciones en medios y materiales para periodistas y programadores.", "Awards, selections, media coverage and materials for journalists and programmers."],
   awards_h: ["Premios y selecciones", "Awards and selections"], inpress: ["En la prensa", "In the press"], kit: ["Kit de prensa", "Press kit"],
   bio: ["Biografía", "Biography"], copy: ["Copiar", "Copy"], copied: ["Copiado", "Copied"], copy_fail: ["Selecciona el texto y cópialo", "Select the text and copy it"],
@@ -1279,6 +1281,8 @@ function pageHome() {
   ${(AWARDS.length || PRESS.length) ? `<section class="sec--tight sc-red"><div class="wrap"><div class="sec__head" style="margin-bottom:20px"><div><span class="eyebrow">${t("press_eyebrow")}</span></div><a class="link-arrow" href="${routeHref("prensa")}">${t("nav_prensa")} ${ICONS.arrow}</a></div></div>
     <div class="laurels">${AWARDS.length ? AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projName(a.p))}</span></div>`).join("") : [...PRESS].sort((x, y) => String(y.d).localeCompare(String(x.d))).slice(0, 3).map((x) => `<div class="laurel"><span class="mono">${esc(fmtDate(x.d))} · ${esc(x.s)}</span><b>${esc(L(x.t))}</b></div>`).join("")}</div></section>` : ""}
 
+  ${PARTNERS.length ? partnersHTML() : ""}
+
   <section class="sec sc-dark"><div class="wrap split"><div><span class="eyebrow">${t("about_eyebrow")}</span><h2 style="font-size:clamp(2.6rem,6vw,5rem);margin-top:14px;position:static">${t("about_h")}</h2></div>
     <div><p class="lede">${t("about_p")}</p><p style="margin-top:24px"><a class="link-arrow" href="${routeHref("nosotros")}">${t("about_btn")} ${ICONS.arrow}</a></p></div></div></section>
 
@@ -1435,6 +1439,20 @@ function pageAbout() {
   <section class="sec sec--alt sc-dark"><div class="wrap split"><h2>${t("history")}</h2><div class="tline">${HISTORY.map((h) => `<div class="tl"><span class="tl__d">${h.y}</span><div><b>${esc(L(h.t))}</b><span>${esc(L(h.d))}</span></div></div>`).join("")}</div></div></section>
   <section class="sec sc-bone"><div class="wrap split"><h2>${t("allies")}</h2><div class="allies">${ALLIES.map((a) => `<span class="ally">${esc(a)}</span>`).join("")}</div></div></section>
   <section class="sec sc-red"><div class="wrap cta"><div><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div><a class="btn" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></section>`;
+}
+
+/* Colaboradores del inicio: cinta de logos que se desplaza sola (se pausa al pasar el ratón o al enfocar).
+   Con pocos colaboradores se muestran fijos y centrados. Si no hay ninguno, la sección no se dibuja. */
+function partnersHTML() {
+  const one = (c) => {
+    const inner = c.logo ? `<img ${imgAttrs(c.logo, "200px")} alt="${esc(c.name)}" loading="lazy" decoding="async">` : `<span class="pt__n">${esc(c.name)}</span>`;
+    const ok = /^https?:\/\//i.test(String(c.url || ""));
+    return ok ? `<a class="pt${c.logo ? " pt--logo" : ""}" href="${esc(c.url)}" target="_blank" rel="noopener nofollow" title="${esc(c.name)}" aria-label="${esc(c.name)}">${inner}</a>` : `<span class="pt${c.logo ? " pt--logo" : ""}" title="${esc(c.name)}">${inner}</span>`;
+  };
+  const run = PARTNERS.length >= 5;
+  const list = PARTNERS.map(one).join("");
+  const track = run ? `<div class="pts__track"><div class="pts__set">${list}</div><div class="pts__set" aria-hidden="true">${PARTNERS.map((c) => one({ ...c, url: "" })).join("")}</div></div>` : `<div class="pts__static">${list}</div>`;
+  return `<section class="sec--tight sc-bone pts-sec" aria-labelledby="pts-h"><div class="wrap"><div class="sec__head" style="margin-bottom:22px"><div><span class="eyebrow">${t("partners_eyebrow")}</span><h2 id="pts-h" class="pts__h">${t("partners_h")}</h2></div></div></div><div class="pts${run ? " pts--run" : ""}">${track}</div></section>`;
 }
 
 /* --- Prensa --- */
@@ -2055,7 +2073,7 @@ const PREVIEW = (() => {
 function onlyVisible(name, j) {
   if (!j || typeof j !== "object") return j;
   if (name === "proyectos" || name === "noticias") return { ...j, items: asArr(j.items).filter((x) => !isHidden(x)) };
-  if (name === "prensa") return { ...j, press: asArr(j.press).filter((x) => !isHidden(x)), awards: asArr(j.awards).filter((x) => !isHidden(x)) };
+  if (name === "prensa") return { ...j, press: asArr(j.press).filter((x) => !isHidden(x)), awards: asArr(j.awards).filter((x) => !isHidden(x)), partners: asArr(j.partners).filter((x) => !isHidden(x)) };
   return j;
 }
 function fetchJSON(name) {
@@ -2138,7 +2156,7 @@ function loadContent() {
     if (equ) swap(TEAM, asArr(equ.items).filter((m) => m && m.n));
     if (serv) { swap(SERVICES, asArr(serv.services).filter((s) => s && s.t).map((s) => { s.l = s.l || { es: [], en: [] }; s.l.es = asArr(s.l.es); s.l.en = asArr(s.l.en); s.icon = ICONS[s.icon] ? s.icon : "spark"; return s; })); swap(STEPS, asArr(serv.steps).filter((s) => s && s.t)); }
     if (nos) { swap(VALUES, asArr(nos.values).filter((v) => v && v.t)); swap(HISTORY, asArr(nos.history).filter((h) => h && h.t)); if (Array.isArray(nos.allies)) swap(ALLIES, nos.allies.map((a) => (typeof a === "string" ? a : a && a.name)).filter(Boolean)); if (nos.press_bio && typeof nos.press_bio === "object") Object.assign(PRESS_BIO, nos.press_bio); }
-    if (pre) { swap(PRESS, asArr(pre.press).filter((x) => x && x.t)); swap(AWARDS, asArr(pre.awards).filter((a) => a && a.a)); }
+    if (pre) { swap(PRESS, asArr(pre.press).filter((x) => x && x.t)); swap(AWARDS, asArr(pre.awards).filter((a) => a && a.a)); swap(PARTNERS, asArr(pre.partners).filter((c) => c && c.name)); }
   }).catch((e) => { try { console.error(e); } catch (x) { /* nada */ } });
 }
 

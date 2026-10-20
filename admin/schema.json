@@ -3741,7 +3741,7 @@
     ]
   },
   {
-    "label": "Prensa y premios",
+    "label": "Prensa, premios y colaboradores",
     "name": "prensa",
     "fields": [
       {
@@ -3890,6 +3890,53 @@
             "display_fields": [
               "items.*.title"
             ]
+          },
+          {
+            "name": "draft",
+            "label": "Borrador (no se muestra en la web)",
+            "widget": "boolean",
+            "required": false,
+            "default": false,
+            "hint": "Si lo activas, queda guardado pero no aparece en la web."
+          },
+          {
+            "name": "publishAt",
+            "label": "Programar publicación (hora de Cuba)",
+            "widget": "datetimelocal",
+            "required": false,
+            "hint": "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
+          }
+        ]
+      },
+      {
+        "name": "partners",
+        "label": "Colaboradores (se muestran en el inicio)",
+        "label_singular": "colaborador",
+        "widget": "list",
+        "collapsed": true,
+        "required": false,
+        "summary": "{{fields.name}}",
+        "hint": "Aliados, productoras, festivales o marcas con los que trabajas. Si no hay ninguno, la sección no aparece en el inicio.",
+        "fields": [
+          {
+            "name": "name",
+            "label": "Nombre",
+            "widget": "string",
+            "required": true
+          },
+          {
+            "name": "logo",
+            "label": "Logo",
+            "widget": "image",
+            "required": false,
+            "hint": "Mejor en PNG o WebP con fondo transparente y en horizontal. Si no subes logo, se muestra el nombre."
+          },
+          {
+            "name": "url",
+            "label": "Enlace",
+            "widget": "string",
+            "required": false,
+            "hint": "Dirección completa, con https://"
           },
           {
             "name": "draft",

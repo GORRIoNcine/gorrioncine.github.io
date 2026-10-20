@@ -1626,7 +1626,7 @@ collections:
                 name: name
                 widget: string
       - name: prensa
-        label: "Prensa y premios"
+        label: "Prensa, premios y colaboradores"
         file: content/prensa.json
         fields:
           - label: "Menciones en prensa"
@@ -1731,6 +1731,43 @@ collections:
                 value_field: "items.*.id"
                 search_fields: ["items.*.title"]
                 display_fields: ["items.*.title"]
+              - label: "Borrador (no se muestra en la web)"
+                name: draft
+                widget: boolean
+                required: false
+                default: false
+                hint: "Si lo activas, queda guardado pero no aparece en la web."
+              - label: "Programar publicación (hora de Cuba)"
+                name: publishAt
+                widget: datetime
+                required: false
+                date_format: "YYYY-MM-DD"
+                time_format: "HH:mm"
+                format: "YYYY-MM-DDTHH:mm"
+                hint: "Opcional. Se publica solo a esa hora (la web se regenera cada 30 minutos)."
+          - label: "Colaboradores (se muestran en el inicio)"
+            name: partners
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.name}}"
+            label_singular: "colaborador"
+            hint: "Aliados, productoras, festivales o marcas con los que trabajas. Si no hay ninguno, la sección no aparece en el inicio."
+            fields:
+              - label: "Nombre"
+                name: name
+                widget: string
+                required: true
+              - label: "Logo"
+                name: logo
+                widget: image
+                required: false
+                hint: "Mejor en PNG o WebP con fondo transparente y en horizontal. Si no subes logo, se muestra el nombre."
+              - label: "Enlace"
+                name: url
+                widget: string
+                required: false
+                hint: "Dirección completa, con https://"
               - label: "Borrador (no se muestra en la web)"
                 name: draft
                 widget: boolean

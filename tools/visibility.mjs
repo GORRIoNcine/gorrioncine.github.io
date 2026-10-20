@@ -26,7 +26,7 @@ export function visibleContent({ proyectos, noticias, prensa }, now = nowHavana(
     out.noticias = { ...noticias, items: (noticias.items || []).filter((n) => !isHidden(n, now)).map((n) => (n && n.project && hiddenProj.has(n.project) ? { ...n, project: null } : n)) };
   }
   if (prensa) {
-    out.prensa = { ...prensa, press: (prensa.press || []).filter((x) => !isHidden(x, now)), awards: (prensa.awards || []).filter((a) => !isHidden(a, now) && !(a && a.p && hiddenProj.has(a.p))) };
+    out.prensa = { ...prensa, press: (prensa.press || []).filter((x) => !isHidden(x, now)), partners: (prensa.partners || []).filter((x) => !isHidden(x, now)), awards: (prensa.awards || []).filter((a) => !isHidden(a, now) && !(a && a.p && hiddenProj.has(a.p))) };
   }
   return out;
 }

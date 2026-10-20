@@ -624,7 +624,7 @@
     site: "Correo, ciudad, redes y boletín. Se usan en el pie de página y en la página de contacto.",
     servicios: "Lo que ofrece la productora y cómo trabaja.",
     nosotros: "Biografía, valores, historia y aliados de la productora.",
-    prensa: "Menciones en prensa y premios o selecciones en festivales.",
+    prensa: "Menciones en prensa, premios o selecciones en festivales y colaboradores que salen en el inicio.",
   };
   function viewForm() {
     const el = root(); el.replaceChildren();

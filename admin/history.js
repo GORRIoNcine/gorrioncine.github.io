@@ -6,7 +6,7 @@
   "use strict";
   const TZ = "America/Havana";
   const PAGE = 20;
-  const NAMES = { site: "Ajustes del sitio", seo: "Buscadores (SEO)", proyectos: "Proyectos", noticias: "Noticias", equipo: "Equipo", servicios: "Servicios", nosotros: "Nosotros", prensa: "Prensa y premios", roles: "Cargos" };
+  const NAMES = { site: "Ajustes del sitio", seo: "Buscadores (SEO)", proyectos: "Proyectos", noticias: "Noticias", equipo: "Equipo", servicios: "Servicios", nosotros: "Nosotros", prensa: "Prensa, premios y colaboradores", roles: "Cargos" };
   const css = `
 .hx-b[hidden],.hx-a [hidden],.hx-list+.hx-a button[hidden]{display:none!important}
 .hx-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 14px}

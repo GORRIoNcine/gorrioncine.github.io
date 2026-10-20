@@ -44,7 +44,7 @@ load("site"); load("servicios"); load("nosotros");
 
 /* Borradores y publicación programada (draft / publishAt) en proyectos, noticias, prensa y premios */
 const AT = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/;
-[["Proyecto", list(proy && proy.items)], ["Noticia", list(noti && noti.items)], ["Mención de prensa", list(pre && pre.press)], ["Premio", list(pre && pre.awards)]].forEach(([k, arr]) => arr.forEach((x, i) => {
+[["Proyecto", list(proy && proy.items)], ["Noticia", list(noti && noti.items)], ["Mención de prensa", list(pre && pre.press)], ["Premio", list(pre && pre.awards)], ["Colaborador", list(pre && pre.partners)]].forEach(([k, arr]) => arr.forEach((x, i) => {
   if (x && x.publishAt && !AT.test(String(x.publishAt))) err(`${k} ${i + 1}: la fecha de publicación «${x.publishAt}» no es válida (formato AAAA-MM-DDTHH:mm).`);
 }));
 const ids = new Map(), slugs = new Map();
@@ -92,6 +92,12 @@ list(noti && noti.items).forEach((n, i) => {
 list(pre && pre.awards).forEach((a, i) => {
   const t = `Premio ${i + 1} «${txt(a.a)}» (${a.f || "sin festival"}, ${a.y || "s/f"})`;
   if (a.p && !ids.has(a.p)) err(`${t}: apunta a un proyecto que no existe (${a.p}). Elige otro proyecto o déjalo vacío.`);
+});
+list(pre && pre.partners).forEach((c, i) => {
+  const t = `Colaborador ${i + 1} «${c.name || "sin nombre"}»`;
+  if (!c.name) err(`${t}: falta el nombre.`);
+  if (c.url && !/^https?:\/\//i.test(String(c.url))) err(`${t}: el enlace «${c.url}» debe empezar por https://`);
+  img(t, c.logo);
 });
 list(equ && equ.items).forEach((m) => img(`Equipo «${m.n}»`, m.photo));
 imgs.forEach(([w, f]) => { if (!existsSync(join(root, f.slice(1)))) warn(`${w}: la imagen ${f} no está en la carpeta uploads.`); });
