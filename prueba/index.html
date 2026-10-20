@@ -56,8 +56,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 
 /* ---------- barra de progreso + nav ---------- */
 .prog{position:fixed;left:0;top:0;height:3px;width:100%;background:var(--rec);transform-origin:0 50%;transform:scaleX(0);z-index:120}
-.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:110;display:flex;align-items:center;gap:6px;padding:8px 8px 8px 20px;border:1px solid var(--line);border-radius:999px;background:rgba(10,10,10,.55);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);box-shadow:0 10px 40px rgba(0,0,0,.5);transition:transform .5s var(--ease),opacity .4s}
-.nav.hide{transform:translate(-50%,-140%)}
+.nav{position:fixed;top:40px;left:50%;transform:translateX(-50%);z-index:110;display:flex;align-items:center;gap:6px;padding:8px 8px 8px 20px;border:1px solid var(--line);border-radius:999px;background:rgba(10,10,10,.55);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);box-shadow:0 10px 40px rgba(0,0,0,.5);transition:transform .5s var(--ease),opacity .4s}
+.nav.hide{transform:translate(-50%,-200%)}
 .nav__logo{font:500 1.5rem/1 var(--f-display);letter-spacing:.03em;text-transform:uppercase;margin-right:14px;display:flex;align-items:center;gap:10px}
 .nav__logo em{font-style:normal;font:700 .58rem/1 var(--f-mono);letter-spacing:.16em;background:var(--rec);color:#fff;padding:4px 7px;border-radius:99px}
 .nav__a{padding:9px 14px;border-radius:99px;font:700 .72rem/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute);transition:color .2s,background .2s}
@@ -200,7 +200,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 .mf{height:230vh;position:relative}
 .mf__stick{position:sticky;top:0;height:100svh;display:grid;place-items:center;overflow:hidden}
 .mf__t{font:500 clamp(2rem,5.4vw,4.8rem)/1.02 var(--f-display);text-transform:uppercase;max-width:1100px}
-.mf__t .w{display:inline-block;opacity:.14;margin-right:.24em;transition:opacity .25s,color .25s,transform .35s var(--ease)}
+.mf__t .w{display:inline-block;opacity:.2;margin-right:.24em;transition:opacity .25s,color .25s,transform .35s var(--ease)}
 .mf__t .w.on{opacity:1}
 .mf__t .w.hl.on{color:var(--rec)}
 .mf__ring{position:absolute;width:90vmin;height:90vmin;border-radius:50%;border:1px dashed var(--line);animation:spin2 60s linear infinite}
@@ -245,11 +245,90 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opa
 .foot a:hover{color:var(--bone)}
 .foot .row{display:flex;gap:22px;flex-wrap:wrap}
 
+/* ---------- gorriones ---------- */
+.sp{display:block;overflow:visible}
+.sp-w{transform-box:view-box;transform-origin:110px 58px;animation:flap .46s cubic-bezier(.45,0,.55,1) infinite alternate}
+.sp-w--b{animation-delay:-.08s;opacity:.9}
+@keyframes flap{from{transform:rotate(8deg)}to{transform:rotate(-96deg)}}
+.sp-bob{animation:bob .46s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(6px)}to{transform:translateY(-6px)}}
+.sp-head{transform-box:view-box;transform-origin:148px 62px}
+.sp--perch .sp-head{animation:look 5.5s ease-in-out infinite}
+@keyframes look{0%,38%,100%{transform:rotate(0)}44%,52%{transform:rotate(-12deg)}58%,66%{transform:rotate(7deg)}72%{transform:rotate(0)}}
+.sp--perch .sp-tail{transform-box:view-box;transform-origin:60px 80px;animation:tail 5.5s ease-in-out infinite}
+@keyframes tail{0%,60%,100%{transform:rotate(0)}66%{transform:rotate(-7deg)}74%{transform:rotate(3deg)}}
+.flock{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.fl{position:absolute;left:0;top:0;display:block;will-change:transform;filter:drop-shadow(0 6px 18px rgba(212,39,28,.35))}
+.fl .sp{width:100%}
+.fl--0{--y:16vh;width:clamp(70px,9vw,140px);animation:cross 24s linear infinite}
+.fl--1{--y:24vh;width:clamp(44px,5.4vw,84px);animation:cross 30s linear -9s infinite;opacity:.8}
+.fl--2{--y:12vh;width:clamp(32px,3.6vw,56px);animation:cross 34s linear -19s infinite;opacity:.6}
+.fl--3{--y:70vh;width:clamp(50px,6.4vw,100px);animation:cross 28s linear -4s infinite;opacity:.85}
+.fl--4{--y:78vh;width:clamp(30px,3.4vw,52px);animation:cross 38s linear -26s infinite;opacity:.55}
+.fl--1 .sp-w,.fl--1 .sp-bob{animation-duration:.4s}.fl--2 .sp-w,.fl--2 .sp-bob{animation-duration:.36s}.fl--4 .sp-w,.fl--4 .sp-bob{animation-duration:.34s}
+@keyframes cross{0%{transform:translate3d(-20vw,var(--y),0) rotate(4deg)}25%{transform:translate3d(18vw,calc(var(--y) - 5vh),0) rotate(-3deg)}50%{transform:translate3d(52vw,calc(var(--y) + 3vh),0) rotate(5deg)}75%{transform:translate3d(86vw,calc(var(--y) - 6vh),0) rotate(-4deg)}100%{transform:translate3d(122vw,var(--y),0) rotate(3deg)}}
+.nav__bird{position:absolute;left:34px;top:-31px;width:56px;pointer-events:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))}
+/* ---------- botón de menú + panel ---------- */
+.nav__menu{position:relative;flex:none;width:44px;height:44px;margin-left:2px;border:1px solid var(--line);border-radius:50%;background:rgba(239,239,239,.06);cursor:pointer;display:grid;place-content:center;gap:5px;padding:0;transition:background .3s,transform .4s var(--ease),border-color .3s}
+.nav__menu:hover{background:var(--rec);border-color:var(--rec);transform:rotate(90deg)}
+.nav__menu i{display:block;width:18px;height:2px;background:var(--bone);transition:transform .45s var(--ease),opacity .25s,width .3s}
+.nav__menu i:nth-child(2){width:12px;margin-left:auto}
+.nav__menu:hover i:nth-child(2){width:18px}
+html.mopen .nav__menu{background:var(--rec);border-color:var(--rec)}
+html.mopen .nav__menu i:nth-child(1){transform:translateY(7px) rotate(45deg)}
+html.mopen .nav__menu i:nth-child(2){opacity:0}
+html.mopen .nav__menu i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mnu{position:fixed;inset:0;z-index:105;--ox:90%;--oy:40px;clip-path:circle(0 at var(--ox) var(--oy));visibility:hidden;transition:clip-path .8s cubic-bezier(.7,0,.2,1),visibility 0s .8s;display:grid;align-items:center;overflow:hidden}
+html.mopen .mnu{clip-path:circle(150vmax at var(--ox) var(--oy));visibility:visible;transition:clip-path .9s cubic-bezier(.7,0,.2,1),visibility 0s}
+.mnu__bg{position:absolute;inset:0;background:radial-gradient(900px circle at 85% 10%,#8a1f14,transparent 60%),radial-gradient(700px circle at 5% 100%,#5f140f,transparent 60%),#000;z-index:-2}
+.mnu__bg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 59px,rgba(239,239,239,.05) 59px 60px)}
+.mnu__in{width:min(1280px,100% - 48px);margin:110px auto 0;display:grid;gap:clamp(24px,5vh,56px)}
+.mnu__l{list-style:none;margin:0;padding:0;display:grid}
+.mnu__l li{overflow:hidden;border-bottom:1px solid rgba(239,239,239,.18)}
+.mnu__l a{display:flex;align-items:baseline;gap:18px;padding:.08em 0;font:500 clamp(2.8rem,10vw,8rem)/1 var(--f-display);text-transform:uppercase;transform:translateY(110%);transition:transform .8s var(--ease),color .3s,padding .4s var(--ease)}
+html.mopen .mnu__l a{transform:none;transition-delay:calc(.25s + var(--i)*.08s)}
+.mnu__l a small{font:700 .8rem var(--f-mono);letter-spacing:.2em;color:var(--rec)}
+.mnu__l a:hover{color:transparent;-webkit-text-stroke:1.5px var(--bone);padding-left:.25em}
+.mnu__f{display:flex;flex-wrap:wrap;gap:14px 36px;justify-content:space-between;align-items:center;font:700 .72rem var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute);opacity:0;transform:translateY(16px);transition:opacity .6s .7s,transform .6s .7s var(--ease)}
+html.mopen .mnu__f{opacity:1;transform:none}
+.mnu__s{display:flex;gap:20px;flex-wrap:wrap}.mnu__s a:hover{color:var(--bone)}
+.mnu__fl{position:absolute;left:0;top:0;width:clamp(70px,9vw,130px);pointer-events:none;animation:cross 14s linear infinite;--y:70vh}
+.mnu__pe{position:absolute;right:max(24px,4vw);bottom:-4px;width:clamp(70px,9vw,120px);pointer-events:none}
+@media (max-width:860px){.mnu__in{margin-top:96px}}
+@media (max-width:560px){.nav__lang,.nav__cta{display:none}.nav{padding:6px 6px 6px 16px;top:34px}.nav__bird{left:22px;width:46px;top:-25px}}
+/* ---------- manifiesto con fotos de fondo ---------- */
+.mf__bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.mf__ph{position:absolute;inset:-6%;background-size:cover;background-position:center;opacity:0;filter:grayscale(1) contrast(1.15) brightness(1.1);transition:opacity 1.1s ease;will-change:transform,opacity}
+.mf__ph::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,#c0301f,#6b1a12);mix-blend-mode:multiply}
+.mf__ph.on{opacity:.9}
+.mf__shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(0,0,0,.7),rgba(0,0,0,.18) 65%,rgba(0,0,0,.5)),linear-gradient(#000,transparent 20%,transparent 80%,#000);pointer-events:none}
+.mf__stick>.wrap{z-index:2}.mf__ring{z-index:1}
+.mf__cap{position:absolute;right:max(24px,4vw);bottom:28px;z-index:3;display:flex;gap:10px;align-items:center;color:var(--bone)}
+.mf__cap i{width:10px;height:10px;border-radius:50%;background:var(--rec);animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:.1}}
+.mf__bird{position:absolute;left:0;top:0;width:clamp(90px,12vw,190px);z-index:3;pointer-events:none;opacity:0;transition:opacity .4s;will-change:transform;filter:drop-shadow(0 10px 30px rgba(212,39,28,.45))}
+/* ---------- estadísticas compactas en móvil ---------- */
+@media (max-width:620px){
+  .bento{grid-template-columns:repeat(2,1fr);gap:10px;margin-top:26px;grid-auto-rows:auto}
+  .bx{padding:14px 14px 12px;grid-column:span 1!important;grid-row:auto!important}
+  .bx--a,.bx--f{grid-column:span 2!important}
+  .bx--e{order:4}.bx--d{order:5}.bx--f{order:6}
+  .bx .mono{font-size:.6rem;letter-spacing:.14em;line-height:1.35;display:block}
+  .bx .big{font-size:2.9rem!important;margin:6px 0 0}
+  .bx--a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:0}
+  .bx--a .big{order:2;font-size:3.6rem!important;margin:0}
+  .bx--a .reel{display:none}
+  .bx--d .med{font-size:1.55rem;margin:6px 0 0}.eq{display:none}
+  .phases{gap:7px;margin-top:10px}
+  .ph{grid-template-columns:88px 1fr 14px;gap:8px;font-size:.6rem}.ph i{height:6px}
+  .tags{display:none}
+}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .rv,.ttl .l,.hero__h .w i,.slug,.hero__p,.hero__btns,.fp{opacity:1!important;transform:none!important;filter:none!important}
   .hero__h .w i{transform:none!important}
   .mf__t .w{opacity:1}.pre{display:none}
+  .fl{transform:translate3d(calc(12vw + var(--y) * 1.6),var(--y),0)!important}.mnu{transition:none!important}.mf__bird{display:none}
 }
 </style>
 </head>
@@ -272,11 +351,11 @@ if (lang !== "en") lang = "es";
 const L = (o) => (o && typeof o === "object" ? o[lang] || o.es || "" : o || "");
 const ST = {
   es: { hero_h: ["Cine", "<span class='hl'>independiente</span>", "hecho", "en", "Cuba."], hero_p: "Hacemos ficción, documental, series y videoclips con equipos pequeños y mucha calle. Producimos nuestros proyectos y los de quienes quieren filmar en Cuba.", slug: "1. EXT. AZOTEA DEL VEDADO — AMANECER", b1: "Ver proyectos", b2: "Ver el reel", scroll: "Desliza", nav: ["Proyectos", "Números", "Noticias", "Contacto"], cta: "Hablemos", mq1: ["Ficción", "Documental", "Series", "Videoclips", "La Habana"], mq2: ["Equipos pequeños", "Historias grandes", "Hecho en Cuba", "Cine de barrio"],
-    pr_k: "Proyectos", pr_h: "Lo que <u>filmamos</u>", pr_p: "Del guion a la sala. Arrastra o desliza para recorrerlos.", num_k: "En números", num_h: "GORRIóN <u>al detalle</u>", n_pr: "proyectos en marcha", n_aw: "premios y selecciones", n_since: "Desde", n_time: "Hora en La Habana", n_ph: "Fases de producción", n_fmt: "Lo que hacemos", n_press: "menciones en prensa", n_years: "años haciendo cine", n_team: "personas en el equipo",
+    pr_k: "Proyectos", pr_h: "Lo que <u>filmamos</u>", pr_p: "Del guion a la sala. Arrastra o desliza para recorrerlos.", num_k: "En números", num_h: "GORRIóN <u>al detalle</u>", n_pr: "proyectos en marcha", n_aw: "premios y selecciones", n_since: "Desde", n_time: "Hora en La Habana", n_ph: "Fases de producción", n_fmt: "Lo que hacemos", n_press: "menciones en prensa", menu: "Abrir menú", n_years: "años haciendo cine", n_team: "personas en el equipo",
     mf_k: "Manifiesto", news_k: "Noticias", news_h: "Lo <u>último</u>", par_k: "Colaboradores", par_h: "Con quienes hacemos cine", cta_h: "¿Tienes un <u>proyecto</u>?<br>Hablemos.", cta_p: "Cuéntanos la idea y te respondemos en uno o dos días.", cta_b: "Escribir", back: "Volver a la web actual", test: "PRUEBA",
     ph: { desarrollo: "Desarrollo", produccion: "En rodaje", postproduccion: "Postproducción", estrenado: "Estrenada" } },
   en: { hero_h: ["<span class='hl'>Independent</span>", "cinema", "made", "in", "Cuba."], hero_p: "We make fiction, documentaries, series and music videos with small crews and plenty of street. We produce our own projects and those of people who want to film in Cuba.", slug: "1. EXT. VEDADO ROOFTOP — DAWN", b1: "See projects", b2: "Watch the reel", scroll: "Scroll", nav: ["Projects", "Numbers", "News", "Contact"], cta: "Let's talk", mq1: ["Fiction", "Documentary", "Series", "Music videos", "Havana"], mq2: ["Small crews", "Big stories", "Made in Cuba", "Neighbourhood cinema"],
-    pr_k: "Projects", pr_h: "What we <u>film</u>", pr_p: "From script to screen. Drag or swipe to browse.", num_k: "By the numbers", num_h: "GORRIóN <u>in detail</u>", n_pr: "projects under way", n_aw: "awards and selections", n_since: "Since", n_time: "Havana time", n_ph: "Production phases", n_fmt: "What we do", n_press: "press mentions", n_years: "years making films", n_team: "people on the team",
+    pr_k: "Projects", pr_h: "What we <u>film</u>", pr_p: "From script to screen. Drag or swipe to browse.", num_k: "By the numbers", num_h: "GORRIóN <u>in detail</u>", n_pr: "projects under way", n_aw: "awards and selections", n_since: "Since", n_time: "Havana time", n_ph: "Production phases", n_fmt: "What we do", n_press: "press mentions", menu: "Open menu", n_years: "years making films", n_team: "people on the team",
     mf_k: "Manifesto", news_k: "News", news_h: "The <u>latest</u>", par_k: "Collaborators", par_h: "Who we make films with", cta_h: "Got a <u>project</u>?<br>Let's talk.", cta_p: "Tell us the idea and we will reply within a day or two.", cta_b: "Write", back: "Back to the current site", test: "TEST",
     ph: { desarrollo: "In development", produccion: "Shooting", postproduccion: "Post-production", estrenado: "Released" } }
 };
@@ -292,6 +371,28 @@ function derived() {
   const P = (D.proy.items || []).filter((p) => p && p.title && !hidden(p)), N = (D.noti.items || []).filter((n) => n && n.title && !hidden(n)).sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 4);
   const aw = (D.pre.awards || []).filter((x) => !hidden(x)), pr = (D.pre.press || []).filter((x) => !hidden(x)), pa = (D.pre.partners || []).filter((x) => x && x.name && !hidden(x));
   return { P, N, aw, pr, pa };
+}
+/* ---------- gorriones (SVG propio: facetas angulares, rojo y hueso como el logotipo) ---------- */
+function wingSVG(cls, fill, ink) {
+  const S = [110, 58], u = (a) => [Math.cos(a * Math.PI / 180), Math.sin(a * Math.PI / 180)], P = (l, a) => { const v = u(a); return (S[0] + l * v[0]).toFixed(1) + "," + (S[1] + l * v[1]).toFixed(1); };
+  const L = [98, 106, 104, 96, 86, 72, 58];
+  const fe = L.map((l, k) => { const a = -156 + k * 7.5; return `<polygon points="${S.join(",")} ${P(l, a - 2)} ${P(l - 9, a + 9)} ${P(28, a + 18)}" fill="${fill}" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/><polygon points="${S.join(",")} ${P(l * .52, a)} ${P(l * .46, a + 8)}" fill="${ink}"/>`; }).join("");
+  return `<g class="${cls}">${fe}</g>`;
+}
+function sparrow(mode, cls) {
+  const body = `<polygon class="sp-tail" points="54,66 6,${mode === "perch" ? 98 : 80} 14,${mode === "perch" ? 110 : 92} 60,80" fill="#a31f12" stroke="#efefef" stroke-width="1.4" stroke-linejoin="round"/>
+    <polygon points="52,66 96,52 142,56 160,68 134,90 84,92" fill="#efefef" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/>
+    <polygon points="84,92 134,90 160,68 146,86 98,100" fill="#a8a8a8"/><polygon points="96,52 142,56 120,66 90,64" fill="#d9d9d9"/>`;
+  const head = `<g class="sp-head"><polygon points="136,54 150,40 168,44 178,56 168,70 148,72" fill="#efefef" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/>
+    <polygon points="136,54 150,40 168,44 164,52 148,52" fill="#d4271c" stroke="#000" stroke-width="1.4" stroke-linejoin="round"/>
+    <polygon points="156,56 170,53 172,61 158,63" fill="#000"/><circle cx="164" cy="58" r="2" fill="#efefef"/><circle class="sp-eye" cx="164" cy="58" r="2.6" fill="none"/>
+    <polygon points="176,56 198,62 176,67" fill="#000" stroke="#efefef" stroke-width="1.6" stroke-linejoin="round"/></g>`;
+  if (mode === "perch") return `<svg class="sp sp--perch ${cls || ""}" viewBox="0 20 210 120" aria-hidden="true" focusable="false">${body}
+    <polygon points="92,56 140,60 124,84 64,98 70,76" fill="#a31f12" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/><polygon points="92,56 140,60 134,68 84,66" fill="#000"/>
+    <polygon points="76,86 122,80 110,90 70,98" fill="#5f140f"/>${head}
+    <g stroke="#efefef" stroke-width="3" stroke-linecap="round" fill="none"><path d="M104 90 L104 112 M104 112 L90 116 M104 112 L98 120 M104 112 L116 118"/><path d="M122 88 L124 112 M124 112 L108 118 M124 112 L130 120 M124 112 L140 116"/></g></svg>`;
+  return `<svg class="sp sp--fly ${cls || ""}" viewBox="-6 -34 220 170" aria-hidden="true" focusable="false"><g class="sp-bob">${wingSVG("sp-w sp-w--b", "#5f140f", "#000")}${body}${head}
+    <g stroke="#efefef" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M100 90 L92 104 M92 104 L84 102 M118 90 L114 106 M114 106 L106 106"/></g>${wingSVG("sp-w sp-w--f", "#a31f12", "#000")}</g></svg>`;
 }
 const img = (src) => esc(src && src[0] === "/" ? ".." + src : src);
 
@@ -310,6 +411,7 @@ function view() {
   const fmts = [...new Set(P.map((p) => L(p.format)).filter(Boolean))];
   const since = ((D.nos.history || [])[0] || {}).y || "2018";
   const yrs = Math.max(1, new Date().getFullYear() - Number(since)), team = ((D.team && D.team.items) || []).length || P.reduce((a, p) => a + ((p.crew || []).length), 0);
+  const shotsAll = [...new Set(P.flatMap((p) => (p.stills || []).filter(Boolean)))], shots = shotsAll.length > 7 ? Array.from({ length: 7 }, (_, i) => shotsAll[Math.floor(i * shotsAll.length / 7)]) : shotsAll;
   const aboutP = (D.nos && D.nos.about) || "";
   const manifesto = lang === "en" ? "GORRIóN began in 2018 on a Vedado rooftop. We produce cinema that looks closely at everyday life. We work with small crews, big stories and we decide what to tell." : "GORRIóN nació en 2018 en una azotea del Vedado. Producimos cine que mira de cerca la vida cotidiana. Trabajamos con equipos pequeños, historias grandes y decidimos nosotros qué contar.";
   const HL = /^(pequeños|grandes|small|big|cotidiana|everyday|azotea|rooftop)/i;
@@ -321,13 +423,17 @@ function view() {
   const rep = (live) => Array.from({ length: reps }, (_, r) => tape(live && r === 0)).join("");
   const social = (site.social || []).map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>`).join("");
   return `
-<nav class="nav" id="nav" aria-label="Principal"><a class="nav__logo" href="#top">GORRIóN <em>${t.test}</em></a>
+<nav class="nav" id="nav" aria-label="Principal">${sparrow("perch", "nav__bird")}<a class="nav__logo" href="#top">GORRIóN <em>${t.test}</em></a>
   ${["#proyectos", "#numeros", "#noticias", "#contacto"].map((h, i) => `<a class="nav__a" href="${h}">${t.nav[i]}</a>`).join("")}
-  <button class="nav__lang" id="lang" aria-label="Idioma / Language">${lang === "es" ? "EN" : "ES"}</button><a class="nav__cta" href="#contacto" data-mag>${t.cta}</a></nav>
+  <button class="nav__lang" id="lang" aria-label="Idioma / Language">${lang === "es" ? "EN" : "ES"}</button><a class="nav__cta" href="#contacto" data-mag>${t.cta}</a>
+  <button class="nav__menu" id="mbtn" type="button" aria-label="${t.menu}" aria-expanded="false" aria-controls="mnu"><i></i><i></i><i></i></button></nav>
+<div class="mnu" id="mnu" aria-hidden="true"><div class="mnu__bg"></div><div class="mnu__in"><ul class="mnu__l">${["#proyectos", "#numeros", "#noticias", "#contacto"].map((h, i) => `<li style="--i:${i}"><a href="${h}"><small>0${i + 1}</small><span>${t.nav[i]}</span></a></li>`).join("")}</ul>
+  <div class="mnu__f"><span class="mnu__mail">${esc(site.email || "")}</span><div class="mnu__s">${social}</div></div></div><span class="mnu__fl">${sparrow("fly")}</span><span class="mnu__pe">${sparrow("perch")}</span></div>
 <main id="top">
 <header class="hero" id="hero"><div class="blob blob--a"></div><div class="blob blob--b"></div><div class="blob blob--c"></div><div class="hero__grid"></div><canvas id="cv" aria-hidden="true"></canvas>
   <div class="spot spot--o" aria-hidden="true"><span>CINE</span></div><div class="spot spot--f" aria-hidden="true"><span>CINE</span></div>
   ${posters.map((p, i) => `<a class="fp fp--${i + 1}" href="${url.proj(p)}" aria-label="${esc(p.title)}" data-depth="${[.04, .07, .03][i]}"><img src="${img(p.poster)}" alt=""></a>`).join("")}
+  <div class="flock" aria-hidden="true">${[0, 1, 2, 3, 4].map((i) => `<span class="fl fl--${i}">${sparrow("fly")}</span>`).join("")}</div>
   <div class="wrap hero__in"><p class="slug mono"><i></i>${t.slug}</p><h1 class="ttl" id="ttl" aria-label="GORRIóN">${letters}</h1><p class="hero__h" id="hh">${words}</p><p class="hero__p">${t.hero_p}</p>
     <div class="hero__btns"><a class="btn btn--red" href="#proyectos" data-mag>${t.b1} ${arrow}</a><a class="btn" href="${esc(site.reelUrl || "#")}" target="_blank" rel="noopener" data-mag>${t.b2}</a></div></div>
   <div class="hero__foot"><div class="wrap mono"><span class="scroll"><i></i>${t.scroll}</span><span id="tc">00:00:00:00</span><span>23.1136° N · 82.3666° W</span></div></div></header>
@@ -346,7 +452,7 @@ function view() {
     <div class="bx bx--f rv" style="--i:3"><span class="mono">${t.n_ph}</span><div class="phases">${Object.keys(counts).map((k) => `<div class="ph"><span style="color:${PH_COL[k]}">${esc(t.ph[k])}</span><i style="--w:${P.length ? counts[k] / P.length : 0};--c:${PH_COL[k]}"></i><b>${counts[k]}</b></div>`).join("")}</div>
       <div class="tags">${fmts.map((f) => `<span>${esc(f)}</span>`).join("")}</div></div>
   </div></div></section>
-<section class="mf" id="mf"><div class="mf__stick"><div class="mf__ring"></div><div class="mf__ring mf__ring--2"></div><div class="wrap" style="position:relative"><span class="eyebrow">${t.mf_k}</span><p class="mf__t" style="margin-top:22px" id="mft">${mfw}</p></div></div></section>
+<section class="mf" id="mf"><div class="mf__stick"><div class="mf__bg" aria-hidden="true">${shots.map((x, i) => `<div class="mf__ph" style="background-image:url('${img(x)}')"></div>`).join("")}</div><div class="mf__shade" aria-hidden="true"></div>${shots.length ? `<div class="mf__cap mono" aria-hidden="true"><i></i>REC · <b id="mfn">01</b> / ${String(shots.length).padStart(2, "0")}</div>` : ""}<div class="mf__bird" id="mfb" aria-hidden="true">${sparrow("fly")}</div><div class="mf__ring"></div><div class="mf__ring mf__ring--2"></div><div class="wrap" style="position:relative"><span class="eyebrow">${t.mf_k}</span><p class="mf__t" style="margin-top:22px" id="mft">${mfw}</p></div></div></section>
 ${N.length ? `<section class="sec" id="noticias"><div class="wrap"><span class="eyebrow rv">${t.news_k}</span><h2 class="sec__h rv" style="--i:1">${t.news_h}</h2><div class="stack" id="stack">
   ${N.map((n, i) => `<a class="nc" href="${url.news(n)}" style="--i:${i}" data-cursor="${lang === "en" ? "READ" : "LEER"}"><span class="nc__n">${String(i + 1).padStart(2, "0")}</span><div><span class="mono" style="color:var(--rec)">${esc(date(n.date))} · ${esc(n.cat || "")}</span><h3>${esc(L(n.title))}</h3><p>${esc(L(n.sum))}</p></div><span class="nc__go">${arrow}</span></a>`).join("")}</div></div></section>` : ""}
 ${pa.length ? `<section class="pt" id="par"><div class="wrap"><span class="eyebrow">${t.par_k}</span><h2 class="d" style="font-size:clamp(1.6rem,3.2vw,2.6rem);margin-top:12px">${t.par_h}</h2></div><div class="pt__tape">${rep(true)}${rep(false)}${rep(false)}${rep(false)}</div></section>` : ""}
@@ -423,7 +529,7 @@ function tilt() {
 function loop() {
   const vh = innerHeight, sy = scrollY, dy = sy - lastY; lastY = sy; vel += (dy - vel) * .12;
   $("#prog").style.transform = `scaleX(${clamp(sy / Math.max(1, document.documentElement.scrollHeight - vh))})`;
-  const nav = $("#nav"); if (nav) nav.classList.toggle("hide", dy > 6 && sy > 500);
+  const nav = $("#nav"); if (nav) nav.classList.toggle("hide", dy > 6 && sy > 500 && !document.documentElement.classList.contains("mopen"));
   if (dy < -4 && nav) nav.classList.remove("hide");
   /* marquee: velocidad base + empuje del scroll */
   const rows = $$(".mq__row"); rows.forEach((r, i) => { const dir = i ? 1 : -1, w = r.scrollWidth / 4; mqOff[i] = (mqOff[i] + dir * (0.8 + Math.abs(vel) * .6)) % w; r.style.transform = `translateX(${(i ? mqOff[i] - w : mqOff[i]).toFixed(1)}px) skewX(${clamp(-vel * .35, -12, 12).toFixed(2)}deg)`; });
@@ -441,6 +547,11 @@ function loop() {
   }
   /* manifiesto */
   const mf = $("#mf"); if (mf) { const r = mf.getBoundingClientRect(), p = clamp(-r.top / Math.max(1, mf.offsetHeight - vh) * 1.15), ws = $$(".w", mf); ws.forEach((w, i) => w.classList.toggle("on", i / ws.length < p + .02)); }
+  /* fotos de fondo del manifiesto + gorrión que cruza */
+  if (mf) { const r = mf.getBoundingClientRect(), p = clamp(-r.top / Math.max(1, mf.offsetHeight - vh)), ph = $$(".mf__ph", mf), n = ph.length, k = Math.min(n - 1, Math.floor(p * n));
+    ph.forEach((el, i) => { const lp = p * n - i; el.classList.toggle("on", i === k); el.style.transform = `translate3d(0,${(-lp * 36).toFixed(1)}px,0) scale(${(1.14 + (i === k ? (p * n - k) * .06 : 0)).toFixed(3)})`; });
+    const c = $("#mfn"); if (c && n) c.textContent = String(k + 1).padStart(2, "0");
+    const b = $("#mfb"); if (b) { const x = -14 + p * 128, y = 62 + Math.sin(p * 9) * 12 - p * 20; b.style.transform = `translate3d(${x.toFixed(1)}vw,${y.toFixed(1)}vh,0) rotate(${(Math.cos(p * 9) * -9).toFixed(1)}deg)`; b.style.opacity = p > 0.02 && p < 0.99 ? 1 : 0; } }
   /* noticias apiladas */
   const cards = $$(".nc"); cards.forEach((c, i) => { const nx = cards[i + 1]; if (!nx) return; const top = 96 + i * 18, ov = clamp((c.offsetHeight - (nx.getBoundingClientRect().top - top)) / c.offsetHeight); c.style.transform = `scale(${(1 - ov * .06).toFixed(3)})`; c.style.filter = `brightness(${(1 - ov * .55).toFixed(2)})`; });
   /* hero parallax de profundidad al hacer scroll */
@@ -451,11 +562,18 @@ function loop() {
   const ck = $("#clock"); if (ck) { try { ck.textContent = new Intl.DateTimeFormat("es", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "America/Havana" }).format(new Date()); } catch (e) {} }
   raf = requestAnimationFrame(loop);
 }
+function menuInit() {
+  const b = $("#mbtn"), m = $("#mnu"); if (!b || !m) return;
+  const set = (v) => { document.documentElement.classList.toggle("mopen", v); document.body.classList.toggle("lock", v); b.setAttribute("aria-expanded", String(v)); m.setAttribute("aria-hidden", String(!v)); if (v) { const r = b.getBoundingClientRect(); m.style.setProperty("--ox", r.left + r.width / 2 + "px"); m.style.setProperty("--oy", r.top + r.height / 2 + "px"); } };
+  b.addEventListener("click", () => set(!document.documentElement.classList.contains("mopen")));
+  $$("a", m).forEach((a) => a.addEventListener("click", () => set(false)));
+  addEventListener("keydown", (e) => { if (e.key === "Escape") set(false); });
+}
 function mount() {
   $("#app").innerHTML = view(); document.documentElement.lang = lang;
   $("#lang").addEventListener("click", () => { lang = lang === "es" ? "en" : "es"; try { localStorage.setItem("gp-lang", lang); } catch (e) {} mount(); scrollTo(0, 0); });
   $$("a[href^='#']").forEach((a) => a.addEventListener("click", (e) => { const t = $(a.getAttribute("href")); if (t) { e.preventDefault(); const y = a.getAttribute("href") === "#proyectos" ? t.offsetTop + 2 : t.getBoundingClientRect().top + scrollY - 10; scrollTo({ top: y, behavior: RM ? "auto" : "smooth" }); } }));
-  heroFx(); reveals(); tilt(); cancelAnimationFrame(raf); mqOff = [0, 0]; raf = requestAnimationFrame(loop);
+  menuInit(); heroFx(); reveals(); tilt(); cancelAnimationFrame(raf); mqOff = [0, 0]; raf = requestAnimationFrame(loop);
 }
 Promise.all(["site", "proyectos", "noticias", "prensa", "nosotros", "equipo"].map(J)).then(([site, proy, noti, pre, nos, team]) => {
   D = { site, proy, noti, pre, nos, team }; cursorInit(); preloader().then(() => {}); mount();
