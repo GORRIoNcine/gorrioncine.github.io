@@ -1,4 +1,11 @@
 {
   "press": [],
-  "awards": []
+  "awards": [],
+  "partners": [
+    {
+      "draft": false,
+      "logo": "/uploads/mvgc3i7l-famca-10.webp",
+      "name": "FAMCA"
+    }
+  ]
 }
