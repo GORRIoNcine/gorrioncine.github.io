@@ -1,0 +1,29 @@
+# Cada mes (día 1) crea en MailerLite el BORRADOR del boletín con las últimas noticias.
+# No envía nada: lo revisas y lo envías tú. También se puede lanzar a mano desde la pestaña Actions.
+name: Borrador mensual del boletín
+
+on:
+  schedule:
+    - cron: "0 14 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  borrador:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+      - name: Generar los correos
+        run: node tools/mailerlite/build.mjs
+      - name: Crear el borrador en MailerLite
+        env:
+          MAILERLITE_API_KEY: ${{ secrets.MAILERLITE_API_KEY }}
+          ML_FROM_EMAIL: ${{ vars.ML_FROM_EMAIL }}
+          ML_FROM_NAME: ${{ vars.ML_FROM_NAME }}
+          ML_GROUP: ${{ vars.ML_GROUP }}
+        run: node tools/mailerlite/sync.mjs
