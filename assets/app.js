@@ -1276,8 +1276,8 @@ function pageHome() {
     <div class="sec__head"><div><span class="eyebrow">${t("nav_proyectos")}</span><h2>${t("selection")}</h2></div><a class="link-arrow" href="${routeHref("proyectos")}">${t("see_all")} ${ICONS.arrow}</a></div>
     <div class="grid grid--posters grid--home">${sel6.map(card).join("")}</div></div></section>
 
-  ${AWARDS.length ? `<section class="sec--tight sc-red"><div class="wrap"><div class="sec__head" style="margin-bottom:20px"><div><span class="eyebrow">${t("press_eyebrow")}</span></div><a class="link-arrow" href="${routeHref("prensa")}">${t("nav_prensa")} ${ICONS.arrow}</a></div></div>
-    <div class="laurels">${AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projName(a.p))}</span></div>`).join("")}</div></section>` : ""}
+  ${(AWARDS.length || PRESS.length) ? `<section class="sec--tight sc-red"><div class="wrap"><div class="sec__head" style="margin-bottom:20px"><div><span class="eyebrow">${t("press_eyebrow")}</span></div><a class="link-arrow" href="${routeHref("prensa")}">${t("nav_prensa")} ${ICONS.arrow}</a></div></div>
+    <div class="laurels">${AWARDS.length ? AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projName(a.p))}</span></div>`).join("") : [...PRESS].sort((x, y) => String(y.d).localeCompare(String(x.d))).slice(0, 3).map((x) => `<div class="laurel"><span class="mono">${esc(fmtDate(x.d))} · ${esc(x.s)}</span><b>${esc(L(x.t))}</b></div>`).join("")}</div></section>` : ""}
 
   <section class="sec sc-dark"><div class="wrap split"><div><span class="eyebrow">${t("about_eyebrow")}</span><h2 style="font-size:clamp(2.6rem,6vw,5rem);margin-top:14px;position:static">${t("about_h")}</h2></div>
     <div><p class="lede">${t("about_p")}</p><p style="margin-top:24px"><a class="link-arrow" href="${routeHref("nosotros")}">${t("about_btn")} ${ICONS.arrow}</a></p></div></div></section>
