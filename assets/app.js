@@ -1221,7 +1221,7 @@ function header(route) {
   return `<a class="skip" href="#" data-act="skip">${t("skip")}</a>
   <header class="top sc-dark"><div class="wrap top__in">
     <a class="brand" href="${routeHref("inicio")}" aria-label="${SITE.name}">${logoH("", 38)}</a>
-    <nav class="nav" id="nav" aria-label="${t("foot_nav")}">${route.name !== "inicio" ? `<a class="nav__home" href="${routeHref("inicio")}">${t("crumb_home")}</a>` : ""}${NAV.map((n) => `<a href="${routeHref(n)}"${act === n ? ' aria-current="page"' : ""}>${t("nav_" + n)}</a>`).join("")}</nav>
+    <nav class="nav" id="nav" aria-label="${t("foot_nav")}">${route.name !== "inicio" && route.name !== "prueba" ? `<a class="nav__home" href="${routeHref("inicio")}">${t("crumb_home")}</a>` : ""}${NAV.map((n) => `<a href="${routeHref(n)}"${act === n ? ' aria-current="page"' : ""}>${t("nav_" + n)}</a>`).join("")}</nav>
     <div class="tools">
       <button class="tbtn" data-act="lite" aria-pressed="${lite}" title="${esc(t("lite_d"))}" aria-label="${esc(t("lite"))}">${ICONS.bolt}</button>
       <div class="lang theme"><button class="tbtn" data-act="thememenu" aria-haspopup="true" aria-expanded="false" aria-controls="themelist" title="${esc(t("theme_label"))}" aria-label="${esc(t("theme_label"))}">${ICONS["theme_" + theme]}</button>
@@ -1566,7 +1566,7 @@ const BASE = (() => { const m = document.querySelector('meta[name="gorrion-base"
 const PATHMODE = /^https?:$/.test(location.protocol) && !document.querySelector('meta[name="gorrion-routing"][content="hash"]');
 let routeEnglish = URL_ENGLISH;
 /* En inglés las secciones y (si se define) el enlace de cada proyecto/noticia tienen su propio nombre: /en/services/, /en/projects/mi-pelicula/ */
-const SEC_EN = { proyectos: "projects", servicios: "services", nosotros: "about", prensa: "press", noticias: "news", contacto: "contact", legal: "legal" };
+const SEC_EN = { proyectos: "projects", servicios: "services", nosotros: "about", prensa: "press", noticias: "news", contacto: "contact", legal: "legal", prueba: "prueba" };
 const SEC_FROM_EN = Object.fromEntries(Object.entries(SEC_EN).map(([k, v]) => [v, k]));
 const okSlug = (x) => typeof x === "string" && /^[a-z0-9][a-z0-9-]*$/.test(x);
 const itemSlug = (list, slug, en) => { if (!en) return slug; const it = list.find((x) => x.slug === slug); return it && okSlug(it.slugEn) ? it.slugEn : slug; };
@@ -1591,7 +1591,7 @@ function localizedRoute(target, path = location.pathname) {
   if (!tok) return BASE + (en ? "en/" : "");
   return tok === "inicio" ? buildHref("inicio", null, en) : tok.startsWith("p-") ? buildHref("project", tok.slice(2), en) : tok.startsWith("n-") ? buildHref("article", tok.slice(2), en) : buildHref(tok, null, en);
 }
-const SECTIONS = ["proyectos", "servicios", "nosotros", "prensa", "noticias", "contacto", "legal"];
+const SECTIONS = ["proyectos", "servicios", "nosotros", "prensa", "noticias", "contacto", "legal", "prueba"];
 /* name: inicio | proyectos | servicios… | project | article (estos dos con slug) */
 function routeHref(name, slug) {
   if (PATHMODE) return buildHref(name, slug, routeEnglish);
@@ -1619,7 +1619,7 @@ function parseRoute() {
   if (h === "inicio") return { name: "inicio" };
   if (h.startsWith("p-")) { const p = projBy(h.slice(2)); return p ? { name: "project", p } : { name: "404" }; }
   if (h.startsWith("n-")) { const n = NEWS.find((x) => x.slug === h.slice(2)); return n ? { name: "article", n } : { name: "404" }; }
-  if (["proyectos", "servicios", "nosotros", "prensa", "noticias", "contacto", "legal"].includes(h)) return { name: h };
+  if (SECTIONS.includes(h) && (h !== "prueba" || typeof pagePrueba === "function")) return { name: h };
   return { name: "404" };
 }
 const app = () => $("#app");
@@ -1635,6 +1635,7 @@ function routeTitle(r) {
   if (r.name === "article") return L(r.n.seoTitle) || `${L(r.n.title)} · ${base}`;
   if (L(seoPage(r.name).title)) return L(seoPage(r.name).title);
   if (r.name === "404") return `404 · ${base}`;
+  if (r.name === "prueba") return `${lang === "en" ? "Home test" : "Prueba de inicio"} · ${base}`;
   return `${t("nav_" + r.name) !== "nav_" + r.name ? t("nav_" + r.name) : t("legal")} · ${base}`;
 }
 /* ---------- Metadatos de la página (título, descripción, enlace canónico, redes) ---------- */
@@ -1646,7 +1647,7 @@ function routeDesc(r) {
   if (L(seoPage(r.name).description)) return cut(L(seoPage(r.name).description));
   if (r.name === "project") return cut(L(r.p.short) || L(r.p.tagline) || `${r.p.title} · ${SITE.name}`);
   if (r.name === "article") return cut(L(r.n.sum) || L(r.n.body)[0] || L(r.n.title));
-  const k = { inicio: "hero_sub", proyectos: "projects_lede", servicios: "svc_lede", nosotros: "about_lede", prensa: "press_lede", noticias: "news_lede", contacto: "contact_lede" }[r.name];
+  const k = { inicio: "hero_sub", prueba: "hero_sub", proyectos: "projects_lede", servicios: "svc_lede", nosotros: "about_lede", prensa: "press_lede", noticias: "news_lede", contacto: "contact_lede" }[r.name];
   return k ? cut(t(k)) : cut(SITE.name + " · " + t("legal"));
 }
 function setHead(sel, create, attr, val) {
@@ -1669,7 +1670,7 @@ function syncMeta(r) {
     [["og:locale", lang === "en" ? "en_US" : "es_ES"], ["og:locale:alternate", lang === "en" ? "es_ES" : "en_US"]].forEach(([k, v]) => setHead(`meta[property="${k}"]`, ["meta", ["property", k]], "content", v));
     [["twitter:title", title], ["twitter:description", desc], ["twitter:image", img]].forEach(([k, v]) => setHead(`meta[name="${k}"]`, ["meta", ["name", k]], "content", v));
     const rb = document.head.querySelector('meta[name="robots"]');
-    const noidx = r.name === "404" || SEOC.indexar === false || (r.name === "project" && r.p.noindex) || (r.name === "article" && r.n.noindex);
+    const noidx = r.name === "404" || r.name === "prueba" || SEOC.indexar === false || (r.name === "project" && r.p.noindex) || (r.name === "article" && r.n.noindex);
     if (noidx) { if (!rb) setHead('meta[name="robots"]', ["meta", ["name", "robots"], ["data-client", "1"]], "content", "noindex"); }
     else if (rb && rb.dataset.client) rb.remove();
     if (PATHMODE && !noidx) {
@@ -1734,6 +1735,7 @@ function render(opts = {}) {
       case "article": main = pageArticle(r.n); break;
       case "contacto": main = pageContact(); break;
       case "legal": main = pageLegal(); break;
+      case "prueba": main = pagePrueba(); break;
       default: main = pageNotFound();
     }
   } catch (e) {
@@ -1753,6 +1755,7 @@ function render(opts = {}) {
   lastKey = key;
   if (typeof FX !== "undefined") { FX.init(app()); FX.watchAnim(document); }
   if (typeof initPartners === "function") initPartners();
+  if (typeof pruebaInit === "function") pruebaInit(app(), r.name === "prueba");
   if (typeof Buddy !== "undefined") Buddy.sync();
   fitHeads();
 }
