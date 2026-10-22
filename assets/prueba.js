@@ -214,8 +214,8 @@
     const words = mf ? Array.from(mf.querySelectorAll(".pz-w")) : [];
     const mfP = mf && mf.querySelector("[data-mf]"), mfBird = mf && mf.querySelector(".pz-mf__bird"), mfNo = mf && mf.querySelector("[data-mf-no]");
     const ctaRing = q(".pz-ring--cta"), featRing = q(".pz-ring--feat");
-    const cards = qa(".pz-hs .card__poster"), shotEls = qa("[data-shot]"), topBar = q(".pz-top");
-    let pinned = false, maxX = 0, header = 76, lastTopY = window.scrollY;
+    const cards = qa(".pz-hs .card__poster"), shotEls = qa("[data-shot]");
+    let pinned = false, maxX = 0, header = 76;
 
     /* Sin animaciones (modo ligero o «reducir movimiento»): todo queda encendido y estático */
     if (!fx) { words.forEach((w) => w.classList.add("on")); layers.forEach((l, i) => { l.style.opacity = i === 0 ? ".32" : "0"; }); return; }
@@ -239,72 +239,75 @@
 
     function frame() {
       s.raf = 0;
-      const y = window.scrollY, vh = window.innerHeight;
-      const v = y - s.lastY; s.lastY = y;
-      s.skew += (clamp(v * .22, -9, 9) - s.skew) * .18;
-      if (mq) mq.style.setProperty("--sk", s.skew.toFixed(2) + "deg");
+      const y = window.scrollY, vh = window.innerHeight, vw = window.innerWidth;
+      const small = vw <= 900 || !fine;   /* móvil: menos efectos y menos cálculos por fotograma */
 
-      if (hero && y < vh * 1.4) { hero.style.setProperty("--ay", (y * .22).toFixed(1) + "px"); hero.style.setProperty("--fy", (y * .08).toFixed(1) + "px"); }
+      /* 1) Lecturas de layout (todas juntas, antes de escribir nada) */
+      const rHs = hs && pinned ? hs.getBoundingClientRect() : null;
+      const stickH = rHs ? stick.offsetHeight : 0;
+      const cardX = rHs ? cards.map((c) => { const r = c.parentElement.getBoundingClientRect(); return r.left + r.width / 2; }) : null;
+      const rMf = mf ? mf.getBoundingClientRect() : null;
+      const mfOn = rMf && rMf.bottom > -vh * .2 && rMf.top < vh * 1.2;
+      const shotC = mfOn && shotEls.length > 1 ? shotEls.map((e) => { const b = e.getBoundingClientRect(); return b.top + b.height / 2; }) : null;
+      const rP = mfOn && mfP ? mfP.getBoundingClientRect() : null;
 
-      if (hs && pinned) {
-        const r = hs.getBoundingClientRect(), d = Math.max(1, r.height - stick.offsetHeight);
-        const p = clamp((header - r.top) / d, 0, 1);
+      /* 2) Escrituras */
+      if (!small) {
+        const v = y - s.lastY; s.lastY = y;
+        s.skew += (clamp(v * .22, -9, 9) - s.skew) * .18;
+        if (mq) mq.style.setProperty("--sk", s.skew.toFixed(2) + "deg");
+        if (hero && y < vh * 1.4) { hero.style.setProperty("--ay", (y * .22).toFixed(1) + "px"); hero.style.setProperty("--fy", (y * .08).toFixed(1) + "px"); }
+      }
+
+      if (rHs) {
+        const d = Math.max(1, rHs.height - stickH), p = clamp((header - rHs.top) / d, 0, 1);
         track.style.transform = `translate3d(${(-p * maxX).toFixed(1)}px,0,0)`;
         if (bar) bar.style.transform = `scaleX(${p.toFixed(4)})`;
-        const vw = window.innerWidth;
-        cards.forEach((c) => {
-          const r = c.parentElement.getBoundingClientRect(), d = clamp(((r.left + r.width / 2) - vw / 2) / (vw / 2), -1.3, 1.3);
-          c.style.setProperty("--cr", (d * -26).toFixed(1) + "deg"); c.style.setProperty("--cz", (-Math.abs(d) * 90).toFixed(0) + "px");
+        cards.forEach((c, i) => {
+          const d2 = clamp((cardX[i] - vw / 2) / (vw / 2), -1.3, 1.3);
+          c.style.setProperty("--cr", (d2 * -26).toFixed(1) + "deg"); c.style.setProperty("--cz", (-Math.abs(d2) * 90).toFixed(0) + "px");
         });
       }
 
-      if (topBar && !html.classList.contains("nav-lock")) {
-        const dy = y - lastTopY;
-        if (Math.abs(dy) > 5) { topBar.classList.toggle("is-hidden", dy > 0 && y > 220); lastTopY = y; }
-        topBar.classList.toggle("is-solid", y > 40);
-      }
-
-      if (mf) {
-        const r = mf.getBoundingClientRect();
-        if (r.bottom > -vh * .2 && r.top < vh * 1.2) {
-          const span = Math.max(1, r.height - vh), p = clamp(-r.top / span, 0, 1), n = Math.max(1, layers.length);
-          /* La foto de fondo sigue al «plano» que está en el centro de la pantalla (cada hito de la historia tiene su fotograma) */
-          let g = p * (n - 1);
-          if (shotEls.length > 1) {
-            const c = shotEls.map((e) => { const b = e.getBoundingClientRect(); return b.top + b.height / 2; }), mid = vh / 2;
-            let f = 0;
-            if (mid >= c[c.length - 1]) f = c.length - 1;
-            else if (mid > c[0]) { let i = 0; while (i < c.length - 2 && mid > c[i + 1]) i++; f = i + (mid - c[i]) / (c[i + 1] - c[i]); }
-            g = f * (n - 1) / (shotEls.length - 1);
-          }
-          layers.forEach((l, i) => {
-            const d = g - i, o = clamp(1.25 - Math.abs(d) * 1.4, 0, 1);
-            l.style.opacity = (o * .62).toFixed(3);
-            l.style.transform = `scale(${(1.1 - clamp(d, -1, 1) * .06).toFixed(3)}) translate3d(0,${(d * -4).toFixed(2)}%,0)`;
-          });
-          if (mfNo) { const k = clamp(Math.round(g) + 1, 1, n); mfNo.textContent = `${pt("plano")} ${String(k).padStart(2, "0")}/${String(n).padStart(2, "0")}`; }
-          if (mfBird) {
-            const bx = -18 + p * 140, by = 24 + Math.sin(p * 11) * 7 + p * 18;
-            mfBird.style.transform = `translate3d(${bx}vw,${by}vh,0) rotate(${(Math.cos(p * 11) * 5).toFixed(1)}deg)`;
-          }
-          if (mfP) {
-            const pr = mfP.getBoundingClientRect();
-            const lit = clamp((vh * .82 - pr.top) / (pr.height + vh * .3), 0, 1) * words.length;
-            for (let i = 0; i < words.length; i++) words[i].classList.toggle("on", i < lit);
-          }
+      if (mfOn) {
+        const span = Math.max(1, rMf.height - vh), p = clamp(-rMf.top / span, 0, 1), n = Math.max(1, layers.length);
+        /* La foto de fondo sigue al «plano» que está en el centro de la pantalla (cada hito de la historia tiene su fotograma) */
+        let g = p * (n - 1);
+        if (shotC) {
+          const mid = vh / 2; let f = 0;
+          if (mid >= shotC[shotC.length - 1]) f = shotC.length - 1;
+          else if (mid > shotC[0]) { let i = 0; while (i < shotC.length - 2 && mid > shotC[i + 1]) i++; f = i + (mid - shotC[i]) / (shotC[i + 1] - shotC[i]); }
+          g = f * (n - 1) / (shotEls.length - 1);
+        }
+        layers.forEach((l, i) => {
+          const d = g - i;
+          if (Math.abs(d) > 1.2) { if (l.dataset.on) { l.style.opacity = "0"; l.dataset.on = ""; } return; }
+          l.dataset.on = "1";
+          l.style.opacity = (clamp(1.25 - Math.abs(d) * 1.4, 0, 1) * .62).toFixed(2);
+          if (!small) l.style.transform = `scale(${(1.1 - clamp(d, -1, 1) * .06).toFixed(3)}) translate3d(0,${(d * -4).toFixed(2)}%,0)`;
+        });
+        if (mfNo) { const k = clamp(Math.round(g) + 1, 1, n); if (k !== s.shotNo) { s.shotNo = k; mfNo.textContent = `${pt("plano")} ${String(k).padStart(2, "0")}/${String(n).padStart(2, "0")}`; } }
+        if (mfBird && !small) {
+          const bx = -18 + p * 140, by = 24 + Math.sin(p * 11) * 7 + p * 18;
+          mfBird.style.transform = `translate3d(${bx}vw,${by}vh,0) rotate(${(Math.cos(p * 11) * 5).toFixed(1)}deg)`;
+        }
+        if (rP) {
+          const lit = Math.round(clamp((vh * .82 - rP.top) / (rP.height + vh * .3), 0, 1) * words.length), from = s.lit || 0;
+          if (lit !== from) { for (let i = Math.min(from, lit); i < Math.max(from, lit); i++) words[i].classList.toggle("on", i < lit); s.lit = lit; }
         }
       }
 
-      if (ctaRing || featRing) {
+      if (!small && (ctaRing || featRing)) {
         const rot = (y * .12) % 360;
         if (ctaRing) ctaRing.style.setProperty("--rot", rot.toFixed(1) + "deg");
         if (featRing) featRing.style.setProperty("--rot", (-rot).toFixed(1) + "deg");
       }
-      if (Math.abs(s.skew) > .05) kick();
+      if (!small && Math.abs(s.skew) > .05) kick();
     }
     function kick() { if (!s.raf) s.raf = requestAnimationFrame(frame); }
     on_(window, "scroll", kick, { passive: true });
-    on_(window, "resize", () => { if (s.synth) { s.synth = false; return; } measure(); kick(); }, { passive: true });
+    let lastW = window.innerWidth;
+    on_(window, "resize", () => { if (s.synth) { s.synth = false; return; } if (window.innerWidth === lastW && !fine) return; lastW = window.innerWidth; measure(); kick(); }, { passive: true });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (st === s) { measure(); kick(); } });
     on_(window, "load", () => { measure(); kick(); });
     measure(); kick();
