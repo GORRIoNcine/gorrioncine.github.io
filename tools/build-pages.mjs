@@ -137,7 +137,7 @@ const fmtDate = (d) => {
   return m[3] ? `${+m[3]} de ${mes} de ${m[1]}` : `${mes} de ${m[1]}`;
 };
 
-const assetHash = createHash("sha1").update(appSrc).update(read("assets/app.css")).digest("hex").slice(0, 10);
+const assetHash = createHash("sha1").update(appSrc).update(read("assets/app.css")).update(read("assets/home.js")).update(read("assets/home.css")).digest("hex").slice(0, 10);
 const OG_DEFAULT = seo.ogImage ? abs(seo.ogImage) : `${SITE_URL}/assets/og-default.png`;
 
 const NAV = [["proyectos", ui("nav_proyectos")], ["servicios", ui("nav_servicios")], ["nosotros", ui("nav_nosotros")], ["prensa", ui("nav_prensa")], ["noticias", ui("nav_noticias")], ["contacto", ui("nav_contacto")]];
@@ -290,26 +290,6 @@ for (const n of validNews) {
 
 /* 404: también sirve la web completa para direcciones nuevas que aún no tienen página generada */
 pages[outputFile("404.html")] = page({ path: localizedPath("/404.html"), title: `${ui("notfound_h", "Página no encontrada")} · ${NAME}`, desc: ui("notfound_p", "La página que buscas no existe."), noindex: true, body: shell(`<h1>${ui("notfound_h", "Página no encontrada")}</h1><p class="seo__lede">${tr("La dirección no existe o ha cambiado.")} ${link("/", ui("home", "Volver al inicio"))}.</p>`, "") });
-
-/* Portada experimental (/prueba/ y /en/prueba/): no se indexa ni entra en el sitemap; carga además assets/prueba.js y assets/prueba.css */
-{
-  const pzHash = createHash("sha1").update(appSrc).update(read("assets/app.css")).update(read("assets/prueba.js")).update(read("assets/prueba.css")).digest("hex").slice(0, 10);
-  const title = `${ENGLISH ? "Home test" : "Prueba de inicio"} · ${NAME}`;
-  let html = page({ path: localizedPath("/prueba/"), title, desc: cut(HOME_DESC), noindex: true, body: shell(`<h1>${esc(HOME_H1)}</h1><p class="seo__lede">${esc(HOME_DESC)}</p>`, "") });
-  html = html.replace(`<link rel="stylesheet" href="/assets/app.css?v=${assetHash}">`, `<link rel="stylesheet" href="/assets/app.css?v=${pzHash}"><link rel="stylesheet" href="/assets/prueba.css?v=${pzHash}">`)
-    .replace(`<script src="/assets/app.js?v=${assetHash}" defer></script>`, `<script src="/assets/prueba.js?v=${pzHash}" defer></script><script src="/assets/app.js?v=${pzHash}" defer></script>`);
-  if (!html.includes("prueba.js") || !html.includes("prueba.css")) throw new Error("No se pudo preparar la página /prueba/ (plantilla distinta de la esperada).");
-  pages[outputFile("prueba/index.html")] = html;
-}
-
-/* Portada experimental (/prueba/ y /en/prueba/): sin indexar, con sus propios assets (assets/prueba.js + assets/prueba.css) */
-{
-  const pzHash = createHash("sha1").update(appSrc).update(read("assets/app.css")).update(read("assets/prueba.js")).update(read("assets/prueba.css")).digest("hex").slice(0, 10);
-  const html = page({ path: localizedPath("/prueba/"), title: ENGLISH ? `Home test · ${NAME}` : `Prueba de inicio · ${NAME}`, desc: HOME_DESC, noindex: true, body: shell(`<h1>${esc(HOME_H1)}</h1><p class="seo__lede">${esc(HOME_DESC)}</p>`, "") })
-    .replace(`/assets/app.css?v=${assetHash}">`, `/assets/app.css?v=${pzHash}"><link rel="stylesheet" href="/assets/prueba.css?v=${pzHash}">`)
-    .replace(`<script src="/assets/app.js?v=${assetHash}" defer></script>`, `<script src="/assets/prueba.js?v=${pzHash}" defer></script><script src="/assets/app.js?v=${pzHash}" defer></script>`);
-  pages[outputFile("prueba/index.html")] = html;
-}
 
 /* ---------- Limpieza de páginas generadas que ya no existen ---------- */
 /* Redirecciones desde las direcciones inglesas antiguas (/en/servicios/…) a las nuevas */

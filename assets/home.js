@@ -1,9 +1,7 @@
-/* GORRIóN · Portada experimental (/prueba/)
-   Misma estructura y mismo sistema de marca que el inicio real (cabecera, pie, logotipo, paleta, tipografías, reglas de mayúsculas,
-   alternancia oscuro / hueso / rojo, perforaciones de película, «escenas»), con una capa de motion graphic de estilo web 3:
-   aurora y suelo en perspectiva, bandada de gorriones, cinta de texto que se inclina con el scroll, galería horizontal anclada,
-   inclinación 3D con brillo, botones magnéticos, manifiesto que se enciende palabra a palabra sobre fotogramas, contadores y anillo giratorio.
-   Se carga solo desde /prueba/ y /en/prueba/ (assets/prueba.js + assets/prueba.css) y reutiliza las funciones de assets/app.js. */
+/* GORRIóN · Portada (inicio)
+   Misma estructura y sistema de marca de la web (cabecera, pie, logotipo, paleta, tipografías, reglas de mayúsculas, escenas, perforaciones),
+   con una capa de motion graphic: aurora, cinta de texto, galería horizontal anclada, cartel 3D, manifiesto sobre fotogramas, contadores y anillos.
+   Se carga en todas las páginas pero solo actúa en el inicio; reutiliza las funciones de assets/app.js. */
 (() => {
   "use strict";
 
@@ -102,7 +100,7 @@
     const set = [...words, ...words].map((w) => `<span>${bw(w)}</span><i>✦</i>`).join("");
     return `<div class="pz-mq__row ${cls}"><div class="pz-mq__t"><span>${set}</span><span>${set}</span></div></div>`;
   }
-  function pagePrueba() {
+  function pageHomeFx() {
     const feat = PROJECTS.find((p) => p.featured) || PROJECTS[0];
     const gal = PROJECTS.filter((p) => p !== feat).slice(0, 8);
     const inProd = PROJECTS.filter((p) => p.status === "produccion" || p.status === "postproduccion").length;
@@ -198,7 +196,7 @@
     st.off.forEach((f) => { try { f(); } catch (e) { /* nada */ } });
     st = null;
   }
-  function pruebaInit(root, on) {
+  function homeFxInit(root, on) {
     stop();
     if (!on) return;
     const html = document.documentElement, fx = html.classList.contains("fx");
@@ -380,12 +378,12 @@
   }
 
   /* Cabecera de esta página: la misma de la web real (mismos botones y menú) con un envoltorio flotante, indicador deslizante y botón de contacto */
-  function pruebaHeader(h) {
+  function homeFxHeader(h) {
     return h.replace('<header class="top sc-dark">', '<header class="top sc-dark pz-top">')
       .replace("</nav>", '<i class="pz-top__ind" aria-hidden="true"></i></nav>')
       .replace('<button class="tbtn burger"', `<a class="pz-top__cta" href="${routeHref("contacto")}"><span>${esc(pt("talk"))}</span>${ICONS.arrow}</a><button class="tbtn burger"`);
   }
-  window.pruebaHeader = pruebaHeader;
-  window.pagePrueba = pagePrueba;
-  window.pruebaInit = pruebaInit;
+  window.homeFxHeader = homeFxHeader;
+  window.pageHomeFx = pageHomeFx;
+  window.homeFxInit = homeFxInit;
 })();
