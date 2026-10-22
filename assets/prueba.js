@@ -16,7 +16,9 @@
       cue: "Desliza", plano: "Plano",
       s1: "Proyectos", s2: "Estrenados", s3: "Años de cine", s4: "Personas",
       ring: "GORRIóN · cine independiente · La Habana · ", ringFeat: "Estreno destacado · ",
-      end: "Ver todos los proyectos",
+      end: "Ver todos los proyectos", newest: "Nuevo", read: "Leer", talk: "Hablemos",
+      st1: "En el catálogo", st2: "Ya en pantalla", st3: "Filmando desde", st4: "Personas en el equipo",
+      sd: "Desarrollo", sr: "Producción", sp: "Postproducción", se: "Estrenado",
     },
     en: {
       live: "REC · {n} in production", live0: "REC · {n} projects",
@@ -25,7 +27,9 @@
       cue: "Scroll", plano: "Shot",
       s1: "Projects", s2: "Released", s3: "Years of cinema", s4: "People",
       ring: "GORRIóN · independent cinema · Havana · ", ringFeat: "Featured release · ",
-      end: "See all projects",
+      end: "See all projects", newest: "New", read: "Read", talk: "Let's talk",
+      st1: "In the catalogue", st2: "Already on screen", st3: "Filming since", st4: "People on the crew",
+      sd: "Development", sr: "Production", sp: "Post-production", se: "Released",
     },
   };
   const pt = (k) => (D[lang === "en" ? "en" : "es"])[k];
@@ -71,15 +75,25 @@
     const all = stillsAll(); if (all.length <= n) return all;
     return Array.from({ length: n }, (_, i) => all[Math.floor(i * all.length / n)]);
   }
-  function numbers() {
+  function stats() {
     const ys = (typeof HISTORY !== "undefined" ? HISTORY : []).map((h) => +h.y).filter((y) => y > 1900);
-    const since = ys.length ? Math.min(...ys) : 2018;
+    const since = ys.length ? Math.min(...ys) : 2018, now = new Date().getFullYear(), years = Math.max(1, now - since);
     const crew = new Set(PROJECTS.flatMap((p) => (p.crew || []).map((c) => c.n)));
+    const total = PROJECTS.length, by = (k) => PROJECTS.filter((p) => p.status === k).length;
+    const rel = by("estrenado"), people = TEAM.length || crew.size;
+    const seg = [["se", "estrenado"], ["sp", "postproduccion"], ["sr", "produccion"], ["sd", "desarrollo"]];
+    const bar = `<span class="pz-viz pz-viz--bar" role="img" aria-label="${seg.map(([c, k]) => pt(c) + " " + by(k)).join(", ")}">${seg.map(([c, k], i) => by(k) ? `<i class="s-${c}" style="--w:${(by(k) / Math.max(1, total) * 100).toFixed(1)}%;--d:${i * 90}ms" title="${esc(pt(c))} · ${by(k)}"></i>` : "").join("")}</span>`;
+    const pct = Math.round(rel / Math.max(1, total) * 100), C = 2 * Math.PI * 23;
+    const ringv = `<span class="pz-viz pz-viz--ring"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="23"/><circle class="pz-ring__v" cx="28" cy="28" r="23" style="--C:${C.toFixed(1)};--o:${(C * (1 - pct / 100)).toFixed(1)}"/></svg><em>${pct}%</em></span>`;
+    const nt = Math.min(years + 1, 20);
+    const ticks = `<span class="pz-viz pz-viz--ticks" aria-hidden="true">${Array.from({ length: nt }, (_, i) => `<i${i === nt - 1 ? ' class="now"' : ""} style="--d:${i * 45}ms"></i>`).join("")}</span><small>${since} → ${now}</small>`;
+    const nd = Math.min(people, 24);
+    const dots = `<span class="pz-viz pz-viz--dots" aria-hidden="true">${Array.from({ length: nd }, (_, i) => `<i style="--d:${i * 40}ms"></i>`).join("")}</span>`;
     return [
-      [PROJECTS.length, pt("s1")],
-      [PROJECTS.filter((p) => p.status === "estrenado").length, pt("s2")],
-      [Math.max(1, new Date().getFullYear() - since), pt("s3")],
-      [TEAM.length || crew.size, pt("s4")],
+      { n: total, l: pt("s1"), k: pt("st1"), v: bar },
+      { n: rel, l: pt("s2"), k: pt("st2"), v: ringv },
+      { n: years, l: pt("s3"), k: pt("st3"), v: ticks },
+      { n: people, l: pt("s4"), k: pt("st4"), v: dots },
     ];
   }
 
@@ -90,7 +104,7 @@
   }
   function pagePrueba() {
     const feat = PROJECTS.find((p) => p.featured) || PROJECTS[0];
-    const sel = PROJECTS.filter((p) => p !== feat).slice(0, 8);
+    const gal = PROJECTS.filter((p) => p !== feat).slice(0, 8);
     const inProd = PROJECTS.filter((p) => p.status === "produccion" || p.status === "postproduccion").length;
     const live = inProd ? pt("live").replace("{n}", inProd) : pt("live0").replace("{n}", PROJECTS.length);
     const shots = pickStills(6);
@@ -98,13 +112,14 @@
     const manifesto = sentences.slice(0, 3).join(" ");
     const HL = /^(peque|grande|small|big|cotidian|everyday|azotea|rooftop)/i;
     const mfw = brandWords(manifesto).map((w) => `<span class="pz-w${HL.test(w.t) ? " hl" : ""}">${w.it ? `<i class="lc">${esc(w.t)}</i>` : esc(w.t).replace(ACC_RE, (c) => `<span class="lc">${c.toLowerCase()}</span>`)}</span>`).join(" ");
-    const flock = [0, 1, 2, 3].map((i) => `<span class="pz-fl pz-fl--${i}">${sparrow("fly")}</span>`).join("");
+    const hist = (typeof HISTORY !== "undefined" ? HISTORY : []).slice().sort((x, y) => String(x.y).localeCompare(String(y.y)));
+    const news = sortedNews().slice(0, 4);
+    const reasons = ["r_collab", "r_commission", "r_press", "r_dist", "r_other"].map((k) => ({ v: t(k), l: t(k) }));
 
     return `
   <section class="hero sc-dark pz-hero" data-pz="hero">
     <div class="pz-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="pz-floor" aria-hidden="true"></div>
-    <div class="pz-flock" aria-hidden="true">${flock}</div>
     <div class="wrap hero__grid">
       <div class="hero__copy rise"><div class="pz-live" aria-hidden="true"><i></i>${esc(live)}</div><div class="hero__kicker">${t("kicker")}</div><h1 id="page-h">${t("hero_h1")}</h1>
         <p class="hero__sub">${t("hero_sub")}</p>
@@ -118,11 +133,6 @@
 
   <div class="pz-mq sc-dark" aria-hidden="true" data-pz="mq">${mqRow(pt("mq1"), "pz-mq__row--o")}${mqRow(pt("mq2"), "pz-mq__row--s")}</div>
 
-  <section class="dock sc-bone"><div class="wrap dock__in">
-    <a href="${routeHref("proyectos")}"><h3 aria-level="2">${t("nav_proyectos")}</h3>${ICONS.arrow}<p>${t("dock_p")}</p></a>
-    <a href="${routeHref("servicios")}"><h3 aria-level="2">${t("nav_servicios")}</h3>${ICONS.arrow}<p>${t("dock_s")}</p></a>
-    <a href="${routeHref("contacto")}"><h3 aria-level="2">${t("nav_contacto")}</h3>${ICONS.arrow}<p>${t("dock_c")}</p></a></div></section>
-
   ${feat ? `<section class="sec sc-dark pz-feat"><div class="wrap feat">
     <div class="pz-feat__p"><a class="feat__poster pz-tilt" href="${routeHref("project", feat.slug)}" aria-label="${esc(feat.title)}"><div class="card__poster" data-title="${esc(feat.title)}">${posterSVG(feat, lang)}</div></a>${ring(pt("ringFeat"), "pz-ring--feat", 200, 2)}</div>
     <div><span class="eyebrow">${t("featured")}</span><h2>${esc(feat.title)}</h2><p class="tagline">${esc(L(feat.tagline))}</p>
@@ -133,7 +143,7 @@
 
   <section class="sc-bone pz-hs" data-pz="hs"><div class="pz-hs__stick">
     <div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_proyectos")}</span><h2>${t("selection")}</h2></div><a class="link-arrow" href="${routeHref("proyectos")}">${t("see_all")} ${ICONS.arrow}</a></div></div>
-    <div class="pz-hs__view"><div class="pz-hs__track">${sel.map(card).join("")}<a class="pz-hs__end" href="${routeHref("proyectos")}"><span>${bw(pt("end"))}</span>${ICONS.arrow}</a></div></div>
+    <div class="pz-hs__view"><div class="pz-hs__track">${gal.map(card).join("")}<a class="pz-hs__end" href="${routeHref("proyectos")}"><span>${bw(pt("end"))}</span>${ICONS.arrow}</a></div></div>
     <div class="pz-hs__bar" aria-hidden="true"><i></i></div>
   </div></section>
 
@@ -142,7 +152,7 @@
 
   ${PARTNERS.length ? partnersHTML() : ""}
 
-  <section class="sc-dark pz-mf" data-pz="mf" aria-labelledby="pz-mf-h">
+  <section class="sc-dark pz-mf" data-pz="mf" aria-labelledby="pz-mf-h" style="--pz-n:${Math.max(hist.length, 1)}">
     <div class="pz-mf__bg" aria-hidden="true">
       <div class="pz-mf__layers">${shots.map((s, i) => `<img ${imgAttrs(s, "100vw")} alt="" loading="lazy" decoding="async" style="--k:${i}">`).join("")}</div>
       <div class="pz-mf__shade"></div>
@@ -154,15 +164,29 @@
       <h2 id="pz-mf-h" class="pz-mf__h">${t("about_h")}</h2>
       <p class="pz-mf__p" data-mf>${mfw}</p>
       <p class="pz-mf__more"><a class="link-arrow" href="${routeHref("nosotros")}">${t("about_btn")} ${ICONS.arrow}</a></p>
-      <div class="pz-stats">${numbers().map(([n, l]) => `<div class="pz-st"><b class="pz-n" data-n="${n}">${n}</b><span>${bw(l)}</span></div>`).join("")}</div>
+      ${hist.length ? `<ol class="pz-shots">${hist.map((h, i) => `<li class="pz-shot pz-rev" data-shot><b aria-hidden="true">${esc(h.y)}</b><div><span class="eyebrow">${esc(pt("plano"))} ${String(i + 1).padStart(2, "0")}</span><h3 aria-level="3">${esc(L(h.t))}</h3><p>${esc(L(h.d))}</p></div></li>`).join("")}</ol>` : ""}
     </div>
   </section>
 
-  <section class="sec sc-bone"><div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_noticias")}</span><h2>${t("latest")}</h2></div><a class="link-arrow" href="${routeHref("noticias")}">${t("all_news")} ${ICONS.arrow}</a></div>
-    <div class="news news--cols">${sortedNews().slice(0, 3).map(newsItem).join("")}</div></div></section>
+  <section class="sec--tight sc-red pz-stat-sec" aria-label="${esc(pt("s1"))}"><div class="wrap"><div class="pz-stats">${stats().map((x, i) => `<div class="pz-st pz-rev" style="--i:${i}"><span class="pz-st__k">${String(i + 1).padStart(2, "0")} · ${bw(x.k)}</span><b class="pz-n" data-n="${x.n}" data-g="${x.n}">${x.n}</b><span class="pz-st__l">${bw(x.l)}</span>${x.v}</div>`).join("")}</div></div></section>
 
-  <section class="sec sc-red pz-cta"><div class="wrap cta"><div><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div>
-    <div class="pz-cta__r">${ring(pt("ring"), "pz-ring--cta", 240)}<a class="btn pz-mag" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></div></section>`;
+  <section class="sec sc-bone pz-news"><div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_noticias")}</span><h2>${t("latest")}</h2></div><a class="link-arrow" href="${routeHref("noticias")}">${t("all_news")} ${ICONS.arrow}</a></div>
+    <div class="pz-nl">${news.map((n, i) => { const pr = n.project ? projBy(n.project) : null; return `<a class="pz-ni pz-rev" style="--i:${i}" href="${routeHref("article", n.slug)}"><span class="pz-ni__bg" aria-hidden="true"></span>
+      <span class="pz-ni__no" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
+      <span class="pz-ni__m"><span class="mono">${esc(fmtDate(n.date))} · ${esc(L(NEWS_CATS[n.cat]))}</span>${i === 0 ? `<em>${esc(pt("newest"))}</em>` : ""}</span>
+      <h3 aria-level="3">${esc(L(n.title))}</h3><p>${esc(L(n.sum))}</p>
+      <span class="pz-ni__go" aria-hidden="true">${ICONS.arrow}</span>
+      ${pr ? `<span class="pz-ni__pv" aria-hidden="true">${posterSVG(pr, lang)}</span>` : ""}</a>`; }).join("")}</div></div></section>
+
+  <section class="sec sc-red pz-cta"><div class="wrap pz-cta__g">
+    <div class="pz-cta__t"><span class="eyebrow">${t("contact_eyebrow")}</span><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p>
+      <div class="pz-cta__r">${ring(pt("ring"), "pz-ring--cta", 240)}<a class="link-arrow" href="mailto:${esc(SITE.email)}">${esc(SITE.email)}</a></div></div>
+    <div class="pz-cta__f"><form class="form" data-form="contact" novalidate>
+      ${sel("reason", t("reason"), reasons)}
+      <div class="form__row">${fld("c-name", t("name"), { req: true, ac: "name", name: "name" })}${fld("c-email", t("email"), { type: "email", req: true, ac: "email", name: "email" })}</div>
+      ${fld("c-msg", t("message"), { type: "textarea", rows: 4, name: "message", req: true })}${hpField()}${tsBox()}
+      <p class="err" role="alert"></p><div><button class="btn pz-mag" type="submit">${t("send")} ${ICONS.arrow}</button></div></form><div class="form-out" aria-live="polite"></div></div>
+  </div></section>`;
   }
 
   /* ---------- Comportamiento ---------- */
@@ -190,18 +214,17 @@
     const words = mf ? Array.from(mf.querySelectorAll(".pz-w")) : [];
     const mfP = mf && mf.querySelector("[data-mf]"), mfBird = mf && mf.querySelector(".pz-mf__bird"), mfNo = mf && mf.querySelector("[data-mf-no]");
     const ctaRing = q(".pz-ring--cta"), featRing = q(".pz-ring--feat");
-    const counters = qa(".pz-n");
-    let pinned = false, maxX = 0, header = 64;
+    const cards = qa(".pz-hs .card__poster"), shotEls = qa("[data-shot]"), topBar = q(".pz-top");
+    let pinned = false, maxX = 0, header = 76, lastTopY = window.scrollY;
 
     /* Sin animaciones (modo ligero o «reducir movimiento»): todo queda encendido y estático */
     if (!fx) { words.forEach((w) => w.classList.add("on")); layers.forEach((l, i) => { l.style.opacity = i === 0 ? ".32" : "0"; }); return; }
-    counters.forEach((c) => { c.textContent = "0"; });
     layers.forEach((l) => { l.style.opacity = "0"; });
 
     /* La galería anclada cambia la altura de la página: se avisa a los efectos de la web real para que vuelvan a medir las posiciones */
     function resync() { s.synth = true; window.dispatchEvent(new Event("resize")); }
     function measure() {
-      const top = document.querySelector(".top"); header = top ? top.getBoundingClientRect().height : 64;
+      header = 78;
       document.documentElement.style.setProperty("--pz-hh", header + "px");
       if (!hs) return;
       const want = window.innerWidth > 900;
@@ -211,7 +234,7 @@
         maxX = Math.max(0, track.scrollWidth - view.clientWidth);
         const h = (stick.offsetHeight + maxX) + "px";
         if (hs.style.height !== h) { hs.style.height = h; resync(); }
-      } else if (hs.style.height) { hs.style.height = ""; track.style.transform = ""; maxX = 0; resync(); }
+      } else { if (hs.style.height) { hs.style.height = ""; track.style.transform = ""; maxX = 0; resync(); } cards.forEach((c) => c.style.setProperty("--cr", "0deg")); }
     }
 
     function frame() {
@@ -228,18 +251,38 @@
         const p = clamp((header - r.top) / d, 0, 1);
         track.style.transform = `translate3d(${(-p * maxX).toFixed(1)}px,0,0)`;
         if (bar) bar.style.transform = `scaleX(${p.toFixed(4)})`;
+        const vw = window.innerWidth;
+        cards.forEach((c) => {
+          const r = c.parentElement.getBoundingClientRect(), d = clamp(((r.left + r.width / 2) - vw / 2) / (vw / 2), -1.3, 1.3);
+          c.style.setProperty("--cr", (d * -26).toFixed(1) + "deg"); c.style.setProperty("--cz", (-Math.abs(d) * 90).toFixed(0) + "px");
+        });
+      }
+
+      if (topBar && !html.classList.contains("nav-lock")) {
+        const dy = y - lastTopY;
+        if (Math.abs(dy) > 5) { topBar.classList.toggle("is-hidden", dy > 0 && y > 220); lastTopY = y; }
+        topBar.classList.toggle("is-solid", y > 40);
       }
 
       if (mf) {
         const r = mf.getBoundingClientRect();
         if (r.bottom > -vh * .2 && r.top < vh * 1.2) {
           const span = Math.max(1, r.height - vh), p = clamp(-r.top / span, 0, 1), n = Math.max(1, layers.length);
+          /* La foto de fondo sigue al «plano» que está en el centro de la pantalla (cada hito de la historia tiene su fotograma) */
+          let g = p * (n - 1);
+          if (shotEls.length > 1) {
+            const c = shotEls.map((e) => { const b = e.getBoundingClientRect(); return b.top + b.height / 2; }), mid = vh / 2;
+            let f = 0;
+            if (mid >= c[c.length - 1]) f = c.length - 1;
+            else if (mid > c[0]) { let i = 0; while (i < c.length - 2 && mid > c[i + 1]) i++; f = i + (mid - c[i]) / (c[i + 1] - c[i]); }
+            g = f * (n - 1) / (shotEls.length - 1);
+          }
           layers.forEach((l, i) => {
-            const d = p * n - i - .5, o = clamp(1.25 - Math.abs(d) * 1.5, 0, 1);
+            const d = g - i, o = clamp(1.25 - Math.abs(d) * 1.4, 0, 1);
             l.style.opacity = (o * .62).toFixed(3);
-            l.style.transform = `scale(${(1.1 - clamp(d, -1, 1) * .05).toFixed(3)}) translate3d(0,${(d * -3).toFixed(2)}%,0)`;
+            l.style.transform = `scale(${(1.1 - clamp(d, -1, 1) * .06).toFixed(3)}) translate3d(0,${(d * -4).toFixed(2)}%,0)`;
           });
-          if (mfNo) { const k = clamp(Math.floor(p * n) + 1, 1, n); mfNo.textContent = `${pt("plano")} ${String(k).padStart(2, "0")}/${String(n).padStart(2, "0")}`; }
+          if (mfNo) { const k = clamp(Math.round(g) + 1, 1, n); mfNo.textContent = `${pt("plano")} ${String(k).padStart(2, "0")}/${String(n).padStart(2, "0")}`; }
           if (mfBird) {
             const bx = -18 + p * 140, by = 24 + Math.sin(p * 11) * 7 + p * 18;
             mfBird.style.transform = `translate3d(${bx}vw,${by}vh,0) rotate(${(Math.cos(p * 11) * 5).toFixed(1)}deg)`;
@@ -267,17 +310,37 @@
     measure(); kick();
     setTimeout(() => { if (st === s) { measure(); kick(); } }, 600);
 
-    /* Contadores: suben al entrar en pantalla */
-    if ("IntersectionObserver" in window && counters.length) {
+    /* Entradas: aparición escalonada y estadísticas (contadores + gráficos) al entrar en pantalla */
+    if ("IntersectionObserver" in window) {
       const io = new IntersectionObserver((es) => es.forEach((e) => {
-        if (!e.isIntersecting) return; io.unobserve(e.target);
-        const el = e.target, to = +el.dataset.n || 0, t0 = performance.now(), dur = 1300;
-        const tick = (now) => { const k = clamp((now - t0) / dur, 0, 1), eased = 1 - Math.pow(1 - k, 3); el.textContent = String(Math.round(to * eased)); if (k < 1 && st === s) requestAnimationFrame(tick); else el.textContent = String(to); };
-        requestAnimationFrame(tick);
-      }), { threshold: .6 });
-      counters.forEach((c) => io.observe(c));
+        const el = e.target;
+        if (!e.isIntersecting) return;
+        el.classList.add("in");
+        const num = el.querySelector(".pz-n");
+        if (num && !num.dataset.done) {
+          num.dataset.done = "1";
+          const to = +num.dataset.n || 0, t0 = performance.now(), dur = 1400;
+          const tick = (now) => { const k = clamp((now - t0) / dur, 0, 1), eased = 1 - Math.pow(1 - k, 3); num.textContent = String(Math.round(to * eased)); if (k < 1 && st === s) requestAnimationFrame(tick); else num.textContent = String(to); };
+          num.textContent = "0"; requestAnimationFrame(tick);
+        }
+        io.unobserve(el);
+      }), { threshold: .25, rootMargin: "0px 0px -6% 0px" });
+      qa(".pz-rev").forEach((el) => io.observe(el));
       off.push(() => io.disconnect());
+    } else qa(".pz-rev").forEach((el) => el.classList.add("in"));
+
+    /* Cabecera: el indicador rojo sigue al enlace sobre el que pasas */
+    const nav = q(".pz-top .nav"), ind = nav && nav.querySelector(".pz-top__ind");
+    if (nav && ind) {
+      const to = (a) => { if (!a) { ind.style.opacity = "0"; return; } ind.style.setProperty("--ix", a.offsetLeft + "px"); ind.style.setProperty("--iw", a.offsetWidth + "px"); ind.style.opacity = "1"; };
+      nav.querySelectorAll("a").forEach((a) => { on_(a, "pointerenter", () => to(a)); on_(a, "focus", () => to(a)); });
+      on_(nav, "pointerleave", () => to(nav.querySelector('a[aria-current="page"]')));
     }
+
+    /* Noticias: la portada del proyecto sigue al puntero dentro de la fila */
+    if (fine) qa(".pz-ni").forEach((el) => {
+      on_(el, "pointermove", (e) => { const r = el.getBoundingClientRect(); el.style.setProperty("--px", (e.clientX - r.left).toFixed(0) + "px"); el.style.setProperty("--py", (e.clientY - r.top).toFixed(0) + "px"); });
+    });
 
     /* Puntero (solo ratón): foco de luz en el hero, inclinación 3D con brillo, botones magnéticos, foco en el dock */
     if (fine) {
@@ -307,12 +370,19 @@
         });
         on_(el, "pointerleave", () => { el.style.setProperty("--mgx", "0px"); el.style.setProperty("--mgy", "0px"); });
       });
-      qa(".dock a, .pz-st").forEach((el) => {
+      qa(".pz-st").forEach((el) => {
         on_(el, "pointermove", (e) => { const r = el.getBoundingClientRect(); el.style.setProperty("--mx", (e.clientX - r.left).toFixed(0) + "px"); el.style.setProperty("--my", (e.clientY - r.top).toFixed(0) + "px"); });
       });
     }
   }
 
+  /* Cabecera de esta página: la misma de la web real (mismos botones y menú) con un envoltorio flotante, indicador deslizante y botón de contacto */
+  function pruebaHeader(h) {
+    return h.replace('<header class="top sc-dark">', '<header class="top sc-dark pz-top">')
+      .replace("</nav>", '<i class="pz-top__ind" aria-hidden="true"></i></nav>')
+      .replace('<button class="tbtn burger"', `<a class="pz-top__cta" href="${routeHref("contacto")}"><span>${esc(pt("talk"))}</span>${ICONS.arrow}</a><button class="tbtn burger"`);
+  }
+  window.pruebaHeader = pruebaHeader;
   window.pagePrueba = pagePrueba;
   window.pruebaInit = pruebaInit;
 })();
