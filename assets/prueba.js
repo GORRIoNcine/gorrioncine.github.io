@@ -141,7 +141,7 @@
       <div class="feat__cta"><a class="btn btn--red pz-mag" href="${routeHref("project", feat.slug)}">${t("see_page")} ${ICONS.arrow}</a>${ext(httpUrl(feat.trailer) || ((feat.where || [])[0] || {}).url || SITE.reelUrl, `${ICONS.play} ${t("trailer")}`, "btn pz-mag")}</div></div>
   </div></section>` : ""}
 
-  <section class="sc-bone pz-hs" data-pz="hs"><div class="pz-hs__stick">
+  <section class="sc-dark pz-alt pz-hs" data-pz="hs"><div class="pz-hs__stick">
     <div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_proyectos")}</span><h2>${t("selection")}</h2></div><a class="link-arrow" href="${routeHref("proyectos")}">${t("see_all")} ${ICONS.arrow}</a></div></div>
     <div class="pz-hs__view"><div class="pz-hs__track">${gal.map(card).join("")}<a class="pz-hs__end" href="${routeHref("proyectos")}"><span>${bw(pt("end"))}</span>${ICONS.arrow}</a></div></div>
     <div class="pz-hs__bar" aria-hidden="true"><i></i></div>
@@ -170,7 +170,7 @@
 
   <section class="sec--tight sc-red pz-stat-sec" aria-label="${esc(pt("s1"))}"><div class="wrap"><div class="pz-stats">${stats().map((x, i) => `<div class="pz-st pz-rev" style="--i:${i}"><span class="pz-st__k">${String(i + 1).padStart(2, "0")} · ${bw(x.k)}</span><b class="pz-n" data-n="${x.n}" data-g="${x.n}">${x.n}</b><span class="pz-st__l">${bw(x.l)}</span>${x.v}</div>`).join("")}</div></div></section>
 
-  <section class="sec sc-bone pz-news"><div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_noticias")}</span><h2>${t("latest")}</h2></div><a class="link-arrow" href="${routeHref("noticias")}">${t("all_news")} ${ICONS.arrow}</a></div>
+  <section class="sec sc-dark pz-alt pz-news"><div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_noticias")}</span><h2>${t("latest")}</h2></div><a class="link-arrow" href="${routeHref("noticias")}">${t("all_news")} ${ICONS.arrow}</a></div>
     <div class="pz-nl">${news.map((n, i) => { const pr = n.project ? projBy(n.project) : null; return `<a class="pz-ni pz-rev" style="--i:${i}" href="${routeHref("article", n.slug)}"><span class="pz-ni__bg" aria-hidden="true"></span>
       <span class="pz-ni__no" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
       <span class="pz-ni__m"><span class="mono">${esc(fmtDate(n.date))} · ${esc(L(NEWS_CATS[n.cat]))}</span>${i === 0 ? `<em>${esc(pt("newest"))}</em>` : ""}</span>
