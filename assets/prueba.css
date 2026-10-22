@@ -364,3 +364,7 @@ html:has(.pz-top), html:has(.pz-top) body { overflow-x: clip; max-width: 100%; }
   .pz-ring { transform: none; }
   * { scroll-behavior: auto; }
 }
+
+/* Sin barra de scroll visible en el carrusel de proyectos */
+.pz-hs__view { scrollbar-width: none; -ms-overflow-style: none; }
+.pz-hs__view::-webkit-scrollbar { display: none; width: 0; height: 0; }
