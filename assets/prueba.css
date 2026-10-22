@@ -368,3 +368,8 @@ html:has(.pz-top), html:has(.pz-top) body { overflow-x: clip; max-width: 100%; }
 /* Sin barra de scroll visible en el carrusel de proyectos */
 .pz-hs__view { scrollbar-width: none; -ms-overflow-style: none; }
 .pz-hs__view::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Fondo del manifiesto: cubrir siempre toda la pantalla (también cuando la barra del navegador móvil se oculta) */
+.pz-mf__bg { height: 100vh; height: 100lvh; margin-bottom: -100vh; margin-bottom: -100lvh; }
+.pz-mf__layers { position: absolute; inset: 0; }
+.pz-mf__layers img { inset: 0; width: 100%; height: 100%; min-height: 100%; }
