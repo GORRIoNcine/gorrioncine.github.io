@@ -198,7 +198,6 @@
   }
   function homeFxInit(root, on) {
     stop();
-    if (!on) return;
     const html = document.documentElement, fx = html.classList.contains("fx");
     const fine = !!(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches);
     const q = (s) => root.querySelector(s), qa = (s) => Array.from(root.querySelectorAll(s));
@@ -354,7 +353,7 @@
         });
         on_(hero, "pointerleave", () => { if (art) { art.style.setProperty("--tx", "0deg"); art.style.setProperty("--ty", "0deg"); } });
       }
-      qa(".pz-tilt, .pz-hs .card__poster").forEach((el) => {
+      qa(".pz-tilt, main .card__poster").forEach((el) => {
         el.classList.add("pz-tiltable");
         on_(el, "pointermove", (e) => {
           const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
@@ -383,6 +382,13 @@
       .replace("</nav>", '<i class="pz-top__ind" aria-hidden="true"></i></nav>')
       .replace('<button class="tbtn burger"', `<a class="pz-top__cta" href="${routeHref("contacto")}"><span>${esc(pt("talk"))}</span>${ICONS.arrow}</a><button class="tbtn burger"`);
   }
+  /* Cierre de las páginas interiores: la misma banda roja de contacto del inicio, con el anillo giratorio y botón magnético */
+  function homeFxOutro() {
+    return `<section class="sec sc-red pz-cta pz-cta--slim"><div class="wrap pz-cta__g">
+    <div class="pz-cta__t"><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div>
+    <div class="pz-cta__r">${ring(pt("ring"), "pz-ring--cta", 200)}<a class="btn pz-mag" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></div></section>`;
+  }
+  window.homeFxOutro = homeFxOutro;
   window.homeFxHeader = homeFxHeader;
   window.pageHomeFx = pageHomeFx;
   window.homeFxInit = homeFxInit;

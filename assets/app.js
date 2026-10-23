@@ -1184,8 +1184,11 @@ const typeLabel = (p) => L(TYPES[p.type]);
 /* ---------- Piezas reutilizables ---------- */
 function pageHead(eyebrow, title, lede, seed) {
   const ttl = /[<\s]/.test(title) ? title : `<u>${esc(title)}</u>`;
-  return `<header class="page-head sc-dark"><div class="page-head__art">${headArt(seed ?? 0)}</div><div class="wrap" style="position:relative">
+  return `<header class="page-head sc-dark pz-ph"><div class="pz-aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="page-head__art">${headArt(seed ?? 0)}</div><div class="wrap" style="position:relative">
     <span class="eyebrow">${esc(eyebrow)}</span><h1 class="h-page" id="page-h">${ttl}</h1>${lede ? `<p class="lede">${esc(lede)}</p>` : ""}</div></header>`;
+}
+function ctaBand() {
+  return typeof homeFxOutro === "function" ? homeFxOutro() : `<section class="sec sc-red"><div class="wrap cta"><div><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div><a class="btn" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></section>`;
 }
 function card(p) {
   return `<article class="card card--${p.status}"><div class="card__poster" data-title="${esc(p.title)}">${posterSVG(p, lang)}<span class="card__status">${statusChip(p)}</span></div>
@@ -1438,7 +1441,7 @@ function pageAbout() {
     <div class="team">${TEAM.map((m, i) => `<article class="person"><div class="person__img">${m.photo ? `<img ${imgAttrs(m.photo, "(max-width: 700px) 50vw, 320px")} alt="${esc(m.n)}" loading="lazy">` : avatarSVG(m.n, i + 1)}</div><span class="role">${esc(L(m.r))}</span><h3>${esc(m.n)}</h3><p>${esc(L(m.b))}</p></article>`).join("")}</div></div></section>
   <section class="sec sec--alt sc-dark"><div class="wrap split"><h2>${t("history")}</h2><div class="tline">${HISTORY.map((h) => `<div class="tl"><span class="tl__d">${h.y}</span><div><b>${esc(L(h.t))}</b><span>${esc(L(h.d))}</span></div></div>`).join("")}</div></div></section>
   <section class="sec sc-bone"><div class="wrap split"><h2>${t("allies")}</h2><div class="allies">${ALLIES.map((a) => `<span class="ally">${esc(a)}</span>`).join("")}</div></div></section>
-  <section class="sec sc-red"><div class="wrap cta"><div><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div><a class="btn" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></section>`;
+  ${ctaBand()}`;
 }
 
 /* Colaboradores del inicio — «créditos finales»: una tira de película inclinada con un fotograma por colaborador,
@@ -1741,7 +1744,7 @@ function render(opts = {}) {
     try { console.error("[GORRIóN] No se pudo generar la página «" + r.name + "»", e); } catch (x) { /* nada */ }
     main = pageProblem();
   }
-  app().innerHTML = (r.name === "inicio" && typeof homeFxHeader === "function" ? homeFxHeader(header(r)) : header(r)) + `<main id="main" tabindex="-1"${r.name === "project" ? ' class="page--project"' : ""}>${main}</main>` + footer();
+  app().innerHTML = (typeof homeFxHeader === "function" ? homeFxHeader(header(r)) : header(r)) + `<main id="main" tabindex="-1"${r.name === "project" ? ' class="page--project"' : ""}>${main}${["proyectos", "servicios", "prensa", "noticias"].includes(r.name) || r.name === "project" || r.name === "article" ? ctaBand() : ""}</main>` + footer();
   { const b = document.getElementById("boot"); if (b) { b.style.transition = "opacity .25s"; b.style.opacity = "0"; setTimeout(() => b.remove(), 280); } }
   brandifyDOM(app());
   document.title = routeTitle(r);
