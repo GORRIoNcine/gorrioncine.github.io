@@ -390,3 +390,7 @@ html[data-theme="light"] .pz-ph .pz-aurora i { opacity: .22; }
 .pz-cta--slim .pz-ring--cta { width: clamp(96px, 12vw, 150px); }
 @media (max-width: 860px) { .pz-cta--slim .pz-cta__g { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 900px), (hover: none) { .pz-ph::after { display: none; } html.fx main .card__poster { transform: none; transition: none; } }
+
+/* Gorriones en versión clara: sin halo rojo difuso; contorno fino y sombra suave para que el plumaje blanco no se pierda en el fondo claro */
+html[data-theme="light"]:has(.pz-top) .pz-mf__bird,
+html[data-theme="light"]:has(.pz-top) .pz-perch { filter: drop-shadow(0 0 .7px #000) drop-shadow(0 0 .7px #000) drop-shadow(0 7px 9px rgba(0, 0, 0, .22)); }
