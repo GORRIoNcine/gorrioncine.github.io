@@ -250,7 +250,16 @@ section("nosotros", `${txt(about.press_bio) ? `<p>${esc(txt(about.press_bio))}</
 section("prensa", `${(press.awards || []).length ? `<h2>${ui("awards_h", "Premios y selecciones")}</h2><ul class="seo__list">${press.awards.filter((a) => a && a.a).map((a) => { const p = projBy(a.p); return `<li><b>${esc(a.y)} · ${esc(txt(a.a))}</b> <span>${esc(a.f)}${p ? " · " : ""}</span>${p ? link(`/proyectos/${p.slug}/`, txt(p.title)) : ""}</li>`; }).join("")}</ul>` : ""}${(press.press || []).length ? `<h2>${ui("inpress", "En los medios")}</h2><ul class="seo__list">${press.press.filter((x) => x && x.t).map((x) => `<li>${x.url ? `<a href="${esc(x.url)}" rel="noopener">${esc(txt(x.t))}</a>` : `<b>${esc(txt(x.t))}</b>`} <span>${esc(x.s)} · ${esc(x.d)}</span><p>${esc(txt(x.x))}</p></li>`).join("")}</ul>` : ""}`);
 section("noticias", newsList(validNews));
 section("contacto", `<ul class="seo__list">${site.email ? `<li><b>${tr("Correo", "Email")}</b> <a href="mailto:${esc(site.email)}">${esc(site.email)}</a></li>` : ""}${site.pressEmail ? `<li><b>${ui("nav_prensa")}</b> <a href="mailto:${esc(site.pressEmail)}">${esc(site.pressEmail)}</a></li>` : ""}${txt(site.city) ? `<li><b>${tr("Ciudad", "City")}</b> ${esc(txt(site.city))}</li>` : ""}${(site.social || []).filter((s) => s && s.url).map((s) => `<li><b>${esc(s.name)}</b> <a href="${esc(s.url)}" rel="noopener">${esc(s.handle || s.url)}</a></li>`).join("")}</ul>`, [ORG()]);
-section("legal", `<p>${tr("Titular: ", "Owner: ")}${NAME}, ${tr("productora audiovisual independiente con sede en La Habana, Cuba.")}${site.email ? ` ${tr("Contacto: ", "Contact: ")}${esc(site.email)}.` : ""}</p>${ANALYTICS ? `<p>${esc(ui("legal_stats", ""))}</p>` : ""}`);
+section("legal", (() => {
+  const b = Array.isArray(UI.legal_body) ? UI.legal_body[ENGLISH ? 1 : 0] || [] : [];
+  let out = "";
+  for (let i = 0; i < b.length; i += 2) {
+    if (i === 6 && !site.newsletterUrl && !/mailerlite/i.test(appSrc.match(/newsletterUrl:\s*"([^"]*)"/)?.[1] || "")) continue;
+    if (i === 12 && ANALYTICS) out += `<h2>${esc(ui("legal_stats_h", ""))}</h2><p>${esc(ui("legal_stats", ""))}</p>`;
+    out += `<h2>${esc(b[i])}</h2><p>${esc(b[i + 1])}${i === 0 && site.email ? esc(site.email) + "." : ""}</p>`;
+  }
+  return out;
+})());
 
 /* Proyectos */
 for (const p of validProjects) {

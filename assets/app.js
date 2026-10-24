@@ -1102,9 +1102,22 @@ const S = {
   sample: ["Nombres, premios y textos de ejemplo: sustitúyelos en data.js.", "Names, awards and texts are examples: replace them in data.js."],
   legal_h: ["Aviso legal y privacidad", "Legal notice & privacy"],
   legal_body: [
-    ["Titular", "GORRIóN, productora audiovisual independiente con sede en La Habana, Cuba. Contacto: ", "Propiedad intelectual", "Las películas, textos, imágenes y marcas de este sitio pertenecen a GORRIóN o a sus autores. No pueden reproducirse sin permiso por escrito.", "Datos personales", "Los datos que escribas en los formularios se usan solo para responder a tu mensaje. No los cedemos a terceros ni los usamos para otros fines. Puedes pedir que los borremos escribiendo al correo de contacto.", "Almacenamiento en tu navegador", "El sitio guarda en tu navegador únicamente tus preferencias de idioma y de modo ligero. No usa cookies de seguimiento."],
-    ["Owner", "GORRIóN, an independent audiovisual production company based in Havana, Cuba. Contact: ", "Intellectual property", "The films, texts, images and marks on this site belong to GORRIóN or its authors. They may not be reproduced without written permission.", "Personal data", "The data you enter in the forms is used only to answer your message. We do not share it with third parties or use it for other purposes. You can ask us to delete it by writing to the contact email.", "Browser storage", "The site stores only your language and lite-mode preferences in your browser. It uses no tracking cookies."]
+    ["Titular", "GORRIóN, productora audiovisual independiente con sede en La Habana, Cuba. Contacto: ",
+     "Propiedad intelectual", "Las películas, textos, imágenes, carteles, vídeos y marcas de este sitio pertenecen a GORRIóN o a sus autores. No pueden reproducirse sin permiso por escrito. Los enlaces a páginas de terceros se ofrecen como referencia; no nos hacemos responsables de su contenido.",
+     "Formularios y datos personales", "Los formularios de contacto, presupuesto y solicitud de material recogen el nombre, el correo y el mensaje que escribas, además de los datos técnicos mínimos para recibirlo (fecha y hora, y la página desde la que escribes). Se envían a un servicio de buzón propio alojado en Cloudflare, que los guarda de forma segura y nos avisa por correo. Los usamos solo para responderte y para gestionar tu solicitud, no los cedemos a terceros ni los usamos para otros fines, y los conservamos únicamente el tiempo necesario para atenderte. Si el envío automático no está disponible, el formulario prepara un mensaje de correo en tu propio programa y lo envías tú.",
+     "Boletín", "Si te suscribes, guardamos tu correo en MailerLite, el servicio externo con el que enviamos el boletín. Te pedimos confirmar la suscripción por correo y solo recibirás los correos de bienvenida y las novedades de GORRIóN (estrenos, convocatorias y noticias). Cada correo incluye un enlace para darte de baja cuando quieras; también puedes pedirlo escribiendo al correo de contacto y borraremos tus datos.",
+     "Vídeos, tipografías y servicios de terceros", "Los vídeos de YouTube y Vimeo no se cargan hasta que pulsas «reproducir»: en ese momento tu navegador se conecta a esos servicios, que pueden aplicar sus propias condiciones (usamos el modo de privacidad ampliada de YouTube). Las miniaturas de los vídeos de YouTube y las tipografías se descargan de los servidores de YouTube (Google) y de Google Fonts. La web se aloja en GitHub Pages, que, como cualquier servidor, registra la dirección IP de las visitas por motivos de seguridad.",
+     "Almacenamiento en tu navegador", "El sitio guarda en tu navegador únicamente tus preferencias de idioma, de tema (claro u oscuro) y de modo ligero, para recordarlas la próxima vez. No usa cookies de seguimiento ni de publicidad.",
+     "Tus derechos", "Puedes pedirnos acceder a tus datos, corregirlos o borrarlos, y darte de baja del boletín en cualquier momento, escribiendo al correo de contacto. Responderemos lo antes posible. Esta página puede actualizarse cuando cambie el funcionamiento del sitio; la última revisión es de octubre de 2026."],
+    ["Owner", "GORRIóN, an independent audiovisual production company based in Havana, Cuba. Contact: ",
+     "Intellectual property", "The films, texts, images, posters, videos and marks on this site belong to GORRIóN or its authors. They may not be reproduced without written permission. Links to third-party sites are provided for reference; we are not responsible for their content.",
+     "Forms and personal data", "The contact, quote and material-request forms collect the name, email and message you write, plus the minimum technical data needed to receive it (date and time, and the page you wrote from). They are sent to our own mailbox service hosted on Cloudflare, which stores them securely and notifies us by email. We use them only to reply to you and handle your request, we do not share them with third parties or use them for other purposes, and we keep them only as long as needed to help you. If automatic sending is unavailable, the form prepares an email in your own mail program and you send it yourself.",
+     "Newsletter", "If you subscribe, we store your email in MailerLite, the external service we use to send the newsletter. We ask you to confirm your subscription by email, and you will only receive welcome emails and GORRIóN news (releases, calls and news). Every email includes a link to unsubscribe at any time; you can also ask by writing to the contact email and we will delete your data.",
+     "Videos, fonts and third-party services", "YouTube and Vimeo videos are not loaded until you press “play”: at that moment your browser connects to those services, which may apply their own terms (we use YouTube's enhanced privacy mode). YouTube video thumbnails and the typefaces are downloaded from YouTube (Google) and Google Fonts servers. The site is hosted on GitHub Pages, which, like any server, records visitors' IP addresses for security reasons.",
+     "Browser storage", "The site stores only your language, theme (light or dark) and lite-mode preferences in your browser, to remember them next time. It uses no tracking or advertising cookies.",
+     "Your rights", "You can ask us to access, correct or delete your data, and unsubscribe from the newsletter at any time, by writing to the contact email. We will reply as soon as possible. This page may be updated when the site changes; the latest review is from October 2026."]
   ],
+  legal_stats_h: ["Estadísticas de visitas", "Visit statistics"],
   legal_stats: ["Medimos las visitas de forma agregada y anónima con Cloudflare Web Analytics: sin cookies y sin identificarte (páginas vistas, país, tipo de dispositivo).", "We measure visits in aggregate and anonymously with Cloudflare Web Analytics: no cookies and no way to identify you (page views, country, device type)."],
   notfound_h: ["Esta página no existe", "This page does not exist"], notfound_p: ["Puede que el enlace esté roto o que el contenido se haya movido.", "The link may be broken or the content may have moved."],
   home: ["Ir al inicio", "Go home"], prev: ["Anterior", "Previous"], next: ["Siguiente", "Next"],
@@ -1571,12 +1584,14 @@ function pageContact() {
   </div></section>`;
 }
 function pageLegal() {
-  const b = t("legal_body");
-  return pageHead(t("legal"), t("legal_h"), "", 2) + `<section class="sec"><div class="wrap"><div class="prose">
-    <h3 style="font-size:1.8rem;margin-bottom:8px">${b[0]}</h3><p>${b[1]}<a href="${routeHref("contacto")}" style="border-bottom:2px solid var(--fg)">${esc(SITE.email)}</a>.</p>
-    <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[2]}</h3><p>${b[3]}</p>
-    <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[4]}</h3><p>${b[5]}</p>
-    <h3 style="font-size:1.8rem;margin:32px 0 8px">${b[6]}</h3><p>${b[7]}${SITE.analyticsToken ? " " + t("legal_stats") : ""}</p></div></div></section>`;
+  const b = t("legal_body"), hd = (k) => `<h3 style="font-size:1.8rem;margin:${k ? "32px" : "0"} 0 8px">`;
+  const sec = [];
+  for (let i = 0; i < b.length; i += 2) {
+    if (i === 12 && SITE.analyticsToken) sec.push(`${hd(1)}${t("legal_stats_h")}</h3><p>${t("legal_stats")}</p>`);
+    if (i === 6 && !SITE.newsletterUrl) continue;
+    sec.push(`${hd(i)}${b[i]}</h3><p>${b[i + 1]}${i === 0 ? `<a href="${routeHref("contacto")}" style="border-bottom:2px solid var(--fg)">${esc(SITE.email)}</a>.` : ""}</p>`);
+  }
+  return pageHead(t("legal"), t("legal_h"), "", 2) + `<section class="sec"><div class="wrap"><div class="prose">${sec.join("")}</div></div></section>`;
 }
 function pageProblem() {
   return `<section class="sec sc-dark"><div class="wrap"><span class="eyebrow">${t("problem_eyebrow")}</span><h1 id="page-h" style="margin-top:14px">${t("problem_h")}</h1><p class="lede" style="margin-top:18px">${t("problem_p")}</p><p style="margin-top:28px"><a class="btn btn--red" href="${routeHref("inicio")}">${t("home")} ${ICONS.arrow}</a> <a class="btn" href="${routeHref("proyectos")}">${t("nav_proyectos")}</a></p></div></section>`;
