@@ -937,7 +937,7 @@ const Buddy = (() => {
     clearTimeout(tIn); clearTimeout(tOut);
     const go = () => {
       el.classList.toggle("talk", v);
-      if (v) tOut = setTimeout(() => el.classList.remove("talk"), 5200);
+      if (v) tOut = setTimeout(() => el.classList.remove("talk"), 3000);
     };
     if (v && delay) tIn = setTimeout(go, delay); else go();
   }
@@ -947,7 +947,7 @@ const Buddy = (() => {
   function setOn(v) {
     if (v === on) return;
     on = v; el.classList.toggle("on", v); html.classList.toggle("buddy-on", v);
-    if (v) { el.removeAttribute("inert"); talk(true, 1000); } else { el.setAttribute("inert", ""); talk(false); }
+    if (v) { el.removeAttribute("inert"); let seen = false; try { seen = sessionStorage.getItem("gorrion-buddy") === "1"; sessionStorage.setItem("gorrion-buddy", "1"); } catch (x) { /* ok */ } if (!seen) talk(true, 1000); } else { el.setAttribute("inert", ""); talk(false); }
   }
   function measureHero() {
     hero = document.querySelector(".hero");
