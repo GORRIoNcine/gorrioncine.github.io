@@ -119,9 +119,8 @@ html.fx .pz-w.on { opacity: 1; }
 }
 
 /* ---------- Cartel 3D en la galería ---------- */
-html.fx main .card__poster { box-shadow: 12px 12px 0 var(--red); transform-style: preserve-3d;
-  transform: perspective(1100px) translateZ(var(--cz, 0px)) rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) + var(--cr, 0deg))); transition: transform .35s var(--ease), box-shadow .35s var(--ease); }
-html.fx main .card:hover .card__poster { box-shadow: 18px 18px 0 var(--fg); }
+html.fx main .card__poster { transform-style: preserve-3d;
+  transform: perspective(1100px) translateZ(var(--cz, 0px)) rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) + var(--cr, 0deg))); transition: transform .35s var(--ease); }
 html.fx .pz-hs .rv.in .card__poster { clip-path: inset(-30px -30px -30px -30px); }
 .pz-hs .card > div:last-child { transition: transform .35s var(--ease); }
 html.fx .pz-hs .card:hover > div:last-child { transform: translateY(6px); }
@@ -238,7 +237,7 @@ html.fx .pz-viz--ticks .now { animation: pz-blink 1.2s steps(1) infinite; }
 .pz-ni p { grid-area: p; margin: 0; max-width: 40ch; color: var(--mute); font-size: .92rem; transition: color .3s; }
 .pz-ni__go { grid-area: go; justify-self: end; align-self: center; width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid currentColor; transition: background .3s, color .3s, transform .45s var(--ease), border-color .3s; }
 .pz-ni__go svg { width: 20px; height: 20px; }
-.pz-ni__pv { position: absolute; z-index: 3; left: var(--px, 60%); top: var(--py, 50%); width: clamp(120px, 12vw, 180px); aspect-ratio: 3 / 4; overflow: hidden; background: var(--ink); box-shadow: 8px 8px 0 var(--red); pointer-events: none; opacity: 0; transform: translate(26px, -50%) rotate(-5deg) scale(.85); transition: opacity .25s, transform .35s var(--ease); }
+.pz-ni__pv { position: absolute; z-index: 3; left: var(--px, 60%); top: var(--py, 50%); width: clamp(120px, 12vw, 180px); aspect-ratio: 3 / 4; overflow: hidden; background: var(--ink); pointer-events: none; opacity: 0; transform: translate(26px, -50%) rotate(-5deg) scale(.85); transition: opacity .25s, transform .35s var(--ease); }
 .pz-ni__pv svg, .pz-ni__pv img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .pz-ni:hover, .pz-ni:focus-visible { color: var(--bg); outline: none; }
 .pz-ni:hover .pz-ni__bg, .pz-ni:focus-visible .pz-ni__bg { transform: scaleY(1); }
@@ -341,7 +340,7 @@ html:has(.pz-top), html:has(.pz-top) body { overflow-x: clip; max-width: 100%; }
   .pz-aurora i { filter: none; opacity: .4; will-change: auto; animation: none !important; }
   .pz-mf__layers img { filter: none; mix-blend-mode: normal; will-change: opacity; }
   .pz-mf__bird { display: none; }
-  html.fx main .card__poster { transform: none; transition: none; box-shadow: 8px 8px 0 var(--red); }
+  html.fx main .card__poster { transform: none; transition: none; }
   .pz-st { background: rgba(0, 0, 0, .7); }
   .pz-ring { transform: none; }
 }

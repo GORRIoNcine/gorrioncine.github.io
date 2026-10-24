@@ -169,8 +169,8 @@ h1 u, h2 u, h3 u, h4 u { text-decoration: underline; text-decoration-thickness: 
 
 /* ---------- Proyecto destacado ---------- */
 .feat { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
-.feat__poster { display: block; max-width: 440px; position: relative; box-shadow: 16px 16px 0 var(--red); transition: transform .35s var(--ease), box-shadow .35s var(--ease); }
-.feat__poster:hover { transform: translate(-4px, -4px); box-shadow: 20px 20px 0 var(--red); }
+.feat__poster { display: block; max-width: 440px; position: relative; transition: transform .35s var(--ease); }
+.feat__poster:hover { transform: translate(-4px, -4px); }
 .feat h2 { font-size: clamp(3rem, 7vw, 6rem); margin: 14px 0 18px; }
 .feat .tagline { font-family: var(--f-display); font-size: clamp(1.3rem, 2.4vw, 1.9rem); color: var(--mute); line-height: 1.1; margin-bottom: 20px; font-style: italic; }
 .feat__meta { margin: 26px 0 30px; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -270,7 +270,7 @@ h1 u, h2 u, h3 u, h4 u { text-decoration: underline; text-decoration-thickness: 
 .fh__in { position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 40px; align-items: end; padding-block: clamp(48px, 8vw, 100px) clamp(32px, 5vw, 56px); }
 .fh h1 { font-size: clamp(3.2rem, 9.4vw, 7.6rem); margin: 14px 0 16px; }
 .fh .tagline { font-family: var(--f-display); font-style: italic; font-size: clamp(1.4rem, 3vw, 2.2rem); line-height: 1.05; max-width: 28ch; }
-.fh__poster { max-width: 300px; justify-self: end; box-shadow: 14px 14px 0 var(--red); }
+.fh__poster { max-width: 300px; justify-self: end; }
 .fh__cta { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
 .crumb { font-weight: 700; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); display: flex; gap: 10px; flex-wrap: wrap; }
 .crumb a:hover { color: var(--fg); text-decoration: underline; }
@@ -690,17 +690,14 @@ html[data-theme="light"] .pager { background: var(--ink); }
 .fh--desarrollo h1 { font-style: italic; }
 .facts--desarrollo { border-bottom-style: dashed; }
 /* Rodaje: REC en directo */
-.fh--produccion .fh__poster { box-shadow: 14px 14px 0 var(--rec); }
 .fh--produccion .fh__state::before { content: "REC"; font-weight: 800; letter-spacing: .2em; color: var(--rec); }
 .facts--produccion { border-bottom: 3px solid var(--rec); }
 .facts--produccion .fact:first-child dt { color: var(--rec); }
 /* Postproducción: línea de montaje y trama */
 .fh--postproduccion { border-bottom: 3px double #d9a441; }
-.fh--postproduccion .fh__poster { box-shadow: 14px 14px 0 #6b4f17; }
 .fh--postproduccion .fh__state::before { content: "CUT"; font-weight: 800; letter-spacing: .2em; color: #d9a441; }
 .facts--postproduccion { border-bottom: 3px double #d9a441; }
 /* Estrenada: sello de estreno */
-.fh--estrenado .fh__poster { box-shadow: 14px 14px 0 var(--red); }
 .facts--estrenado { border-bottom: 2px solid var(--bone, #efefef); }
 @media (prefers-reduced-motion: reduce) { .phases::after { animation: none; transform: none; } .phases li { animation: none; opacity: 1; transform: none; } }
 .ts { min-height: 0; margin: 4px 0 0; } .ts:empty { display: none; }
@@ -773,3 +770,4 @@ html.lite .pts__h .ln > span, html.lite .pts__strip { transform: none !important
 html.lite .pts__h .ln:nth-child(2) > span { color: var(--fg); -webkit-text-stroke: 0; }
 html.lite .pts__track { width: auto; flex-wrap: wrap; justify-content: center; } html.lite .pts__set[aria-hidden] { display: none; } html.lite .pts__set { flex-wrap: wrap; justify-content: center; } html.lite .pts__ghost { display: none; }
 @media (max-width: 560px) { .pts__scene { display: none; } .pts-sec .pts__h { font-size: 1.7rem; } }
+.card__link { display: block; color: inherit; text-decoration: none; }

@@ -1191,7 +1191,7 @@ function ctaBand() {
   return typeof homeFxOutro === "function" ? homeFxOutro() : `<section class="sec sc-red"><div class="wrap cta"><div><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div><a class="btn" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></section>`;
 }
 function card(p) {
-  return `<article class="card card--${p.status}"><div class="card__poster" data-title="${esc(p.title)}">${posterSVG(p, lang)}<span class="card__status">${statusChip(p)}</span></div>
+  return `<article class="card card--${p.status}"><a class="card__link" href="${routeHref("project", p.slug)}" tabindex="-1" aria-hidden="true"><div class="card__poster" data-title="${esc(p.title)}">${posterSVG(p, lang)}<span class="card__status">${statusChip(p)}</span></div></a>
   <div><div class="card__meta">${esc(typeLabel(p))} · ${p.year}</div><h3><a href="${routeHref("project", p.slug)}">${esc(p.title)}</a></h3></div></article>`;
 }
 function newsItem(n) {
