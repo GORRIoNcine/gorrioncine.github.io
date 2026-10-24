@@ -373,6 +373,46 @@
     <div class="pz-cta__t"><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p></div>
     <div class="pz-cta__r">${ring(pt("ring"), "pz-ring--cta", 200)}<a class="btn pz-mag" href="${routeHref("contacto")}">${t("cta_btn")} ${ICONS.arrow}</a></div></div></section>`;
   }
+
+  /* Cursor personalizado: punto que sigue al ratón y anillo con inercia; crece sobre enlaces y muestra «Ver» sobre los carteles */
+  (function initCursor() {
+    if (!(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+    let el = null, ring = null, dot = null, x = -100, y = -100, rx = -100, ry = -100, raf = 0, on = false;
+    const view = () => (document.documentElement.lang === "en" ? "View" : "Ver");
+    const loop = () => {
+      rx += (x - rx) * .2; ry += (y - ry) * .2;
+      ring.style.transform = `translate3d(${rx.toFixed(1)}px,${ry.toFixed(1)}px,0)`;
+      dot.style.transform = `translate3d(${x}px,${y}px,0)`;
+      raf = Math.abs(x - rx) + Math.abs(y - ry) > .1 ? requestAnimationFrame(loop) : 0;
+    };
+    const start = () => {
+      el = document.createElement("div"); el.className = "pz-cur is-hide"; el.setAttribute("aria-hidden", "true");
+      ring = document.createElement("b"); dot = document.createElement("i"); el.append(ring, dot); document.body.append(el);
+    };
+    const kind = (t) => {
+      if (!t || !t.closest) return "";
+      if (t.closest("input,textarea,select,[contenteditable=true]")) return "text";
+      if (t.closest(".card__poster,.feat__poster,.vid__play")) return "view";
+      if (t.closest("a,button,summary,label,[role=button],[data-act]")) return "link";
+      return "";
+    };
+    document.addEventListener("pointermove", (e) => {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      if (!document.documentElement.classList.contains("fx")) { document.documentElement.classList.remove("pz-cur-on"); return; }
+      if (!on) { on = true; if (!el) start(); document.documentElement.classList.add("pz-cur-on"); rx = e.clientX; ry = e.clientY; }
+      x = e.clientX; y = e.clientY;
+      const k = kind(e.target);
+      el.classList.remove("is-hide");
+      el.classList.toggle("is-text", k === "text");
+      el.classList.toggle("is-link", k === "link");
+      el.classList.toggle("is-view", k === "view");
+      ring.textContent = k === "view" ? view() : "";
+      if (!raf) raf = requestAnimationFrame(loop);
+    }, { passive: true });
+    document.addEventListener("pointerdown", () => el && el.classList.add("is-down"));
+    document.addEventListener("pointerup", () => el && el.classList.remove("is-down"));
+    document.documentElement.addEventListener("mouseleave", () => el && el.classList.add("is-hide"));
+  })();
   window.homeFxOutro = homeFxOutro;
   window.homeFxHeader = homeFxHeader;
   window.pageHomeFx = pageHomeFx;

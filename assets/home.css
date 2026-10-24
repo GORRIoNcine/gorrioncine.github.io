@@ -162,7 +162,7 @@ html.fx .pz-top__cta { animation: pz-glow 2.8s ease-in-out infinite; }
   .pz-top .tools { margin-left: auto; }
 }
 @media (max-width: 700px) {
-  .pz-top__cta, .pz-top .tbtn[data-act="lite"] { display: none; }
+  .pz-top__cta { display: none; }
   .pz-top .top__in { padding-left: 12px; }
 }
 
@@ -377,3 +377,35 @@ html[data-theme="light"]:has(.pz-top) .pz-mf__bird { filter: drop-shadow(0 0 .7p
 
 /* Cartel destacado: sin sello giratorio en móvil */
 @media (max-width: 900px) { .pz-ring--feat { display: none; } }
+
+
+/* ---------- Menú móvil: apertura animada (cortina + enlaces escalonados) ---------- */
+@media (max-width: 960px) {
+  html.fx .pz-top .nav { opacity: 1; transform: none; clip-path: inset(0 0 100% 0); transition: clip-path .6s cubic-bezier(.7, 0, .2, 1), visibility 0s linear .6s; }
+  html.fx .pz-top .nav.is-open { clip-path: inset(0 0 0 0); transition: clip-path .6s cubic-bezier(.7, 0, .2, 1), visibility 0s; }
+  html.fx .pz-top .nav a { opacity: 0; transform: translateY(34px); transition: opacity .3s, transform .3s; }
+  html.fx .pz-top .nav.is-open a { opacity: 1; transform: none; transition: opacity .5s var(--ease) calc(var(--k, 0) * 55ms + 260ms), transform .6s var(--ease) calc(var(--k, 0) * 55ms + 260ms); }
+  .pz-top .nav a:nth-child(1) { --k: 0; } .pz-top .nav a:nth-child(2) { --k: 1; } .pz-top .nav a:nth-child(3) { --k: 2; } .pz-top .nav a:nth-child(4) { --k: 3; }
+  .pz-top .nav a:nth-child(5) { --k: 4; } .pz-top .nav a:nth-child(6) { --k: 5; } .pz-top .nav a:nth-child(7) { --k: 6; }
+  html.fx .pz-top .nav::before { content: ""; position: absolute; left: var(--gutter); top: 0; height: 3px; width: 0; background: var(--rec); transition: width .7s var(--ease) .2s; }
+  html.fx .pz-top .nav.is-open::before { width: 64px; }
+  html.fx .pz-top .burger svg { transition: transform .45s var(--ease); }
+  html.fx .pz-top .burger[aria-expanded="true"] svg { transform: rotate(90deg) scale(.9); }
+}
+
+/* ---------- Cursor personalizado (solo ratón, con efectos activados) ---------- */
+.pz-cur { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  html.fx.pz-cur-on, html.fx.pz-cur-on * { cursor: none !important; }
+  html.fx.pz-cur-on input, html.fx.pz-cur-on textarea, html.fx.pz-cur-on select, html.fx.pz-cur-on [contenteditable] { cursor: auto !important; }
+  html.fx.pz-cur-on .pz-cur { display: block; position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; mix-blend-mode: difference; }
+  .pz-cur i, .pz-cur b { position: fixed; left: 0; top: 0; display: grid; place-items: center; border-radius: 50%; will-change: transform; }
+  .pz-cur i { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: #fff; transition: opacity .2s; }
+  .pz-cur b { width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 1.5px solid #fff; color: #000; font: 700 .62rem/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; transition: opacity .2s, width .3s var(--ease), height .3s var(--ease), margin .3s var(--ease), background .3s, border-color .3s; }
+  .pz-cur.is-link b { width: 64px; height: 64px; margin: -32px 0 0 -32px; background: rgba(255, 255, 255, .25); }
+  .pz-cur.is-link i { opacity: 0; }
+  .pz-cur.is-view b { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: #fff; border-color: #fff; }
+  .pz-cur.is-view i { opacity: 0; }
+  .pz-cur.is-down b { width: 26px; height: 26px; margin: -13px 0 0 -13px; }
+  .pz-cur.is-hide, .pz-cur.is-text { opacity: 0; }
+}
