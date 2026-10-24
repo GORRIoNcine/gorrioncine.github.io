@@ -583,7 +583,7 @@ function headArt(seed = 0) {
   <g clip-path="url(#${g}c)">${bg}${art}</g><rect x="1" y="1" width="398" height="398" fill="none" stroke="#efefef" stroke-opacity=".35" stroke-width="2"/>${holes}</svg>`;
 }
 
-/* ---------- Carteles generados 2:3 ---------- */
+/* ---------- Carteles generados 3:4 (5400 × 7200) ---------- */
 function posterLines(title, maxChars) {
   const words = brandWords(title), lines = [[]];
   words.forEach((w) => {
@@ -608,7 +608,7 @@ function posterSVG(p, lang) {
   const lines = posterLines(p.title, 10);
   const longest = Math.max(...lines.map((l) => l.reduce((a, x) => a + x.t.length + 1, -1)));
   const fs = Math.min(76, Math.floor(330 / (longest * 0.66)));
-  const lh = fs * 0.92, yEnd = 518, yStart = yEnd - (lines.length - 1) * lh;
+  const lh = fs * 0.92, yEnd = 451, yStart = yEnd - (lines.length - 1) * lh;
   let art = "";
   const sx = 120 + R() * 160;
   switch (p.style) {
@@ -635,11 +635,11 @@ function posterSVG(p, lang) {
   }
   const tl = L(TYPES[p.type]);
   const tspans = lines.map((l, i) => `<text x="28" y="${(yStart + i * lh).toFixed(0)}" font-size="${fs}" fill="${BONE}" style="font-family:var(--f-display);font-weight:500;letter-spacing:.01em">${l.map((w, j) => (j ? " " : "") + (w.it ? `<tspan font-style="italic">${esc(w.t)}</tspan>` : esc(w.t))).join("")}</text>`).join("");
-  let holes = ""; for (let i = 0; i < 13; i++) holes += `<rect x="${14 + i * 30}" y="578" width="10" height="10" fill="${BONE}" fill-opacity=".55"/>`;
-  return `<svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(p.title)}">
+  let holes = ""; for (let i = 0; i < 13; i++) holes += `<rect x="${14 + i * 30}" y="511" width="10" height="10" fill="${BONE}" fill-opacity=".55"/>`;
+  return `<svg viewBox="0 0 400 533" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(p.title)}">
   <defs><linearGradient id="${g}f" x1="0" y1="0" x2="0" y2="1"><stop offset=".5" stop-color="${INK}" stop-opacity="0"/><stop offset=".82" stop-color="${INK}" stop-opacity=".95"/></linearGradient></defs>
-  <rect width="400" height="600" fill="${INK}"/>${art}
-  <rect width="400" height="600" fill="url(#${g}f)"/>
+  <rect width="400" height="533" fill="${INK}"/>${art}
+  <rect width="400" height="533" fill="url(#${g}f)"/>
   <use href="#logo-h" x="26" y="22" width="86" height="39.4" color="${BONE}"/>
   ${tspans}
   <rect x="28" y="${yEnd + 16}" width="44" height="4" fill="${BONE}"/>

@@ -103,8 +103,6 @@
   function pageHomeFx() {
     const feat = PROJECTS.find((p) => p.featured) || PROJECTS[0];
     const gal = PROJECTS.filter((p) => p !== feat).slice(0, 8);
-    const inProd = PROJECTS.filter((p) => p.status === "produccion" || p.status === "postproduccion").length;
-    const live = inProd ? pt("live").replace("{n}", inProd) : pt("live0").replace("{n}", PROJECTS.length);
     const shots = pickStills(6);
     const sentences = (String(t("about_p")).match(/[^.!?]+[.!?]+/g) || [String(t("about_p"))]).map((x) => x.trim());
     const manifesto = sentences.slice(0, 3).join(" ");
@@ -119,23 +117,22 @@
     <div class="pz-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="pz-floor" aria-hidden="true"></div>
     <div class="wrap hero__grid">
-      <div class="hero__copy rise"><div class="pz-live" aria-hidden="true"><i></i>${esc(live)}</div><div class="hero__kicker">${t("kicker")}</div><h1 id="page-h">${t("hero_h1")}</h1>
+      <div class="hero__copy rise"><div class="hero__kicker">${t("kicker")}</div><h1 id="page-h">${t("hero_h1")}</h1>
         <p class="hero__sub">${t("hero_sub")}</p>
         <div class="hero__cta"><a class="btn btn--red pz-mag" href="${routeHref("proyectos")}">${t("see_projects")} ${ICONS.arrow}</a><a class="btn pz-mag" href="${routeHref("contacto")}">${t("buddy_b")} ${ICONS.arrow}</a></div></div>
       <div class="hero__art">${heroArt()}</div>
     </div>
     <div class="pz-cue" aria-hidden="true"><span>${esc(pt("cue"))}</span><i></i></div>
-    <div class="pz-perch" aria-hidden="true">${sparrow("perch")}</div>
     <div class="sprockets" style="color:var(--red)"></div>
   </section>
 
-  <div class="pz-mq sc-dark" aria-hidden="true" data-pz="mq">${mqRow(pt("mq1"), "pz-mq__row--o")}${mqRow(pt("mq2"), "pz-mq__row--s")}</div>
+  <div class="pz-mq" aria-hidden="true" data-pz="mq">${mqRow(pt("mq1"), "pz-mq__row--o")}${mqRow(pt("mq2"), "pz-mq__row--s")}</div>
 
   ${feat ? `<section class="sec sc-dark pz-feat"><div class="wrap feat">
     <div class="pz-feat__p"><a class="feat__poster pz-tilt" href="${routeHref("project", feat.slug)}" aria-label="${esc(feat.title)}"><div class="card__poster" data-title="${esc(feat.title)}">${posterSVG(feat, lang)}</div></a>${ring(pt("ringFeat"), "pz-ring--feat", 200, 2)}</div>
     <div><span class="eyebrow">${t("featured")}</span><h2>${esc(feat.title)}</h2><p class="tagline">${esc(L(feat.tagline))}</p>
       <p class="lede">${esc(L(feat.short))}</p>
-      <div class="feat__meta">${statusChip(feat)}<span class="chip">${esc(typeLabel(feat))}</span><span class="chip">${feat.year}</span><span class="chip">${esc(feat.runtime)}</span></div>
+      <div class="feat__meta"><span class="chip">${esc(typeLabel(feat))}</span><span class="chip">${feat.year}</span><span class="chip">${esc(feat.runtime)}</span></div>
       <div class="feat__cta"><a class="btn btn--red pz-mag" href="${routeHref("project", feat.slug)}">${t("see_page")} ${ICONS.arrow}</a>${ext(httpUrl(feat.trailer) || ((feat.where || [])[0] || {}).url || SITE.reelUrl, `${ICONS.play} ${t("trailer")}`, "btn pz-mag")}</div></div>
   </div></section>` : ""}
 
@@ -371,6 +368,7 @@
         on_(el, "pointerleave", () => { el.style.setProperty("--mgx", "0px"); el.style.setProperty("--mgy", "0px"); });
       });
       qa(".pz-st").forEach((el) => {
+        on_(el, "pointerleave", () => { el.style.removeProperty("--mx"); el.style.removeProperty("--my"); });
         on_(el, "pointermove", (e) => { const r = el.getBoundingClientRect(); el.style.setProperty("--mx", (e.clientX - r.left).toFixed(0) + "px"); el.style.setProperty("--my", (e.clientY - r.top).toFixed(0) + "px"); });
       });
     }
