@@ -1099,7 +1099,6 @@ const S = {
   foot_about: ["Productora audiovisual independiente de La Habana.", "Independent audiovisual production company from Havana."],
   foot_nav: ["Mapa del sitio", "Sitemap"], foot_social: ["Síguenos", "Follow"],
   legal: ["Aviso legal y privacidad", "Legal notice & privacy"], rights: ["Todos los derechos reservados.", "All rights reserved."],
-  sample: ["Nombres, premios y textos de ejemplo: sustitúyelos en data.js.", "Names, awards and texts are examples: replace them in data.js."],
   legal_h: ["Aviso legal y privacidad", "Legal notice & privacy"],
   legal_body: [
     ["Titular", "GORRIóN, productora audiovisual independiente con sede en La Habana, Cuba. Contacto: ",
@@ -1261,7 +1260,7 @@ function footer() {
       <div><h4 aria-level="2">${t("foot_nav")}</h4><ul>${links}</ul></div>
       <div><h4 aria-level="2">${t("foot_social")}</h4><ul>${soc}</ul></div>
     </div>
-    <div class="foot__bot"><span>© ${new Date().getFullYear()} ${esc(SITE.name)} ${esc(SITE.suffix)}. ${t("rights")}</span><span>${t("sample")}</span><a href="${routeHref("legal")}">${t("legal")}</a></div>
+    <div class="foot__bot"><span>© ${new Date().getFullYear()} ${esc(SITE.name)} ${esc(SITE.suffix)}. ${t("rights")}</span><a href="${routeHref("legal")}">${t("legal")}</a></div>
   </div></footer>`;
 }
 
