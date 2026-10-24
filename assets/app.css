@@ -452,7 +452,7 @@ html.lite .hero__art, html.lite .page-head__art, html.lite .fh__bg { display: no
 html.lite .hero__grid { min-height: 0; grid-template-columns: minmax(0, 1fr); }
 html.lite .fh__in { grid-template-columns: minmax(0, 1fr); }
 html.lite .card__poster svg, html.lite .still svg { display: none; }
-html.lite .card__poster::before { content: attr(data-title); position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 12px; font-family: var(--f-display); font-size: 1.6rem; text-transform: uppercase; }
+html.lite .card__poster:not(:has(img))::before { content: attr(data-title); position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 12px; font-family: var(--f-display); font-size: 1.6rem; text-transform: uppercase; }
 @media (max-width: 520px) { .card h3 { font-size: 1.4rem; } .card__status { left: 6px; top: 6px; } }
 @media (max-width: 860px) { .reel-tag { display: none; } }
 
