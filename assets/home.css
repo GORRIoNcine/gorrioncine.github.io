@@ -42,17 +42,6 @@ html.fx .pz-cue i { animation: pz-cue 1.8s var(--ease) infinite; }
 @keyframes pz-cue { 0% { transform: scaleX(0); } 60% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
 
 /* ---------- Cinta de texto ---------- */
-.pz-mq { overflow: hidden; padding-block: clamp(14px, 2.4vw, 28px); border-bottom: 1px solid var(--line); --sk: 0deg; }
-.pz-mq__row { display: flex; overflow: hidden; transform: skewX(var(--sk)); }
-.pz-mq__t { display: flex; flex: none; white-space: nowrap; }
-.pz-mq__t > span { display: flex; flex: none; align-items: center; }
-.pz-mq__t > span > span { font-family: var(--f-display); font-size: clamp(2.4rem, 8.5vw, 7rem); line-height: 1.04; text-transform: uppercase; padding-inline: .16em; }
-.pz-mq__t > span > i { font-style: normal; color: var(--rec); font-size: clamp(1.4rem, 4vw, 3rem); }
-.pz-mq__row--o .pz-mq__t > span > span { color: transparent; -webkit-text-stroke: 1.5px var(--fg); }
-.pz-mq__row--s .pz-mq__t > span > span { color: var(--rec); }
-html.fx .pz-mq__row--o .pz-mq__t { animation: pz-mq 42s linear infinite; }
-html.fx .pz-mq__row--s .pz-mq__t { animation: pz-mq 50s linear infinite reverse; }
-@keyframes pz-mq { to { transform: translateX(-50%); } }
 
 /* ---------- Botones magnéticos, inclinación 3D y brillo ---------- */
 html.fx .pz-mag { transform: translate3d(var(--mgx, 0px), var(--mgy, 0px), 0); transition: transform .18s var(--ease), background .2s, color .2s, border-color .2s; }
@@ -354,7 +343,6 @@ html:has(.pz-top), html:has(.pz-top) body { overflow-x: clip; max-width: 100%; }
   .pz-mf__bird { display: none; }
   html.fx main .card__poster { transform: none; transition: none; box-shadow: 8px 8px 0 var(--red); }
   .pz-st { background: rgba(0, 0, 0, .7); }
-  .pz-mq__row { transform: none; }
   .pz-ring { transform: none; }
 }
 

@@ -9,8 +9,6 @@
   const D = {
     es: {
       live: "REC · {n} en producción", live0: "REC · {n} proyectos",
-      mq1: ["Ficción", "Documental", "Series", "Videoclips", "La Habana", "Cine independiente"],
-      mq2: ["Equipos pequeños", "Historias grandes", "Hecho en Cuba", "Mucha calle"],
       cue: "Desliza", plano: "Plano",
       s1: "Proyectos", s2: "Estrenados", s3: "Años de cine", s4: "Personas",
       ring: "GORRIóN · cine independiente · La Habana · ", ringFeat: "Estreno destacado · ",
@@ -20,8 +18,6 @@
     },
     en: {
       live: "REC · {n} in production", live0: "REC · {n} projects",
-      mq1: ["Fiction", "Documentary", "Series", "Music videos", "Havana", "Independent cinema"],
-      mq2: ["Small crews", "Big stories", "Made in Cuba", "Plenty of street"],
       cue: "Scroll", plano: "Shot",
       s1: "Projects", s2: "Released", s3: "Years of cinema", s4: "People",
       ring: "GORRIóN · independent cinema · Havana · ", ringFeat: "Featured release · ",
@@ -96,10 +92,6 @@
   }
 
   /* ---------- La página ---------- */
-  function mqRow(words, cls) {
-    const set = [...words, ...words].map((w) => `<span>${bw(w)}</span><i>✦</i>`).join("");
-    return `<div class="pz-mq__row ${cls}"><div class="pz-mq__t"><span>${set}</span><span>${set}</span></div></div>`;
-  }
   function pageHomeFx() {
     const feat = PROJECTS.find((p) => p.featured) || PROJECTS[0];
     const gal = PROJECTS.filter((p) => p !== feat).slice(0, 8);
@@ -126,7 +118,6 @@
     <div class="sprockets" style="color:var(--red)"></div>
   </section>
 
-  <div class="pz-mq" aria-hidden="true" data-pz="mq">${mqRow(pt("mq1"), "pz-mq__row--o")}${mqRow(pt("mq2"), "pz-mq__row--s")}</div>
 
   ${feat ? `<section class="sec sc-dark pz-feat"><div class="wrap feat">
     <div class="pz-feat__p"><a class="feat__poster pz-tilt" href="${routeHref("project", feat.slug)}" aria-label="${esc(feat.title)}"><div class="card__poster" data-title="${esc(feat.title)}">${posterSVG(feat, lang)}</div></a>${ring(pt("ringFeat"), "pz-ring--feat", 200, 2)}</div>
@@ -198,11 +189,11 @@
     const html = document.documentElement, fx = html.classList.contains("fx");
     const fine = !!(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches);
     const q = (s) => root.querySelector(s), qa = (s) => Array.from(root.querySelectorAll(s));
-    const off = [], s = { off, raf: 0, dirty: true, lastY: window.scrollY, skew: 0 };
+    const off = [], s = { off, raf: 0, dirty: true };
     st = s;
     const on_ = (el, ev, fn, o) => { el.addEventListener(ev, fn, o); off.push(() => el.removeEventListener(ev, fn, o)); };
 
-    const hero = q('[data-pz="hero"]'), mq = q('[data-pz="mq"]'), hs = q('[data-pz="hs"]'), mf = q('[data-pz="mf"]');
+    const hero = q('[data-pz="hero"]'), hs = q('[data-pz="hs"]'), mf = q('[data-pz="mf"]');
     const stick = hs && hs.querySelector(".pz-hs__stick"), view = hs && hs.querySelector(".pz-hs__view"), track = hs && hs.querySelector(".pz-hs__track"), bar = hs && hs.querySelector(".pz-hs__bar i");
     const layers = mf ? Array.from(mf.querySelectorAll(".pz-mf__layers img")) : [];
     const words = mf ? Array.from(mf.querySelectorAll(".pz-w")) : [];
@@ -247,9 +238,6 @@
 
       /* 2) Escrituras */
       if (!small) {
-        const v = y - s.lastY; s.lastY = y;
-        s.skew += (clamp(v * .22, -9, 9) - s.skew) * .18;
-        if (mq) mq.style.setProperty("--sk", s.skew.toFixed(2) + "deg");
         if (hero && y < vh * 1.4) { hero.style.setProperty("--ay", (y * .22).toFixed(1) + "px"); hero.style.setProperty("--fy", (y * .08).toFixed(1) + "px"); }
       }
 
@@ -296,7 +284,6 @@
         if (ctaRing) ctaRing.style.setProperty("--rot", rot.toFixed(1) + "deg");
         if (featRing) featRing.style.setProperty("--rot", (-rot).toFixed(1) + "deg");
       }
-      if (!small && Math.abs(s.skew) > .05) kick();
     }
     function kick() { if (!s.raf) s.raf = requestAnimationFrame(frame); }
     on_(window, "scroll", kick, { passive: true });
