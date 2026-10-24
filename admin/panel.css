@@ -228,7 +228,7 @@
 .ar-body{display:grid;gap:2px}
 .ar-blk{position:relative}
 .ar-blk textarea{font-size:18px;line-height:1.7;padding:4px 0}
-.ar-blk__t{position:absolute;left:-86px;top:6px;display:flex;gap:1px;opacity:0;transition:opacity .12s}
+.ar-blk__t{position:absolute;left:-110px;top:6px;display:flex;gap:1px;opacity:0;transition:opacity .12s}
 .ar-blk:hover .ar-blk__t,.ar-blk:focus-within .ar-blk__t{opacity:1}
 @media (hover:none){.ar-blk__t{position:static;opacity:1;margin:0 0 4px}}
 .ar-blk__t button{width:26px;height:26px;border:0;background:transparent;color:var(--mute);border-radius:4px;cursor:pointer}
@@ -249,7 +249,7 @@
   .ar-set{position:fixed;z-index:60;right:0;top:0;bottom:0;width:min(360px,92vw);max-height:none;margin:0;border-radius:0;border-width:0 0 0 1px;box-shadow:-12px 0 32px rgba(0,0,0,.35)}
   .ar-shell.set-open~.ar-scrim{display:block;position:fixed;inset:0;z-index:55;background:#0007}
 }
-@media (max-width:1000px){.ar-blk__t{position:static;opacity:1;margin:0 0 2px}.ar-blk__t button{width:24px;height:24px}}
+@media (max-width:1280px){.ar-blk__t{position:static;opacity:1;margin:0 0 2px}.ar-blk__t button{width:24px;height:24px}}
 @media (max-width:700px){.ar-lbl{display:none}.ar-wc{display:none}.ar-top{gap:6px}}
 /* Lista de noticias */
 .ar-tabs{display:flex;gap:4px;flex-wrap:wrap;margin:6px 0 12px;border-bottom:1px solid var(--line)}
@@ -269,3 +269,43 @@
 @media (max-width:760px){.ar-row{grid-template-columns:64px minmax(0,1fr);gap:12px}.ar-row__img{width:64px}.ar-row__m,.ar-row__s{grid-column:2;display:flex;gap:10px;text-align:left}}
 .ar-set__x{display:none;width:100%;border:0;border-bottom:1px solid var(--line);border-radius:0;justify-content:center}
 @media (max-width:1180px){.ar-set__x{display:flex}}
+
+/* ===== Bloques del texto de la noticia (imagen, vídeo, cita, lista, botón…) ===== */
+.ar-menu{position:fixed;z-index:200;width:300px;max-height:min(70vh,520px);overflow:auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 16px 40px rgba(0,0,0,.35);padding:6px}
+.ar-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:8px 10px;border:0;background:transparent;color:inherit;font:inherit;text-align:left;border-radius:4px;cursor:pointer}
+.ar-menu button:hover,.ar-menu button:focus-visible{background:var(--chip);outline:none}
+.ar-menu i{flex:none;width:34px;height:34px;border:1px solid var(--line);border-radius:6px;display:grid;place-items:center;font-style:normal;font-weight:700;background:var(--bg)}
+.ar-menu span{display:grid;line-height:1.3}.ar-menu small{color:var(--mute);font-size:12px}
+.ar-ins{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:18px;padding:10px 12px;border:1px dashed var(--line);border-radius:var(--r)}
+.ar-ins>span{color:var(--mute);font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-right:4px}
+.ar-ins button{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:var(--r);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.ar-ins button:hover{border-color:var(--fg)}
+.ar-ins button i{font-style:normal;font-weight:700;color:var(--red2);min-width:1em;text-align:center}
+.ar-blk--img,.ar-blk--video,.ar-blk--q,.ar-blk--ul,.ar-blk--btn{margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.ar-blk__tag{display:block;margin:-2px 0 8px;color:var(--mute);font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.ar-blk__t .add{font-weight:700;font-size:17px}
+.ar-text textarea.ar-h{font:400 clamp(24px,3vw,30px)/1.2 "Franklin Gothic Medium","Arial Narrow",Arial,sans-serif;margin-top:14px}
+.ar-text textarea.ar-q{font-size:21px;line-height:1.4;font-style:italic;border-left:4px solid var(--red2);padding-left:14px}
+.ar-text textarea.ar-ul{font-size:17px;line-height:1.6}
+.ar-quote,.ar-media{display:grid;gap:8px}
+.ar-in{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);color:var(--fg);font:inherit;font-size:14px}
+.ar-in:focus{outline:2px solid var(--red2);outline-offset:-1px;border-color:transparent}
+.ar-btnrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px}
+@media (max-width:600px){.ar-btnrow{grid-template-columns:1fr}}
+.ar-hr{border:0;border-top:2px solid var(--line);margin:18px 0}
+.ar-hint{color:var(--mute);font-size:12.5px}
+.ar-vprev,.ar-iprev{position:relative;aspect-ratio:16/9;background:var(--chip);border-radius:var(--r);overflow:hidden;display:grid;place-items:center;color:var(--mute);text-align:center;padding:8px}
+.ar-vprev img,.ar-iprev>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ar-vprev:has(img)::after{content:"▶";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:42px;background:#0004}
+.ar-iprev{aspect-ratio:auto;min-height:150px}.ar-iprev>img{position:static;height:auto;max-height:420px}
+.ar-iprev.busy{opacity:.55;pointer-events:none}.ar-iprev.drop{outline:2px solid var(--red2)}
+.ar-iprev .ar-cover__t{position:absolute;inset:auto 0 0 0;display:flex;gap:8px;justify-content:center;padding:30px 10px 10px;background:linear-gradient(transparent,#000a);opacity:0;transition:opacity .15s}
+.ar-iprev:hover .ar-cover__t{opacity:1}
+@media (hover:none){.ar-iprev .ar-cover__t{opacity:1}}
+.ar-iprev .ar-cover__add{border:2px dashed var(--line);padding:24px 10px}
+
+/* El panel de ajustes llega hasta el borde derecho de la pantalla (como en WordPress) */
+.wrap:has(.ar-shell){max-width:none}
+.ar-shell.set-open .ar-set{margin:0 calc(-1 * clamp(14px,2.4vw,32px)) 0 18px;border-width:0 0 0 1px;border-radius:0;top:104px;max-height:calc(100vh - 104px);min-height:calc(100vh - 104px)}
+.ar-top{margin-right:calc(-1 * clamp(14px,2.4vw,32px))}
+@media (max-width:1180px){.ar-shell.set-open .ar-set{margin:0;min-height:0}}

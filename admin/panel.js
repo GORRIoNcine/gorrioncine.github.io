@@ -654,7 +654,9 @@
     const ctx = { touch: () => {}, slugEdited: !isNew, slugInput: null, onTitle: null };
     ctx.onTitle = (s) => { if (!ctx.slugEdited && ctx.slugInput) { const v = slugify(s); ctx.slugInput.el.value = v; ctx.slugInput.set(v); } };
     const grow = (ta) => { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + 2 + "px"; };
-    const words = () => { const t = [item.title[lang], item.sum[lang]].concat(item.body[lang] || []).join(" ").trim(); return t ? t.split(/\s+/).length : 0; };
+    const btxt = (b) => (typeof b === "string" ? b : b && typeof b === "object" ? (b.t === "ul" ? (b.items || []).join(" ") : [b.x, b.cap, b.by].filter(Boolean).join(" ")) : "");
+    const words = () => { const t = [item.title[lang], item.sum[lang]].concat((item.body[lang] || []).map(btxt)).join(" ").trim(); return t ? t.split(/\s+/).length : 0; };
+    const cleanBody = () => ["es", "en"].forEach((c) => { item.body[c] = (item.body[c] || []).map((b) => { if (typeof b === "string") return b.trim(); if (!b || typeof b !== "object") return ""; if (b.t === "ul") { b.items = (b.items || []).map((x) => String(x).trim()).filter(Boolean); return b.items.length ? b : ""; } if (b.t === "img") return b.src ? b : ""; if (b.t === "video") return (b.url || "").trim() ? b : ""; if (b.t === "btn") return b.x && b.url ? b : ""; if (b.t === "hr") return b; return (b.x || "").trim() ? b : ""; }).filter((b) => b !== ""); });
 
     /* ----- Barra superior ----- */
     const stat = h("span", { class: "ar-stat" });
@@ -703,13 +705,13 @@
     paintCover();
 
     const textBox = h("div", { class: "ar-text" });
-    const focusBlock = (i, end) => { const t = textBox.querySelectorAll(".ar-blk textarea")[i]; if (t) { t.focus(); const p = end ? t.value.length : 0; t.setSelectionRange(p, p); } };
+    const focusBlock = (i, end) => { const b = textBox.querySelectorAll(".ar-blk")[i]; const t = b && b.querySelector("textarea,input.ar-in"); if (t) { t.focus(); if (t.tagName === "TEXTAREA") { const p = end ? t.value.length : 0; t.setSelectionRange(p, p); } } };
     function renderText() {
       textBox.replaceChildren();
       const T = (item.title[lang] || ""), SM = (item.sum[lang] || "");
       if (lang === "en" && !hasLang("en") && hasLang("es")) {
         textBox.append(h("div", { class: "ar-note" }, h("span", {}, "Todavía no hay versión en inglés."), h("button", { type: "button", class: "ed-btn", onclick: () => {
-          item.title.en = item.title.es || ""; item.sum.en = item.sum.es || ""; item.body.en = (item.body.es || []).slice(); ctx.touch(); renderText();
+          item.title.en = item.title.es || ""; item.sum.en = item.sum.es || ""; item.body.en = clone(item.body.es || []); ctx.touch(); renderText();
         } }, "Copiar el español para traducirlo")));
       }
       const title = h("textarea", { class: "ar-title", rows: "1", placeholder: lang === "es" ? "Título de la noticia" : "News headline", "aria-label": "Título" });
@@ -724,38 +726,104 @@
       const blocksBox = h("div", { class: "ar-body", "data-p": "$.body" });
       textBox.append(blocksBox);
       const A = () => { if (!Array.isArray(item.body[lang])) item.body[lang] = []; if (!item.body[lang].length) item.body[lang].push(""); return item.body[lang]; };
+      const typeOf = (b) => (typeof b === "string" ? "p" : (b && b.t) || "p");
+      const MENU = [["p", "Párrafo", "Texto normal", "¶"], ["h", "Subtítulo", "Título de sección", "H"], ["img", "Imagen", "Sube una foto o pega un enlace", "▣"], ["video", "Vídeo", "Enlace de YouTube o Vimeo", "▶"], ["q", "Cita", "Una frase destacada", "“"], ["ul", "Lista", "Elementos con viñetas", "≡"], ["btn", "Botón", "Un enlace destacado", "↗"], ["hr", "Separador", "Una línea para dividir", "—"]];
+      const fresh = (t) => ({ p: "", h: { t: "h", x: "" }, q: { t: "q", x: "", by: "" }, ul: { t: "ul", items: [""] }, img: { t: "img", src: "", alt: "", cap: "" }, video: { t: "video", url: "", cap: "" }, btn: { t: "btn", x: "", url: "" }, hr: { t: "hr" } })[t];
+      const closeMenu = () => { const m = $(".ar-menu"); if (m) m.remove(); document.removeEventListener("mousedown", onOut, true); document.removeEventListener("keydown", onEsc, true); };
+      const onOut = (e) => { const m = $(".ar-menu"); if (m && !m.contains(e.target)) closeMenu(); };
+      const onEsc = (e) => { if (e.key === "Escape") { closeMenu(); } };
+      const openMenu = (anchor, pick) => {
+        closeMenu();
+        const m = h("div", { class: "ar-menu", role: "menu" }, MENU.map(([k, n, d, g]) => h("button", { type: "button", role: "menuitem", onclick: () => { closeMenu(); pick(k); } }, h("i", {}, g), h("span", {}, h("b", {}, n), h("small", {}, d)))));
+        document.body.append(m);
+        const r = anchor.getBoundingClientRect(), mh = m.offsetHeight, mw = m.offsetWidth;
+        m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - mw - 8)) + "px";
+        m.style.top = (r.bottom + mh + 12 > window.innerHeight ? Math.max(8, r.top - mh - 6) : r.bottom + 6) + "px";
+        setTimeout(() => { document.addEventListener("mousedown", onOut, true); document.addEventListener("keydown", onEsc, true); }, 0);
+      };
+      const ytThumb = (u) => { try { const x = new URL(u), hh = x.hostname.replace(/^www\./, ""); let id = ""; if (hh === "youtu.be") id = x.pathname.slice(1).split("/")[0]; else if (/youtube(-nocookie)?\.com$/.test(hh)) id = x.searchParams.get("v") || ((/^\/(embed|shorts|live|v)\/([\w-]+)/.exec(x.pathname) || [])[2] || ""); return /^[\w-]{6,15}$/.test(id) ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : ""; } catch (e) { return ""; } };
+      const isVimeo = (u) => /^https?:\/\/(www\.|player\.)?vimeo\.com\/(video\/)?\d{5,}/i.test(u || "");
+      const input = (val, ph, on, label) => { const i = h("input", { type: "text", class: "ar-in", placeholder: ph, value: val || "", "aria-label": label || ph, autocomplete: "off" }); i.addEventListener("input", () => { on(i.value); ctx.touch(); }); return i; };
       const paintBlocks = (focus, pos) => {
         blocksBox.replaceChildren();
         const arr = A();
-        arr.forEach((txt, i) => {
-          const ta = h("textarea", { rows: "1", placeholder: i === 0 && !txt ? (lang === "es" ? "Empieza a escribir tu noticia…" : "Start writing your story…") : "", "aria-label": "Párrafo " + (i + 1) });
-          ta.value = txt;
-          ta.addEventListener("input", () => { A()[i] = ta.value; grow(ta); ctx.touch(); });
-          ta.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); const a = A(), p = ta.selectionStart, rest = ta.value.slice(p); a[i] = ta.value.slice(0, p); a.splice(i + 1, 0, rest); ctx.touch(); paintBlocks(i + 1); return; }
-            if (e.key === "Backspace" && ta.value === "" && A().length > 1) { e.preventDefault(); A().splice(i, 1); ctx.touch(); paintBlocks(Math.max(0, i - 1), true); return; }
-            if (e.key === "Backspace" && ta.selectionStart === 0 && ta.selectionEnd === 0 && i > 0) { e.preventDefault(); const a = A(), prevLen = a[i - 1].length; a[i - 1] += a[i]; a.splice(i, 1); ctx.touch(); paintBlocks(i - 1, prevLen); return; }
-            if (e.key === "ArrowUp" && ta.selectionStart === 0 && i > 0) { e.preventDefault(); focusBlock(i - 1, true); }
-            if (e.key === "ArrowDown" && ta.selectionStart === ta.value.length && i < A().length - 1) { e.preventDefault(); focusBlock(i + 1); }
-          });
-          ta.addEventListener("paste", (e) => {
-            const t = (e.clipboardData || window.clipboardData).getData("text");
-            if (!/\n\s*\n/.test(t)) return;
-            e.preventDefault();
-            const parts = t.replace(/\r/g, "").split(/\n\s*\n/).map((x) => x.replace(/\s*\n\s*/g, " ").trim()).filter(Boolean);
-            const a = A(), p = ta.selectionStart, q = ta.selectionEnd, head = ta.value.slice(0, p) + parts[0], tail = ta.value.slice(q);
-            const mid = parts.slice(1); if (mid.length) { mid[mid.length - 1] += tail; a.splice(i, 1, head, ...mid); } else a[i] = head + tail;
-            ctx.touch(); paintBlocks(i + mid.length, true);
-          });
+        const insertAt = (i, t) => { A().splice(i, 0, fresh(t)); ctx.touch(); paintBlocks(i); };
+        arr.forEach((blk, i) => {
+          const ty = typeOf(blk), info = MENU.find((m) => m[0] === ty) || MENU[0];
+          const grab = (ta, get, set, ph, cls) => {
+            ta.className = cls || ""; ta.value = get();
+            ta.addEventListener("input", () => { set(ta.value); grow(ta); ctx.touch(); });
+            setTimeout(() => grow(ta), 0);
+          };
+          let body;
+          if (ty === "p" || ty === "h") {
+            const ta = h("textarea", { rows: "1", placeholder: ty === "h" ? "Subtítulo" : i === 0 && !blk ? (lang === "es" ? "Empieza a escribir… o pulsa «/» para insertar una imagen, un vídeo…" : "Start writing… or press “/” to insert an image, a video…") : "", "aria-label": (ty === "h" ? "Subtítulo " : "Párrafo ") + (i + 1) });
+            const get = () => (ty === "h" ? blk.x : A()[i]), set = (v) => { if (ty === "h") A()[i].x = v; else A()[i] = v; };
+            grab(ta, get, set, "", ty === "h" ? "ar-h" : "");
+            ta.addEventListener("input", () => { if (ty === "p" && ta.value === "/") openMenu(ta, (k) => { if (k === "p") { ta.value = ""; set(""); grow(ta); ta.focus(); } else { A()[i] = fresh(k); ctx.touch(); paintBlocks(i); } }); });
+            ta.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); const a = A(), p = ta.selectionStart; if (ty === "h") { a.splice(i + 1, 0, ""); } else { const rest = ta.value.slice(p); a[i] = ta.value.slice(0, p); a.splice(i + 1, 0, rest); } ctx.touch(); paintBlocks(i + 1); return; }
+              if (e.key === "Backspace" && ta.value === "" && A().length > 1) { e.preventDefault(); A().splice(i, 1); ctx.touch(); paintBlocks(Math.max(0, i - 1), true); return; }
+              if (ty === "p" && e.key === "Backspace" && ta.selectionStart === 0 && ta.selectionEnd === 0 && i > 0 && typeof A()[i - 1] === "string") { e.preventDefault(); const a = A(), prevLen = a[i - 1].length; a[i - 1] += a[i]; a.splice(i, 1); ctx.touch(); paintBlocks(i - 1, prevLen); return; }
+              if (e.key === "ArrowUp" && ta.selectionStart === 0 && i > 0) { e.preventDefault(); focusBlock(i - 1, true); }
+              if (e.key === "ArrowDown" && ta.selectionStart === ta.value.length && i < A().length - 1) { e.preventDefault(); focusBlock(i + 1); }
+            });
+            ta.addEventListener("paste", (e) => {
+              if (ty !== "p") return;
+              const t = (e.clipboardData || window.clipboardData).getData("text");
+              if (!/\n\s*\n/.test(t)) return;
+              e.preventDefault();
+              const parts = t.replace(/\r/g, "").split(/\n\s*\n/).map((x) => x.replace(/\s*\n\s*/g, " ").trim()).filter(Boolean);
+              const a = A(), p = ta.selectionStart, q = ta.selectionEnd, head = ta.value.slice(0, p) + parts[0], tail = ta.value.slice(q);
+              const mid = parts.slice(1); if (mid.length) { mid[mid.length - 1] += tail; a.splice(i, 1, head, ...mid); } else a[i] = head + tail;
+              ctx.touch(); paintBlocks(i + mid.length, true);
+            });
+            body = ta;
+          } else if (ty === "q") {
+            const ta = h("textarea", { rows: "1", placeholder: "Escribe la cita…", "aria-label": "Cita" });
+            grab(ta, () => blk.x || "", (v) => { blk.x = v; }, "", "ar-q");
+            body = h("div", { class: "ar-quote" }, ta, input(blk.by, "Quién lo dice (opcional)", (v) => { blk.by = v; }));
+          } else if (ty === "ul") {
+            const ta = h("textarea", { rows: "2", placeholder: "Un elemento por línea", "aria-label": "Lista" });
+            grab(ta, () => (blk.items || []).join("\n"), (v) => { blk.items = v.split("\n"); }, "", "ar-ul");
+            body = h("div", {}, ta, h("small", { class: "ar-hint" }, "Escribe un elemento por línea."));
+          } else if (ty === "btn") {
+            body = h("div", { class: "ar-btnrow" }, input(blk.x, "Texto del botón", (v) => { blk.x = v; }), input(blk.url, "https://…", (v) => { blk.url = v; }, "Enlace del botón"));
+          } else if (ty === "hr") {
+            body = h("hr", { class: "ar-hr" });
+          } else if (ty === "video") {
+            const prev = h("div", { class: "ar-vprev" }), msg = h("small", { class: "ar-hint" });
+            const upd = () => { const th = ytThumb(blk.url); prev.replaceChildren(th ? h("img", { src: th, alt: "" }) : h("span", {}, blk.url ? (isVimeo(blk.url) ? "Vídeo de Vimeo" : "Enlace no reconocido") : "Pega un enlace de YouTube o Vimeo")); prev.classList.toggle("ok", !!th || isVimeo(blk.url)); msg.textContent = blk.url && !th && !isVimeo(blk.url) ? "Si no es de YouTube o Vimeo, en la web saldrá como un botón con el enlace." : ""; };
+            const inp = input(blk.url, "Enlace del vídeo: https://www.youtube.com/watch?v=…", (v) => { blk.url = v.trim(); upd(); }, "Enlace del vídeo");
+            upd();
+            body = h("div", { class: "ar-media" }, prev, inp, msg, input(blk.cap, "Pie del vídeo (opcional)", (v) => { blk.cap = v; }));
+          } else if (ty === "img") {
+            const box = h("div", { class: "ar-iprev" }), file = h("input", { type: "file", accept: "image/png,image/jpeg,image/webp,image/gif", hidden: true });
+            const paint = () => {
+              box.replaceChildren();
+              if (blk.src) box.append(h("img", { src: imgUrl(blk.src), alt: "", onerror: function () { this.replaceWith(h("span", {}, "No se puede mostrar todavía")); } }),
+                h("div", { class: "ar-cover__t" }, h("button", { type: "button", class: "ed-btn", onclick: () => file.click() }, ico("img"), "Cambiar"), h("button", { type: "button", class: "ed-btn", onclick: () => { const u = (prompt("Pega el enlace de la imagen (https://…)") || "").trim(); if (u) { blk.src = u; ctx.touch(); paint(); } } }, "Enlace…")));
+              else box.append(h("button", { type: "button", class: "ar-cover__add", onclick: () => file.click() }, h("span", {}, ico("img")), h("b", {}, "Subir imagen"), h("small", {}, "Haz clic o arrastra una imagen aquí")));
+            };
+            const go = async (f) => { if (!f) return; box.classList.add("busy"); try { blk.src = await uploadImage(f); ctx.touch(); } catch (e) { toast(e.auth ? "Tu sesión no permite subir imágenes." : e.message || "No se pudo subir la imagen.", "err"); } box.classList.remove("busy"); paint(); };
+            file.addEventListener("change", () => { go(file.files[0]); file.value = ""; });
+            ["dragover", "dragenter"].forEach((ev) => box.addEventListener(ev, (e) => { e.preventDefault(); box.classList.add("drop"); }));
+            ["dragleave", "drop"].forEach((ev) => box.addEventListener(ev, () => box.classList.remove("drop")));
+            box.addEventListener("drop", (e) => { e.preventDefault(); go(e.dataTransfer.files[0]); });
+            paint();
+            body = h("div", { class: "ar-media" }, box, file, input(blk.cap, "Pie de foto (opcional)", (v) => { blk.cap = v; }), input(blk.alt, "Descripción para quien no puede verla (opcional)", (v) => { blk.alt = v; }));
+          }
+          const first = i === 0;
           const tools = h("span", { class: "ar-blk__t" },
-            h("button", { type: "button", title: "Subir párrafo", "aria-label": "Subir párrafo", disabled: i === 0, onclick: () => { const a = A(); [a[i - 1], a[i]] = [a[i], a[i - 1]]; ctx.touch(); paintBlocks(i - 1); } }, "↑"),
-            h("button", { type: "button", title: "Bajar párrafo", "aria-label": "Bajar párrafo", disabled: i === arr.length - 1, onclick: () => { const a = A(); [a[i + 1], a[i]] = [a[i], a[i + 1]]; ctx.touch(); paintBlocks(i + 1); } }, "↓"),
-            h("button", { type: "button", class: "del", title: "Quitar párrafo", "aria-label": "Quitar párrafo", disabled: arr.length === 1 && !txt, onclick: () => { const a = A(); a.splice(i, 1); ctx.touch(); paintBlocks(Math.max(0, i - 1)); } }, "✕"));
-          blocksBox.append(h("div", { class: "ar-blk" }, ta, tools));
-          setTimeout(() => grow(ta), 0);
+            h("button", { type: "button", title: "Insertar bloque debajo", "aria-label": "Insertar bloque debajo", class: "add", onclick: (e) => openMenu(e.currentTarget, (k) => insertAt(i + 1, k)) }, "+"),
+            h("button", { type: "button", title: "Subir", "aria-label": "Subir bloque", disabled: first, onclick: () => { const a = A(); [a[i - 1], a[i]] = [a[i], a[i - 1]]; ctx.touch(); paintBlocks(i - 1); } }, "↑"),
+            h("button", { type: "button", title: "Bajar", "aria-label": "Bajar bloque", disabled: i === arr.length - 1, onclick: () => { const a = A(); [a[i + 1], a[i]] = [a[i], a[i + 1]]; ctx.touch(); paintBlocks(i + 1); } }, "↓"),
+            h("button", { type: "button", class: "del", title: "Quitar", "aria-label": "Quitar bloque", disabled: arr.length === 1 && ty === "p" && !blk, onclick: () => { const a = A(); a.splice(i, 1); ctx.touch(); paintBlocks(Math.max(0, i - 1)); } }, "✕"));
+          blocksBox.append(h("div", { class: "ar-blk ar-blk--" + ty }, ty !== "p" && ty !== "h" && ty !== "hr" ? h("span", { class: "ar-blk__tag" }, info[1]) : null, body, tools));
         });
-        blocksBox.append(h("button", { type: "button", class: "ar-addp", onclick: () => { const a = A(); if (a[a.length - 1] !== "") a.push(""); ctx.touch(); paintBlocks(a.length - 1); } }, ico("plus"), "Añadir párrafo"));
-        if (focus !== undefined) { const i = focus; const t = blocksBox.querySelectorAll(".ar-blk textarea")[i]; if (t) { t.focus(); const p = pos === true ? t.value.length : typeof pos === "number" ? pos : 0; t.setSelectionRange(p, p); } }
+        const bar = h("div", { class: "ar-ins", role: "group", "aria-label": "Añadir contenido" }, h("span", {}, "Añadir"), MENU.map(([k, n, , g]) => h("button", { type: "button", title: n, onclick: () => { const a = A(); if (k === "p" && a[a.length - 1] === "") { focusBlock(a.length - 1); return; } if (a.length === 1 && a[0] === "") a.pop(); a.push(fresh(k)); ctx.touch(); paintBlocks(a.length - 1); } }, h("i", {}, g), n)));
+        blocksBox.append(bar);
+        if (focus !== undefined) { const blk = blocksBox.querySelectorAll(".ar-blk")[focus]; const t = blk && blk.querySelector("textarea,input.ar-in"); if (t) { t.focus(); if (t.setSelectionRange && t.tagName === "TEXTAREA") { const p = pos === true ? t.value.length : typeof pos === "number" ? pos : 0; t.setSelectionRange(p, p); } } }
       };
       paintBlocks();
       setTimeout(() => { grow(title); grow(sum); }, 0);
@@ -802,6 +870,7 @@
     /* ----- Guardado ----- */
     const save = async () => {
       if (!item.slug) { const s0 = slugify(L(item.title)); if (s0) { item.slug = s0; if (ctx.slugInput) ctx.slugInput.el.value = s0; } }
+      cleanBody();
       let errs = []; validate(def.fields, item, "$", errs);
       if (pubSel.value === "draft") errs = errs.filter((e) => !/obligatori/.test(e.msg) || /^«(Título|Identificador|Dirección web)[^»]*»( \(Español\))? es obligatorio/.test(e.msg));
       if (pubSel.value === "sched" && !item.publishAt) errs.push({ p: "$.publishAt", msg: "Elige la fecha y hora de publicación." });
@@ -813,7 +882,7 @@
         if (errs.some((e) => /\((Español|English)\)/.test(e.msg))) { const want = errs.find((e) => /\(English\)/.test(e.msg)) && !errs.find((e) => /\(Español\)/.test(e.msg)) ? "en" : "es"; if (want !== lang) { lang = want; paintLangSeg(); renderText(); } }
         if (settingsOpen === false && errs.some((e) => /dirección|fecha|Fecha|Elige/.test(e.msg))) toggleSettings(true);
         settings.querySelectorAll("details").forEach((d) => { if (errs.some((e) => d.querySelector(`[data-p="${CSS.escape(e.p)}"]`))) d.open = true; });
-        showErrors(errs, el); toast(`Revisa ${errs.length} campo(s) marcado(s) en rojo.`, "err"); return;
+        renderText(); showErrors(errs, el); toast(`Revisa ${errs.length} campo(s) marcado(s) en rojo.`, "err"); return;
       }
       saveBtn.disabled = true;
       const prev = clone(S.data);

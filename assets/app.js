@@ -1523,11 +1523,34 @@ function newsListHTML() {
   const list = sortedNews().filter((n) => newsCat === "all" || n.cat === newsCat);
   return list.length ? `<div class="news news--cols">${list.map(newsItem).join("")}</div>` : `<div class="empty"><h3>${t("none_h")}</h3></div>`;
 }
+/* Texto de una noticia: cada elemento es un párrafo (texto) o un bloque {t: "h" | "img" | "video" | "q" | "ul" | "btn" | "hr"} */
+const bodyText = (arr) => (Array.isArray(arr) ? arr : []).map((x) => typeof x === "string" ? x : x && typeof x === "object" ? (x.t === "ul" ? (x.items || []).join(" ") : [x.x, x.cap, x.by].filter(Boolean).join(" ")) : "").filter((x) => String(x).trim());
+function bodyHTML(arr, title) {
+  return (Array.isArray(arr) ? arr : []).map((b) => {
+    if (typeof b === "string") return `<p>${esc(b)}</p>`;
+    if (!b || typeof b !== "object") return "";
+    const cap = b.cap ? `<figcaption>${esc(b.cap)}</figcaption>` : "";
+    switch (b.t) {
+      case "h": return b.x ? `<h2>${esc(b.x)}</h2>` : "";
+      case "q": return b.x ? `<blockquote><p>${esc(b.x)}</p>${b.by ? `<cite>${esc(b.by)}</cite>` : ""}</blockquote>` : "";
+      case "ul": return (b.items || []).length ? `<ul>${b.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : "";
+      case "hr": return "<hr>";
+      case "btn": return httpUrl(b.url) && b.x ? `<p>${ext(httpUrl(b.url), esc(b.x), "btn btn--red")}</p>` : "";
+      case "img": return b.src ? `<figure class="prose__fig"><img ${imgAttrs(b.src, "(max-width: 1000px) 100vw, 900px")} alt="${esc(b.alt || b.cap || "")}" loading="lazy" decoding="async">${cap}</figure>` : "";
+      case "video": {
+        const v = videoInfo(b.url);
+        if (!v) return httpUrl(b.url) ? `<p>${ext(httpUrl(b.url), `${ICONS.play} ${esc(b.cap || t("trailer"))}`, "btn btn--red")}</p>` : "";
+        return `<figure class="prose__fig"><div class="vid" data-embed="${esc(v.embed)}" data-title="${esc(b.cap || title || "")}"><button type="button" class="vid__play" data-act="vid" aria-label="${esc(t("play_video"))}">${v.thumb ? `<img src="${esc(v.thumb)}" alt="" loading="lazy" decoding="async">` : `<span class="vid__bg" aria-hidden="true"></span>`}<span class="vid__ico">${ICONS.play}</span></button></div>${cap}</figure>`;
+      }
+      default: return "";
+    }
+  }).join("");
+}
 function pageArticle(n) {
   const pr = n.project ? projBy(n.project) : null;
   return `<article class="wrap article"><div class="crumb"><a href="${routeHref("noticias")}">← ${t("back_news")}</a></div><div class="mono mute" style="margin-top:20px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase">${esc(fmtDate(n.date))} · ${esc(L(NEWS_CATS[n.cat]))}</div>
     <h1 id="page-h">${esc(L(n.title))}</h1><p class="lede">${esc(L(n.sum))}</p>
-    <div class="article__art">${n.image ? `<img ${imgAttrs(n.image, "(max-width: 1000px) 100vw, 900px")} alt="${esc(L(n.title))}">` : stillSVG(n.seed, 1)}</div><div class="prose">${L(n.body).map((x) => `<p>${esc(x)}</p>`).join("")}</div>
+    <div class="article__art">${n.image ? `<img ${imgAttrs(n.image, "(max-width: 1000px) 100vw, 900px")} alt="${esc(L(n.title))}">` : stillSVG(n.seed, 1)}</div><div class="prose">${bodyHTML(L(n.body), L(n.title))}</div>
     ${pr ? `<div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--line)"><span class="eyebrow">${t("related_project")}</span><p style="margin-top:8px"><a class="link-arrow" href="${routeHref("project", pr.slug)}">${esc(pr.title)} ${ICONS.arrow}</a></p></div>` : ""}</article>`;
 }
 
@@ -1648,7 +1671,7 @@ function routeDesc(r) {
   if (r.name === "inicio" && L(SEOC.homeDesc)) return cut(L(SEOC.homeDesc));
   if (L(seoPage(r.name).description)) return cut(L(seoPage(r.name).description));
   if (r.name === "project") return cut(L(r.p.short) || L(r.p.tagline) || `${r.p.title} · ${SITE.name}`);
-  if (r.name === "article") return cut(L(r.n.sum) || L(r.n.body)[0] || L(r.n.title));
+  if (r.name === "article") return cut(L(r.n.sum) || bodyText(L(r.n.body))[0] || L(r.n.title));
   const k = { inicio: "hero_sub", proyectos: "projects_lede", servicios: "svc_lede", nosotros: "about_lede", prensa: "press_lede", noticias: "news_lede", contacto: "contact_lede" }[r.name];
   return k ? cut(t(k)) : cut(SITE.name + " · " + t("legal"));
 }

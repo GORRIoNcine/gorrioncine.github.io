@@ -278,7 +278,7 @@ for (const p of validProjects) {
 /* Noticias */
 for (const n of validNews) {
   const path = localizedPath(`/noticias/${n.slug}/`), title = txt(n.title);
-  const body = Array.isArray(L(n.body)) ? L(n.body) : [];
+  const body = (Array.isArray(L(n.body)) ? L(n.body) : []).map((x) => typeof x === "string" ? x : x && typeof x === "object" ? (x.t === "ul" ? (x.items || []).join(" ") : [x.x, x.cap, x.by].filter(Boolean).join(" ")) : "").filter((x) => String(x).trim());
   const desc = cut(txt(n.seoDesc) || txt(n.sum) || body[0] || title);
   const pr = n.project ? projBy(n.project) : null;
   const ld = { "@context": "https://schema.org", "@type": "NewsArticle", headline: cut(title, 110), description: desc, datePublished: String(n.date).slice(0, 10), inLanguage: BUILD_LANG, mainEntityOfPage: SITE_URL + path, author: { "@type": "Organization", name: NAME }, publisher: { "@type": "Organization", name: NAME, logo: { "@type": "ImageObject", url: `${SITE_URL}/assets/icon-512.png` } } };
