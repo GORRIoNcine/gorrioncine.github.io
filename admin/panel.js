@@ -418,7 +418,7 @@
       groups: [["Datos básicos", ["title", "slug", "slugEn", "type", "format", "year", "status", "runtime", "genre", "lang", "subs", "featured"]], ["Cartel y textos", ["poster", "tagline", "short", "long", "note", "noteBy"]], ["Ficha técnica", ["crew"]], ["Recorrido y prensa", ["journey", "press"]], ["Tráiler o teaser", ["trailer", "trailerKind"]], ["Dónde verla (solo para proyectos estrenados)", ["whereHidden", "where"]], ["Apoyar el proyecto (solo en desarrollo)", ["supportOn", "supportUrl", "supportText", "supportGoal"]], ["Fotogramas", ["stills", "style"]], ["Buscadores (opcional)", ["seoTitle", "seoDesc", "noindex"]]],
     },
     noticias: {
-      noun: "noticia", plural: "Noticias", add: "Escribir noticia", ratio: "wide",
+      noun: "noticia", plural: "Noticias", add: "Escribir noticia", ratio: "wide", list: true,
       lead: "Estrenos, rodajes, convocatorias y detrás de cámaras.",
       title: (i) => L(i.title), sub: (i, d) => [optLabel(d, "cat", i.cat), i.date].filter(Boolean).join(" · "), img: (i) => i.image,
       newItem: () => ({ cat: "estrenos", date: today(), seed: Math.floor(Math.random() * 90) + 1 }),
@@ -443,7 +443,39 @@
   }
   const setDirty = () => { S.dirty = true; const b = $("#savebar"); if (b) b.hidden = false; };
 
+  /* Lista de noticias estilo WordPress: filas con miniatura, estado y filtros */
+  function viewList() {
+    const cfg = COL[S.name], def = S.sec.fields[0], items = S.data.items || [];
+    const el = root(); el.replaceChildren();
+    let tab = S.tab || "all", paint;
+    const kind = (it) => (it.draft === true ? "draft" : pubState(it) ? "sched" : "pub");
+    const q = h("input", { type: "search", class: "ed-search", placeholder: "Buscar noticias…", value: S.filter, oninput: (e) => { S.filter = e.target.value; paint(); } });
+    el.append(pageHead(cfg.plural, cfg.lead, [q, h("button", { class: "ed-btn ed-btn--main", type: "button", onclick: () => openItem(-1) }, ico("plus"), cfg.add)]));
+    const tabsBox = h("div", { class: "ar-tabs", role: "tablist" }), list = h("div", { class: "ar-list" });
+    el.append(tabsBox, list);
+    paint = () => {
+      const cnt = { all: items.length, pub: 0, draft: 0, sched: 0 }; items.forEach((it) => { cnt[kind(it)]++; });
+      tabsBox.replaceChildren(...[["all", "Todas"], ["pub", "Publicadas"], ["draft", "Borradores"], ["sched", "Programadas"]].filter(([k]) => k === "all" || cnt[k] || tab === k).map(([k, l]) =>
+        h("button", { type: "button", role: "tab", "aria-selected": String(tab === k), onclick: () => { tab = S.tab = k; paint(); } }, l, h("em", {}, String(cnt[k])))));
+      list.replaceChildren();
+      const f = S.filter.trim().toLowerCase();
+      const rows = items.map((it, i) => ({ it, i })).filter(({ it }) => (tab === "all" || kind(it) === tab) && (!f || (cfg.title(it) + " " + cfg.sub(it, def.fields)).toLowerCase().includes(f)))
+        .sort((a, b) => String(b.it.date || "").localeCompare(String(a.it.date || "")));
+      rows.forEach(({ it, i }) => {
+        const im = cfg.img(it), ps = pubState(it), t = cfg.title(it) || "(sin título)";
+        list.append(h("div", { class: "ar-row", tabindex: "0", role: "button", "aria-label": "Editar " + t, onclick: () => openItem(i), onkeydown: (e) => { if (e.key === "Enter") openItem(i); } },
+          h("div", { class: "ar-row__img" }, im ? h("img", { src: imgUrl(im), alt: "", loading: "lazy", onerror: function () { this.remove(); } }) : h("span", {}, (t || "?").slice(0, 2).toUpperCase())),
+          h("div", { class: "ar-row__t" }, h("b", {}, t), h("span", {}, L(it.sum))),
+          h("div", { class: "ar-row__m" }, h("span", {}, optLabel(def.fields, "cat", it.cat)), h("span", {}, it.date || "")),
+          h("div", { class: "ar-row__s" }, h("em", { class: "chip " + (ps ? "warn" : it.draft ? "" : "ok") }, ps ? ps[0] : "Publicada"))));
+      });
+      if (!rows.length) list.append(h("div", { class: "ed-empty" }, items.length ? "No hay noticias con este filtro." : "Aún no hay noticias. Pulsa «Escribir noticia» para crear la primera."));
+    };
+    paint();
+  }
+
   function viewGrid() {
+    if (COL[S.name] && COL[S.name].list) return viewList();
     const cfg = COL[S.name], def = S.sec.fields[0], items = S.data.items || [];
     const el = root(); el.replaceChildren();
     let paint;
@@ -526,6 +558,7 @@
 
   /* ---------- Editor de un elemento ---------- */
   function openItem(idx) {
+    if (S.name === "noticias") return openArticle(idx);
     const cfg = COL[S.name], def = S.sec.fields[0], isNew = idx < 0;
     const item = isNew ? cfg.newItem() : clone(S.data.items[idx]);
     if (isNew) (def.fields || []).forEach((f) => { if (f.default !== undefined && item[f.name] === undefined) item[f.name] = f.default; });
@@ -606,6 +639,207 @@
     const t0 = ctx.touch; ctx.touch = () => { t0(); sync(); }; sync();
     el.append(h("div", { class: "ed-two" }, main, side));
     window.scrollTo({ top: 0 });
+  }
+  /* ---------- Editor de noticias (estilo Ghost / WordPress): lienzo de escritura + panel de ajustes ---------- */
+  function openArticle(idx) {
+    const cfg = COL.noticias, def = S.sec.fields[0], isNew = idx < 0;
+    const item = isNew ? cfg.newItem() : clone(S.data.items[idx]);
+    if (isNew) (def.fields || []).forEach((f) => { if (f.default !== undefined && item[f.name] === undefined) item[f.name] = f.default; });
+    ["title", "sum", "body"].forEach((k) => { if (!item[k] || typeof item[k] !== "object") item[k] = {}; });
+    ["es", "en"].forEach((c) => { if (!Array.isArray(item.body[c])) item.body[c] = []; });
+    S.item = { idx, isNew, item }; S.itemDirty = false;
+    const el = root(); el.replaceChildren();
+    const byName = Object.fromEntries(def.fields.map((f) => [f.name, f]));
+    let lang = "es", settingsOpen = window.innerWidth > 1180;
+    const ctx = { touch: () => {}, slugEdited: !isNew, slugInput: null, onTitle: null };
+    ctx.onTitle = (s) => { if (!ctx.slugEdited && ctx.slugInput) { const v = slugify(s); ctx.slugInput.el.value = v; ctx.slugInput.set(v); } };
+    const grow = (ta) => { ta.style.height = "auto"; ta.style.height = ta.scrollHeight + 2 + "px"; };
+    const words = () => { const t = [item.title[lang], item.sum[lang]].concat(item.body[lang] || []).join(" ").trim(); return t ? t.split(/\s+/).length : 0; };
+
+    /* ----- Barra superior ----- */
+    const stat = h("span", { class: "ar-stat" });
+    const wc = h("span", { class: "ar-wc" });
+    let pubSel = { value: item.draft === true ? "draft" : item.publishAt ? "sched" : "now" };
+    let dirty = false;
+    const refreshStat = () => {
+      const m = pubSel.value;
+      const base = m === "draft" ? "Borrador" : m === "sched" ? "Programada" : isNew ? "Nueva" : "Publicada";
+      stat.textContent = base + (dirty ? " · cambios sin guardar" : isNew ? "" : " · guardada");
+      stat.className = "ar-stat" + (dirty ? " dirty" : "") + (m === "draft" ? " is-draft" : "");
+      const n = words(); wc.textContent = n ? `${n} palabras · ${Math.max(1, Math.round(n / 200))} min de lectura` : "";
+    };
+    const langSeg = h("div", { class: "ar-lang", role: "tablist", "aria-label": "Idioma que estás escribiendo" });
+    const hasLang = (c) => !isBlank(item.title[c]) || !isBlank(item.sum[c]) || !isBlank(item.body[c]);
+    const paintLangSeg = () => [...langSeg.children].forEach((b) => { b.setAttribute("aria-selected", String(b.dataset.l === lang)); b.classList.toggle("has", hasLang(b.dataset.l)); });
+    LANGS.forEach(([c, n]) => langSeg.append(h("button", { type: "button", role: "tab", "data-l": c, onclick: () => { if (lang === c) return; lang = c; paintLangSeg(); renderText(); refreshStat(); } }, n)));
+    ctx.touch = () => { S.itemDirty = true; dirty = true; refreshStat(); paintLangSeg(); if (snip) snip(); };
+
+    /* ----- Lienzo ----- */
+    const canvas = h("div", { class: "ar-canvas" });
+    const coverBox = h("div", { class: "ar-cover" });
+    const fileIn = h("input", { type: "file", accept: "image/png,image/jpeg,image/webp,image/gif", hidden: true });
+    const paintCover = () => {
+      const v = item.image; coverBox.replaceChildren();
+      if (v) {
+        coverBox.append(h("img", { src: imgUrl(v), alt: "", onerror: function () { this.replaceWith(h("span", { class: "ar-cover__e" }, "No se puede mostrar todavía")); } }),
+          h("div", { class: "ar-cover__t" },
+            h("button", { type: "button", class: "ed-btn", onclick: () => fileIn.click() }, ico("img"), "Cambiar"),
+            h("button", { type: "button", class: "ed-btn", onclick: () => { const u = (prompt("Pega el enlace de la imagen (https://…)") || "").trim(); if (u) { item.image = u; ctx.touch(); paintCover(); } } }, "Enlace…"),
+            h("button", { type: "button", class: "ed-btn ed-btn--danger", onclick: () => { item.image = undefined; ctx.touch(); paintCover(); } }, "Quitar")));
+      } else {
+        const add = h("button", { type: "button", class: "ar-cover__add", onclick: () => fileIn.click() }, h("span", {}, ico("img")), h("b", {}, "Añadir imagen principal"), h("small", {}, "Haz clic o arrastra una imagen aquí · opcional"));
+        coverBox.append(add);
+      }
+    };
+    const upCover = async (f) => {
+      if (!f) return; coverBox.classList.add("busy");
+      try { item.image = await uploadImage(f); ctx.touch(); } catch (e) { toast(e.auth ? "Tu sesión no permite subir imágenes." : e.message || "No se pudo subir la imagen.", "err"); }
+      coverBox.classList.remove("busy"); paintCover();
+    };
+    fileIn.addEventListener("change", () => { upCover(fileIn.files[0]); fileIn.value = ""; });
+    ["dragover", "dragenter"].forEach((ev) => coverBox.addEventListener(ev, (e) => { e.preventDefault(); coverBox.classList.add("drop"); }));
+    ["dragleave", "drop"].forEach((ev) => coverBox.addEventListener(ev, () => coverBox.classList.remove("drop")));
+    coverBox.addEventListener("drop", (e) => { e.preventDefault(); upCover(e.dataTransfer.files[0]); });
+    paintCover();
+
+    const textBox = h("div", { class: "ar-text" });
+    const focusBlock = (i, end) => { const t = textBox.querySelectorAll(".ar-blk textarea")[i]; if (t) { t.focus(); const p = end ? t.value.length : 0; t.setSelectionRange(p, p); } };
+    function renderText() {
+      textBox.replaceChildren();
+      const T = (item.title[lang] || ""), SM = (item.sum[lang] || "");
+      if (lang === "en" && !hasLang("en") && hasLang("es")) {
+        textBox.append(h("div", { class: "ar-note" }, h("span", {}, "Todavía no hay versión en inglés."), h("button", { type: "button", class: "ed-btn", onclick: () => {
+          item.title.en = item.title.es || ""; item.sum.en = item.sum.es || ""; item.body.en = (item.body.es || []).slice(); ctx.touch(); renderText();
+        } }, "Copiar el español para traducirlo")));
+      }
+      const title = h("textarea", { class: "ar-title", rows: "1", placeholder: lang === "es" ? "Título de la noticia" : "News headline", "aria-label": "Título" });
+      title.value = T;
+      const sum = h("textarea", { class: "ar-sum", rows: "1", placeholder: lang === "es" ? "Resumen en una frase: aparece en las listas y al compartir…" : "One-sentence summary: shown in lists and when shared…", "aria-label": "Resumen" });
+      sum.value = SM;
+      title.addEventListener("input", () => { item.title[lang] = title.value; grow(title); ctx.touch(); if (lang === "es") ctx.onTitle(title.value); });
+      title.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); sum.focus(); } });
+      sum.addEventListener("input", () => { item.sum[lang] = sum.value; grow(sum); ctx.touch(); });
+      sum.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); if (!(item.body[lang] || []).length) item.body[lang] = [""]; focusBlock(0); } });
+      textBox.append(h("div", { class: "ar-fld", "data-p": "$.title" }, title), h("div", { class: "ar-fld", "data-p": "$.sum" }, sum));
+      const blocksBox = h("div", { class: "ar-body", "data-p": "$.body" });
+      textBox.append(blocksBox);
+      const A = () => { if (!Array.isArray(item.body[lang])) item.body[lang] = []; if (!item.body[lang].length) item.body[lang].push(""); return item.body[lang]; };
+      const paintBlocks = (focus, pos) => {
+        blocksBox.replaceChildren();
+        const arr = A();
+        arr.forEach((txt, i) => {
+          const ta = h("textarea", { rows: "1", placeholder: i === 0 && !txt ? (lang === "es" ? "Empieza a escribir tu noticia…" : "Start writing your story…") : "", "aria-label": "Párrafo " + (i + 1) });
+          ta.value = txt;
+          ta.addEventListener("input", () => { A()[i] = ta.value; grow(ta); ctx.touch(); });
+          ta.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); const a = A(), p = ta.selectionStart, rest = ta.value.slice(p); a[i] = ta.value.slice(0, p); a.splice(i + 1, 0, rest); ctx.touch(); paintBlocks(i + 1); return; }
+            if (e.key === "Backspace" && ta.value === "" && A().length > 1) { e.preventDefault(); A().splice(i, 1); ctx.touch(); paintBlocks(Math.max(0, i - 1), true); return; }
+            if (e.key === "Backspace" && ta.selectionStart === 0 && ta.selectionEnd === 0 && i > 0) { e.preventDefault(); const a = A(), prevLen = a[i - 1].length; a[i - 1] += a[i]; a.splice(i, 1); ctx.touch(); paintBlocks(i - 1, prevLen); return; }
+            if (e.key === "ArrowUp" && ta.selectionStart === 0 && i > 0) { e.preventDefault(); focusBlock(i - 1, true); }
+            if (e.key === "ArrowDown" && ta.selectionStart === ta.value.length && i < A().length - 1) { e.preventDefault(); focusBlock(i + 1); }
+          });
+          ta.addEventListener("paste", (e) => {
+            const t = (e.clipboardData || window.clipboardData).getData("text");
+            if (!/\n\s*\n/.test(t)) return;
+            e.preventDefault();
+            const parts = t.replace(/\r/g, "").split(/\n\s*\n/).map((x) => x.replace(/\s*\n\s*/g, " ").trim()).filter(Boolean);
+            const a = A(), p = ta.selectionStart, q = ta.selectionEnd, head = ta.value.slice(0, p) + parts[0], tail = ta.value.slice(q);
+            const mid = parts.slice(1); if (mid.length) { mid[mid.length - 1] += tail; a.splice(i, 1, head, ...mid); } else a[i] = head + tail;
+            ctx.touch(); paintBlocks(i + mid.length, true);
+          });
+          const tools = h("span", { class: "ar-blk__t" },
+            h("button", { type: "button", title: "Subir párrafo", "aria-label": "Subir párrafo", disabled: i === 0, onclick: () => { const a = A(); [a[i - 1], a[i]] = [a[i], a[i - 1]]; ctx.touch(); paintBlocks(i - 1); } }, "↑"),
+            h("button", { type: "button", title: "Bajar párrafo", "aria-label": "Bajar párrafo", disabled: i === arr.length - 1, onclick: () => { const a = A(); [a[i + 1], a[i]] = [a[i], a[i + 1]]; ctx.touch(); paintBlocks(i + 1); } }, "↓"),
+            h("button", { type: "button", class: "del", title: "Quitar párrafo", "aria-label": "Quitar párrafo", disabled: arr.length === 1 && !txt, onclick: () => { const a = A(); a.splice(i, 1); ctx.touch(); paintBlocks(Math.max(0, i - 1)); } }, "✕"));
+          blocksBox.append(h("div", { class: "ar-blk" }, ta, tools));
+          setTimeout(() => grow(ta), 0);
+        });
+        blocksBox.append(h("button", { type: "button", class: "ar-addp", onclick: () => { const a = A(); if (a[a.length - 1] !== "") a.push(""); ctx.touch(); paintBlocks(a.length - 1); } }, ico("plus"), "Añadir párrafo"));
+        if (focus !== undefined) { const i = focus; const t = blocksBox.querySelectorAll(".ar-blk textarea")[i]; if (t) { t.focus(); const p = pos === true ? t.value.length : typeof pos === "number" ? pos : 0; t.setSelectionRange(p, p); } }
+      };
+      paintBlocks();
+      setTimeout(() => { grow(title); grow(sum); }, 0);
+    }
+    canvas.append(coverBox, fileIn, textBox);
+
+    /* ----- Ajustes (panel lateral) ----- */
+    const settings = h("aside", { class: "ar-set", "aria-label": "Ajustes de la noticia" });
+    const fe = (name) => { const f = byName[name]; return f ? fieldEl(f, () => item[f.name], (v) => { item[f.name] = v; }, ctx, "$." + f.name) : null; };
+    const sec = (title, kids, open) => h("details", { class: "ar-sec", open: open !== false }, h("summary", {}, title), h("div", { class: "ar-sec__b" }, kids));
+
+    settings.append(h("button", { type: "button", class: "ar-set__x ed-btn", onclick: () => toggleSettings(false) }, "✕ Cerrar ajustes"));
+    /* Publicación */
+    const saveBtn = h("button", { type: "button", class: "ed-btn ed-btn--main ar-pub", id: "savebtn" }, ico("ok"), h("span", {}, isNew ? "Publicar" : "Guardar y publicar"));
+    const seg = h("div", { class: "ed-seg", role: "radiogroup", "aria-label": "Cuándo publicar" });
+    const schedBox = h("div", { class: "ed-sch" }), pnote = h("small", { class: "ed-hint" });
+    const MODES = [["now", "ok", "Ahora"], ["draft", "edit", "Borrador"], ["sched", "cal", "Programar"]];
+    const picker = schedulePicker(item.publishAt, (v) => { item.publishAt = v; ctx.touch(); refreshPub(); });
+    schedBox.append(picker.el);
+    function refreshPub() {
+      const m = pubSel.value;
+      [...seg.children].forEach((b) => { const on = b.dataset.m === m; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(on)); });
+      schedBox.hidden = m !== "sched";
+      if (m === "draft") { item.draft = true; delete item.publishAt; } else if (m === "sched") { delete item.draft; item.publishAt = picker.value() || undefined; } else { delete item.draft; delete item.publishAt; }
+      saveBtn.lastChild.textContent = m === "draft" ? "Guardar borrador" : m === "sched" ? "Programar" : isNew ? "Publicar" : "Guardar y publicar";
+      pnote.textContent = m === "draft" ? "No se verá en la web hasta que la publiques." : m === "sched" ? "Se publica sola a esa fecha y hora de Cuba (la web se regenera cada 30 minutos)." : "Se publica de inmediato al guardar.";
+      refreshStat();
+    }
+    MODES.forEach(([m, ic, l]) => seg.append(h("button", { type: "button", role: "radio", "data-m": m, onclick: () => { if (pubSel.value === m) return; pubSel.value = m; if (m === "sched") picker.ensure(); ctx.touch(); refreshPub(); } }, ico(ic), l)));
+    settings.append(sec("Publicación", [seg, schedBox, pnote]));
+    settings.append(sec("Datos", [fe("cat"), fe("date"), fe("project")]));
+    settings.append(sec("Enlace", [fe("slug"), fe("slugEn")]));
+
+    /* Google: campos + vista previa del resultado */
+    const snipBox = h("div", { class: "ar-snip" });
+    var snip = () => {
+      const t = L(item.seoTitle) || ((L(item.title) || "Título de la noticia") + " · GORRIóN"), d = L(item.seoDesc) || L(item.sum) || "Aquí aparecerá el resumen de la noticia.";
+      snipBox.replaceChildren(h("small", {}, "Así puede verse en Google"), h("div", { class: "ar-snip__t" }, t.slice(0, 70)), h("div", { class: "ar-snip__u" }, "gorrioncine.github.io › noticias › " + (item.slug || "…")), h("div", { class: "ar-snip__d" }, d.slice(0, 165)));
+    };
+    settings.append(sec("Buscadores (opcional)", [snipBox, fe("seoTitle"), fe("seoDesc"), fe("noindex")], false));
+    if (byName.seed) settings.append(sec("Avanzado", [fe("seed")], false));
+    if (!isNew) settings.append(h("div", { class: "ar-danger" }, h("button", { type: "button", class: "ed-btn ed-btn--danger", onclick: () => removeItem(idx) }, "Eliminar noticia")));
+
+    /* ----- Guardado ----- */
+    const save = async () => {
+      if (!item.slug) { const s0 = slugify(L(item.title)); if (s0) { item.slug = s0; if (ctx.slugInput) ctx.slugInput.el.value = s0; } }
+      let errs = []; validate(def.fields, item, "$", errs);
+      if (pubSel.value === "draft") errs = errs.filter((e) => !/obligatori/.test(e.msg) || /^«(Título|Identificador|Dirección web)[^»]*»( \(Español\))? es obligatorio/.test(e.msg));
+      if (pubSel.value === "sched" && !item.publishAt) errs.push({ p: "$.publishAt", msg: "Elige la fecha y hora de publicación." });
+      const sl = item.slug; if (sl && S.data.items.some((o, j) => j !== idx && (o.slug === sl || o.slugEn === sl))) errs.push({ p: "$.slug", msg: "Ya existe otra noticia con esta dirección web." });
+      const se = item.slugEn; if (se && S.data.items.some((o, j) => j !== idx && (o.slug === se || o.slugEn === se))) errs.push({ p: "$.slugEn", msg: "Ya existe otra noticia con esta dirección web (en inglés)." });
+      if (errs.length) {
+        /* Si lo que falta está en el otro idioma, cambiar a esa pestaña para que se vea */
+        const other = lang === "es" ? "en" : "es";
+        if (errs.some((e) => /\((Español|English)\)/.test(e.msg))) { const want = errs.find((e) => /\(English\)/.test(e.msg)) && !errs.find((e) => /\(Español\)/.test(e.msg)) ? "en" : "es"; if (want !== lang) { lang = want; paintLangSeg(); renderText(); } }
+        if (settingsOpen === false && errs.some((e) => /dirección|fecha|Fecha|Elige/.test(e.msg))) toggleSettings(true);
+        settings.querySelectorAll("details").forEach((d) => { if (errs.some((e) => d.querySelector(`[data-p="${CSS.escape(e.p)}"]`))) d.open = true; });
+        showErrors(errs, el); toast(`Revisa ${errs.length} campo(s) marcado(s) en rojo.`, "err"); return;
+      }
+      saveBtn.disabled = true;
+      const prev = clone(S.data);
+      if (isNew) S.data.items.push(item); else S.data.items[idx] = item;
+      try { await persist(`${isNew ? "Añade" : "Actualiza"} ${cfg.noun} «${cfg.title(item)}» desde el panel`); S.itemDirty = false; S.item = null; viewGrid(); }
+      catch (e) { S.data = prev; saveBtn.disabled = false; }
+    };
+    saveBtn.addEventListener("click", save);
+    const keySave = (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { if (!S.item || !document.body.contains(canvas)) { document.removeEventListener("keydown", keySave); return; } e.preventDefault(); save(); } };
+    document.addEventListener("keydown", keySave);
+
+    /* ----- Barra de acciones y montaje ----- */
+    const shell = h("div", { class: "ar-shell" });
+    const toggleSettings = (v) => { settingsOpen = v === undefined ? !settingsOpen : v; shell.classList.toggle("set-open", settingsOpen); gearBtn.setAttribute("aria-pressed", String(settingsOpen)); };
+    const gearBtn = h("button", { type: "button", class: "ed-btn", "aria-label": "Ajustes", title: "Ajustes", onclick: () => toggleSettings() }, ico("gear"), h("span", { class: "ar-lbl" }, "Ajustes"));
+    const top = h("div", { class: "ar-top" },
+      h("a", { href: "#", class: "ar-back", onclick: (e) => { e.preventDefault(); closeItem(); } }, "← Noticias"),
+      h("div", { class: "ar-meta" }, stat, wc), h("span", { class: "sp" }), langSeg,
+      h("button", { type: "button", class: "ed-btn", onclick: () => previewItem(item, idx, isNew) }, ico("ext"), h("span", { class: "ar-lbl" }, "Vista previa")),
+      gearBtn, saveBtn);
+    shell.append(canvas, settings);
+    el.append(top, shell, h("div", { class: "ar-scrim", onclick: () => toggleSettings(false) }));
+    paintLangSeg(); renderText(); refreshPub(); snip(); toggleSettings(settingsOpen);
+    dirty = false; refreshStat();
+    window.scrollTo({ top: 0 });
+    if (isNew) setTimeout(() => { const t = $(".ar-title", el); if (t) t.focus(); }, 50);
   }
   function closeItem() {
     if (S.itemDirty && !confirm("Tienes cambios sin guardar en este elemento. ¿Salir sin guardar?")) return;
