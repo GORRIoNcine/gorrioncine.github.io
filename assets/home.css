@@ -409,3 +409,7 @@ html[data-theme="light"]:has(.pz-top) .pz-mf__bird { filter: drop-shadow(0 0 .7p
   .pz-cur.is-down b { width: 26px; height: 26px; margin: -13px 0 0 -13px; }
   .pz-cur.is-hide, .pz-cur.is-text { opacity: 0; }
 }
+
+/* Botón de modo rápido activado: fondo sólido y el icono con el color contrario */
+.pz-top .tbtn[aria-pressed="true"], html[data-theme="light"]:has(.pz-top) .pz-top .tbtn[aria-pressed="true"] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.pz-top .tbtn[aria-pressed="true"]:hover { background: var(--fg); color: var(--bg); }
