@@ -570,7 +570,7 @@ html.lite { background-image: none; }
 .fb-body { animation: fb-bob 2.4s ease-in-out infinite; transform-origin: 540px 790px; }
 html.buddy-on .pager { opacity: 0; }
 html.lite .buddy__bird { display: none; }
-html.lite .buddy.on .buddy__bubble { opacity: 1; transform: none; pointer-events: auto; }
+html.lite .buddy.talk .buddy__bubble { opacity: 1; transform: none; pointer-events: auto; }
 html.lite .buddy__bubble::before, html.lite .buddy__bubble::after { display: none; }
 @keyframes buddy-fly {
   0% { transform: translate(-70vw, -78vh) scale(4.2) rotate(-16deg); opacity: 0; }

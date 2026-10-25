@@ -937,7 +937,7 @@ const Buddy = (() => {
     clearTimeout(tIn); clearTimeout(tOut);
     const go = () => {
       el.classList.toggle("talk", v);
-      if (v) tOut = setTimeout(() => el.classList.remove("talk"), 3000);
+      if (v) tOut = setTimeout(() => el.classList.remove("talk"), 1500);
     };
     if (v && delay) tIn = setTimeout(go, delay); else go();
   }
