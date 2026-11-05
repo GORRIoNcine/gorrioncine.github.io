@@ -1,60 +1,6 @@
 {
   "items": [
     {
-      "slug": "zunzun-premio-del-publico",
-      "cat": "estrenos",
-      "date": "2026-02-14",
-      "seed": 11,
-      "project": "proj-zunzun",
-      "title": {
-        "es": "La Hora del Zunzún gana el Premio del Público",
-        "en": "La Hora del Zunzún wins the Audience Award"
-      },
-      "sum": {
-        "es": "El corto de Ana Lía Cordero se llevó el voto del público en la Muestra Joven del Sur.",
-        "en": "Ana Lía Cordero's short took the audience vote at the Muestra Joven del Sur."
-      },
-      "body": {
-        "es": [
-          "El cortometraje La Hora del Zunzún recibió el Premio del Público en la Muestra Joven del Sur, tras proyectarse en tres sesiones con la sala llena.",
-          "Para el equipo es un reconocimiento compartido con los vecinos de Centro Habana que participaron en el rodaje. En los próximos meses la película viajará a otros festivales de la región.",
-          "Si eres programador o programadora y quieres ver la película, puedes solicitar un enlace privado desde la ficha del proyecto."
-        ],
-        "en": [
-          "The short film La Hora del Zunzún received the Audience Award at the Muestra Joven del Sur after three sold-out screenings.",
-          "For the team it is an award shared with the Centro Habana neighbours who took part in the shoot. Over the coming months the film will travel to other festivals in the region.",
-          "If you are a programmer and would like to see the film, you can request a private link from the project page."
-        ]
-      }
-    },
-    {
-      "slug": "pan-de-bodega-primer-dia",
-      "cat": "rodajes",
-      "date": "2026-09-21",
-      "seed": 37,
-      "project": "proj-pan-de-bodega",
-      "title": {
-        "es": "Diario de rodaje: primer día de Pan de Bodega",
-        "en": "Shooting diary: day one of Pan de Bodega"
-      },
-      "sum": {
-        "es": "Cinco de la mañana, una cola de cuarenta personas y una cámara que no se nota.",
-        "en": "Five in the morning, a queue of forty people and a camera nobody notices."
-      },
-      "body": {
-        "es": [
-          "Empezamos a las cinco, antes de que abriera la bodega. La idea era sencilla: que la cola real y la cola ficticia se confundieran hasta que nadie supiera quién actuaba y quién esperaba su pan.",
-          "Los vecinos de la cuadra nos recibieron con café y con una lista de cosas que, según ellos, no podían faltar en la serie. Casi todas entraron al guion.",
-          "Hoy grabamos el segundo episodio. Iremos publicando aquí el diario de cada semana."
-        ],
-        "en": [
-          "We started at five, before the shop opened. The idea was simple: let the real queue and the fictional queue blur until no one could tell who was acting and who was waiting for bread.",
-          "The block's neighbours welcomed us with coffee and a list of things they said the series could not do without. Nearly all of them made it into the script.",
-          "Today we shoot episode two. We will post each week's diary here."
-        ]
-      }
-    },
-    {
       "slug": "convocatoria-equipo-2026",
       "cat": "convocatorias",
       "date": "2026-07-03",
