@@ -1,29 +1,3 @@
 {
-  "items": [
-    {
-      "slug": "convocatoria-equipo-2026",
-      "cat": "convocatorias",
-      "date": "2026-07-03",
-      "seed": 52,
-      "project": null,
-      "title": {
-        "es": "Convocatoria: buscamos equipo para la temporada de rodajes",
-        "en": "Open call: crew wanted for the shooting season"
-      },
-      "sum": {
-        "es": "Asistentes de cámara, sonidistas, producción y arte para proyectos de 2026 y 2027.",
-        "en": "Camera assistants, sound recordists, production and art department for 2026 and 2027 projects."
-      },
-      "body": {
-        "es": [
-          "Abrimos una convocatoria para sumar personas a los equipos de producción, cámara, sonido y arte. No se exige experiencia previa en cine, pero sí ganas de aprender en rodajes reales.",
-          "Escríbenos a través del formulario de contacto eligiendo el motivo «Colaboración», cuéntanos qué sabes hacer y adjunta un enlace a algún trabajo si lo tienes."
-        ],
-        "en": [
-          "We are opening a call to add people to our production, camera, sound and art teams. No previous film experience is required, but you should want to learn on real shoots.",
-          "Write to us through the contact form choosing the reason “Collaboration”, tell us what you can do and include a link to some of your work if you have it."
-        ]
-      }
-    }
-  ]
+  "items": []
 }
