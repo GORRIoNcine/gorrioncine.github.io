@@ -42,11 +42,13 @@ function toEnPath(path) {
 }
 const localizedPath = (path) => ENGLISH && path.startsWith("/") && !path.startsWith("/en/") ? toEnPath(path) : path;
 const outputFile = (file) => ENGLISH ? toEnPath("/" + file).slice(1) : file;
-const ES_PATHS = () => ["/", ...Object.keys(SEC_EN).map((k) => `/${k}/`), ...projects.filter((p) => p && p.title && slugOk(p.slug)).map((p) => `/proyectos/${p.slug}/`), ...news.filter((n) => n && n.title && slugOk(n.slug)).map((n) => `/noticias/${n.slug}/`)];
+const ES_PATHS = () => ["/", ...Object.keys(SEC_EN).filter((k) => !HIDDEN.has(k)).map((k) => `/${k}/`), ...projects.filter((p) => p && p.title && slugOk(p.slug)).map((p) => `/proyectos/${p.slug}/`), ...(HIDDEN.has("noticias") ? [] : news).filter((n) => n && n.title && slugOk(n.slug)).map((n) => `/noticias/${n.slug}/`)];
 const esPathOf = (enPath) => ES_PATHS().find((e) => toEnPath(e) === enPath) || (enPath === "/en/404.html" ? "/404.html" : enPath.slice(3));
 
 /* ---------- Datos ---------- */
 const site = json("content/site.json", {});
+/* Páginas ocultas «hasta nuevo aviso» (content/site.json → hiddenPages): no se generan ni salen en el sitemap */
+const HIDDEN = new Set(Array.isArray(site.hiddenPages) ? site.hiddenPages : []);
 /* Borradores y publicaciones programadas (aún sin llegar su hora) no generan páginas ni salen en el sitemap */
 const VIS = visibleContent({ proyectos: json("content/proyectos.json", { items: [] }), noticias: json("content/noticias.json", { items: [] }), prensa: json("content/prensa.json", {}) });
 const projects = VIS.proyectos.items || [];
@@ -192,7 +194,7 @@ function page({ path, title, desc, type = "website", image, imageAlt, noindex, l
 
 const link = (href, label, cls) => `<a href="${esc(localizedPath(href))}"${cls ? ` class="${cls}"` : ""}>${esc(label)}</a>`;
 function shell(main, current) {
-  const nav = NAV.map(([k, l]) => link(`/${k}/`, l, current === k ? "on" : "")).join("");
+  const nav = NAV.filter(([k]) => !HIDDEN.has(k)).map(([k, l]) => link(`/${k}/`, l, current === k ? "on" : "")).join("");
   const email = site.email ? `<a href="mailto:${esc(site.email)}">${esc(site.email)}</a>` : "";
   return `<div class="seo"><header class="seo__h"><a class="seo__brand" href="${localizedPath("/")}">${NAME}</a><nav aria-label="${tr("Principal", "Primary")}">${nav}</nav></header><main class="seo__m">${main}</main><footer class="seo__f"><span>© ${new Date().getFullYear()} ${NAME}</span> ${email} ${link("/legal/", ui("legal", "Aviso legal y privacidad"))}</footer></div>`;
 }
@@ -218,7 +220,7 @@ function newsList(items) {
   return `<ul class="seo__list">${items.map((n) => `<li>${link(`/noticias/${n.slug}/`, txt(n.title))} <span>${esc(fmtDate(n.date))}</span>${txt(n.sum) ? `<p>${esc(cut(txt(n.sum), 220))}</p>` : ""}</li>`).join("")}</ul>`;
 }
 const validProjects = projects.filter((p) => p && p.title && slugOk(p.slug));
-const validNews = news.filter((n) => n && txt(n.title) && slugOk(n.slug)).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+const validNews = (HIDDEN.has("noticias") ? [] : news).filter((n) => n && txt(n.title) && slugOk(n.slug)).sort((a, b) => String(b.date).localeCompare(String(a.date)));
 projects.filter((p) => p && p.title && !slugOk(p.slug)).forEach((p) => console.warn(`⚠ Proyecto «${p.title}»: slug no válido («${p.slug}»), no se genera su página.`));
 news.filter((n) => n && txt(n.title) && !slugOk(n.slug)).forEach((n) => console.warn(`⚠ Noticia «${txt(n.title)}»: slug no válido («${n.slug}»), no se genera su página.`));
 
@@ -239,6 +241,7 @@ const SECTION_TITLE = {
   legal: ui("legal", "Aviso legal y privacidad"),
 };
 function section(name, main, ld = []) {
+  if (HIDDEN.has(name)) return;
   const o = (Array.isArray(seo.pages) ? seo.pages : []).find((x) => x && x.page === name) || {};
   const path = localizedPath(`/${name}/`);
   pages[outputFile(`${name}/index.html`)] = page({ path, title: txt(o.title) || `${SECTION_TITLE[name]} · ${NAME}`, desc: cut(txt(o.description) || SECTION_DESC[name]), ld: [...ld, breadcrumb([["Inicio", "/"], [SECTION_TITLE[name], `/${name}/`]])], body: shell(`<h1>${esc(SECTION_TITLE[name])}</h1><p class="seo__lede">${esc(SECTION_DESC[name])}</p>${main}`, name) });
@@ -304,7 +307,7 @@ pages[outputFile("404.html")] = page({ path: localizedPath("/404.html"), title: 
 /* Redirecciones desde las direcciones inglesas antiguas (/en/servicios/…) a las nuevas */
 if (ENGLISH) {
   const stub = (to) => `<!doctype html>\n${MARK}\n<html lang="en"><head><meta charset="utf-8"><title>${NAME}</title><link rel="canonical" href="${esc(SITE_URL + to)}"><meta http-equiv="refresh" content="0;url=${esc(to)}"><script>location.replace(${JSON.stringify(to)}+location.search+location.hash)</script></head><body><a href="${esc(to)}">${esc(SITE_URL + to)}</a></body></html>`;
-  const live = new Set(["/", ...Object.keys(SEC_EN).map((k) => `/${k}/`), ...validProjects.map((p) => `/proyectos/${p.slug}/`), ...validNews.map((n) => `/noticias/${n.slug}/`)]);
+  const live = new Set(["/", ...Object.keys(SEC_EN).filter((k) => !HIDDEN.has(k)).map((k) => `/${k}/`), ...validProjects.map((p) => `/proyectos/${p.slug}/`), ...validNews.map((n) => `/noticias/${n.slug}/`)]);
   for (const es of live) {
     const now = toEnPath(es), old = `/en${es}`;
     const file = old.slice(1) + "index.html";
@@ -322,6 +325,17 @@ for (const base of ENGLISH ? ["projects", "news", "proyectos", "noticias"] : ["p
     if (!readFileSync(f, "utf8").slice(0, 200).includes(MARK)) continue;
     const key = `${ENGLISH ? "en/" : ""}${base}/${d}/index.html`;
     if (!(key in pages)) { rmSync(join(dir, d), { recursive: true, force: true }); console.log(`– Eliminada ${ENGLISH ? "en/" : ""}${base}/${d}/`); }
+  }
+}
+/* Páginas ocultas: se retiran las copias generadas que quedaran de antes (solo las marcadas como generadas) */
+for (const name of HIDDEN) {
+  if (!SEC_EN[name]) continue;
+  for (const rel of ENGLISH ? [`en/${SEC_EN[name]}`, `en/${name}`] : [name]) {
+    const dir = join(ROOT, rel), f = join(dir, "index.html");
+    if (!existsSync(f) || !readFileSync(f, "utf8").slice(0, 200).includes(MARK)) continue;
+    rmSync(f, { force: true });
+    if (!readdirSync(dir).length) rmSync(dir, { recursive: true, force: true });
+    console.log(`– Oculta ${rel}/`);
   }
 }
 for (const [f, html] of Object.entries(pages)) write(f, html);

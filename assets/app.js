@@ -1225,6 +1225,9 @@ const tsBox = () => (SITE.turnstileSiteKey && SITE.formEndpoint ? `<div class="t
 const hpField = () => `<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">`;
 
 /* ---------- Cabecera y pie ---------- */
+/* Páginas ocultas «hasta nuevo aviso»: lista `hiddenPages` en content/site.json (vacía = todo visible) */
+const pageOff = (n) => asArr(SITE.hiddenPages).includes(n) || (n === "article" && asArr(SITE.hiddenPages).includes("noticias"));
+const navList = () => NAV.filter((n) => !pageOff(n));
 const NAV = ["proyectos", "servicios", "nosotros", "prensa", "noticias", "contacto"];
 function activeNav(route) {
   if (route.name === "project") return "proyectos";
@@ -1236,7 +1239,7 @@ function header(route) {
   return `<a class="skip" href="#" data-act="skip">${t("skip")}</a>
   <header class="top sc-dark"><div class="wrap top__in">
     <a class="brand" href="${routeHref("inicio")}" aria-label="${SITE.name}">${logoH("", 38)}</a>
-    <nav class="nav" id="nav" aria-label="${t("foot_nav")}">${route.name !== "inicio" ? `<a class="nav__home" href="${routeHref("inicio")}">${t("crumb_home")}</a>` : ""}${NAV.map((n) => `<a href="${routeHref(n)}"${act === n ? ' aria-current="page"' : ""}>${t("nav_" + n)}</a>`).join("")}</nav>
+    <nav class="nav" id="nav" aria-label="${t("foot_nav")}">${route.name !== "inicio" ? `<a class="nav__home" href="${routeHref("inicio")}">${t("crumb_home")}</a>` : ""}${navList().map((n) => `<a href="${routeHref(n)}"${act === n ? ' aria-current="page"' : ""}>${t("nav_" + n)}</a>`).join("")}</nav>
     <div class="tools">
       <button class="tbtn" data-act="lite" aria-pressed="${lite}" title="${esc(t("lite_d"))}" aria-label="${esc(t("lite"))}">${ICONS.bolt}</button>
       <div class="lang theme"><button class="tbtn" data-act="thememenu" aria-haspopup="true" aria-expanded="false" aria-controls="themelist" title="${esc(t("theme_label"))}" aria-label="${esc(t("theme_label"))}">${ICONS["theme_" + theme]}</button>
@@ -1247,7 +1250,7 @@ function header(route) {
     </div></div></header>`;
 }
 function footer() {
-  const links = [...NAV.map((n) => `<li><a href="${routeHref(n)}">${t("nav_" + n)}</a></li>`), `<li><a href="${routeHref("legal")}">${t("legal")}</a></li>`].join("");
+  const links = [...navList().map((n) => `<li><a href="${routeHref(n)}">${t("nav_" + n)}</a></li>`), `<li><a href="${routeHref("legal")}">${t("legal")}</a></li>`].join("");
   const soc = SITE.social.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a> <span class="mute mono" style="font-size:.7rem">${esc(s.handle)}</span></li>`).join("");
   return `<footer class="foot sc-dark"><div class="wrap">
     <div class="foot__top">
@@ -1388,7 +1391,7 @@ function phaseTrack(p) {
 function pageProject(p) {
   const same = PROJECTS.filter((x) => x !== p && x.type === p.type), rest = PROJECTS.filter((x) => x !== p && x.type !== p.type);
   const related = [...same, ...rest].slice(0, 4);
-  const trailer = p.where.find((w) => w.url), hasWhere = p.status === "estrenado" && !p.whereHidden && p.where.length, hasTrailer = !!httpUrl(p.trailer), hasSupport = p.status === "desarrollo" && p.supportOn;
+  const trailer = p.where.find((w) => w.url), hasWhere = p.status === "estrenado" && !p.whereHidden && p.where.filter((w) => !(w.route && pageOff(w.route))).length, hasTrailer = !!httpUrl(p.trailer), hasSupport = p.status === "desarrollo" && p.supportOn;
   const facts = [["k_type", typeLabel(p)], ["k_format", L(p.format)], ["k_year", p.year], ["k_runtime", p.runtime], ["k_genre", L(p.genre)], ["k_lang", p.lang], ["k_subs", p.subs], ["k_status", L(STATUS[p.status])]];
   const crew = crewBlock(p);
   const stills = Array.from({ length: stillCount(p) }, (_, i) => `<button class="still" data-act="lb" data-slug="${p.slug}" data-i="${i}" aria-label="${t("still_n")} ${i + 1} / ${stillCount(p)}">${stillMedia(p, i)}<span>${t("still_n")} ${i + 1}/${stillCount(p)}</span></button>`).join("");
@@ -1411,7 +1414,7 @@ function pageProject(p) {
     ${p.note ? `<section class="block split"><h2>${t("note_h")}</h2><div><blockquote class="quote" style="margin:0">“${esc(L(p.note))}”<small>${esc(p.noteBy)}</small></blockquote></div></section>` : ""}
     ${p.journey.length ? `<section class="block split"><h2>${t("journey")}</h2><div class="tline">${p.journey.map((j) => `<div class="tl"><span class="tl__d">${esc(fmtDate(j.d))}</span><div><b>${esc(L(j.t))}</b><span>${esc(j.p)}</span></div></div>`).join("")}</div></section>` : ""}
     ${p.press.length ? `<section class="block split"><h2>${t("press_h")}</h2><div style="display:grid;gap:28px">${p.press.map((x) => `<blockquote class="quote" style="margin:0">“${esc(L(x.q))}”<small>${esc(x.s)}</small></blockquote>`).join("")}</div></section>` : ""}
-    ${hasWhere ? `<section class="block split" id="where"><h2>${t("where_h")}</h2><div><div class="wherelist">${p.where.map((w) => `<div class="where"><div><b>${esc(L(w.l))}</b><br><span>${esc(L(w.n))}</span></div>${w.url ? ext(w.url, t("open")) : w.route ? `<a class="btn btn--sm" href="${routeLink(w.route)}">${t("go")} ${ICONS.arrow}</a>` : `<button class="btn btn--sm" data-act="scr" data-what="${w.dossier ? "dossier" : "screener"}">${t("request")}</button>`}</div>`).join("")}</div></div></section>` : ""}
+    ${hasWhere ? `<section class="block split" id="where"><h2>${t("where_h")}</h2><div><div class="wherelist">${p.where.filter((w) => !(w.route && pageOff(w.route))).map((w) => `<div class="where"><div><b>${esc(L(w.l))}</b><br><span>${esc(L(w.n))}</span></div>${w.url ? ext(w.url, t("open")) : w.route ? `<a class="btn btn--sm" href="${routeLink(w.route)}">${t("go")} ${ICONS.arrow}</a>` : `<button class="btn btn--sm" data-act="scr" data-what="${w.dossier ? "dossier" : "screener"}">${t("request")}</button>`}</div>`).join("")}</div></div></section>` : ""}
     ${supportBlock(p)}
     <section class="block split"><h2>${t("downloads")}</h2><div><p class="mute" style="margin-bottom:16px">${t("downloads_p")}</p><div class="wherelist">${dls.map((d) => `<div class="where"><b>${t(d[1])}</b><button class="btn btn--sm" data-act="scr" data-what="${d[0]}">${t("request")}</button></div>`).join("")}</div>
       <div id="reqform" hidden style="margin-top:28px"><h3 style="font-size:2rem;margin-bottom:16px">${t("req_h")}</h3>
@@ -1658,8 +1661,8 @@ function parseRoute() {
   const h = currentToken();
   if (h === "inicio") return { name: "inicio" };
   if (h.startsWith("p-")) { const p = projBy(h.slice(2)); return p ? { name: "project", p } : { name: "404" }; }
-  if (h.startsWith("n-")) { const n = NEWS.find((x) => x.slug === h.slice(2)); return n ? { name: "article", n } : { name: "404" }; }
-  if (SECTIONS.includes(h)) return { name: h };
+  if (h.startsWith("n-")) { const n = pageOff("article") ? null : NEWS.find((x) => x.slug === h.slice(2)); return n ? { name: "article", n } : { name: "404" }; }
+  if (SECTIONS.includes(h)) return pageOff(h) ? { name: "404" } : { name: h };
   return { name: "404" };
 }
 const app = () => $("#app");
@@ -1831,15 +1834,15 @@ function buildSearchIndex() {
     ["contacto", t("nav_contacto"), "contacto contact escribir write email correo teléfono phone redes social"],
     ["legal", lang === "en" ? "Legal notice and privacy" : "Aviso legal y privacidad", "legal privacidad privacy aviso notice cookies términos terms"],
   ];
-  PAGES.forEach(([r, title, kw]) => add("page", title, "", routeHref(r), [title, kw], []));
+  PAGES.filter((x) => !pageOff(x[0])).forEach(([r, title, kw]) => add("page", title, "", routeHref(r), [title, kw], []));
   PROJECTS.forEach((p) => add("project", p.title, `${typeLabel(p)} · ${p.year}`, routeHref("project", p.slug),
     [p.title, p.tagline, Object.values(TYPES[p.type] || {}), p.format, p.genre, p.year, STATUS[p.status]],
     [p.short, p.long, p.crew.map((c) => c.n), p.lang, p.subs, p.note, p.where.map((w) => [w.l, w.n])], { p }));
-  NEWS.forEach((n) => add("news", L(n.title), fmtDate(n.date), routeHref("article", n.slug), [n.title, n.cat && NEWS_CATS[n.cat]], [n.sum, n.body]));
-  SERVICES.forEach((x) => add("service", L(x.t), "", routeHref("servicios"), [x.t], [x.d, x.l]));
-  TEAM.forEach((x) => add("team", x.n, L(x.r), routeHref("nosotros"), [x.n, x.r], [x.b]));
-  PRESS.forEach((x) => add("press", L(x.t), x.s, routeHref("prensa"), [x.t, x.s], [x.x]));
-  AWARDS.forEach((x) => add("award", L(x.a), `${x.f} · ${x.y}`, routeHref("prensa"), [x.a, x.f, x.y], []));
+  if (!pageOff("noticias")) NEWS.forEach((n) => add("news", L(n.title), fmtDate(n.date), routeHref("article", n.slug), [n.title, n.cat && NEWS_CATS[n.cat]], [n.sum, n.body]));
+  if (!pageOff("servicios")) SERVICES.forEach((x) => add("service", L(x.t), "", routeHref("servicios"), [x.t], [x.d, x.l]));
+  if (!pageOff("nosotros")) TEAM.forEach((x) => add("team", x.n, L(x.r), routeHref("nosotros"), [x.n, x.r], [x.b]));
+  if (!pageOff("prensa")) PRESS.forEach((x) => add("press", L(x.t), x.s, routeHref("prensa"), [x.t, x.s], [x.x]));
+  if (!pageOff("prensa")) AWARDS.forEach((x) => add("award", L(x.a), `${x.f} · ${x.y}`, routeHref("prensa"), [x.a, x.f, x.y], []));
   return out;
 }
 const rxEsc = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

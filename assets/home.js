@@ -133,12 +133,12 @@
     <div class="pz-hs__bar" aria-hidden="true"><i></i></div>
   </div></section>
 
-  ${(AWARDS.length || PRESS.length) ? `<section class="sec--tight sc-red"><div class="wrap"><div class="sec__head" style="margin-bottom:20px"><div><span class="eyebrow">${t("press_eyebrow")}</span></div><a class="link-arrow" href="${routeHref("prensa")}">${t("nav_prensa")} ${ICONS.arrow}</a></div></div>
-    <div class="laurels">${AWARDS.length ? AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projName(a.p))}</span></div>`).join("") : [...PRESS].sort((x, y) => String(y.d).localeCompare(String(x.d))).slice(0, 3).map((x) => `<div class="laurel"><span class="mono">${esc(fmtDate(x.d))} · ${esc(x.s)}</span><b>${esc(L(x.t))}</b></div>`).join("")}</div></section>` : ""}
+  ${pageOff("prensa") ? "" : `${(AWARDS.length || PRESS.length) ? `<section class="sec--tight sc-red"><div class="wrap"><div class="sec__head" style="margin-bottom:20px"><div><span class="eyebrow">${t("press_eyebrow")}</span></div><a class="link-arrow" href="${routeHref("prensa")}">${t("nav_prensa")} ${ICONS.arrow}</a></div></div>
+    <div class="laurels">${AWARDS.length ? AWARDS.slice(0, 4).map((a) => `<div class="laurel"><span class="mono">${a.y} · ${esc(a.f)}</span><b>${esc(L(a.a))}</b><span>${esc(projName(a.p))}</span></div>`).join("") : [...PRESS].sort((x, y) => String(y.d).localeCompare(String(x.d))).slice(0, 3).map((x) => `<div class="laurel"><span class="mono">${esc(fmtDate(x.d))} · ${esc(x.s)}</span><b>${esc(L(x.t))}</b></div>`).join("")}</div></section>` : ""}`}
 
-  ${PARTNERS.length ? partnersHTML() : ""}
+  ${pageOff("prensa") ? "" : `${PARTNERS.length ? partnersHTML() : ""}`}
 
-  <section class="sc-dark pz-mf" data-pz="mf" aria-labelledby="pz-mf-h" style="--pz-n:${Math.max(hist.length, 1)}">
+  ${pageOff("nosotros") ? "" : `<section class="sc-dark pz-mf" data-pz="mf" aria-labelledby="pz-mf-h" style="--pz-n:${Math.max(hist.length, 1)}">
     <div class="pz-mf__bg" aria-hidden="true">
       <div class="pz-mf__layers">${shots.map((s, i) => `<img ${imgAttrs(s, "100vw")} alt="" loading="lazy" decoding="async" style="--k:${i}">`).join("")}</div>
       <div class="pz-mf__shade"></div>
@@ -152,17 +152,17 @@
       <p class="pz-mf__more"><a class="link-arrow" href="${routeHref("nosotros")}">${t("about_btn")} ${ICONS.arrow}</a></p>
       ${hist.length ? `<ol class="pz-shots">${hist.map((h, i) => `<li class="pz-shot pz-rev" data-shot><b aria-hidden="true">${esc(h.y)}</b><div><span class="eyebrow">${esc(pt("plano"))} ${String(i + 1).padStart(2, "0")}</span><h3 aria-level="3">${esc(L(h.t))}</h3><p>${esc(L(h.d))}</p></div></li>`).join("")}</ol>` : ""}
     </div>
-  </section>
+  </section>`}
 
-  <section class="sec--tight sc-red pz-stat-sec" aria-label="${esc(pt("s1"))}"><div class="wrap"><div class="pz-stats">${stats().map((x, i) => `<div class="pz-st pz-rev" style="--i:${i}"><span class="pz-st__k">${String(i + 1).padStart(2, "0")} · ${bw(x.k)}</span><b class="pz-n" data-n="${x.n}" data-g="${x.n}">${x.n}</b><span class="pz-st__l">${bw(x.l)}</span>${x.v}</div>`).join("")}</div></div></section>
+  ${pageOff("nosotros") ? "" : `<section class="sec--tight sc-red pz-stat-sec" aria-label="${esc(pt("s1"))}"><div class="wrap"><div class="pz-stats">${stats().map((x, i) => `<div class="pz-st pz-rev" style="--i:${i}"><span class="pz-st__k">${String(i + 1).padStart(2, "0")} · ${bw(x.k)}</span><b class="pz-n" data-n="${x.n}" data-g="${x.n}">${x.n}</b><span class="pz-st__l">${bw(x.l)}</span>${x.v}</div>`).join("")}</div></div></section>`}
 
-  <section class="sec sc-dark pz-alt pz-news"><div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_noticias")}</span><h2>${t("latest")}</h2></div><a class="link-arrow" href="${routeHref("noticias")}">${t("all_news")} ${ICONS.arrow}</a></div>
+  ${pageOff("noticias") ? "" : `<section class="sec sc-dark pz-alt pz-news"><div class="wrap"><div class="sec__head"><div><span class="eyebrow">${t("nav_noticias")}</span><h2>${t("latest")}</h2></div><a class="link-arrow" href="${routeHref("noticias")}">${t("all_news")} ${ICONS.arrow}</a></div>
     <div class="pz-nl">${news.map((n, i) => { const pr = n.project ? projBy(n.project) : null; return `<a class="pz-ni pz-rev" style="--i:${i}" href="${routeHref("article", n.slug)}"><span class="pz-ni__bg" aria-hidden="true"></span>
       <span class="pz-ni__no" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
       <span class="pz-ni__m"><span class="mono">${esc(fmtDate(n.date))} · ${esc(L(NEWS_CATS[n.cat]))}</span>${i === 0 ? `<em>${esc(pt("newest"))}</em>` : ""}</span>
       <h3 aria-level="3">${esc(L(n.title))}</h3><p>${esc(L(n.sum))}</p>
       <span class="pz-ni__go" aria-hidden="true">${ICONS.arrow}</span>
-      ${pr ? `<span class="pz-ni__pv" aria-hidden="true">${posterSVG(pr, lang)}</span>` : ""}</a>`; }).join("")}</div></div></section>
+      ${pr ? `<span class="pz-ni__pv" aria-hidden="true">${posterSVG(pr, lang)}</span>` : ""}</a>`; }).join("")}</div></div></section>`}
 
   <section class="sec sc-red pz-cta"><div class="wrap pz-cta__g">
     <div class="pz-cta__t"><span class="eyebrow">${t("contact_eyebrow")}</span><h2>${t("cta_h")}</h2><p>${t("cta_p")}</p>
