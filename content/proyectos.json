@@ -543,7 +543,7 @@
       },
       "year": 2026,
       "status": "produccion",
-      "runtime": "27 min",
+      "runtime": "15 min",
       "genre": {
         "es": "Documental",
         "en": "Documentary"
@@ -557,18 +557,23 @@
         "en": "A town that learned to hear the silence of its factory."
       },
       "short": {
-        "es": "Un pueblo y su antiguo central azucarero, entre la memoria de la zafra y lo que se hace hoy con sus ruinas.",
+        "es": "El BDSM, como estilo de vida y subcultura, existe desde los años 50. A partir del año 2010, aproximadamente, este empieza a tener fama y a ser más reconocido a nivel mundial. ",
         "en": "A town and its former sugar mill, between the memory of the harvest and what is done today with its ruins."
       },
       "long": {
-        "es": "Los obreros que quedan recorren las naves del central como quien visita a un familiar. Los hijos usan el batey para jugar béisbol, y los camiones que pasan por la carretera ya no se detienen. Con archivo familiar y sonido directo, el documental escucha cómo cambia la relación de un pueblo con el lugar que le dio nombre.",
+        "es": "En Cuba, entre los años 2017 y 2018, se crea una comunidad BDSM. Con la llegada de un Internet más accesible, comienzan a encontrarse personas que tenían este tema como interés común, y es de ahí de donde surgen los ancianos que fundaron esta comunidad. \n\nEste documental da visibilidad a este grupo a través de sus testimonios y experiencias. Veremos a varios practicantes del BDSM desmentir los prejuicios que existen en la sociedad respecto al tema. Esto, por su parte, será respaldado con la participación de psiquiatras, psicólogos y sexólogos.",
         "en": "The remaining workers walk through the mill's halls like someone visiting a relative. Their children use the yard to play baseball, and trucks on the road no longer stop. With family archive and direct sound, the documentary listens to how a town's relationship with the place that gave it its name is changing."
       },
       "crew": [
         {
           "r": "direccion",
           "n": "Rose",
-          "c": []
+          "c": [
+            {
+              "k": "instagram",
+              "u": "@rosse.srz"
+            }
+          ]
         },
         {
           "r": "produccion",
