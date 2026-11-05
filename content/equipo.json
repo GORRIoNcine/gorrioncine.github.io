@@ -1,6 +1,17 @@
 {
   "items": [
     {
+      "n": "Karely Mesa",
+      "r": {
+        "es": "Productora general",
+        "en": "General Producer"
+      },
+      "b": {
+        "es": ". ",
+        "en": ". "
+      }
+    },
+    {
       "n": "Luna Reinoso",
       "r": {
         "es": "Dirección de fotografía",
@@ -32,17 +43,6 @@
       "b": {
         "es": "Graba el sonido directo y diseña el sonido de cada película. Sabe cómo suena una azotea.",
         "en": "Records location sound and designs each film's soundscape. Knows what a rooftop sounds like."
-      }
-    },
-    {
-      "n": "Karely Mesa",
-      "r": {
-        "es": "Productora general",
-        "en": "General Producer"
-      },
-      "b": {
-        "es": ". ",
-        "en": ". "
       }
     }
   ]
