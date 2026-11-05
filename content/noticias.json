@@ -24,31 +24,6 @@
           "Write to us through the contact form choosing the reason “Collaboration”, tell us what you can do and include a link to some of your work if you have it."
         ]
       }
-    },
-    {
-      "slug": "detras-de-camaras-malecon",
-      "cat": "detras",
-      "date": "2025-05-09",
-      "seed": 23,
-      "project": "proj-malecon",
-      "title": {
-        "es": "Detrás de cámaras: once meses frente al mismo muro",
-        "en": "Behind the scenes: eleven months facing the same wall"
-      },
-      "sum": {
-        "es": "Cómo se rodó Malecón, 6 a.m. con un equipo de cuatro personas y una sola cámara.",
-        "en": "How Malecón, 6 a.m. was shot with a crew of four and a single camera."
-      },
-      "body": {
-        "es": [
-          "Rodar cada día en el mismo sitio exige disciplina y paciencia: a veces el amanecer no regala nada y hay que volver al día siguiente.",
-          "El equipo trabajó con una cámara, dos ópticas fijas y un grabador de sonido. Gran parte de la película nació de lo que ocurrió cuando ya habíamos decidido recoger los trípodes."
-        ],
-        "en": [
-          "Filming in the same spot every day takes discipline and patience: some sunrises give you nothing and you have to come back the next morning.",
-          "The crew worked with one camera, two prime lenses and a sound recorder. Much of the film came from what happened when we had already decided to pack up the tripods."
-        ]
-      }
     }
   ]
 }
