@@ -49,29 +49,6 @@
           "The crew worked with one camera, two prime lenses and a sound recorder. Much of the film came from what happened when we had already decided to pack up the tripods."
         ]
       }
-    },
-    {
-      "slug": "taller-de-montaje",
-      "cat": "convocatorias",
-      "date": "2025-03-18",
-      "seed": 64,
-      "project": null,
-      "title": {
-        "es": "Taller abierto de montaje documental",
-        "en": "Open workshop on documentary editing"
-      },
-      "sum": {
-        "es": "Cuatro sesiones con Lisandra Fuentes para aprender a montar sin guion previo.",
-        "en": "Four sessions with Lisandra Fuentes on editing without a prior script."
-      },
-      "body": {
-        "es": [
-          "Lisandra Fuentes, montadora de la productora, imparte un taller de cuatro sesiones sobre cómo encontrar la película dentro del material. Los cupos son limitados."
-        ],
-        "en": [
-          "Lisandra Fuentes, the company's editor, will teach a four-session workshop on finding the film inside the footage. Places are limited."
-        ]
-      }
     }
   ]
 }
